@@ -50,7 +50,7 @@ export default function ExperienceWindow() {
         className="absolute inset-0"
         style={{
           background:
-            'radial-gradient(ellipse at center, transparent 40%, rgba(10,10,10,0.7) 100%), linear-gradient(to top, rgba(10,10,10,0.85) 0%, transparent 40%)',
+            'radial-gradient(ellipse at center, transparent 40%, rgba(10,10,10,0.7) 100%), linear-gradient(to top, rgba(10,10,10,0.9) 0%, rgba(10,10,10,0.4) 35%, transparent 60%)',
         }}
       />
 
@@ -87,7 +87,7 @@ export default function ExperienceWindow() {
           exit={{ opacity: 0, y: 20 }}
           transition={{ duration: 0.5, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
         >
-          <div className="rounded-2xl border border-border bg-surface/80 p-5 backdrop-blur-md">
+          <div className="rounded-2xl border border-border bg-surface/90 p-5 backdrop-blur-xl shadow-lg shadow-black/30">
             <h2 className="font-heading text-xl font-semibold leading-tight text-present">
               {era.headline}
             </h2>

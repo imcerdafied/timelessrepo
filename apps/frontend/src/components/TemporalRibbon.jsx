@@ -2,8 +2,8 @@ import { useRef, useEffect, useCallback } from 'react'
 import { motion } from 'framer-motion'
 import useStore from '../store/useStore'
 
-const NODE_SIZE = 48
-const NODE_GAP = 32
+const NODE_SIZE = 44
+const NODE_GAP = 48
 const NODE_TOTAL = NODE_SIZE + NODE_GAP
 
 const eraColor = {
@@ -56,7 +56,7 @@ export default function TemporalRibbon() {
 
       <div
         ref={scrollRef}
-        className="flex items-center gap-8 overflow-x-auto px-[calc(50%-24px)] py-6"
+        className="flex items-center gap-12 overflow-x-auto px-[calc(50%-22px)] py-6"
         style={{
           scrollBehavior: 'smooth',
           WebkitOverflowScrolling: 'touch',
@@ -105,7 +105,7 @@ export default function TemporalRibbon() {
 
               {/* Year label */}
               <motion.span
-                className="mt-2 font-mono text-xs"
+                className="mt-2 font-mono text-[13px]"
                 animate={{
                   color: isSelected ? color : '#666666',
                   opacity: isSelected ? 1 : 0.6,
