@@ -44,8 +44,8 @@ export default function ExperienceWindow() {
   if (!era) return null
 
   const color = eraColor[era.era_type]
-  const keywords = era.image_query || 'landscape,nature'
-  const imageUrl = `https://source.unsplash.com/1080x1920/?${keywords}`
+  const imageUrl = `https://picsum.photos/seed/${era.id}/1080/1920`
+  const isFirstEra = eras[0]?.id === era.id
 
   return (
     <div className="relative h-full w-full overflow-hidden">
@@ -80,6 +80,8 @@ export default function ExperienceWindow() {
             <motion.img
               src={imageUrl}
               alt={era.label}
+              crossOrigin="anonymous"
+              loading={isFirstEra ? 'eager' : 'lazy'}
               className="h-full w-full object-cover"
               initial={{ scale: 1.0 }}
               animate={{ scale: 1.08 }}

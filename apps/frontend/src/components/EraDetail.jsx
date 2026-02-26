@@ -33,6 +33,7 @@ export default function EraDetail({ era, open, onClose, color, locationName }) {
           <motion.div
             ref={sheetRef}
             className="absolute inset-x-0 bottom-0 z-40 max-h-[85%] overflow-hidden rounded-t-2xl border-t border-border bg-surface/95 backdrop-blur-2xl"
+            style={{ touchAction: 'none' }}
             initial={{ y: '100%' }}
             animate={{ y: 0 }}
             exit={{ y: '100%' }}
@@ -41,16 +42,30 @@ export default function EraDetail({ era, open, onClose, color, locationName }) {
             dragControls={dragControls}
             dragConstraints={{ top: 0, bottom: 0 }}
             dragElastic={{ top: 0, bottom: 0.6 }}
+            dragListener={false}
             onDragEnd={(_, info) => {
               if (info.offset.y > 100 || info.velocity.y > 500) {
                 onClose()
               }
             }}
           >
-            {/* Drag handle */}
-            <div className="flex justify-center pt-3 pb-2">
+            {/* Drag handle — bound to pointer for touch support */}
+            <div
+              className="flex justify-center pt-3 pb-2 cursor-grab active:cursor-grabbing"
+              onPointerDown={(e) => dragControls.start(e)}
+            >
               <div className="h-1 w-8 rounded-full bg-present/20" />
             </div>
+
+            {/* Close button */}
+            <button
+              onClick={onClose}
+              className="absolute right-4 top-3 z-50 flex h-7 w-7 cursor-pointer items-center justify-center rounded-full border border-present/15 bg-surface/60 text-present/50 backdrop-blur-md transition-colors hover:bg-surface/80"
+            >
+              <svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+                <path d="M11 3L3 11M3 3l8 8" />
+              </svg>
+            </button>
 
             {/* Scrollable content */}
             <div className="overflow-y-auto overscroll-contain px-5" style={{ maxHeight: 'calc(85vh - 24px)', paddingBottom: 'calc(96px + env(safe-area-inset-bottom, 0px))' }}>
