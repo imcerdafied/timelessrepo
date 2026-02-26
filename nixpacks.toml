@@ -1,0 +1,5 @@
+[phases.build]
+cmds = ["cd apps/frontend && npm install && npm run build"]
+
+[start]
+cmd = "cd apps/frontend && npm run preview"

@@ -1,0 +1,7 @@
+{
+  "name": "timeless",
+  "scripts": {
+    "build": "cd apps/frontend && npm install && npm run build",
+    "start": "cd apps/frontend && npm run preview"
+  }
+}
