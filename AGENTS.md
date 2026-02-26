@@ -1,7 +1,7 @@
-# AGENTS.md — Timeless
+# AGENTS.md — Timeless Moment
 
 ## What This Is
-Timeless is a temporal exploration app. Users stand at a location and see
+Timeless Moment is a temporal exploration app. Users stand at a location and see
 what was there across history, what is there now, and what might be in 2075.
 San Francisco MVP: 5 locations, 9 eras each, mobile-first web app.
 Repo: https://github.com/imcerdafied/timelessrepo

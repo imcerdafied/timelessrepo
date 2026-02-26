@@ -19,7 +19,7 @@ export default function SplashScreen({ onComplete }) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
       >
-        Timeless
+        Timeless Moment
       </motion.h1>
       <motion.p
         className="mt-3 font-ui text-sm tracking-widest text-past"

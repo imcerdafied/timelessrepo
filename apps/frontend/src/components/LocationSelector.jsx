@@ -7,7 +7,7 @@ export default function LocationSelector() {
 
   return (
     <div className="flex h-full flex-col bg-background px-5 py-8">
-      <h1 className="font-heading text-2xl font-bold tracking-[0.18em] text-present uppercase">Timeless</h1>
+      <h1 className="font-heading text-2xl font-bold tracking-[0.18em] text-present uppercase">Timeless Moment</h1>
       <p className="mt-1 font-ui text-sm text-present/50">
         San Francisco across time
       </p>
