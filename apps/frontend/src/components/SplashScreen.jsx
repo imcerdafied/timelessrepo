@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 export default function SplashScreen({ onComplete }) {
   return (
     <motion.div
-      className="flex h-full flex-col items-center justify-center bg-background"
+      className="flex h-full flex-col items-center justify-center text-center bg-background"
       initial={{ opacity: 1 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
