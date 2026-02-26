@@ -17,11 +17,18 @@ export default function ExperienceWindow() {
   const eras = useStore((s) => s.eras)
   const selectedEra = useStore((s) => s.selectedEra)
   const setSelectedLocation = useStore((s) => s.setSelectedLocation)
+  const [imageLoaded, setImageLoaded] = useState(false)
+  const [prevEraId, setPrevEraId] = useState(null)
+
   const era = eras.find((e) => e.id === selectedEra)
 
-  if (!era) return null
+  // Reset loading state when era changes
+  if (era && era.id !== prevEraId) {
+    setPrevEraId(era.id)
+    setImageLoaded(false)
+  }
 
-  const [imageLoaded, setImageLoaded] = useState(false)
+  if (!era) return null
 
   const color = eraColor[era.era_type]
   const imageUrl = `https://picsum.photos/seed/${era.id}/1080/1920`
@@ -49,7 +56,6 @@ export default function ExperienceWindow() {
           animate={{ opacity: imageLoaded ? 1 : 0 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.6, ease: 'easeInOut' }}
-          onAnimationStart={() => setImageLoaded(false)}
         >
           <motion.img
             src={imageUrl}
