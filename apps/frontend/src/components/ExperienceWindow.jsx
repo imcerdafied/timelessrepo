@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import useStore from '../store/useStore'
 
@@ -20,20 +21,35 @@ export default function ExperienceWindow() {
 
   if (!era) return null
 
+  const [imageLoaded, setImageLoaded] = useState(false)
+
   const color = eraColor[era.era_type]
-  const imageUrl = `https://source.unsplash.com/featured/1080x1920?${encodeURIComponent(era.image_query)}`
+  const imageUrl = `https://picsum.photos/seed/${era.id}/1080/1920`
 
   return (
     <div className="relative h-full w-full overflow-hidden">
+      {/* Shimmer loading state */}
+      <AnimatePresence>
+        {!imageLoaded && (
+          <motion.div
+            key="shimmer"
+            className="shimmer absolute inset-0"
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4 }}
+          />
+        )}
+      </AnimatePresence>
+
       {/* Background image with Ken Burns + cross-dissolve */}
       <AnimatePresence mode="popLayout">
         <motion.div
           key={era.id}
           className="absolute inset-0"
           initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
+          animate={{ opacity: imageLoaded ? 1 : 0 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.6, ease: 'easeInOut' }}
+          onAnimationStart={() => setImageLoaded(false)}
         >
           <motion.img
             src={imageUrl}
@@ -47,7 +63,7 @@ export default function ExperienceWindow() {
               repeat: Infinity,
               repeatType: 'reverse',
             }}
-            loading="lazy"
+            onLoad={() => setImageLoaded(true)}
           />
         </motion.div>
       </AnimatePresence>

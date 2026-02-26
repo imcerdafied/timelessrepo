@@ -16,6 +16,16 @@
 .overflow-x-auto::-webkit-scrollbar { display: none; }
 .overflow-x-auto { scrollbar-width: none; }
 
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.shimmer {
+  background: linear-gradient(90deg, #141414 25%, #1a1a1a 50%, #141414 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.8s ease-in-out infinite;
+}
+
 body {
   margin: 0;
   background-color: var(--color-background);
