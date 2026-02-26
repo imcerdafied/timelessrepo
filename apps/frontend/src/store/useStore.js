@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import locationsData from '../../../../packages/content/locations.json'
+import locationsData from '../data/locations.json'
 
 const locations = locationsData.locations
 
