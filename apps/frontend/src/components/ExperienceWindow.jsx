@@ -42,7 +42,8 @@ export default function ExperienceWindow() {
   if (!era) return null
 
   const color = eraColor[era.era_type]
-  const imageUrl = `https://picsum.photos/seed/${era.id}/1080/1920`
+  const keywords = era.image_query || 'landscape,nature'
+  const imageUrl = `https://source.unsplash.com/1080x1920/?${keywords}`
 
   return (
     <div className="relative h-full w-full overflow-hidden">
@@ -138,35 +139,37 @@ export default function ExperienceWindow() {
         </motion.div>
       </AnimatePresence>
 
-      {/* InfoCard — slides up from bottom, tap to expand */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={era.id + '-info'}
-          className="absolute inset-x-0 bottom-0 z-10 px-5 pb-6"
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 20 }}
-          transition={{ duration: 0.5, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-        >
+      {/* InfoCard — slides up from bottom, tap to expand. Hidden when detail sheet is open. */}
+      <AnimatePresence>
+        {!detailOpen && (
           <motion.div
-            className="cursor-pointer rounded-2xl border border-border bg-surface/90 p-5 backdrop-blur-xl shadow-lg shadow-black/30"
-            onClick={() => setDetailOpen(true)}
-            whileTap={{ scale: 0.98 }}
+            key={era.id + '-info'}
+            className="absolute inset-x-0 bottom-0 z-10 px-5 pb-6"
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
           >
-            <h2 className="font-heading text-xl font-semibold leading-tight text-present">
-              {era.headline}
-            </h2>
-            <p className="mt-2 font-ui text-sm leading-relaxed text-present/70">
-              {twoSentences(era.description)}
-            </p>
-            <div className="mt-3 flex items-center gap-1.5 text-present/40">
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
-                <path d="M6 2v8M2 6l4 4 4-4" />
-              </svg>
-              <span className="font-ui text-[11px] tracking-wide uppercase">Tap to explore</span>
-            </div>
+            <motion.div
+              className="cursor-pointer rounded-2xl border border-border bg-surface/90 p-5 backdrop-blur-xl shadow-lg shadow-black/30"
+              onClick={() => setDetailOpen(true)}
+              whileTap={{ scale: 0.98 }}
+            >
+              <h2 className="font-heading text-xl font-semibold leading-tight text-present">
+                {era.headline}
+              </h2>
+              <p className="mt-2 font-ui text-sm leading-relaxed text-present/70">
+                {twoSentences(era.description)}
+              </p>
+              <div className="mt-3 flex items-center gap-1.5 text-present/40">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+                  <path d="M6 2v8M2 6l4 4 4-4" />
+                </svg>
+                <span className="font-ui text-[11px] tracking-wide uppercase">Tap to explore</span>
+              </div>
+            </motion.div>
           </motion.div>
-        </motion.div>
+        )}
       </AnimatePresence>
 
       {/* Era Detail sheet */}
