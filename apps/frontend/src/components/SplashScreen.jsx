@@ -1,6 +1,12 @@
+import { useEffect } from 'react'
 import { motion } from 'framer-motion'
+import posthog from 'posthog-js'
 
 export default function SplashScreen({ onComplete }) {
+  useEffect(() => {
+    posthog.capture('session_started')
+  }, [])
+
   return (
     <motion.div
       className="flex h-full flex-col items-center justify-center text-center bg-background"

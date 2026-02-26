@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import posthog from 'posthog-js'
 import useStore from '../store/useStore'
 
 export default function LocationSelector() {
@@ -16,7 +17,10 @@ export default function LocationSelector() {
         {locations.map((location, i) => (
           <motion.button
             key={location.id}
-            onClick={() => setSelectedLocation(location.id)}
+            onClick={() => {
+              posthog.capture('location_selected', { location_id: location.id, location_name: location.name })
+              setSelectedLocation(location.id)
+            }}
             className="group flex cursor-pointer flex-col rounded-xl border border-border bg-surface p-4 text-left outline-none transition-colors hover:border-present/20"
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}

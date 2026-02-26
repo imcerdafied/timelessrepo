@@ -1,5 +1,7 @@
-import { useRef } from 'react'
+import { useRef, useEffect } from 'react'
 import { AnimatePresence, motion, useDragControls } from 'framer-motion'
+import posthog from 'posthog-js'
+import useStore from '../store/useStore'
 
 const typeLabel = {
   past: 'Historical Record',
@@ -10,6 +12,12 @@ const typeLabel = {
 export default function EraDetail({ era, open, onClose, color, locationName }) {
   const dragControls = useDragControls()
   const sheetRef = useRef(null)
+
+  useEffect(() => {
+    if (open && era) {
+      posthog.capture('era_detail_opened', { era_id: era.id, headline: era.headline, location_id: useStore.getState().selectedLocation })
+    }
+  }, [open, era])
 
   if (!era) return null
 

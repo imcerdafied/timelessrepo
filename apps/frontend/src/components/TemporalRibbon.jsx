@@ -1,5 +1,6 @@
 import { useRef, useEffect, useCallback } from 'react'
 import { motion } from 'framer-motion'
+import posthog from 'posthog-js'
 import useStore from '../store/useStore'
 
 const NODE_SIZE = 44
@@ -72,7 +73,10 @@ export default function TemporalRibbon() {
           return (
             <motion.button
               key={era.id}
-              onClick={() => setSelectedEra(era.id)}
+              onClick={() => {
+                posthog.capture('era_selected', { era_id: era.id, era_label: era.label, era_type: era.era_type, location_id: useStore.getState().selectedLocation })
+                setSelectedEra(era.id)
+              }}
               className="flex shrink-0 cursor-pointer flex-col items-center border-none bg-transparent p-0 outline-none"
               style={{ width: NODE_SIZE }}
               whileTap={{ scale: 0.92 }}
