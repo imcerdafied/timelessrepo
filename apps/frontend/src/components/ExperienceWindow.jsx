@@ -23,6 +23,8 @@ const eraGradient = {
 export default function ExperienceWindow() {
   const eras = useStore((s) => s.eras)
   const selectedEra = useStore((s) => s.selectedEra)
+  const selectedLocation = useStore((s) => s.selectedLocation)
+  const locations = useStore((s) => s.locations)
   const setSelectedLocation = useStore((s) => s.setSelectedLocation)
   const [imageLoaded, setImageLoaded] = useState(false)
   const [imageFailed, setImageFailed] = useState(false)
@@ -173,7 +175,13 @@ export default function ExperienceWindow() {
       </AnimatePresence>
 
       {/* Era Detail sheet */}
-      <EraDetail era={era} open={detailOpen} onClose={() => setDetailOpen(false)} color={color} />
+      <EraDetail
+        era={era}
+        open={detailOpen}
+        onClose={() => setDetailOpen(false)}
+        color={color}
+        locationName={locations.find((l) => l.id === selectedLocation)?.name}
+      />
     </div>
   )
 }

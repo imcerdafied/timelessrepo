@@ -7,7 +7,7 @@ const typeLabel = {
   future: 'Projected Future',
 }
 
-export default function EraDetail({ era, open, onClose, color }) {
+export default function EraDetail({ era, open, onClose, color, locationName }) {
   const dragControls = useDragControls()
   const sheetRef = useRef(null)
 
@@ -53,7 +53,7 @@ export default function EraDetail({ era, open, onClose, color }) {
             </div>
 
             {/* Scrollable content */}
-            <div className="overflow-y-auto overscroll-contain px-5 pb-8" style={{ maxHeight: 'calc(85vh - 24px)' }}>
+            <div className="overflow-y-auto overscroll-contain px-5" style={{ maxHeight: 'calc(85vh - 24px)', paddingBottom: 'calc(96px + env(safe-area-inset-bottom, 0px))' }}>
               {/* Header */}
               <div className="flex items-start justify-between">
                 <div>
@@ -67,7 +67,12 @@ export default function EraDetail({ era, open, onClose, color }) {
                   >
                     {era.year_display} — {typeLabel[era.era_type]}
                   </span>
-                  <h2 className="mt-3 font-heading text-2xl font-semibold leading-tight text-present">
+                  {locationName && (
+                    <p className="mt-2 font-ui text-[11px] tracking-wide text-present/40 uppercase">
+                      {locationName}
+                    </p>
+                  )}
+                  <h2 className="mt-1 font-heading text-2xl font-semibold leading-tight text-present">
                     {era.headline}
                   </h2>
                 </div>
