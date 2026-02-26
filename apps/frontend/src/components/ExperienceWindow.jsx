@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import useStore from '../store/useStore'
+import { getImageUrl } from '../data/imageMap'
 import EraDetail from './EraDetail'
 
 function twoSentences(text) {
@@ -44,7 +45,7 @@ export default function ExperienceWindow() {
   if (!era) return null
 
   const color = eraColor[era.era_type]
-  const imageUrl = `https://picsum.photos/seed/${era.id}/1080/1920`
+  const imageUrl = getImageUrl(era)
   const isFirstEra = eras[0]?.id === era.id
 
   return (

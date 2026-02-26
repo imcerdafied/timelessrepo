@@ -1,20 +1,39 @@
+import { useState, useEffect } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import ExperienceWindow from './components/ExperienceWindow'
 import LocationSelector from './components/LocationSelector'
+import SplashScreen from './components/SplashScreen'
 import TemporalRibbon from './components/TemporalRibbon'
 import useStore from './store/useStore'
 
 function App() {
   const selectedLocation = useStore((s) => s.selectedLocation)
+  const [showSplash, setShowSplash] = useState(true)
+
+  useEffect(() => {
+    const timer = setTimeout(() => setShowSplash(false), 2500)
+    return () => clearTimeout(timer)
+  }, [])
 
   return (
     <div className="flex h-dvh items-center justify-center bg-black">
       <div className="relative flex h-full w-full max-w-[390px] flex-col border-x border-border bg-background">
         <AnimatePresence mode="wait">
-          {!selectedLocation ? (
+          {showSplash ? (
+            <motion.div
+              key="splash"
+              className="flex-1"
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.6, ease: 'easeInOut' }}
+            >
+              <SplashScreen />
+            </motion.div>
+          ) : !selectedLocation ? (
             <motion.div
               key="selector"
               className="flex-1 overflow-hidden"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
               exit={{ opacity: 0, scale: 0.97 }}
               transition={{ duration: 0.3 }}
             >
