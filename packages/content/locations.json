@@ -549,124 +549,14 @@
       "coordinates": { "lat": 37.7544, "lng": -122.4477 },
       "tagline": "The city's highest public viewpoint. Every era of San Francisco written in the skyline below.",
       "eras": [
-        {
-          "id": "tp-1500",
-          "year_display": "c. 1500",
-          "label": "Sacred Hills",
-          "era_type": "past",
-          "image_query": "california,hills,nature,grassland,indigenous",
-          "headline": "The Breast of the Maiden",
-          "description": "The Ohlone called Twin Peaks \"Los Pechos de la Chola\" — a name the Spanish would later translate. These two hills, the second-highest point in San Francisco at 922 feet, were a landmark visible from every direction. The windswept grasslands supported no permanent settlement but served as a navigational reference, a gathering point, and likely a place of spiritual significance. From the summit, the entire bay was visible — the same 360-degree panorama that draws visitors today, minus everything humans have built.",
-          "key_events": [
-            { "year": "c. 1500", "event": "Twin Peaks serves as a navigational landmark for Ohlone bands across the peninsula" },
-            { "year": "1769", "event": "Portola expedition sights San Francisco Bay from nearby hills" }
-          ],
-          "landscape": "Coastal grassland swept by constant Pacific wind. No trees — the exposure was too severe. Bunch grasses, wildflowers in spring, golden brown in summer. The bay visible in every direction. Hawks circling. The sound of wind and nothing else.",
-          "sources": ["Randall Milliken, A Time of Little Choice (1995)", "SF Recreation & Parks historical surveys"]
-        },
-        {
-          "id": "tp-1849",
-          "year_display": "1849",
-          "label": "The Untouched Heights",
-          "era_type": "past",
-          "image_query": "hills,california,1800s,landscape,grassland",
-          "headline": "Above the Chaos",
-          "description": "While the Gold Rush convulsed the waterfront and downtown, Twin Peaks remained empty — too steep, too windy, too far from the action. From the summit, a visitor in 1849 would have seen the forest of masts in the harbor, the tent cities on the hillsides, and the frantic construction of a city being willed into existence. The peaks themselves were unchanged. No road reached the summit. Getting there required an hour's walk through sand dunes and scrub.",
-          "key_events": [
-            { "year": "1849", "event": "Twin Peaks remains undeveloped while the city explodes at the waterfront below" },
-            { "year": "1858", "event": "First survey maps of San Francisco include Twin Peaks as a geographic reference point" }
-          ],
-          "landscape": "The same grassland the Ohlone knew, now with a boomtown visible in the distance. Smoke from the waterfront visible on windless days. The contrast between the raw natural landscape of the peaks and the raw human chaos of the city below would have been absolute.",
-          "sources": ["Bancroft Library historical maps", "USGS early survey records"]
-        },
-        {
-          "id": "tp-1906",
-          "year_display": "1906",
-          "label": "Watching the Fire",
-          "era_type": "past",
-          "image_query": "san francisco,1906,fire,panoramic,hills",
-          "headline": "The View Nobody Wanted",
-          "description": "From Twin Peaks on April 18, 1906, the entire catastrophe was visible — the column of smoke rising from the city, the advancing fire line, the dynamite explosions as the Army tried to create firebreaks. Photographs taken from the surrounding hills in the days after the earthquake remain the most complete visual record of the devastation. The peaks themselves were untouched. The fire never reached the western neighborhoods. But for three days, the summit offered a panoramic view of a city burning itself to the ground.",
-          "key_events": [
-            { "year": "April 18-21, 1906", "event": "The 1906 earthquake and fire visible in panorama from Twin Peaks" },
-            { "year": "1906", "event": "Refugees flee west through the valleys below Twin Peaks toward Golden Gate Park" }
-          ],
-          "landscape": "A wall of smoke to the north and east, advancing over three days. The sound of dynamite carrying across the city. At night, the glow of the fire illuminating the entire eastern sky. The peaks themselves silent and unchanged, the grass stirring in the wind as the city burned.",
-          "sources": ["Philip Fradkin, The Great Earthquake (2005)", "California Historical Society photograph collection"]
-        },
-        {
-          "id": "tp-1945",
-          "year_display": "1945",
-          "label": "The Postwar View",
-          "era_type": "past",
-          "image_query": "1940s,san francisco,panoramic,city,hills",
-          "headline": "A City Fully Built",
-          "description": "By 1945 the view from Twin Peaks showed a city that had filled every valley and climbed every hill. The housing boom of the 1920s and 30s had pushed development up the slopes of Twin Peaks itself — rows of stucco houses with garages cut into the hillside. Twin Peaks Boulevard, completed in 1936, made the summit accessible by car for the first time. The panoramic view now included the Golden Gate Bridge, the Bay Bridge, Alcatraz, and a skyline of modest towers. The city was complete in outline if not in height.",
-          "key_events": [
-            { "year": "1936", "event": "Twin Peaks Boulevard completed — the summit becomes accessible by car" },
-            { "year": "1937", "event": "Golden Gate Bridge opens — visible from the summit for the first time" },
-            { "year": "1945", "event": "V-J Day. The city below celebrates the end of the war." }
-          ],
-          "landscape": "The 360-degree view now encompassed a full city — white and pastel stucco houses filling every valley, the bridges spanning the bay, ships in the harbor. The summit itself had been graded and a road built to the top. Tourists began driving up. The grassland was reduced to the immediate peaks.",
-          "sources": ["SF Recreation & Parks historical records", "SFMTA transit planning archives"]
-        },
-        {
-          "id": "tp-1967",
-          "year_display": "1967",
-          "label": "The Television Tower",
-          "era_type": "past",
-          "image_query": "san francisco,1960s,panoramic,city,skyline",
-          "headline": "The Antenna Farm",
-          "description": "Sutro Tower, the distinctive three-pronged television antenna that now defines the Twin Peaks skyline, was proposed in 1966 and built in 1973. It was controversial — residents saw it as an ugly intrusion on a natural landmark. The tower became, like the Transamerica Pyramid, a structure that was hated on arrival and eventually accepted as iconic. From the summit, the 1960s view showed the first high-rise construction in the Financial District — the beginning of the skyline transformation that continues today.",
-          "key_events": [
-            { "year": "1966", "event": "Sutro Tower proposed — community opposition is fierce" },
-            { "year": "1967", "event": "The Summer of Love unfolds in the Haight-Ashbury visible directly below Twin Peaks" },
-            { "year": "1973", "event": "Sutro Tower completed at 977 feet — the tallest structure in San Francisco" }
-          ],
-          "landscape": "The view from the summit now included high-rises downtown, the beginnings of a modern skyline. The Haight-Ashbury visible directly below to the north. On clear days, the counterculture and the construction cranes were visible simultaneously — two versions of the future competing for the same city.",
-          "sources": ["Sutro Tower Inc. historical records", "SF Planning Department archives"]
-        },
-        {
-          "id": "tp-2000",
-          "year_display": "2000",
-          "label": "The Boom View",
-          "era_type": "past",
-          "image_query": "san francisco,skyline,panoramic,2000s,city",
-          "headline": "A Skyline Transformed",
-          "description": "By the turn of the millennium, the view from Twin Peaks told the story of the dot-com boom. South of Market had erupted with new construction. The skyline was taller. At night, the lights of the city were brighter and more extensive than at any point in history. The real estate visible from the summit was worth, collectively, more than the GDP of most countries. And then the bust came, and the cranes stopped, and the lights in the SoMa lofts went out one by one.",
-          "key_events": [
-            { "year": "2000", "event": "The dot-com skyline reaches its peak — cranes visible across SoMa" },
-            { "year": "2001", "event": "The bust. Construction stops. The view doesn't change but the economy behind it collapses." }
-          ],
-          "landscape": "The most dramatic version of the San Francisco panorama — the full modern skyline, both bridges, Alcatraz, Angel Island, the East Bay hills. At night, a continuous field of light from the peninsula to the horizon. The summit itself is a parking lot and viewing platform, packed with tourists on clear evenings.",
-          "sources": ["SF Office of Economic Analysis", "National Park Service visitor statistics"]
-        },
-        {
-          "id": "tp-2025",
-          "year_display": "2025",
-          "label": "Present Day",
-          "era_type": "present",
-          "image_query": "san francisco,twin peaks,skyline,panoramic,modern",
-          "headline": "The Longest View",
-          "description": "Twin Peaks in 2025 offers the most complete single view of San Francisco available to the public. Salesforce Tower now dominates the skyline at 1,070 feet. On clear days, the view extends from Mount Tamalpais to Mount Diablo, from the Pacific to the Sacramento Delta. The summit is one of the most visited viewpoints in the Bay Area — and one of the windiest. The same Pacific wind that shaped the Ohlone grasslands still batters anyone who stands here for more than a few minutes.",
-          "key_events": [],
-          "landscape": "Salesforce Tower anchoring a skyline that now includes dozens of towers over 400 feet. The residential neighborhoods spreading in every direction — pastel stucco to the west, Victorian wood to the east. The green corridors of Golden Gate Park and the Panhandle visible as breaks in the urban fabric. Fog rolling through the Golden Gate on summer evenings, filling the bay and erasing the city below.",
-          "sources": []
-        },
-        {
-          "id": "tp-2075",
-          "year_display": "2075",
-          "label": "Futures",
-          "era_type": "future",
-          "image_query": "futuristic,city,skyline,panoramic,climate",
-          "headline": "The View in Fifty Years",
-          "description": "The view from Twin Peaks in 2075 will be shaped by which version of the future San Francisco builds. The hills themselves will be unchanged — they've looked the same for ten thousand years. But the city below will tell the story of how this generation responded to climate, housing, and equity.",
-          "future_scenarios": [
-            { "id": "green-density", "label": "Green Density", "sublabel": "Vertical and sustainable", "description": "The skyline is taller and greener — carbon-negative towers rising above neighborhoods that have been densified and reforested. The western neighborhoods, once low-rise single-family, now have mid-rise housing along transit corridors. From Twin Peaks, the city looks denser and more vertical, but also greener — urban canopy visible between the buildings.", "confidence": 0.45 },
-            { "id": "fortress-city", "label": "Fortress City", "sublabel": "Climate migration pressure", "description": "San Francisco's mild climate has made it a destination for climate migrants from hotter regions. The population has doubled. The view from Twin Peaks shows a city bursting at its seams — every available lot developed, the skyline dense with housing towers. The parks are the only green visible. The city works, but it has lost its spaciousness.", "confidence": 0.33 }
-          ],
-          "sources": []
-        }
+        { "id": "tp-1500", "year_display": "c. 1500", "label": "Sacred Hills", "era_type": "past", "image_query": "hills,nature,bay,california,indigenous", "headline": "Chutchui and Sutchui", "description": "The Ramaytush Ohlone called the Twin Peaks Chutchui and Sutchui — a place of spiritual significance, used for ceremony and as a landmark for navigation across the peninsula and bay. From the summit on a clear day, every Ohlone village on the peninsula was visible. The hills were covered in native perennial grasses, coastal scrub, and wind-sculpted trees. The view to the north showed a bay full of salmon and shorebirds, the northern hills bare and brown in summer, green in the brief rainy season.", "key_events": [{ "year": "c. 1500", "event": "Ohlone use Twin Peaks as a ceremonial and navigational landmark" }, { "year": "1769", "event": "Portola expedition members climb to high ground — likely Twin Peaks — to survey the bay" }], "landscape": "Native bunchgrass, coyote brush, and coastal scrub to the summit. The view to the north unobstructed by any structure. The bay visible from edge to edge. Grizzly bear and tule elk on the slopes below.", "sources": ["Randall Milliken, A Time of Little Choice (1995)", "SF Ohlone place-name research"] },
+        { "id": "tp-1849", "year_display": "1849", "label": "The View Point", "era_type": "past", "image_query": "1849,california,gold rush,hills,historical", "headline": "Watching the Rush", "description": "From Twin Peaks in 1849, you could watch the transformation of San Francisco in real time. The cove to the northeast filling with ships. The tent city spreading across the hills. The fires that broke out regularly in the wood and canvas settlement. The hills were still largely open in 1849 — the subdivision of the peninsula was just beginning, and the areas south of Market were still farms and ranchos.", "key_events": [{ "year": "1848", "event": "SF population begins its explosive growth — visible from the hills as a spreading settlement" }, { "year": "1850", "event": "Land speculation reaches the hills south of Market — Twin Peaks parceled and sold" }], "landscape": "The summit still bare of any structure. The settlement visible below as a collection of white canvas against dark hills. The bay dotted with ships. The rest of the peninsula empty — open grassland, oak woodland, and the mission visible to the south.", "sources": ["Bancroft Library survey records", "Eldredge, History of California (1915)"] },
+        { "id": "tp-1906", "year_display": "1906", "label": "After the Fire", "era_type": "past", "image_query": "san francisco,1906,earthquake,smoke,fire,historical", "headline": "The View of the Catastrophe", "description": "From Twin Peaks on April 18-21, 1906, you could see the entire catastrophe. The smoke column from the burning city was visible from 50 miles away. The glow at night was described by observers as far away as Sacramento. From the summit, the geography of the disaster was clear — where the fire had stopped, where it was still burning, which neighborhoods had been spared.", "key_events": [{ "year": "April 18, 1906", "event": "The fire visible from Twin Peaks across the entire northern and eastern city" }, { "year": "1907-1910", "event": "Reconstruction visible from the summit — the city rebuilding almost faster than it burned" }], "landscape": "From the summit: the northern and eastern city a field of ash and standing facades. The Mission, to the southeast, intact. The western neighborhoods, behind the firebreak of Van Ness Avenue, untouched. The bay, to the north and east, unchanged — cold and indifferent.", "sources": ["Philip Fradkin, The Great Earthquake (2005)", "Contemporary accounts compiled by USGS"] },
+        { "id": "tp-1945", "year_display": "1945", "label": "The Radio Hills", "era_type": "past", "image_query": "1940s,radio tower,antenna,hill,communications", "headline": "The Signal Hills", "description": "By 1945 Twin Peaks was crowned with radio transmission towers, its summit chosen for the same reason the Ohlone had valued it: unobstructed sightlines in every direction. The residential neighborhoods had climbed the slopes below the summit. Sutro Tower would not be built for another thirty years, but the infrastructure logic that would produce it was already in place.", "key_events": [{ "year": "1920s-30s", "event": "Radio transmission towers established on Twin Peaks summit" }, { "year": "1925", "event": "Twin Peaks Boulevard completed — the first road to the summit, designed for automobiles" }, { "year": "1945", "event": "From the summit, the city visible in its wartime configuration — blacked out at night, busy at all hours" }], "landscape": "The residential grid climbing the lower slopes. The summit cleared for the tower equipment. Sutro's eucalyptus forest to the northwest. The city spreading to every horizon — the great westward expansion of the Richmond and Sunset districts filling in the sand dunes.", "sources": ["SF Recreation and Parks Department history", "Bay Area broadcasting history archives"] },
+        { "id": "tp-1967", "year_display": "1967", "label": "Sutro's Shadow", "era_type": "past", "image_query": "1970s,san francisco,sutro tower,urban,hills", "headline": "Sutro Tower Rising", "description": "Sutro Tower was proposed in 1968 and completed in 1973. The 977-foot television transmission tower — painted red and white to satisfy FAA requirements, its three-pronged top disappearing into fog — became immediately controversial and immediately iconic. From Twin Peaks, Sutro Tower is the dominant vertical element of the western view, simultaneously an eyesore and a beloved landmark.", "key_events": [{ "year": "1968", "event": "Sutro Tower proposed — immediately opposed by neighborhood groups" }, { "year": "1973", "event": "Sutro Tower completed at 977 feet" }, { "year": "1978", "event": "Harvey Milk and George Moscone assassinated in City Hall — the grief visible across the city" }], "landscape": "The residential neighborhoods now complete on every slope below the summit. The natural vegetation at the summit reduced to a small preserve. The city at night a grid of orange sodium lights, Sutro Tower blinking red at its apex, the Bay Bridge's lights reflected in the water.", "sources": ["Sutro Tower Inc. historical records", "SF Planning Commission records 1966-1973"] },
+        { "id": "tp-2000", "year_display": "2000", "label": "The Dot-com View", "era_type": "past", "image_query": "san francisco,panorama,city,skyline,night", "headline": "The City of Cranes", "description": "From Twin Peaks during the dot-com boom, the city below was visibly under construction. Cranes in SoMa. The dot-com towers being built along the Embarcadero. The city's skyline adding new elements for the first time since the Financial District high-rise boom of the 1970s. At night, the lights extended further and burned brighter — the city was working around the clock.", "key_events": [{ "year": "1996-2001", "event": "Dot-com construction boom visible from Twin Peaks as a forest of cranes in SoMa" }, { "year": "2000", "event": "San Francisco's population and density at historic highs" }], "landscape": "The skyline to the north dense with towers. The construction cranes along the waterfront. At night, the office buildings lit at all hours — the particular brightness of a boom.", "sources": ["SF Planning Department building permit records 1996-2001"] },
+        { "id": "tp-2025", "year_display": "2025", "label": "Present Day", "era_type": "present", "image_query": "twin peaks,san francisco,panorama,city,view", "headline": "The Unchanged View", "description": "Twin Peaks in 2025 offers the same fundamental experience it offered in 1500 and 1849 and 1906 — a 360-degree view of the peninsula and bay that makes the city's geography suddenly comprehensible. The summit is now a public park, one of the city's most visited. On clear days the view extends to Mount Tamalpais in the north, Mount Diablo to the east, and the Santa Cruz mountains to the south.", "key_events": [], "landscape": "Salesforce Tower dominating the eastern skyline. The Bay Bridge and Golden Gate visible simultaneously. The fog rolling in from the ocean to the west, sometimes submerging the western neighborhoods while the eastern city remains clear. Sutro Tower always visible, always blinking.", "sources": [] },
+        { "id": "tp-2075", "year_display": "2075", "label": "Futures", "era_type": "future", "image_query": "futuristic,panorama,city,climate,future", "headline": "The High Ground", "description": "Twin Peaks will be one of the few parts of San Francisco entirely unaffected by sea level rise — at 925 feet, it will remain above any plausible climate scenario. What will change is what it looks down on.", "future_scenarios": [{ "id": "resilient", "label": "Resilient City", "sublabel": "Managed adaptation", "description": "The view from the summit shows a city that has adapted — seawalls protecting the waterfront, elevated parks along former shorelines, the bay's edge redesigned. The city is denser, smaller in footprint, but still recognizably San Francisco.", "confidence": 0.51 }, { "id": "contracted", "label": "Contracted City", "sublabel": "Managed retreat", "description": "The view shows a smaller city. The areas closest to sea level — the Embarcadero, parts of Mission Bay, the lower Mission — have been surrendered to the water or converted to wetlands. The city has contracted to its high ground. From Twin Peaks, the change is stark: the bay is larger than it was.", "confidence": 0.36 }], "sources": [] }
       ]
     }
   ]
