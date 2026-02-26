@@ -1,0 +1,673 @@
+{
+  "locations": [
+    {
+      "id": "sf-mission",
+      "name": "Mission Dolores",
+      "subtext": "Mission District, San Francisco",
+      "coordinates": { "lat": 37.7749, "lng": -122.4313 },
+      "tagline": "The oldest building in San Francisco holds the city's deepest contradictions.",
+      "eras": [
+        {
+          "id": "mission-1500",
+          "year_display": "c. 1500",
+          "label": "Ohlone Homeland",
+          "era_type": "past",
+          "image_query": "california,nature,bay,forest,indigenous",
+          "headline": "Mannahatta of the West",
+          "description": "The Ramaytush Ohlone people had lived on this peninsula for at least 10,000 years before European contact. The Mission Valley was a wetland fed by Mission Creek, teeming with tule elk, grizzly bear, and more bird species than exist in the entire state today. The Yelamu band maintained several villages within what is now San Francisco, moving seasonally between the bay shore and inland oak groves. Their world was not wilderness — it was a managed, abundant landscape that sustained thousands of people across generations.",
+          "key_events": [
+            { "year": "c. 8000 BCE", "event": "First confirmed human habitation of the San Francisco peninsula" },
+            { "year": "c. 500 CE", "event": "Yelamu village of Chutchui established near present-day Mission Dolores" },
+            { "year": "1542", "event": "Juan Cabrillo sails past the Golden Gate without entering — the bay remains unknown to Europeans for another 227 years" },
+            { "year": "1769", "event": "Gaspar de Portola becomes the first European to sight San Francisco Bay, from the hills above" }
+          ],
+          "landscape": "Mission Valley held a seasonal lagoon fed by springs and Mission Creek. The hills were covered in coastal scrub and wind-bent oak. Coyote brush, lupine, and bunch grasses covered the slopes. The air smelled of salt marsh and bay laurel. Silence, except for birds and wind.",
+          "sources": ["Randall Milliken, A Time of Little Choice (1995)", "Peter Fimrite, Ohlone cultural research, SF Chronicle", "Alan Leventhal, San Jose State archaeological surveys"]
+        },
+        {
+          "id": "mission-1776",
+          "year_display": "1776",
+          "label": "Spanish Mission",
+          "era_type": "past",
+          "image_query": "mission,colonial,adobe,california,historical",
+          "headline": "The Founding Violence",
+          "description": "Mission San Francisco de Asis was established on June 29, 1776 — five days before the American Declaration of Independence was signed on the other side of the continent. The Spanish colonial project was explicit: convert the Ohlone to Christianity, put them to work building the mission, and erase the culture that had sustained the peninsula for millennia. The Yelamu population collapsed catastrophically. Thousands died of introduced disease, overwork, and despair within decades of the mission's founding. The adobe church that still stands — the oldest intact building in San Francisco — was built with Ohlone labor.",
+          "key_events": [
+            { "year": "1776", "event": "Mission Dolores founded by Father Francisco Palou, one of 21 California missions" },
+            { "year": "1791", "event": "Current adobe church completed using Ohlone forced labor — it still stands today" },
+            { "year": "1816", "event": "Ohlone population at the mission reaches its lowest recorded point due to epidemic disease" },
+            { "year": "1821", "event": "Mexico wins independence from Spain — California becomes Mexican territory" }
+          ],
+          "landscape": "The mission complex was a self-contained agricultural world — the adobe church, a granary, workshops, and housing surrounded by fields of wheat, cattle ranches stretching south, and an aqueduct channeling water from the springs. The lagoon still existed to the east, attracting abundant waterfowl. Wooden cross on a hill visible for miles.",
+          "sources": ["Msgr. Francis Weber, The Mission in the Valley (1979)", "Robert Senkewicz, Junipero Serra (2015)", "California Mission Studies Association records"]
+        },
+        {
+          "id": "mission-1849",
+          "year_display": "1849",
+          "label": "Gold Rush",
+          "era_type": "past",
+          "image_query": "harbor,ships,historical,port,1800s",
+          "headline": "The First Tech Boom",
+          "description": "The Gold Rush transformed San Francisco from a settlement of 800 people to a city of 25,000 in under eighteen months. The Mission District in this period was the recreational periphery of the boomtown — horse racing on Mission Road, saloons, gambling houses, and the pleasure gardens that catered to men who had crossed a continent or an ocean to get rich. The mission church sat at the center of this chaos, its Ohlone congregation long since scattered or dead, now serving a Spanish-speaking community amid the Anglo flood.",
+          "key_events": [
+            { "year": "1848", "event": "Gold discovered at Sutter's Mill — news reaches San Francisco in May, the rush begins" },
+            { "year": "1849", "event": "Population explodes from 800 to 25,000. Tent cities cover the hills." },
+            { "year": "1850", "event": "California admitted to the Union as the 31st state" },
+            { "year": "1856", "event": "Mission Plank Road constructed — the first paved road in San Francisco, running from downtown to the mission" }
+          ],
+          "landscape": "The valley between the mission and downtown was still largely open, crossed by a plank road and dotted with roadhouses and saloons. The lagoon had been partially drained. Sand dunes dominated the western neighborhoods. The mission church stood in relative quiet compared to the chaos of the waterfront — a remnant of a different civilization, already being absorbed into the American city growing around it.",
+          "sources": ["Kevin Starr, Americans and the California Dream (1973)", "Gray Brechin, Imperial San Francisco (1999)", "Bancroft Library Gold Rush collection"]
+        },
+        {
+          "id": "mission-1906",
+          "year_display": "1906",
+          "label": "After the Fire",
+          "era_type": "past",
+          "image_query": "ruins,earthquake,destruction,rebuilding,1900s",
+          "headline": "The City That Refused to Die",
+          "description": "At 5:12 AM on April 18, 1906, a rupture along the San Andreas Fault shook San Francisco for 45 seconds. The earthquake was devastating, but the fire that followed was apocalyptic. For three days, the city burned. 28,000 buildings were destroyed. Between 3,000 and 6,000 people died. The Mission District was one of the few areas that survived relatively intact — its wide streets and lower building density allowed firebreaks to hold. Refugees from the burning city poured into Dolores Park, which had been a Jewish cemetery until 1894.",
+          "key_events": [
+            { "year": "April 18, 1906", "event": "Earthquake strikes at 5:12 AM. The rupture is felt from Oregon to Los Angeles." },
+            { "year": "April 18-21, 1906", "event": "Fires burn for three days, destroying 490 city blocks" },
+            { "year": "1906", "event": "Dolores Park becomes a refugee camp for 1,600 displaced residents" },
+            { "year": "1907-1910", "event": "The city rebuilds at extraordinary speed — the Mission fills with Victorian housing for displaced residents" }
+          ],
+          "landscape": "The contrast was stark: looking north from the mission toward downtown was a field of ash and chimney stacks. The Mission itself was crowded with tents and improvised structures housing the displaced. Dolores Street's palm trees stood over a tent city. Within three years, the Victorian row houses that now define the Mission's streetscape had been built, almost all at once, as the city reconstructed itself.",
+          "sources": ["Simon Winchester, A Crack in the Edge of the World (2005)", "Philip Fradkin, The Great Earthquake and Firestorms of 1906 (2005)", "USGS earthquake archive"]
+        },
+        {
+          "id": "mission-1945",
+          "year_display": "1945",
+          "label": "Wartime Mission",
+          "era_type": "past",
+          "image_query": "1940s,wartime,city,documentary,neighborhood",
+          "headline": "The Working Neighborhood",
+          "description": "By 1945 the Mission was one of San Francisco's densest working-class neighborhoods — Irish, Italian, German, and a growing Latino population that had been arriving since the 1910s. The war had changed everything. The shipyards of the Bay Area were running 24 hours a day. Women were working in factories. The Mission's flat terrain and grid of transit lines made it a natural hub for workers moving between home and the waterfront industries. 24th Street was packed with grocers, butchers, and bars serving the neighborhood's ethnic mix.",
+          "key_events": [
+            { "year": "1941", "event": "US enters WWII after Pearl Harbor. Bay Area shipyards shift to full war production." },
+            { "year": "1942", "event": "Japanese-American residents of the Mission forcibly relocated to internment camps" },
+            { "year": "1945", "event": "V-J Day celebrations erupt on Mission Street. The war is over." },
+            { "year": "1948", "event": "Latino population of the Mission reaches 20% — the demographic shift that will define the neighborhood is underway" }
+          ],
+          "landscape": "Dense Victorian housing lining every block. Corner groceries and bars every few hundred feet. The streetcar running up Mission Street. Neon signs and hand-painted storefronts. Dolores Park used as a drill ground by the National Guard. The smell of bakeries, laundries, and the ever-present fog rolling in from the ocean.",
+          "sources": ["Robert O'Brien, This is San Francisco (1948)", "SF Public Library History Center archives", "Jerry Garcia's childhood recollections of the Mission (various interviews)"]
+        },
+        {
+          "id": "mission-1967",
+          "year_display": "1967",
+          "label": "Counterculture",
+          "era_type": "past",
+          "image_query": "1960s,california,vintage,neighborhood,street",
+          "headline": "Two Cities, One Street",
+          "description": "While the Haight-Ashbury drew the national media attention during the Summer of Love, the Mission was quietly becoming the cultural capital of Latino San Francisco. The neighborhood that had absorbed Irish and Italian immigrants for decades was now predominantly Mexican and Central American. Murals were beginning to appear on walls. The Mission Cultural Center was years away, but the energy that would produce it was already present on 24th Street. Two blocks away, hippies were selling flowers. The Mission paid them little attention.",
+          "key_events": [
+            { "year": "1964", "event": "The Mission rebels against urban renewal plans that would have demolished the neighborhood" },
+            { "year": "1967", "event": "Summer of Love in adjacent Haight-Ashbury brings 100,000 young people to San Francisco" },
+            { "year": "1968", "event": "Mission Coalition Organization founded — one of the most effective community organizing efforts in SF history" },
+            { "year": "1970", "event": "First major Mission murals appear, beginning a public art tradition that continues today" }
+          ],
+          "landscape": "Mission Street was a commercial corridor in transition — Latino businesses replacing the Irish establishments, Spanish-language signs appearing alongside English ones. Dolores Park was overgrown and underused. The Victorian housing stock was aging but intact. On certain blocks, you could walk from a taqueria to a head shop to a Catholic church in fifty steps.",
+          "sources": ["Roberto Hernandez, The Mission: A Neighborhood History", "Chester Hartman, City for Sale (2002)", "SF Bay Guardian archives 1966-1970"]
+        },
+        {
+          "id": "mission-2000",
+          "year_display": "2000",
+          "label": "Dot-com Wave",
+          "era_type": "past",
+          "image_query": "san francisco,mission,urban,street,2000s",
+          "headline": "The First Displacement",
+          "description": "The first dot-com boom hit the Mission like a wave hitting a seawall. Between 1997 and 2001, the neighborhood that had been Latino working-class for thirty years was convulsed by evictions, rising rents, and the arrival of tech workers who had discovered that the Mission's Victorian housing and restaurant density made it an appealing place to live. The Ellis Act — a state law allowing landlords to evict tenants to take buildings off the rental market — was used at record rates. Community organizations fought back with protests and ballot measures, some successful, most not.",
+          "key_events": [
+            { "year": "1996", "event": "South of Market begins its transformation from industrial to tech office space" },
+            { "year": "1997-2000", "event": "Mission rents double. Ellis Act evictions reach record levels." },
+            { "year": "1999", "event": "Anti-gentrification protests shut down dot-com parties in the Mission" },
+            { "year": "2001", "event": "Dot-com bust. Some pressure temporarily relieved. The Mission exhales." }
+          ],
+          "landscape": "Valencia Street transformed fastest — used bookstores and car repair shops becoming bars and restaurants serving the new residents. The murals remained but their context changed. Luxury lofts appeared on former industrial lots. The Google shuttle stops that would define the next wave didn't exist yet — but the pattern was established.",
+          "sources": ["Rebecca Solnit, Hollow City (2000)", "SF Rent Board annual reports", "Mission Economic Development Agency records"]
+        },
+        {
+          "id": "mission-2025",
+          "year_display": "2025",
+          "label": "Present Day",
+          "era_type": "present",
+          "image_query": "san francisco,mission district,street,urban,modern",
+          "headline": "Holding On",
+          "description": "The Mission in 2025 is a neighborhood that has been through two tech booms and is still, improbably, recognizably itself. The displacement has been real and ongoing — the Latino population that was 60% in 1990 is now closer to 40%. But the murals are still there, expanded and maintained. 24th Street remains a Latino commercial corridor. Mission Dolores — the 1791 adobe church — still holds services. The community organizations that fought the first wave are still operating, more experienced now, more legally sophisticated.",
+          "key_events": [],
+          "landscape": "Valencia Street is unrecognizable to anyone who knew it in 1990. Mission Street remains a working-class corridor. The contrast between the two, separated by one block, is the Mission's defining spatial fact in 2025. Dolores Park on a sunny weekend is a cross-section of the city that nowhere else achieves.",
+          "sources": []
+        },
+        {
+          "id": "mission-2075",
+          "year_display": "2075",
+          "label": "Futures",
+          "era_type": "future",
+          "image_query": "futuristic,city,green,sustainable,architecture",
+          "headline": "Two Missions",
+          "description": "In the managed adaptation scenario, the Mission has become one of the city's most climate-resilient neighborhoods — its flat terrain and grid of parks making it a natural cooling corridor as temperatures rise. Mission Creek, buried for a century, has been partially daylighted as a bioswale running through the neighborhood. In the displacement scenario, the final wave of gentrification has hollowed the neighborhood entirely — the murals preserved as tourist attractions, the community that made them scattered across the East Bay.",
+          "future_scenarios": [
+            { "id": "adaptation", "label": "Adaptation", "sublabel": "Managed climate resilience", "description": "Mission Creek returns to daylight as a cooling corridor. The neighborhood's flat terrain and park grid make it a model climate-resilient district. Community land trusts have stabilized the remaining Latino institutions.", "confidence": 0.41 },
+            { "id": "displacement", "label": "Displacement", "sublabel": "Continued gentrification", "description": "The murals remain, preserved and curated. The community that painted them is gone. The Mission is a museum of a neighborhood that used to exist, expensive and quiet.", "confidence": 0.38 }
+          ],
+          "sources": []
+        }
+      ]
+    },
+    {
+      "id": "sf-embarcadero",
+      "name": "The Embarcadero",
+      "subtext": "Ferry Building & Waterfront, San Francisco",
+      "coordinates": { "lat": 37.7955, "lng": -122.3937 },
+      "tagline": "For 150 years this waterfront was the mouth of American commerce. Then a freeway buried it. Then the earthquake set it free.",
+      "eras": [
+        {
+          "id": "emb-1500",
+          "year_display": "c. 1500",
+          "label": "Ohlone Shore",
+          "era_type": "past",
+          "image_query": "bay,shoreline,nature,birds,estuary",
+          "headline": "The Living Shore",
+          "description": "The eastern shore of the San Francisco peninsula was a dynamic tidal landscape — mudflats, salt marsh, and shellmound beaches extending into the bay. The Yelamu Ohlone maintained shellmound villages along this shore, the middens of oyster and mussel shells accumulating over millennia into structures large enough to be visible landmarks. The bay was cold, clear, and impossibly rich. Salmon runs so thick they could be scooped by hand. Shorebirds in numbers that blocked the sky.",
+          "key_events": [
+            { "year": "c. 3000 BCE", "event": "Shellmound villages established along the eastern shore" },
+            { "year": "1769", "event": "Portola expedition reaches the bay — the first European sighting" }
+          ],
+          "landscape": "Uninterrupted tidal marsh from the base of the hills to the water's edge. The bay's western shoreline was not a sharp line but a gradient — marsh grass, mudflat, and open water blending into each other. Grizzly bears fished the salmon runs alongside the Ohlone.",
+          "sources": ["Edward Castillo, Native California Guide (1994)", "SF Estuary Institute historical ecology research"]
+        },
+        {
+          "id": "emb-1849",
+          "year_display": "1849",
+          "label": "Gold Rush Port",
+          "era_type": "past",
+          "image_query": "harbor,ships,1800s,port,historical",
+          "headline": "The Forest of Masts",
+          "description": "At the height of the Gold Rush, so many ships entered San Francisco Bay and were abandoned by crews who ran for the gold fields that the cove was a forest of masts. Hundreds of ships were beached and converted to warehouses, hotels, and saloons — the city's first buildings were repurposed hulls. The shoreline was pushed outward by fill dumped into the cove: rubble, ships, debris, and soil. The streets of the Financial District east of Montgomery are built on this fill today.",
+          "key_events": [
+            { "year": "1848", "event": "First ships arrive bearing gold seekers — the bay transforms overnight" },
+            { "year": "1849", "event": "Over 700 ships abandoned in Yerba Buena Cove as crews desert for the gold fields" },
+            { "year": "1851", "event": "Systematic landfill begins extending the shoreline eastward" }
+          ],
+          "landscape": "Yerba Buena Cove packed with masts. The original shoreline — now Montgomery Street — already buried under fill. Canvas and wood buildings clinging to the hillsides above. The smell of salt water, lumber, canvas, and the ever-present mud.",
+          "sources": ["Roger Lotchin, San Francisco 1846-1856 (1974)", "Gray Brechin, Imperial San Francisco (1999)"]
+        },
+        {
+          "id": "emb-1906",
+          "year_display": "1906",
+          "label": "After the Fire",
+          "era_type": "past",
+          "image_query": "ruins,san francisco,1906,earthquake,historical",
+          "headline": "Ground Zero",
+          "description": "The earthquake and fire of 1906 burned to the waterfront. The Ferry Building, completed in 1898, survived — its thick masonry construction and the firebreak of the Embarcadero roadway protecting it. It became the primary relief station for the disaster, the point where food and aid entered the devastated city. 200,000 people were left homeless. The waterfront was the city's lifeline.",
+          "key_events": [
+            { "year": "1898", "event": "Ferry Building completed — at the time the second busiest transit terminal in the world" },
+            { "year": "April 1906", "event": "Earthquake and fire. The Ferry Building survives and becomes the city's relief hub." },
+            { "year": "1907", "event": "Ferry traffic reaches its peak — 50,000 passengers per day" }
+          ],
+          "landscape": "The Ferry Building tower visible from miles away, a reference point for a devastated city. The Embarcadero roadway packed with relief wagons and refugees. The bay itself unaffected — the same cold water it had always been, indifferent to human catastrophe.",
+          "sources": ["Philip Fradkin, The Great Earthquake (2005)", "Ferry Building historical records, Port of San Francisco"]
+        },
+        {
+          "id": "emb-1945",
+          "year_display": "1945",
+          "label": "The Industrial Port",
+          "era_type": "past",
+          "image_query": "industrial,port,1940s,waterfront,ships",
+          "headline": "The Working Waterfront",
+          "description": "During WWII the Embarcadero was the industrial heart of the Pacific theater's supply chain. The piers ran continuously. Longshoremen worked in shifts around the clock. The International Longshore and Warehouse Union, led by Harry Bridges, was one of the most powerful labor organizations in the country — a communist-led union that had shut down the entire West Coast in the General Strike of 1934. The waterfront was not a scenic amenity. It was a serious industrial place that smelled of diesel, salt water, and fish.",
+          "key_events": [
+            { "year": "1934", "event": "The Big Strike — West Coast longshoremen shut down all ports for 83 days" },
+            { "year": "1941-1945", "event": "War production transforms the waterfront into a military supply operation" },
+            { "year": "1945", "event": "Troop ships return through the Golden Gate. The waterfront witnesses the end of the war." }
+          ],
+          "landscape": "Piers extending into the bay every hundred feet, each serving a specific cargo or shipping company. The Ferry Building diminished in importance as bridge traffic replaced ferry traffic after 1936. The Embarcadero itself was a working road — trucks, forklifts, longshoremen. Not a place for pedestrians.",
+          "sources": ["Harvey Schwartz, The March Inland (1978)", "ILWU history project", "Port of San Francisco archives"]
+        },
+        {
+          "id": "emb-1967",
+          "year_display": "1967",
+          "label": "The Freeway Years",
+          "era_type": "past",
+          "image_query": "freeway,urban,highway,1960s,elevated",
+          "headline": "Buried Alive",
+          "description": "The Embarcadero Freeway opened in 1959 and immediately severed the city from its waterfront. A double-deck elevated highway ran along the Embarcadero, blocking views of the bay and casting the waterfront in permanent shadow. The Ferry Building, which had been the city's front door, became an afterthought behind a wall of concrete. Proposals to extend the freeway further were defeated by a citizen revolt — one of the first successful freeway revolts in American history. But the existing structure stayed for thirty more years.",
+          "key_events": [
+            { "year": "1959", "event": "Embarcadero Freeway opens — immediately controversial" },
+            { "year": "1966", "event": "Citizens successfully block the freeway's extension through Golden Gate Park" },
+            { "year": "1989", "event": "Loma Prieta earthquake damages the freeway — the city uses it as an opportunity to remove it" },
+            { "year": "1991", "event": "Embarcadero Freeway demolished. The waterfront blinks in the light for the first time in thirty years." }
+          ],
+          "landscape": "A wall of concrete where the waterfront should have been. The bay visible only in glimpses through the structure's supports. The Ferry Building functioning as a minor produce market behind the freeway, its tower poking above the concrete deck, visible but inaccessible.",
+          "sources": ["Chester Hartman, City for Sale (2002)", "Martin Wachs, The freeway revolt and the making of metropolitan America"]
+        },
+        {
+          "id": "emb-2000",
+          "year_display": "2000",
+          "label": "The Restoration",
+          "era_type": "past",
+          "image_query": "san francisco,embarcadero,waterfront,modern,urban",
+          "headline": "The Waterfront Returns",
+          "description": "The Ferry Building reopened after a three-year renovation in 2003, transformed from a produce market into a food hall that became the model for urban market renovations across the country. The Embarcadero promenade — the stretch of waterfront that the freeway had blocked for thirty years — became one of the most valued public spaces in San Francisco. The farmer's market that began in 1992 expanded. The waterfront that the 19th century had industrialized, the 20th century had buried under concrete, was returning to public life.",
+          "key_events": [
+            { "year": "1991", "event": "Freeway demolished after Loma Prieta damage — the waterfront reopens" },
+            { "year": "1992", "event": "Ferry Plaza Farmers Market established" },
+            { "year": "2003", "event": "Renovated Ferry Building reopens as a food market" }
+          ],
+          "landscape": "The Ferry Building tower reflected in the bay at high tide. The promenade filled with cyclists, pedestrians, and the farmer's market on weekends. The bay visible again from the city. The piers converted to offices, restaurants, and event spaces. A leisure landscape where an industrial one had been.",
+          "sources": ["SPUR, San Francisco waterfront planning history", "Port of San Francisco redevelopment records"]
+        },
+        {
+          "id": "emb-2025",
+          "year_display": "2025",
+          "label": "Present Day",
+          "era_type": "present",
+          "image_query": "san francisco,ferry building,embarcadero,waterfront",
+          "headline": "The City's Living Room",
+          "description": "The Embarcadero in 2025 is what urban planners call a great public space — activated at all hours, used by all demographics, connecting transit to waterfront to commerce. The Ferry Building farmers market on Saturday mornings is one of the few places in San Francisco where you genuinely encounter the full range of the city. The bay is cleaner than it has been in a century. Sea level rise planning is underway — the waterfront that was rebuilt once after a freeway may need to be rebuilt again as the water rises.",
+          "key_events": [],
+          "landscape": "The Ferry Building tower framing the bay view from Market Street. The Embarcadero streetcar running along the waterfront. Alcatraz visible on clear days. The Bay Bridge lit at night with Leo Villareal's light installation, 25,000 LEDs programmed in perpetual non-repeating sequence.",
+          "sources": []
+        },
+        {
+          "id": "emb-2075",
+          "year_display": "2075",
+          "label": "Futures",
+          "era_type": "future",
+          "image_query": "futuristic,waterfront,city,climate,flood",
+          "headline": "The Rising Water",
+          "description": "Sea level projections for San Francisco Bay range from 1 to 3 feet by 2075 under different emissions scenarios. The Embarcadero, built on fill that liquefies in earthquakes and sits barely above current sea level, faces fundamental questions about its future.",
+          "future_scenarios": [
+            { "id": "seawall", "label": "The Seawall", "sublabel": "Managed protection", "description": "A comprehensive seawall completed by 2055 protects the waterfront. The Embarcadero continues as a public space, elevated slightly, with new wetland habitat created on the bay side of the wall as both ecological restoration and wave attenuation.", "confidence": 0.52 },
+            { "id": "managed-retreat", "label": "Managed Retreat", "sublabel": "Waterfront redefined", "description": "Rather than holding the current shoreline, the city allows the bay to reclaim the fill areas and rebuilds the waterfront further inland. The Ferry Building, if it survives, stands on a new shoreline. The blocks east of it return to tidal marsh.", "confidence": 0.31 }
+          ],
+          "sources": []
+        }
+      ]
+    },
+    {
+      "id": "sf-financial",
+      "name": "Montgomery Street",
+      "subtext": "Financial District, San Francisco",
+      "coordinates": { "lat": 37.7941, "lng": -122.4017 },
+      "tagline": "Every California economic cycle — gold, railroad, banking, tech — has left its sediment here.",
+      "eras": [
+        {
+          "id": "fin-1500",
+          "year_display": "c. 1500",
+          "label": "The Shore",
+          "era_type": "past",
+          "image_query": "bay,shoreline,california,nature,marsh",
+          "headline": "Before the Fill",
+          "description": "Montgomery Street today runs along what was the original eastern shoreline of Yerba Buena Cove. Everything east of it is fill — rubble, ships, and soil dumped into the bay beginning in 1851. The land the Financial District stands on did not exist 175 years ago. It was cold bay water.",
+          "key_events": [
+            { "year": "c. 1500", "event": "Yerba Buena Cove's western shore sits at what is now Montgomery Street" },
+            { "year": "1776", "event": "Spanish establish the Presidio and Mission — the cove remains undeveloped" }
+          ],
+          "landscape": "Open bay water where the Financial District now stands. The hills of the peninsula rising from the original shoreline. Yerba Buena island visible in the middle distance. Silence except for wind and seabirds.",
+          "sources": ["USGS historical shoreline mapping project", "SF Planning Department historical maps"]
+        },
+        {
+          "id": "fin-1849",
+          "year_display": "1849",
+          "label": "Gold Rush Banks",
+          "era_type": "past",
+          "image_query": "gold rush,1849,bank,historical,california",
+          "headline": "The First Financial District",
+          "description": "The Gold Rush created the Financial District almost overnight. The banks, assay offices, and counting houses that processed the gold coming down from the Sierra Nevada concentrated along Montgomery Street — which sat at the original shoreline, at the base of the hills, where the gold-bearing ships docked. By 1852, Montgomery Street had more banks per block than any street in America.",
+          "key_events": [
+            { "year": "1848", "event": "Gold discovered — financial infrastructure needed immediately" },
+            { "year": "1849", "event": "First banks established on Montgomery Street" },
+            { "year": "1852", "event": "San Francisco becomes the financial capital of the American West" }
+          ],
+          "landscape": "Canvas and wood buildings quickly replaced by brick as the stakes became clear. Montgomery Street muddy in winter, dusty in summer, packed with men in the universal uniform of the Gold Rush — rough wool, boots, and a hat against the wind.",
+          "sources": ["Bancroft Library Gold Rush financial records", "Kevin Starr, California: A History (2005)"]
+        },
+        {
+          "id": "fin-1906",
+          "year_display": "1906",
+          "label": "After the Fire",
+          "era_type": "past",
+          "image_query": "san francisco,1906,ruins,earthquake,downtown",
+          "headline": "Ruins and Resolve",
+          "description": "The Financial District burned completely in 1906. The great banking houses, the office towers, the counting houses — all of it reduced to facades and rubble. Remarkably, the vaults held. Wells Fargo recovered its gold. The banks reopened within weeks, operating from the ruins or from tents. The reconstruction of the Financial District was the fastest large-scale urban rebuilding in American history — within three years, a new city of reinforced concrete and steel had risen from the ash.",
+          "key_events": [
+            { "year": "April 18, 1906", "event": "Earthquake and fire destroy the Financial District completely" },
+            { "year": "April 26, 1906", "event": "Bank of Italy (later Bank of America) reopens from a plank across two barrels on the waterfront" },
+            { "year": "1909", "event": "Rebuilt Financial District reopens — denser and taller than before" }
+          ],
+          "landscape": "Photographs from May 1906 show block after block of standing facades with nothing behind them — the iron and brick fronts held while the interiors burned. By 1907 the sound of construction was constant. The new buildings were taller, built of reinforced concrete, built to last.",
+          "sources": ["Philip Fradkin, The Great Earthquake (2005)", "Wells Fargo historical archives"]
+        },
+        {
+          "id": "fin-1945",
+          "year_display": "1945",
+          "label": "Postwar Capital",
+          "era_type": "past",
+          "image_query": "1940s,office,downtown,city,blackandwhite",
+          "headline": "The Command Center",
+          "description": "In 1945 the Financial District was the financial capital of the American West — and given Europe's devastation and the Pacific's distance, arguably of much of the world. The Bank of America, headquartered here, was the largest bank in the world. The transpacific trade routes all ran through San Francisco. The men (almost entirely men) who worked in the Financial District wore suits and hats and walked to lunch at the same restaurants every day.",
+          "key_events": [
+            { "year": "1930", "event": "Bank of America Tower completed — for a time the tallest building west of the Mississippi" },
+            { "year": "1945", "event": "V-J Day. San Francisco is the last American port the Pacific fleet left from and the first it returns to." }
+          ],
+          "landscape": "Low-rise masonry towers from the post-earthquake rebuild, topped by a few taller buildings from the 1920s and 30s. The streets were narrow and dark, the buildings close. A pedestrian city — parking was scarce, most workers came by streetcar.",
+          "sources": ["Marquis James, Biography of a Bank: The Story of Bank of America (1954)"]
+        },
+        {
+          "id": "fin-1967",
+          "year_display": "1967",
+          "label": "The High-Rise Era",
+          "era_type": "past",
+          "image_query": "skyscraper,construction,1960s,urban,city",
+          "headline": "Going Vertical",
+          "description": "The 1960s brought the first wave of high-rise construction to the Financial District, transforming the low-rise masonry skyline of the post-earthquake rebuild into the tower canyon visible today. The Transamerica Pyramid was proposed in 1969 and completed in 1972 — initially controversial enough to generate formal protests. The Bank of America Building (now 555 California) was completed in 1969 and remained the tallest building in San Francisco for decades.",
+          "key_events": [
+            { "year": "1964", "event": "Citizens form San Francisco Planning and Urban Research Association to fight unchecked development" },
+            { "year": "1969", "event": "Bank of America Building completed at 52 stories" },
+            { "year": "1972", "event": "Transamerica Pyramid completed — the last major tower approved before height limits imposed" }
+          ],
+          "landscape": "A city in vertical transition — the low masonry buildings of the 1906 rebuild being shadowed and replaced by glass and steel towers. Construction cranes visible from every angle. The streets narrower in feel as the buildings grew taller.",
+          "sources": ["Allan Temko, No Way to Build a Ballpark (1993)", "SF Planning Department historical records"]
+        },
+        {
+          "id": "fin-2000",
+          "year_display": "2000",
+          "label": "Dot-com Peak",
+          "era_type": "past",
+          "image_query": "san francisco,financial,tech,urban,office",
+          "headline": "The Second Gold Rush",
+          "description": "By 2000 the Financial District and adjacent South of Market had become the center of the first dot-com boom. Office space was impossible to find. Foosball tables appeared in converted warehouses. The Nasdaq hit 5,000. Every financial institution in the district was making loans to companies with no revenue and no path to profit. When it collapsed in 2001, the vacancy rate in San Francisco office space went from near-zero to 20% in eighteen months.",
+          "key_events": [
+            { "year": "1995", "event": "Netscape IPO — the dot-com era begins in earnest" },
+            { "year": "2000", "event": "Nasdaq peaks at 5,049. SF office vacancy near zero." },
+            { "year": "2001", "event": "Crash. Office vacancy reaches 20%. The bust is as fast as the boom." }
+          ],
+          "landscape": "The Financial District towers now surrounded by SoMa startups in converted warehouses. Bike messengers, catered lunches on sidewalks, impossible rents. And then, abruptly: empty offices, for lease signs, the particular silence of a boom gone quiet.",
+          "sources": ["Po Bronson, The Nudist on the Late Shift (1999)", "SF Office of Economic Analysis reports"]
+        },
+        {
+          "id": "fin-2025",
+          "year_display": "2025",
+          "label": "Present Day",
+          "era_type": "present",
+          "image_query": "san francisco,financial district,montgomery street,modern",
+          "headline": "The Hybrid District",
+          "description": "The Financial District in 2025 is navigating the post-pandemic transformation of office work. Vacancy rates that reached 30% after 2020 have partially recovered but the district's future as a purely office-driven neighborhood is uncertain. The ground floors of towers that once housed banking halls are becoming restaurants, gyms, and retail. The Transamerica Pyramid, sold to German investors, has been renovated. Salesforce Tower dominates the skyline at 1,070 feet.",
+          "key_events": [],
+          "landscape": "Salesforce Tower redefining the skyline. The Salesforce Transit Center — the 'Grand Central of the West' — partially realized, its planned rail connections still unbuilt. A quieter street life than 2019, the morning rush thinned by remote work.",
+          "sources": []
+        },
+        {
+          "id": "fin-2075",
+          "year_display": "2075",
+          "label": "Futures",
+          "era_type": "future",
+          "image_query": "futuristic,skyscraper,city,future,urban",
+          "headline": "The Reinvented District",
+          "description": "The Financial District's future is less certain than at any point since 1906. The towers will stand — they were built to last centuries. But what they're used for, and by whom, is an open question.",
+          "future_scenarios": [
+            { "id": "mixed-use", "label": "Mixed City", "sublabel": "Office to residential conversion", "description": "The tower canyon is converted: upper floors become housing, ground floors become markets and community space. The Financial District becomes a neighborhood where people actually live, for the first time in its history. Density without cars. A vertical city.", "confidence": 0.48 },
+            { "id": "ai-campus", "label": "AI Campus", "sublabel": "Tech consolidation", "description": "The major AI companies have consolidated their physical presence in the Financial District towers. It is an unusually quiet place — most of the economic activity happens in data centers elsewhere. The towers are occupied but not dense with human activity. A company town at urban scale.", "confidence": 0.35 }
+          ],
+          "sources": []
+        }
+      ]
+    },
+    {
+      "id": "sf-chinatown",
+      "name": "Chinatown",
+      "subtext": "Grant Avenue, San Francisco",
+      "coordinates": { "lat": 37.7941, "lng": -122.4070 },
+      "tagline": "The oldest Chinatown in North America. They tried to erase it four times. It's still here.",
+      "eras": [
+        {
+          "id": "ct-1500",
+          "year_display": "c. 1500",
+          "label": "The Hill",
+          "era_type": "past",
+          "image_query": "california,hill,nature,bay,forest",
+          "headline": "Nob Hill Before the Nobs",
+          "description": "The land that would become Chinatown sits on the eastern slope of Nob Hill, the most prominent of San Francisco's hills. In Ohlone times it was a windswept ridge covered in coastal scrub, used for travel between the bay shore and the peninsula's interior.",
+          "key_events": [
+            { "year": "c. 1500", "event": "Ohlone travel route runs along the ridge that will become Grant Avenue" }
+          ],
+          "landscape": "A steep hill above the bay shore, swept by ocean wind. Coastal scrub — coyote brush, sticky monkey flower, coffeeberry. Views to the bay in three directions.",
+          "sources": ["SF Ohlone cultural geography research"]
+        },
+        {
+          "id": "ct-1849",
+          "year_display": "1849",
+          "label": "First Arrivals",
+          "era_type": "past",
+          "image_query": "historical,1849,chinatown,san francisco,chinese",
+          "headline": "Gold Mountain",
+          "description": "Chinese immigrants — predominantly from Guangdong province — began arriving in San Francisco in 1848 and accelerated dramatically with the Gold Rush. They called San Francisco Gam Saan: Gold Mountain. By 1850, there were 4,000 Chinese in California. By 1852, 25,000. They mined gold, built the transcontinental railroad, farmed the Central Valley, and fished the bay. And they concentrated, for mutual protection and cultural sustenance, in the blocks around Sacramento and Dupont (now Grant) streets.",
+          "key_events": [
+            { "year": "1848", "event": "First Chinese immigrants arrive in San Francisco" },
+            { "year": "1852", "event": "25,000 Chinese in California — the largest Chinese community outside China" },
+            { "year": "1869", "event": "Transcontinental railroad completed with Chinese labor — many return to SF" }
+          ],
+          "landscape": "The neighborhood that would become Chinatown was already ethnically distinct by 1852 — Chinese signage, Chinese businesses, Chinese temples in a city that was otherwise a chaos of ethnicities. The buildings were the same wood and brick as the rest of the city. The difference was what happened inside them.",
+          "sources": ["Him Mark Lai, Becoming Chinese American (2004)", "Judy Yung, Unbound Feet (1995)"]
+        },
+        {
+          "id": "ct-1906",
+          "year_display": "1906",
+          "label": "After the Fire",
+          "era_type": "past",
+          "image_query": "chinatown,rebuilding,1900s,historical,street",
+          "headline": "Rebuilt by Design",
+          "description": "The 1906 earthquake and fire destroyed Chinatown completely. White civic leaders saw this as an opportunity to relocate the Chinese community to a less desirable area — a proposal that the Chinese community, led by Look Tin Eli, defeated through a brilliant strategic move: they rebuilt Chinatown in a deliberately 'Oriental' architectural style that they knew would attract tourists. The pagoda rooflines and dragon lamp posts that define Chinatown's appearance today were not traditional Chinese architecture — they were a defensive urban strategy.",
+          "key_events": [
+            { "year": "April 1906", "event": "Earthquake and fire destroys Chinatown entirely" },
+            { "year": "1906", "event": "City leaders propose relocating Chinatown to Hunter's Point — the community refuses" },
+            { "year": "1907-1910", "event": "Chinatown rebuilt in 'Oriental' style designed to attract tourism and establish permanence" }
+          ],
+          "landscape": "The rebuilt Chinatown was unlike anything that had existed before — a deliberately constructed orientalist fantasy that was simultaneously a real neighborhood. Dragon lamp posts on Grant Avenue. Pagoda rooflines on buildings with standard American floor plans behind the facades. A Potemkin village that was also a genuine community.",
+          "sources": ["Philip Choy, San Francisco Chinatown: A Guide (1995)", "Yong Chen, Chinese San Francisco (2000)"]
+        },
+        {
+          "id": "ct-1945",
+          "year_display": "1945",
+          "label": "Wartime Chinatown",
+          "era_type": "past",
+          "image_query": "1940s,chinatown,san francisco,wartime,street",
+          "headline": "Allies at Last",
+          "description": "WWII transformed the status of Chinese Americans in San Francisco with brutal irony: China was an American ally against Japan, and suddenly the racism that had defined Chinese life in America for a century was politically inconvenient. The Chinese Exclusion Act was repealed in 1943. Chinese Americans served in the military. The neighborhood that had been a target of discriminatory legislation for sixty years found itself, briefly, welcomed.",
+          "key_events": [
+            { "year": "1942", "event": "Japanese Americans interned — Chinese Americans wear 'I am Chinese' buttons to distinguish themselves" },
+            { "year": "1943", "event": "Chinese Exclusion Act repealed after 61 years" },
+            { "year": "1945", "event": "Chinese American veterans return to a neighborhood beginning to change" }
+          ],
+          "landscape": "Grant Avenue during the war was a busy commercial street serving both the Chinese community and the military personnel on leave in San Francisco. The 'Oriental' architecture of the 1907 rebuild now three decades old, beginning to seem authentic through sheer persistence.",
+          "sources": ["Thomas Chinn, Bridging the Pacific (1989)", "Chinese Historical Society of America archives"]
+        },
+        {
+          "id": "ct-1967",
+          "year_display": "1967",
+          "label": "The Six Companies Era",
+          "era_type": "past",
+          "image_query": "1960s,chinatown,urban,street,neighborhood",
+          "headline": "A Neighborhood Under Pressure",
+          "description": "By 1967 Chinatown was one of the most densely populated neighborhoods in the United States — more than 50,000 people per square mile. The Chinese Six Companies and family associations that had governed the community since the 19th century were facing challenges from younger, American-born Chinese who had different ideas about community governance and political engagement. The Civil Rights movement had created new frameworks for minority communities to demand equity.",
+          "key_events": [
+            { "year": "1965", "event": "Immigration Act ends national origin quotas — Chinese immigration accelerates dramatically" },
+            { "year": "1968", "event": "Asian American Political Alliance founded at UC Berkeley — a new generation asserts a political identity" },
+            { "year": "1969", "event": "Chinatown demonstrates against urban renewal plans that would have demolished the neighborhood" }
+          ],
+          "landscape": "The most crowded square footage in San Francisco — apartments stacked above shops, extended families in single rooms, the streets dense with pedestrians at all hours. The architecture of 1907 now weathered and genuine-seeming. Neon signs in Chinese characters above English storefronts.",
+          "sources": ["L. Ling-chi Wang, Politics of Assimilation and Repression (1978)", "SF Planning Department density studies"]
+        },
+        {
+          "id": "ct-2000",
+          "year_display": "2000",
+          "label": "Holding Ground",
+          "era_type": "past",
+          "image_query": "san francisco,chinatown,grant avenue,modern,street",
+          "headline": "The Neighborhood That Holds",
+          "description": "As the dot-com boom drove real estate prices across San Francisco to record levels, Chinatown was one of the few neighborhoods that maintained its character. The combination of community land ownership, political organization built over 150 years of fighting displacement, and the commercial ecosystem that depended on the Chinese community kept the neighborhood stable in a way the Mission could not achieve.",
+          "key_events": [
+            { "year": "1994", "event": "Rose Pak emerges as Chinatown's most powerful political broker, a role she'll hold for two decades" },
+            { "year": "2000", "event": "Chinatown maintains its character during the dot-com boom while adjacent neighborhoods transform" }
+          ],
+          "landscape": "Grant Avenue with its 1907 architecture now genuinely historic. The tourist-facing Grant Avenue and the residential streets behind it — Waverly Place, the alleys, the herb shops and live poultry markets — existing in parallel, the same neighborhood serving two completely different purposes simultaneously.",
+          "sources": ["CCDC (Chinatown Community Development Center) planning records", "SF Assessor property records"]
+        },
+        {
+          "id": "ct-2025",
+          "year_display": "2025",
+          "label": "Present Day",
+          "era_type": "present",
+          "image_query": "san francisco,chinatown,grant,modern,street",
+          "headline": "The Resilient Neighborhood",
+          "description": "Chinatown in 2025 is the oldest Chinatown in North America and one of the most studied examples of community resilience in urban planning literature. It has survived the Gold Rush, the 1906 earthquake, the Chinese Exclusion Act, WWII internment of Japanese neighbors, urban renewal, three tech booms, and a pandemic that hit its elderly population devastatingly hard. The question of what it means to 'survive' — whether a neighborhood that becomes increasingly a tourist attraction and decreasingly a working community has actually survived — is one the community debates internally.",
+          "key_events": [],
+          "landscape": "Grant Avenue unchanged in its bones from 1910. The alleys and back streets still serving the community that has always lived there, increasingly elderly. Portsmouth Square as the neighborhood's living room, its benches occupied by men playing chess and cards as they have been for a hundred years.",
+          "sources": []
+        },
+        {
+          "id": "ct-2075",
+          "year_display": "2075",
+          "label": "Futures",
+          "era_type": "future",
+          "image_query": "futuristic,asian,city,urban,architecture",
+          "headline": "The Question of Continuity",
+          "description": "The future of Chinatown is a question of what a community means when its founding generation is gone and the diaspora has dispersed across the Bay Area.",
+          "future_scenarios": [
+            { "id": "cultural-hub", "label": "Cultural Center", "sublabel": "Institutional preservation", "description": "Chinatown has become a cultural institution — the Chinese Historical Society, expanded museums, a living history district. The residents who remain are older; the community's center of gravity has shifted to the Sunset and Richmond districts. Grant Avenue is maintained as heritage.", "confidence": 0.55 },
+            { "id": "living-community", "label": "Living Community", "sublabel": "Community land trust success", "description": "Community land trusts established in the 2020s have kept housing affordable. A new generation of Chinese Americans has moved back. The neighborhood is denser and younger than at any point since 1960. It is genuinely alive, not preserved.", "confidence": 0.32 }
+          ],
+          "sources": []
+        }
+      ]
+    },
+    {
+      "id": "sf-twin-peaks",
+      "name": "Twin Peaks",
+      "subtext": "Twin Peaks Summit, San Francisco",
+      "coordinates": { "lat": 37.7544, "lng": -122.4477 },
+      "tagline": "The city's highest public viewpoint. Every era of San Francisco written in the skyline below.",
+      "eras": [
+        {
+          "id": "tp-1500",
+          "year_display": "c. 1500",
+          "label": "Sacred Hills",
+          "era_type": "past",
+          "image_query": "california,hills,nature,grassland,indigenous",
+          "headline": "The Breast of the Maiden",
+          "description": "The Ohlone called Twin Peaks \"Los Pechos de la Chola\" — a name the Spanish would later translate. These two hills, the second-highest point in San Francisco at 922 feet, were a landmark visible from every direction. The windswept grasslands supported no permanent settlement but served as a navigational reference, a gathering point, and likely a place of spiritual significance. From the summit, the entire bay was visible — the same 360-degree panorama that draws visitors today, minus everything humans have built.",
+          "key_events": [
+            { "year": "c. 1500", "event": "Twin Peaks serves as a navigational landmark for Ohlone bands across the peninsula" },
+            { "year": "1769", "event": "Portola expedition sights San Francisco Bay from nearby hills" }
+          ],
+          "landscape": "Coastal grassland swept by constant Pacific wind. No trees — the exposure was too severe. Bunch grasses, wildflowers in spring, golden brown in summer. The bay visible in every direction. Hawks circling. The sound of wind and nothing else.",
+          "sources": ["Randall Milliken, A Time of Little Choice (1995)", "SF Recreation & Parks historical surveys"]
+        },
+        {
+          "id": "tp-1849",
+          "year_display": "1849",
+          "label": "The Untouched Heights",
+          "era_type": "past",
+          "image_query": "hills,california,1800s,landscape,grassland",
+          "headline": "Above the Chaos",
+          "description": "While the Gold Rush convulsed the waterfront and downtown, Twin Peaks remained empty — too steep, too windy, too far from the action. From the summit, a visitor in 1849 would have seen the forest of masts in the harbor, the tent cities on the hillsides, and the frantic construction of a city being willed into existence. The peaks themselves were unchanged. No road reached the summit. Getting there required an hour's walk through sand dunes and scrub.",
+          "key_events": [
+            { "year": "1849", "event": "Twin Peaks remains undeveloped while the city explodes at the waterfront below" },
+            { "year": "1858", "event": "First survey maps of San Francisco include Twin Peaks as a geographic reference point" }
+          ],
+          "landscape": "The same grassland the Ohlone knew, now with a boomtown visible in the distance. Smoke from the waterfront visible on windless days. The contrast between the raw natural landscape of the peaks and the raw human chaos of the city below would have been absolute.",
+          "sources": ["Bancroft Library historical maps", "USGS early survey records"]
+        },
+        {
+          "id": "tp-1906",
+          "year_display": "1906",
+          "label": "Watching the Fire",
+          "era_type": "past",
+          "image_query": "san francisco,1906,fire,panoramic,hills",
+          "headline": "The View Nobody Wanted",
+          "description": "From Twin Peaks on April 18, 1906, the entire catastrophe was visible — the column of smoke rising from the city, the advancing fire line, the dynamite explosions as the Army tried to create firebreaks. Photographs taken from the surrounding hills in the days after the earthquake remain the most complete visual record of the devastation. The peaks themselves were untouched. The fire never reached the western neighborhoods. But for three days, the summit offered a panoramic view of a city burning itself to the ground.",
+          "key_events": [
+            { "year": "April 18-21, 1906", "event": "The 1906 earthquake and fire visible in panorama from Twin Peaks" },
+            { "year": "1906", "event": "Refugees flee west through the valleys below Twin Peaks toward Golden Gate Park" }
+          ],
+          "landscape": "A wall of smoke to the north and east, advancing over three days. The sound of dynamite carrying across the city. At night, the glow of the fire illuminating the entire eastern sky. The peaks themselves silent and unchanged, the grass stirring in the wind as the city burned.",
+          "sources": ["Philip Fradkin, The Great Earthquake (2005)", "California Historical Society photograph collection"]
+        },
+        {
+          "id": "tp-1945",
+          "year_display": "1945",
+          "label": "The Postwar View",
+          "era_type": "past",
+          "image_query": "1940s,san francisco,panoramic,city,hills",
+          "headline": "A City Fully Built",
+          "description": "By 1945 the view from Twin Peaks showed a city that had filled every valley and climbed every hill. The housing boom of the 1920s and 30s had pushed development up the slopes of Twin Peaks itself — rows of stucco houses with garages cut into the hillside. Twin Peaks Boulevard, completed in 1936, made the summit accessible by car for the first time. The panoramic view now included the Golden Gate Bridge, the Bay Bridge, Alcatraz, and a skyline of modest towers. The city was complete in outline if not in height.",
+          "key_events": [
+            { "year": "1936", "event": "Twin Peaks Boulevard completed — the summit becomes accessible by car" },
+            { "year": "1937", "event": "Golden Gate Bridge opens — visible from the summit for the first time" },
+            { "year": "1945", "event": "V-J Day. The city below celebrates the end of the war." }
+          ],
+          "landscape": "The 360-degree view now encompassed a full city — white and pastel stucco houses filling every valley, the bridges spanning the bay, ships in the harbor. The summit itself had been graded and a road built to the top. Tourists began driving up. The grassland was reduced to the immediate peaks.",
+          "sources": ["SF Recreation & Parks historical records", "SFMTA transit planning archives"]
+        },
+        {
+          "id": "tp-1967",
+          "year_display": "1967",
+          "label": "The Television Tower",
+          "era_type": "past",
+          "image_query": "san francisco,1960s,panoramic,city,skyline",
+          "headline": "The Antenna Farm",
+          "description": "Sutro Tower, the distinctive three-pronged television antenna that now defines the Twin Peaks skyline, was proposed in 1966 and built in 1973. It was controversial — residents saw it as an ugly intrusion on a natural landmark. The tower became, like the Transamerica Pyramid, a structure that was hated on arrival and eventually accepted as iconic. From the summit, the 1960s view showed the first high-rise construction in the Financial District — the beginning of the skyline transformation that continues today.",
+          "key_events": [
+            { "year": "1966", "event": "Sutro Tower proposed — community opposition is fierce" },
+            { "year": "1967", "event": "The Summer of Love unfolds in the Haight-Ashbury visible directly below Twin Peaks" },
+            { "year": "1973", "event": "Sutro Tower completed at 977 feet — the tallest structure in San Francisco" }
+          ],
+          "landscape": "The view from the summit now included high-rises downtown, the beginnings of a modern skyline. The Haight-Ashbury visible directly below to the north. On clear days, the counterculture and the construction cranes were visible simultaneously — two versions of the future competing for the same city.",
+          "sources": ["Sutro Tower Inc. historical records", "SF Planning Department archives"]
+        },
+        {
+          "id": "tp-2000",
+          "year_display": "2000",
+          "label": "The Boom View",
+          "era_type": "past",
+          "image_query": "san francisco,skyline,panoramic,2000s,city",
+          "headline": "A Skyline Transformed",
+          "description": "By the turn of the millennium, the view from Twin Peaks told the story of the dot-com boom. South of Market had erupted with new construction. The skyline was taller. At night, the lights of the city were brighter and more extensive than at any point in history. The real estate visible from the summit was worth, collectively, more than the GDP of most countries. And then the bust came, and the cranes stopped, and the lights in the SoMa lofts went out one by one.",
+          "key_events": [
+            { "year": "2000", "event": "The dot-com skyline reaches its peak — cranes visible across SoMa" },
+            { "year": "2001", "event": "The bust. Construction stops. The view doesn't change but the economy behind it collapses." }
+          ],
+          "landscape": "The most dramatic version of the San Francisco panorama — the full modern skyline, both bridges, Alcatraz, Angel Island, the East Bay hills. At night, a continuous field of light from the peninsula to the horizon. The summit itself is a parking lot and viewing platform, packed with tourists on clear evenings.",
+          "sources": ["SF Office of Economic Analysis", "National Park Service visitor statistics"]
+        },
+        {
+          "id": "tp-2025",
+          "year_display": "2025",
+          "label": "Present Day",
+          "era_type": "present",
+          "image_query": "san francisco,twin peaks,skyline,panoramic,modern",
+          "headline": "The Longest View",
+          "description": "Twin Peaks in 2025 offers the most complete single view of San Francisco available to the public. Salesforce Tower now dominates the skyline at 1,070 feet. On clear days, the view extends from Mount Tamalpais to Mount Diablo, from the Pacific to the Sacramento Delta. The summit is one of the most visited viewpoints in the Bay Area — and one of the windiest. The same Pacific wind that shaped the Ohlone grasslands still batters anyone who stands here for more than a few minutes.",
+          "key_events": [],
+          "landscape": "Salesforce Tower anchoring a skyline that now includes dozens of towers over 400 feet. The residential neighborhoods spreading in every direction — pastel stucco to the west, Victorian wood to the east. The green corridors of Golden Gate Park and the Panhandle visible as breaks in the urban fabric. Fog rolling through the Golden Gate on summer evenings, filling the bay and erasing the city below.",
+          "sources": []
+        },
+        {
+          "id": "tp-2075",
+          "year_display": "2075",
+          "label": "Futures",
+          "era_type": "future",
+          "image_query": "futuristic,city,skyline,panoramic,climate",
+          "headline": "The View in Fifty Years",
+          "description": "The view from Twin Peaks in 2075 will be shaped by which version of the future San Francisco builds. The hills themselves will be unchanged — they've looked the same for ten thousand years. But the city below will tell the story of how this generation responded to climate, housing, and equity.",
+          "future_scenarios": [
+            { "id": "green-density", "label": "Green Density", "sublabel": "Vertical and sustainable", "description": "The skyline is taller and greener — carbon-negative towers rising above neighborhoods that have been densified and reforested. The western neighborhoods, once low-rise single-family, now have mid-rise housing along transit corridors. From Twin Peaks, the city looks denser and more vertical, but also greener — urban canopy visible between the buildings.", "confidence": 0.45 },
+            { "id": "fortress-city", "label": "Fortress City", "sublabel": "Climate migration pressure", "description": "San Francisco's mild climate has made it a destination for climate migrants from hotter regions. The population has doubled. The view from Twin Peaks shows a city bursting at its seams — every available lot developed, the skyline dense with housing towers. The parks are the only green visible. The city works, but it has lost its spaciousness.", "confidence": 0.33 }
+          ],
+          "sources": []
+        }
+      ]
+    }
+  ]
+}

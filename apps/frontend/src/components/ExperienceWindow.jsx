@@ -1,6 +1,11 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import useStore from '../store/useStore'
 
+function twoSentences(text) {
+  const match = text.match(/^(.*?[.!?])\s+(.*?[.!?])/)
+  return match ? match[1] + ' ' + match[2] : text.split('.')[0] + '.'
+}
+
 const eraColor = {
   past: '#C8860A',
   present: '#F5F5F5',
@@ -10,11 +15,13 @@ const eraColor = {
 export default function ExperienceWindow() {
   const eras = useStore((s) => s.eras)
   const selectedEra = useStore((s) => s.selectedEra)
+  const setSelectedLocation = useStore((s) => s.setSelectedLocation)
   const era = eras.find((e) => e.id === selectedEra)
 
   if (!era) return null
 
-  const color = eraColor[era.type]
+  const color = eraColor[era.era_type]
+  const imageUrl = `https://source.unsplash.com/featured/1080x1920?${encodeURIComponent(era.image_query)}`
 
   return (
     <div className="relative h-full w-full overflow-hidden">
@@ -29,7 +36,7 @@ export default function ExperienceWindow() {
           transition={{ duration: 0.6, ease: 'easeInOut' }}
         >
           <motion.img
-            src={era.image}
+            src={imageUrl}
             alt={era.label}
             className="h-full w-full object-cover"
             initial={{ scale: 1.0 }}
@@ -53,6 +60,16 @@ export default function ExperienceWindow() {
             'radial-gradient(ellipse at center, transparent 40%, rgba(10,10,10,0.7) 100%), linear-gradient(to top, rgba(10,10,10,0.9) 0%, rgba(10,10,10,0.4) 35%, transparent 60%)',
         }}
       />
+
+      {/* Back button — top right */}
+      <button
+        onClick={() => setSelectedLocation(null)}
+        className="absolute right-4 top-4 z-20 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-present/20 bg-surface/60 text-present/70 backdrop-blur-md transition-colors hover:bg-surface/80"
+      >
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+          <path d="M11 3L3 11M3 3l8 8" />
+        </svg>
+      </button>
 
       {/* Era label — top left */}
       <AnimatePresence mode="wait">
@@ -92,7 +109,7 @@ export default function ExperienceWindow() {
               {era.headline}
             </h2>
             <p className="mt-2 font-ui text-sm leading-relaxed text-present/70">
-              {era.description}
+              {twoSentences(era.description)}
             </p>
           </div>
         </motion.div>

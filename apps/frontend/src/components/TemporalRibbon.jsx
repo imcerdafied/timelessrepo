@@ -66,8 +66,8 @@ export default function TemporalRibbon() {
       >
         {eras.map((era) => {
           const isSelected = era.id === selectedEra
-          const color = eraColor[era.type]
-          const glow = glowColor[era.type]
+          const color = eraColor[era.era_type]
+          const glow = glowColor[era.era_type]
 
           return (
             <motion.button
@@ -112,7 +112,7 @@ export default function TemporalRibbon() {
                 }}
                 transition={{ duration: 0.2 }}
               >
-                {era.year}
+                {era.year_display}
               </motion.span>
             </motion.button>
           )
