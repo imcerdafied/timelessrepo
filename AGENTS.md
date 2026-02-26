@@ -37,3 +37,9 @@ Never hardcode content in components — always read from this file.
 - Create separate CSS files
 - Add authentication
 - Use any UI component library — build everything from scratch
+
+## Working Style
+Proceed autonomously without asking for confirmation on individual 
+steps. Make decisions, implement them, then summarize what you did 
+at the end. Only pause if you hit a genuine blocker or need a 
+decision that can't be reversed.
