@@ -2,6 +2,7 @@ import { useRef, useEffect, useCallback } from 'react'
 import { motion } from 'framer-motion'
 import posthog from 'posthog-js'
 import useStore from '../store/useStore'
+import { audioService } from '../services/audioService'
 
 const NODE_SIZE = 44
 const NODE_GAP = 48
@@ -107,9 +108,9 @@ export default function TemporalRibbon() {
                 />
               </div>
 
-              {/* Year label */}
+              {/* Year label + audio indicator */}
               <motion.span
-                className="mt-2 font-mono text-[13px]"
+                className="mt-2 flex items-center gap-0.5 font-mono text-[13px]"
                 animate={{
                   color: isSelected ? color : '#666666',
                   opacity: isSelected ? 1 : 0.6,
@@ -117,6 +118,9 @@ export default function TemporalRibbon() {
                 transition={{ duration: 0.2 }}
               >
                 {era.year_display}
+                {audioService.hasAudio(era.id) && (
+                  <span className="text-past/60 text-[10px]">&#9835;</span>
+                )}
               </motion.span>
             </motion.button>
           )

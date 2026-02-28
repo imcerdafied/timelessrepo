@@ -74,6 +74,17 @@ Zustand: locations, selectedLocation, setSelectedLocation, eras, selectedEra, se
 ### Styling (`apps/frontend/src/index.css`)
 Tailwind v4. Theme: background #0A0A0A, surface #141414, border #222222, past #C8860A, future #1E4D8C, present #F5F5F5. Fonts: Playfair Display + Inter.
 
+### Era Audio (`apps/frontend/src/services/audioService.js`)
+Ambient soundscape system. Each era can have a looping MP3 soundscape that plays when the user is viewing that era. Audio is opt-in (off by default), persisted in `localStorage: audio_enabled`. Singleton `audioService` manages playback with 1-second fade-in/fade-out transitions between eras. Speaker button in ExperienceWindow top-right controls (amber pulse animation when playing). Music note indicator (♪) on TemporalRibbon nodes for eras with audio. Audio stops when ExperienceWindow closes.
+
+**Architecture:**
+- `audioService.js` — singleton with `ERA_AUDIO` map (era-id → Supabase Storage URL), play/fadeIn/fadeOut/stop/toggle
+- `useEraAudio.js` hook — React wrapper, auto-plays on era change if enabled
+- Supabase Storage bucket: `era-audio` (public), files named `{era-id}.mp3`
+- Currently mapped: all 9 Alamo eras. Add entries to `ERA_AUDIO` as files are uploaded.
+- See `docs/era-audio-prompts.md` for ElevenLabs generation prompts (all cities)
+- See `docs/generate-alamo-audio.sh` for batch generation script
+
 ### Config
 - Vite proxy: `/api` → `http://localhost:3001` for local dev
 - PostHog analytics integrated

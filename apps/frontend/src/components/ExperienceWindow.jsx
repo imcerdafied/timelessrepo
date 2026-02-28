@@ -3,6 +3,8 @@ import { AnimatePresence, motion, useDragControls } from 'framer-motion'
 import useStore from '../store/useStore'
 import { useEraImage } from '../hooks/useEraImage'
 import { useGyroscope } from '../hooks/useGyroscope'
+import { useEraAudio } from '../hooks/useEraAudio'
+import { audioService } from '../services/audioService'
 import ArtifactLayer from './ArtifactLayer'
 import CameraOverlay from './CameraOverlay'
 import EraDetail from './EraDetail'
@@ -44,6 +46,7 @@ export default function ExperienceWindow() {
   const era = eras.find((e) => e.id === selectedEra)
   const { url: imageUrl, credit, creditUrl } = useEraImage(era)
   const { tilt, needsPermission, requestPermission } = useGyroscope()
+  const { audioEnabled, hasAudio, toggle: toggleAudio } = useEraAudio(era)
 
   // Reset state when era changes
   if (era && era.id !== prevEraId) {
@@ -155,6 +158,32 @@ export default function ExperienceWindow() {
 
       {/* Top right controls */}
       <div className="absolute right-4 top-4 z-20 flex items-center gap-2">
+        {/* Audio button — only show if this era has audio */}
+        {hasAudio && (
+          <button
+            onClick={toggleAudio}
+            className={`flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border backdrop-blur-md transition-colors ${
+              audioEnabled
+                ? 'border-past/30 bg-surface/60 audio-playing'
+                : 'border-present/20 bg-surface/60'
+            }`}
+            aria-label={audioEnabled ? 'Mute era audio' : 'Play era audio'}
+          >
+            {audioEnabled ? (
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-past">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+                <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+                <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+              </svg>
+            ) : (
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-present/50">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+                <line x1="23" y1="9" x2="17" y2="15" />
+                <line x1="17" y1="9" x2="23" y2="15" />
+              </svg>
+            )}
+          </button>
+        )}
         {/* Share button */}
         <button
           onClick={() => setShareOpen(true)}
@@ -178,7 +207,10 @@ export default function ExperienceWindow() {
         </button>
         {/* Close button */}
         <button
-          onClick={() => setSelectedLocation(null)}
+          onClick={() => {
+            audioService.stop()
+            setSelectedLocation(null)
+          }}
           className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-present/20 bg-surface/60 text-present/70 backdrop-blur-md transition-colors hover:bg-surface/80"
         >
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
