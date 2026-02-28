@@ -116,7 +116,6 @@ export default function CameraOverlay({ onClose }) {
             src={imageUrl}
             alt={era?.label}
             className="h-full w-full object-cover"
-            crossOrigin="anonymous"
           />
         </div>
       )}

@@ -5,10 +5,10 @@ Current commit: `3b1b93e`
 
 ## What's Built and Working
 
-### Content — 20 Locations, 7 Cities (`apps/frontend/src/data/locations.json`)
-180 total eras across 20 locations. Each location has exactly 9 eras with full content: description, key_events, landscape, sources, and future_scenarios for 2075 eras.
+### Content — 21 Locations, 7 Cities (`apps/frontend/src/data/locations.json`)
+189 total eras across 21 locations. Each location has exactly 9 eras with full content: description, key_events, landscape, sources, and future_scenarios for 2075 eras.
 
-**San Francisco (7):** Mission Dolores, The Embarcadero, Montgomery Street, Chinatown, Twin Peaks, Haight-Ashbury, North Beach
+**San Francisco (8):** Mission Dolores, The Embarcadero, Montgomery Street, Chinatown, Twin Peaks, Haight-Ashbury, North Beach, Alamo
 **New York (3):** Lower Manhattan, Brooklyn Bridge, Harlem
 **London (2):** South Bank, City of London
 **Riyadh (2):** Diriyah, The Empty Quarter
@@ -61,10 +61,13 @@ Tailwind v4. Theme: background #0A0A0A, surface #141414, border #222222, past #C
 ### Config
 - Vite proxy: `/api` → `http://localhost:3001` for local dev
 - PostHog analytics integrated
-- Picsum seed images by era.id
+- Curated Wikimedia Commons images for 38 eras (27 unique images), Picsum fallback for rest
+- Automatic fallback: curated URL fails → Picsum → gradient
 
 ## Commit History
 ```
+4439801 feat: add Alamo location (21 total)
+76dcde4 feat: presence layer complete — GPS, camera, artifacts
 3b1b93e feat: I Was Here artifact layer
 5eca714 feat: camera then/now overlay
 ac03356 feat: GPS location trigger
@@ -112,11 +115,13 @@ Run `apps/backend/schema.sql` in the Supabase SQL editor to create the `artifact
 
 ## What Next Session Should Tackle
 
-### Priority 1: Real Photography
-- Picsum placeholders work but are not era-appropriate
-- `image_query` field exists in every era's JSON — ready for real image sourcing
-- Consider: Wikimedia Commons, LOC, AI-generated historical imagery
-- 180 eras need images — this is the biggest remaining content task
+### Priority 1: More Real Photography
+- 38 eras now have curated Wikimedia Commons images (20% coverage)
+- Remaining ~150 eras still use Picsum seed fallback
+- Key gaps: present-day (2025) eras, future (2075) eras, pre-photography eras (c.1500)
+- Consider: Unsplash API for present-day, AI-generated for pre-photography/future
+- `image_query` field exists in every era's JSON for sourcing hints
+- `imageMap.js` CURATED map is easy to extend — just add era-id → URL entries
 
 ### Priority 2: Backend Deployment
 - Backend needs to be deployed (Railway or separate service)

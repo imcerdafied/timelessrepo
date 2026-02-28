@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import useStore from '../store/useStore'
-import { getImageUrl } from '../data/imageMap'
+import { getImageUrl, isCurated } from '../data/imageMap'
 import ArtifactLayer from './ArtifactLayer'
 import CameraOverlay from './CameraOverlay'
 import EraDetail from './EraDetail'
@@ -31,6 +31,7 @@ export default function ExperienceWindow() {
   const setSelectedLocation = useStore((s) => s.setSelectedLocation)
   const [imageLoaded, setImageLoaded] = useState(false)
   const [imageFailed, setImageFailed] = useState(false)
+  const [useFallback, setUseFallback] = useState(false)
   const [prevEraId, setPrevEraId] = useState(null)
   const [detailOpen, setDetailOpen] = useState(false)
   const [cameraOpen, setCameraOpen] = useState(false)
@@ -42,13 +43,17 @@ export default function ExperienceWindow() {
     setPrevEraId(era.id)
     setImageLoaded(false)
     setImageFailed(false)
+    setUseFallback(false)
     setDetailOpen(false)
   }
 
   if (!era) return null
 
   const color = eraColor[era.era_type]
-  const imageUrl = getImageUrl(era)
+  // If curated image failed, fall back to Picsum
+  const imageUrl = useFallback
+    ? `https://picsum.photos/seed/${era.id}/1080/1920`
+    : getImageUrl(era)
   const isFirstEra = eras[0]?.id === era.id
 
   return (
@@ -84,7 +89,6 @@ export default function ExperienceWindow() {
             <motion.img
               src={imageUrl}
               alt={era.label}
-              crossOrigin="anonymous"
               loading={isFirstEra ? 'eager' : 'lazy'}
               className="h-full w-full object-cover"
               initial={{ scale: 1.0 }}
@@ -96,7 +100,14 @@ export default function ExperienceWindow() {
                 repeatType: 'reverse',
               }}
               onLoad={() => setImageLoaded(true)}
-              onError={() => setImageFailed(true)}
+              onError={() => {
+                if (!useFallback && isCurated(era.id)) {
+                  setUseFallback(true)
+                  setImageLoaded(false)
+                } else {
+                  setImageFailed(true)
+                }
+              }}
             />
           </motion.div>
         </AnimatePresence>
