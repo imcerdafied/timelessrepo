@@ -6,6 +6,7 @@ import { useGyroscope } from '../hooks/useGyroscope'
 import ArtifactLayer from './ArtifactLayer'
 import CameraOverlay from './CameraOverlay'
 import EraDetail from './EraDetail'
+import FutureVoting from './FutureVoting'
 
 function oneSentence(text) {
   const match = text.match(/^(.*?[.!?])/)
@@ -266,7 +267,11 @@ export default function ExperienceWindow() {
                 {expanded ? era.description : oneSentence(era.description)}
               </p>
 
-              {expanded && era.key_events && era.key_events.length > 0 && (
+              {expanded && era.era_type === 'future' && (
+                <FutureVoting era={era} />
+              )}
+
+              {expanded && era.era_type !== 'future' && era.key_events && era.key_events.length > 0 && (
                 <motion.div
                   className="mt-4"
                   initial={{ opacity: 0 }}
