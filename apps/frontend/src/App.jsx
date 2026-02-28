@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import ExperienceWindow from './components/ExperienceWindow'
+import GPSTrigger from './components/GPSTrigger'
 import LocationSelector from './components/LocationSelector'
 import SplashScreen from './components/SplashScreen'
 import TemporalRibbon from './components/TemporalRibbon'
@@ -9,11 +10,14 @@ import useStore from './store/useStore'
 function App() {
   const selectedLocation = useStore((s) => s.selectedLocation)
   const [showSplash, setShowSplash] = useState(true)
+  const [gpsDismissed, setGpsDismissed] = useState(false)
 
   useEffect(() => {
     const timer = setTimeout(() => setShowSplash(false), 2500)
     return () => clearTimeout(timer)
   }, [])
+
+  const handleGpsDismiss = useCallback(() => setGpsDismissed(true), [])
 
   return (
     <div className="flex h-dvh items-center justify-center bg-black">
@@ -31,12 +35,13 @@ function App() {
           ) : !selectedLocation ? (
             <motion.div
               key="selector"
-              className="flex-1 overflow-hidden"
+              className="flex flex-1 flex-col overflow-hidden"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0, scale: 0.97 }}
               transition={{ duration: 0.3 }}
             >
+              {!gpsDismissed && <GPSTrigger onDismiss={handleGpsDismiss} />}
               <LocationSelector />
             </motion.div>
           ) : (
