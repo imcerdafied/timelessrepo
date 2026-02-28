@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import useStore from '../store/useStore'
-import { getImageUrl, isCurated } from '../data/imageMap'
+import { useEraImage } from '../hooks/useEraImage'
 import ArtifactLayer from './ArtifactLayer'
 import CameraOverlay from './CameraOverlay'
 import EraDetail from './EraDetail'
@@ -31,29 +31,24 @@ export default function ExperienceWindow() {
   const setSelectedLocation = useStore((s) => s.setSelectedLocation)
   const [imageLoaded, setImageLoaded] = useState(false)
   const [imageFailed, setImageFailed] = useState(false)
-  const [useFallback, setUseFallback] = useState(false)
   const [prevEraId, setPrevEraId] = useState(null)
   const [detailOpen, setDetailOpen] = useState(false)
   const [cameraOpen, setCameraOpen] = useState(false)
 
   const era = eras.find((e) => e.id === selectedEra)
+  const { url: imageUrl, credit, creditUrl } = useEraImage(era)
 
   // Reset loading state when era changes
   if (era && era.id !== prevEraId) {
     setPrevEraId(era.id)
     setImageLoaded(false)
     setImageFailed(false)
-    setUseFallback(false)
     setDetailOpen(false)
   }
 
   if (!era) return null
 
   const color = eraColor[era.era_type]
-  // If curated image failed, fall back to Picsum
-  const imageUrl = useFallback
-    ? `https://picsum.photos/seed/${era.id}/1080/1920`
-    : getImageUrl(era)
   const isFirstEra = eras[0]?.id === era.id
 
   return (
@@ -100,14 +95,7 @@ export default function ExperienceWindow() {
                 repeatType: 'reverse',
               }}
               onLoad={() => setImageLoaded(true)}
-              onError={() => {
-                if (!useFallback && isCurated(era.id)) {
-                  setUseFallback(true)
-                  setImageLoaded(false)
-                } else {
-                  setImageFailed(true)
-                }
-              }}
+              onError={() => setImageFailed(true)}
             />
           </motion.div>
         </AnimatePresence>
@@ -121,6 +109,18 @@ export default function ExperienceWindow() {
             'radial-gradient(ellipse at center, transparent 40%, rgba(10,10,10,0.7) 100%), linear-gradient(to top, rgba(10,10,10,0.9) 0%, rgba(10,10,10,0.4) 35%, transparent 60%)',
         }}
       />
+
+      {/* Unsplash credit */}
+      {credit && (
+        <a
+          href={`${creditUrl}?utm_source=timeless_moment&utm_medium=referral`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="absolute bottom-2 right-2 z-[5] rounded bg-black/40 px-1.5 py-0.5 font-ui text-[9px] text-present/30 backdrop-blur-sm transition-colors hover:text-present/50"
+        >
+          Photo by {credit}
+        </a>
+      )}
 
       {/* Top right controls */}
       <div className="absolute right-4 top-4 z-20 flex items-center gap-2">

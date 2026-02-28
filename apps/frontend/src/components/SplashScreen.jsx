@@ -33,7 +33,7 @@ export default function SplashScreen({ onComplete }) {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6, delay: 0.6 }}
       >
-        San Francisco across time
+        A place in time.
       </motion.p>
     </motion.div>
   )

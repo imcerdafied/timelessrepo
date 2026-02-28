@@ -50,7 +50,7 @@ Swipe-up bottom sheet: header with era type pill, headline, full description, ke
 Horizontal scrollable row of circular era nodes. Color-coded by era_type. Spring-animated selection glow. Year labels below. Auto-centers selected node.
 
 ### SplashScreen (`apps/frontend/src/components/SplashScreen.jsx`)
-Full-screen "TIMELESS MOMENT" splash. Staggered fade-in, cross-fade out after 2.5s.
+Full-screen "TIMELESS MOMENT" splash with tagline "A place in time." Staggered fade-in, cross-fade out after 2.5s.
 
 ### App Shell (`apps/frontend/src/App.jsx`)
 Root layout with mobile frame (max-w-390px). AnimatePresence: SplashScreen → GPSTrigger + LocationSelector → ExperienceWindow + TemporalRibbon. GPS dismissed on browse or location select.
@@ -61,11 +61,13 @@ Zustand: locations, selectedLocation, setSelectedLocation, eras, selectedEra, se
 ### Styling (`apps/frontend/src/index.css`)
 Tailwind v4. Theme: background #0A0A0A, surface #141414, border #222222, past #C8860A, future #1E4D8C, present #F5F5F5. Fonts: Playfair Display + Inter.
 
+### useEraImage Hook (`apps/frontend/src/hooks/useEraImage.js`)
+Three-tier image resolution: curated Wikimedia Commons → Unsplash API (via `image_query`) → Picsum seed fallback. Returns `{ url, credit, creditUrl }`. Unsplash credit displayed bottom-right when present. Requires `VITE_UNSPLASH_ACCESS_KEY` for Unsplash tier (gracefully skipped if not set). 44 eras have curated images; remainder use Unsplash or Picsum.
+
 ### Config
 - Vite proxy: `/api` → `http://localhost:3001` for local dev
 - PostHog analytics integrated
-- Curated Wikimedia Commons images for 38 eras (27 unique images), Picsum fallback for rest
-- Automatic fallback: curated URL fails → Picsum → gradient
+- Image fallback chain: curated → Unsplash API → Picsum → gradient
 
 ## Commit History
 ```
@@ -105,8 +107,9 @@ f80dcdb repo skeleton
 **Frontend (VITE_ prefix):**
 - `VITE_POSTHOG_KEY` — PostHog analytics
 - `VITE_API_URL` — Backend API base URL (empty = same origin)
-- `VITE_SUPABASE_URL` — (for future direct Supabase access)
-- `VITE_SUPABASE_ANON_KEY` — (for future direct Supabase access)
+- `VITE_SUPABASE_URL` — Supabase project URL
+- `VITE_SUPABASE_ANON_KEY` — Supabase anon/public key
+- `VITE_UNSPLASH_ACCESS_KEY` — Unsplash API key (get at unsplash.com/developers). Optional; without it, non-curated eras use Picsum.
 
 **Backend:**
 - `SUPABASE_URL` — Supabase project URL
@@ -118,13 +121,12 @@ Schema deployed via `apps/backend/schema.sql`. Artifacts table with RLS: public 
 
 ## What Next Session Should Tackle
 
-### Priority 1: More Real Photography
-- 38 eras now have curated Wikimedia Commons images (20% coverage)
-- Remaining ~150 eras still use Picsum seed fallback
-- Key gaps: present-day (2025) eras, future (2075) eras, pre-photography eras (c.1500)
-- Consider: Unsplash API for present-day, AI-generated for pre-photography/future
-- `image_query` field exists in every era's JSON for sourcing hints
-- `imageMap.js` CURATED map is easy to extend — just add era-id → URL entries
+### Priority 1: Unsplash Key + More Curated Images
+- Add `VITE_UNSPLASH_ACCESS_KEY` to Railway env vars (get free key at unsplash.com/developers)
+- 44 eras have curated Wikimedia images; Unsplash covers the rest when key is set
+- Key gaps for manual curation: pre-photography eras (c.1500), future (2075)
+- AI-generated images for Alamo eras: see `docs/alamo-image-prompts.md`
+- CURATED map in `useEraImage.js` is easy to extend — just add era-id → URL entries
 
 ### Priority 2: UX Refinements (was Priority 3)
 

@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { getImageUrl } from '../data/imageMap'
 import useStore from '../store/useStore'
+import { useEraImage } from '../hooks/useEraImage'
 
 const eraColor = {
   past: '#C8860A',
@@ -22,7 +22,7 @@ export default function CameraOverlay({ onClose }) {
   const [dragging, setDragging] = useState(false)
 
   const era = eras.find((e) => e.id === selectedEra)
-  const imageUrl = era ? getImageUrl(era) : null
+  const { url: imageUrl } = useEraImage(era)
 
   useEffect(() => {
     let cancelled = false
