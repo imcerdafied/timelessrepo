@@ -218,7 +218,7 @@ export default function ExperienceWindow() {
         {!expanded && !detailOpen && (
           <motion.div
             className="absolute inset-x-0 z-10 flex justify-center"
-            style={{ bottom: '32%' }}
+            style={{ bottom: 160 }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -234,11 +234,11 @@ export default function ExperienceWindow() {
         )}
       </AnimatePresence>
 
-      {/* Bottom sheet — peek state (headline + hint) or expanded (full text) */}
+      {/* Bottom sheet — peek state (~140px) or expanded */}
       <motion.div
         className="absolute inset-x-0 bottom-0 z-10"
         style={{ touchAction: 'none' }}
-        animate={{ y: expanded ? '-45%' : 0 }}
+        animate={{ y: expanded ? '-55vh' : 0 }}
         transition={{ type: 'spring', stiffness: 300, damping: 30 }}
         drag="y"
         dragControls={dragControls}
@@ -262,7 +262,7 @@ export default function ExperienceWindow() {
         </div>
 
         <div
-          className="px-5 pb-5"
+          className="px-5 pb-4"
           onClick={() => {
             if (!expanded) setExpanded(true)
           }}

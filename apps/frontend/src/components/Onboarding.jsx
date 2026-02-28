@@ -1,19 +1,19 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 const screens = [
   {
-    title: 'Every place has a past.',
-    body: 'Timeless Moment lets you explore any location across its entire history\u00a0\u2014 from ancient origins to possible futures.',
+    title: 'Every place has a story.',
+    body: 'Stand anywhere in the world and see what was here\u00a0\u2014 before you, before anyone you know, before memory itself.',
   },
   {
-    title: 'Scrub through time.',
-    body: 'Every location spans from indigenous history to 2075 climate futures. Tap any era to enter it.',
+    title: 'Move through time.',
+    body: 'Swipe the timeline to shift between eras. Watch the world change beneath your feet.',
     showRibbon: true,
   },
   {
-    title: 'Leave your mark.',
-    body: 'Drop an artifact at any era. Vote on the future. The more people participate, the more the futures shift.',
+    title: 'The future is unwritten.',
+    body: 'Vote on what comes next. Drop a marker that you were here. The more people participate, the more the story shifts.',
     isFinal: true,
   },
 ]
@@ -38,6 +38,7 @@ const eraColor = {
 export default function Onboarding({ onComplete }) {
   const [step, setStep] = useState(0)
   const [ribbonActive, setRibbonActive] = useState(0)
+  const touchStartX = useRef(null)
 
   const screen = screens[step]
 
@@ -52,9 +53,26 @@ export default function Onboarding({ onComplete }) {
     onComplete()
   }
 
-  // Animate ribbon demo
   const handleRibbonTap = (i) => {
     setRibbonActive(i)
+  }
+
+  const handleTouchStart = (e) => {
+    touchStartX.current = e.touches[0].clientX
+  }
+
+  const handleTouchEnd = (e) => {
+    if (touchStartX.current === null) return
+    const deltaX = e.changedTouches[0].clientX - touchStartX.current
+    touchStartX.current = null
+    if (deltaX < -50) {
+      // Swipe left — advance
+      if (screen.isFinal) {
+        finish()
+      } else {
+        advance()
+      }
+    }
   }
 
   return (
@@ -64,6 +82,11 @@ export default function Onboarding({ onComplete }) {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.4 }}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+      onClick={() => {
+        if (!screen.isFinal) advance()
+      }}
     >
       <div className="flex h-full w-full max-w-[390px] flex-col items-center justify-center px-8">
         <AnimatePresence mode="wait">
@@ -94,7 +117,10 @@ export default function Onboarding({ onComplete }) {
                   return (
                     <button
                       key={i}
-                      onClick={() => handleRibbonTap(i)}
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        handleRibbonTap(i)
+                      }}
                       className="flex shrink-0 cursor-pointer flex-col items-center bg-transparent border-none outline-none"
                     >
                       <motion.div
@@ -134,21 +160,21 @@ export default function Onboarding({ onComplete }) {
             ))}
           </div>
 
-          {/* Action button */}
+          {/* Begin button — only on final screen */}
           {screen.isFinal ? (
             <button
-              onClick={finish}
+              onClick={(e) => {
+                e.stopPropagation()
+                finish()
+              }}
               className="w-full cursor-pointer rounded-sm border border-past bg-past/20 py-4 font-ui text-sm font-medium tracking-[0.15em] text-past uppercase transition-colors hover:bg-past/30"
             >
               Begin
             </button>
           ) : (
-            <button
-              onClick={advance}
-              className="w-full cursor-pointer rounded-sm border border-present/20 bg-surface/60 py-4 font-ui text-sm tracking-wide text-present/60 transition-colors hover:bg-surface/80"
-            >
-              Continue
-            </button>
+            <p className="font-ui text-[11px] tracking-wide text-present/25">
+              Swipe or tap to continue
+            </p>
           )}
         </div>
       </div>

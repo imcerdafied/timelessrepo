@@ -24,18 +24,17 @@ export function useGyroscope() {
     window.addEventListener('deviceorientation', handleOrientation)
   }, [handleOrientation])
 
-  // Called directly from onClick — required for iOS permission
-  const requestPermission = useCallback(async () => {
+  // Called directly from onClick — MUST be synchronous for iOS gesture handler
+  const requestPermission = useCallback(() => {
     if (typeof DeviceOrientationEvent?.requestPermission === 'function') {
-      try {
-        const result = await DeviceOrientationEvent.requestPermission()
-        if (result === 'granted') {
-          localStorage.setItem(STORAGE_KEY, 'granted')
-          attachListener()
-        }
-      } catch (e) {
-        console.log('Gyroscope permission error:', e)
-      }
+      DeviceOrientationEvent.requestPermission()
+        .then((result) => {
+          if (result === 'granted') {
+            localStorage.setItem(STORAGE_KEY, 'granted')
+            attachListener()
+          }
+        })
+        .catch(() => {})
     } else {
       localStorage.setItem(STORAGE_KEY, 'granted')
       attachListener()
