@@ -122,7 +122,7 @@ export default function ArtifactLayer({ era, locationId, locationName, city }) {
             />
 
             <motion.div
-              className="absolute inset-x-0 bottom-0 z-40 max-h-[70%] overflow-hidden rounded-t-sm border-t border-border bg-surface/95 backdrop-blur-2xl"
+              className="absolute inset-x-0 bottom-0 z-40 max-h-[85vh] overflow-hidden rounded-t-sm border-t border-border bg-surface/95 backdrop-blur-2xl"
               style={{ touchAction: 'none' }}
               initial={{ y: '100%' }}
               animate={{ y: 0 }}
@@ -148,7 +148,7 @@ export default function ArtifactLayer({ era, locationId, locationName, city }) {
                 <div className="h-1 w-8 rounded-full bg-present/20" />
               </div>
 
-              <div className="overflow-y-auto overscroll-contain px-5 pb-[calc(env(safe-area-inset-bottom,16px)+16px)]" style={{ maxHeight: 'calc(70vh - 24px)' }}>
+              <div className="overflow-y-auto overscroll-contain px-5" style={{ maxHeight: 'calc(85vh - 24px)', paddingBottom: 'calc(1.5rem + env(safe-area-inset-bottom, 16px))' }}>
                 <h3 className="font-ui text-xs font-medium tracking-[0.2em] text-present/40 uppercase">
                   Visitors — {era.year_display}
                 </h3>
