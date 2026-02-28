@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import ExperienceWindow from './components/ExperienceWindow'
 import GPSTrigger from './components/GPSTrigger'
 import LocationSelector from './components/LocationSelector'
+import Onboarding from './components/Onboarding'
 import SplashScreen from './components/SplashScreen'
 import TemporalRibbon from './components/TemporalRibbon'
 import useStore from './store/useStore'
@@ -10,6 +11,9 @@ import useStore from './store/useStore'
 function App() {
   const selectedLocation = useStore((s) => s.selectedLocation)
   const [showSplash, setShowSplash] = useState(true)
+  const [showOnboarding, setShowOnboarding] = useState(
+    () => !localStorage.getItem('onboarding_complete')
+  )
   const [gpsDismissed, setGpsDismissed] = useState(false)
 
   useEffect(() => {
@@ -57,6 +61,13 @@ function App() {
               </div>
               <TemporalRibbon />
             </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Onboarding overlay — shows once, above everything */}
+        <AnimatePresence>
+          {showOnboarding && !showSplash && (
+            <Onboarding onComplete={() => setShowOnboarding(false)} />
           )}
         </AnimatePresence>
       </div>
