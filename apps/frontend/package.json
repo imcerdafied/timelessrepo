@@ -10,6 +10,7 @@
     "preview": "serve dist -l 4173 -s"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.98.0",
     "@tailwindcss/vite": "^4.2.1",
     "framer-motion": "^12.34.3",
     "posthog-js": "^1.356.0",

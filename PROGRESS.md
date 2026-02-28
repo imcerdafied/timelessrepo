@@ -1,7 +1,7 @@
 # PROGRESS.md — Timeless
 
-Last updated: 2026-02-27
-Current commit: `3b1b93e`
+Last updated: 2026-02-28
+Current commit: `d0a7f8b`
 
 ## What's Built and Working
 
@@ -28,14 +28,17 @@ Auto-requests geolocation on mount. Uses Haversine formula to find nearest locat
 Full-screen rear camera feed via `getUserMedia({ facingMode: 'environment' })`. Historical era image overlaid with CSS opacity. Draggable pointer-event slider: left = live camera, right = historical era image. Era selector pill row at top to switch between eras. Shows era headline, year, label. X button to close. Wired into ExperienceWindow via camera icon button in top-right controls.
 
 ### ArtifactLayer (`apps/frontend/src/components/ArtifactLayer.jsx`)
-"I Was Here" presence layer. Count pill at bottom of era view: "47 people stood here in 1906" or "Be the first". Tapping opens bottom sheet (spring-animated, drag-to-dismiss). Sheet shows: recent visitor entries (name + emoji + message + time ago) + "I WAS HERE" button. Drop form: name input, optional message (200 char), 8-emoji picker, submit. On success: brief amber success state. Uses GPS coords from `useGPS()` hook if available.
+"I Was Here" presence layer. Queries Supabase directly from frontend via `@supabase/supabase-js` (no backend proxy needed). Count pill at bottom of era view: "47 people stood here in 1906" or "Be the first". Tapping opens bottom sheet (spring-animated, drag-to-dismiss). Sheet shows: recent visitor entries (name + emoji + message + time ago) + "I WAS HERE" button. Drop form: name input, optional message (200 char), 8-emoji picker, submit. On success: brief amber success state. Uses GPS coords from `useGPS()` hook if available.
+
+### Supabase (live)
+Frontend connects directly via `apps/frontend/src/lib/supabase.js` using `VITE_SUPABASE_URL` + `VITE_SUPABASE_ANON_KEY`. ArtifactLayer reads/writes the `artifacts` table directly. RLS policies enforce public SELECT and validated INSERT.
 
 ### Backend API (`apps/backend/`)
-Express server with two routes:
+Express server with two routes (retained for admin/future use):
 - `GET /api/artifacts/:locationId/:eraId` — returns count and 20 most recent artifacts
 - `POST /api/artifacts` — validates and inserts, returns id + share_token
 
-Supabase schema in `apps/backend/schema.sql`. Requires SUPABASE_URL and SUPABASE_SERVICE_KEY env vars. Gracefully degrades when Supabase is not configured.
+Backend Supabase client in `apps/backend/src/lib/supabase.js` uses `SUPABASE_URL` + `SUPABASE_SERVICE_KEY` (service role for admin ops). Schema in `apps/backend/schema.sql`.
 
 ### ExperienceWindow (`apps/frontend/src/components/ExperienceWindow.jsx`)
 Full-bleed background image with Ken Burns zoom (20s cycle, scale 1.0→1.08). Cross-dissolve transitions between eras (600ms). Dark vignette overlay. Era label badge top-left. InfoCard slides up from bottom. Camera icon + close button top-right. ArtifactLayer count pill above InfoCard. EraDetail sheet on tap. CameraOverlay on camera button tap.
@@ -110,8 +113,8 @@ f80dcdb repo skeleton
 - `SUPABASE_SERVICE_KEY` — Supabase service role key
 - `PORT` — Server port (default 3001)
 
-## Supabase Setup Required
-Run `apps/backend/schema.sql` in the Supabase SQL editor to create the `artifacts` table with RLS policies.
+## Supabase (live)
+Schema deployed via `apps/backend/schema.sql`. Artifacts table with RLS: public SELECT, validated INSERT. Frontend uses anon key directly.
 
 ## What Next Session Should Tackle
 
@@ -123,19 +126,14 @@ Run `apps/backend/schema.sql` in the Supabase SQL editor to create the `artifact
 - `image_query` field exists in every era's JSON for sourcing hints
 - `imageMap.js` CURATED map is easy to extend — just add era-id → URL entries
 
-### Priority 2: Backend Deployment
-- Backend needs to be deployed (Railway or separate service)
-- Set SUPABASE_URL and SUPABASE_SERVICE_KEY in Railway
-- Run schema.sql in Supabase dashboard
-- Set VITE_API_URL in frontend env if backend is on a different domain
+### Priority 2: UX Refinements (was Priority 3)
 
-### Priority 3: UX Refinements
+### Priority 3: Lower Priority
 - Haptic feedback on ribbon scrub (if PWA)
 - Swipe left/right between eras
 - Location switching within experience
 - PWA manifest + service worker
 
-### Lower Priority
 - Video support
 - Share artifact via share_token URL
 - Location search/filter

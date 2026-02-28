@@ -2,10 +2,9 @@ import { useState, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence, useDragControls } from 'framer-motion'
 import useStore from '../store/useStore'
 import { useGPS } from './GPSTrigger'
+import { supabase } from '../lib/supabase'
 
 const EMOJI_OPTIONS = ['📍', '🔥', '⚓', '🌊', '🏛️', '🕊️', '⚡', '🌿']
-
-const API_BASE = import.meta.env.VITE_API_URL || ''
 
 function timeAgo(dateStr) {
   const seconds = Math.floor((Date.now() - new Date(dateStr).getTime()) / 1000)
@@ -34,11 +33,17 @@ export default function ArtifactLayer({ era, locationId, locationName, city }) {
   const fetchArtifacts = useCallback(async () => {
     if (!locationId || !era?.id) return
     try {
-      const res = await fetch(`${API_BASE}/api/artifacts/${locationId}/${era.id}`)
-      if (res.ok) {
-        const data = await res.json()
-        setArtifacts(data.artifacts || [])
-        setCount(data.count || 0)
+      const { data, count: total, error } = await supabase
+        .from('artifacts')
+        .select('*', { count: 'exact' })
+        .eq('location_id', locationId)
+        .eq('era_id', era.id)
+        .order('created_at', { ascending: false })
+        .limit(20)
+
+      if (!error) {
+        setArtifacts(data || [])
+        setCount(total || 0)
       }
     } catch {
       // Silent fail — artifacts are non-critical
@@ -54,25 +59,21 @@ export default function ArtifactLayer({ era, locationId, locationName, city }) {
     setSubmitting(true)
 
     try {
-      const res = await fetch(`${API_BASE}/api/artifacts`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          location_id: locationId,
-          location_name: locationName,
-          city: city || 'San Francisco',
-          era_id: era.id,
-          era_year: era.year_display,
-          era_label: era.label,
-          latitude: coords?.lat,
-          longitude: coords?.lng,
-          author_name: name || 'Anonymous',
-          message: message || null,
-          emoji,
-        }),
+      const { error } = await supabase.from('artifacts').insert({
+        location_id: locationId,
+        location_name: locationName,
+        city: city || 'San Francisco',
+        era_id: era.id,
+        era_year: era.year_display,
+        era_label: era.label,
+        latitude: coords?.lat || null,
+        longitude: coords?.lng || null,
+        author_name: (name || 'Anonymous').slice(0, 50),
+        message: message ? message.slice(0, 200) : null,
+        emoji: emoji || '📍',
       })
 
-      if (res.ok) {
+      if (!error) {
         setSuccess(true)
         setFormOpen(false)
         setName('')
