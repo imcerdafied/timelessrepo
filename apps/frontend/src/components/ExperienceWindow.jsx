@@ -175,7 +175,7 @@ export default function ExperienceWindow() {
         {hasAudio && (
           <button
             onClick={toggleAudio}
-            className={`flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border backdrop-blur-md transition-colors ${
+            className={`relative flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border backdrop-blur-md transition-colors ${
               audioEnabled
                 ? 'border-past/30 bg-surface/60 audio-playing'
                 : 'border-present/20 bg-surface/60'
@@ -194,6 +194,11 @@ export default function ExperienceWindow() {
                 <line x1="23" y1="9" x2="17" y2="15" />
                 <line x1="17" y1="9" x2="23" y2="15" />
               </svg>
+            )}
+            {audioService.hasMusic(era.id) && audioEnabled && (
+              <span className="absolute -right-1 -top-1 flex h-3 w-3 items-center justify-center rounded-full bg-past text-[6px] font-bold text-background">
+                &#9835;
+              </span>
             )}
           </button>
         )}

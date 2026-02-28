@@ -74,14 +74,19 @@ Zustand: locations, selectedLocation, setSelectedLocation, eras, selectedEra, se
 ### Styling (`apps/frontend/src/index.css`)
 Tailwind v4. Theme: background #0A0A0A, surface #141414, border #222222, past #C8860A, future #1E4D8C, present #F5F5F5. Fonts: Playfair Display + Inter.
 
-### Era Audio (`apps/frontend/src/services/audioService.js`)
-Ambient soundscape system. Each era can have a looping MP3 soundscape that plays when the user is viewing that era. Audio is opt-in (off by default), persisted in `localStorage: audio_enabled`. Singleton `audioService` manages playback with 1-second fade-in/fade-out transitions between eras. Speaker button in ExperienceWindow top-right controls (amber pulse animation when playing). Music note indicator (♪) on TemporalRibbon nodes for eras with audio. Audio stops when ExperienceWindow closes.
+### Era Audio — Two-Layer System (`apps/frontend/src/services/audioService.js`)
+Two simultaneous audio layers play together when viewing an era. Audio is opt-in (off by default), persisted in `localStorage: audio_enabled`. Singleton `audioService` manages both layers with 1-second fade-in/fade-out transitions. Speaker button in ExperienceWindow top-right controls (amber pulse animation when playing, music note badge when Layer 2 is active). Music note indicator (♪) on TemporalRibbon nodes. Audio stops when ExperienceWindow closes.
+
+**Layer 1 — Ambient** (`ERA_AMBIENT` map): Nature/city soundscapes at 55% volume. Files: `{era-id}.mp3` in Supabase Storage `era-audio` bucket. Currently mapped: all 9 Alamo eras. See `docs/era-audio-prompts.md` for ElevenLabs generation prompts.
+
+**Layer 2 — Music** (`ERA_MUSIC` map): Era-appropriate music at 35% volume. Two entry types: `{ type: 'file', url }` for Suno-generated MP3s uploaded as `{era-id}-music.mp3`, and `{ type: 'spotify', uri }` for Spotify playlists (Phase 2). Currently empty — add entries as Suno files are generated and uploaded.
 
 **Architecture:**
-- `audioService.js` — singleton with `ERA_AUDIO` map (era-id → Supabase Storage URL), play/fadeIn/fadeOut/stop/toggle
+- `audioService.js` — singleton with `ERA_AMBIENT` + `ERA_MUSIC` maps, dual `_createAudio`/`_fadeIn`/`_fadeOut`, `hasAudio()`/`hasMusic()` checks
 - `useEraAudio.js` hook — React wrapper, auto-plays on era change if enabled
-- Supabase Storage bucket: `era-audio` (public), files named `{era-id}.mp3`
-- Currently mapped: all 9 Alamo eras. Add entries to `ERA_AUDIO` as files are uploaded.
+- Supabase Storage bucket: `era-audio` (public)
+- Adding ambient: upload `{era-id}.mp3`, add entry to `ERA_AMBIENT`
+- Adding music: upload `{era-id}-music.mp3`, add entry to `ERA_MUSIC` with `{ type: 'file', url }`
 - See `docs/era-audio-prompts.md` for ElevenLabs generation prompts (all cities)
 - See `docs/generate-alamo-audio.sh` for batch generation script
 
