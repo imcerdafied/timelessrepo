@@ -59,6 +59,9 @@ const CURATED = {
   // === Lagos ===
   'li-1861': 'https://upload.wikimedia.org/wikipedia/commons/3/3e/The_Lagos_City_Hall%2C_Established_in_1900%2C_in_Lagos_State._Nigeria._%281%29.jpg',
   'li-1960': 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Tafawa_Balewa_Square_Lagos.jpg/1280px-Tafawa_Balewa_Square_Lagos.jpg',
+
+  // === Alamo ===
+  'alamo-2025': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Alamo%2C_CA_002.jpg/1280px-Alamo%2C_CA_002.jpg',
 }
 
 const UNSPLASH_KEY = import.meta.env.VITE_UNSPLASH_ACCESS_KEY
