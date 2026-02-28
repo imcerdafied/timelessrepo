@@ -1,7 +1,7 @@
 # PROGRESS.md — Timeless
 
 Last updated: 2026-02-28
-Current commit: `d0a7f8b`
+Current commit: `a6a1f73`
 
 ## What's Built and Working
 
@@ -18,6 +18,18 @@ Current commit: `d0a7f8b`
 
 Each location has: id, name, city, subtext, coordinates, tagline, eras[]. Era schema: id, year_display, label, era_type (past/present/future), image_query, headline, description, key_events[], landscape, sources[], optional future_scenarios[].
 
+### ExperienceWindow (`apps/frontend/src/components/ExperienceWindow.jsx`)
+Image-first layout: era image fills full screen edge-to-edge with Ken Burns zoom (20s, 1.0→1.08) and gyroscope parallax (±8px shift via `useGyroscope` hook). Bottom gradient overlay (transparent top, dark bottom 40%). Era label + year top-left, control buttons (share, camera, close) top-right. Artifact count pill floats above bottom sheet. Bottom sheet peeks from bottom showing headline + first sentence (~30% screen); drag/tap to expand with full description + key events. "Full detail" opens EraDetail sheet. For future eras, expanded sheet shows FutureVoting component instead of key events. Cross-dissolve transitions between eras (600ms).
+
+### FutureVoting (`apps/frontend/src/components/FutureVoting.jsx`)
+Renders for `era_type === 'future'` eras only. Shows scenario cards from `era.future_scenarios` with live vote percentage bars (amber fill, animated), vote counts, truncated descriptions, and vote buttons. One vote per device per era via `device_id` in localStorage (UUID). Votes upserted to `future_votes` table with `ON CONFLICT` for vote changing. Pledge section: "I will..." text input with name, submits to `pledges` table, shows recent pledges. Voices feed: most recent votes with messages. All data via Supabase frontend client.
+
+### ShareCard (`apps/frontend/src/components/ShareCard.jsx`)
+Shareable era card (390x690px portrait). Full era image background, dark gradient overlay bottom 60%, "TIMELESS MOMENT" branding top, large year center, location name + headline + description snippet bottom, amber rule + "A place in time." footer. Uses `html2canvas` for 2x capture. Web Share API on mobile (shares PNG file + URL), falls back to PNG download on desktop. Share button in ExperienceWindow top-right controls.
+
+### Onboarding (`apps/frontend/src/components/Onboarding.jsx`)
+Three-screen first-run overlay (z-50, above everything). Screen 1: "Every place has a past." — introduces the concept. Screen 2: "Scrub through time." — interactive temporal ribbon preview with tappable era dots. Screen 3: "Leave your mark." — describes artifact/voting features, amber "Begin" button completes onboarding. Dot indicators, swipeable via tap. Tracked in `localStorage: onboarding_complete`. Shows after splash, before app flow.
+
 ### LocationSelector (`apps/frontend/src/components/LocationSelector.jsx`)
 City-grouped landing screen. Amber tab pills at top select city (San Francisco, New York, London, Riyadh, Los Angeles, Chicago, Lagos). Location cards show name (Playfair Display), subtext, tagline (2-line clamp), era count, and year range. AnimatePresence cross-fades between city groups. Staggered card entrance animations.
 
@@ -25,13 +37,13 @@ City-grouped landing screen. Amber tab pills at top select city (San Francisco, 
 Auto-requests geolocation on mount. Uses Haversine formula to find nearest location. Within 500m: amber "You are here" card with "Explore This Place" CTA. Further: shows nearest location with distance and "Go There" option. Permission denied: silent fail. Exports `useGPS()` hook for shared GPS state. Wired into App.jsx above LocationSelector.
 
 ### CameraOverlay (`apps/frontend/src/components/CameraOverlay.jsx`)
-Full-screen rear camera feed via `getUserMedia({ facingMode: 'environment' })`. Historical era image overlaid with CSS opacity. Draggable pointer-event slider: left = live camera, right = historical era image. Era selector pill row at top to switch between eras. Shows era headline, year, label. X button to close. Wired into ExperienceWindow via camera icon button in top-right controls.
+Full-screen rear camera feed via `getUserMedia({ facingMode: 'environment' })`. Historical era image overlaid with CSS opacity and gyroscope parallax. Draggable pointer-event slider: left = live camera, right = historical era image. Era selector pill row at top to switch between eras. Shows era headline, year, label. X button to close.
 
 ### ArtifactLayer (`apps/frontend/src/components/ArtifactLayer.jsx`)
-"I Was Here" presence layer. Queries Supabase directly from frontend via `@supabase/supabase-js` (no backend proxy needed). Count pill at bottom of era view: "47 people stood here in 1906" or "Be the first". Tapping opens bottom sheet (spring-animated, drag-to-dismiss). Sheet shows: recent visitor entries (name + emoji + message + time ago) + "I WAS HERE" button. Drop form: name input, optional message (200 char), 8-emoji picker, submit. On success: brief amber success state. Uses GPS coords from `useGPS()` hook if available.
+"I Was Here" presence layer. Queries Supabase directly. Count pill: "47 people stood here in 1906" or "Be the first". Bottom sheet with drag handle, X close button, back arrow in form view. Visitor list, "I WAS HERE" button opens form (name, message, emoji picker). Success state with checkmark, auto-returns to list after 1.5s. Safe-area-aware padding for mobile.
 
 ### Supabase (live)
-Frontend connects directly via `apps/frontend/src/lib/supabase.js` using `VITE_SUPABASE_URL` + `VITE_SUPABASE_ANON_KEY`. ArtifactLayer reads/writes the `artifacts` table directly. RLS policies enforce public SELECT and validated INSERT.
+Frontend connects directly via `apps/frontend/src/lib/supabase.js` using `VITE_SUPABASE_URL` + `VITE_SUPABASE_ANON_KEY`. Tables: `artifacts` (presence layer), `future_votes` (scenario voting), `future_vote_tallies` (aggregated view), `pledges` (future action pledges). RLS policies enforce public SELECT and validated INSERT.
 
 ### Backend API (`apps/backend/`)
 Express server with two routes (retained for admin/future use):
@@ -39,9 +51,6 @@ Express server with two routes (retained for admin/future use):
 - `POST /api/artifacts` — validates and inserts, returns id + share_token
 
 Backend Supabase client in `apps/backend/src/lib/supabase.js` uses `SUPABASE_URL` + `SUPABASE_SERVICE_KEY` (service role for admin ops). Schema in `apps/backend/schema.sql`.
-
-### ExperienceWindow (`apps/frontend/src/components/ExperienceWindow.jsx`)
-Full-bleed background image with Ken Burns zoom (20s cycle, scale 1.0→1.08). Cross-dissolve transitions between eras (600ms). Dark vignette overlay. Era label badge top-left. InfoCard slides up from bottom. Camera icon + close button top-right. ArtifactLayer count pill above InfoCard. EraDetail sheet on tap. CameraOverlay on camera button tap.
 
 ### EraDetail (`apps/frontend/src/components/EraDetail.jsx`)
 Swipe-up bottom sheet: header with era type pill, headline, full description, key events timeline, landscape description, future scenarios with animated confidence bars, sources.
@@ -53,7 +62,11 @@ Horizontal scrollable row of circular era nodes. Color-coded by era_type. Spring
 Full-screen "TIMELESS MOMENT" splash with tagline "A place in time." Staggered fade-in, cross-fade out after 2.5s.
 
 ### App Shell (`apps/frontend/src/App.jsx`)
-Root layout with mobile frame (max-w-390px). AnimatePresence: SplashScreen → GPSTrigger + LocationSelector → ExperienceWindow + TemporalRibbon. GPS dismissed on browse or location select.
+Root layout with mobile frame (max-w-390px). Flow: SplashScreen → Onboarding (first run) → GPSTrigger + LocationSelector → ExperienceWindow + TemporalRibbon. GPS dismissed on browse or location select.
+
+### Hooks
+- **useEraImage** (`hooks/useEraImage.js`): Three-tier image resolution: curated Wikimedia Commons (45 entries) → Unsplash API → Picsum seed fallback. Returns `{ url, credit, creditUrl }`.
+- **useGyroscope** (`hooks/useGyroscope.js`): Device orientation parallax. iOS permission via user gesture + localStorage. Desktop mouse fallback. Returns `{ tilt, supported, needsPermission, requestPermission }`.
 
 ### Store (`apps/frontend/src/store/useStore.js`)
 Zustand: locations, selectedLocation, setSelectedLocation, eras, selectedEra, setSelectedEra.
@@ -61,46 +74,53 @@ Zustand: locations, selectedLocation, setSelectedLocation, eras, selectedEra, se
 ### Styling (`apps/frontend/src/index.css`)
 Tailwind v4. Theme: background #0A0A0A, surface #141414, border #222222, past #C8860A, future #1E4D8C, present #F5F5F5. Fonts: Playfair Display + Inter.
 
-### useEraImage Hook (`apps/frontend/src/hooks/useEraImage.js`)
-Three-tier image resolution: curated Wikimedia Commons → Unsplash API (via `image_query`) → Picsum seed fallback. Returns `{ url, credit, creditUrl }`. Unsplash credit displayed bottom-right when present. Requires `VITE_UNSPLASH_ACCESS_KEY` for Unsplash tier (gracefully skipped if not set). 44 eras have curated images; remainder use Unsplash or Picsum.
-
 ### Config
 - Vite proxy: `/api` → `http://localhost:3001` for local dev
 - PostHog analytics integrated
 - Image fallback chain: curated → Unsplash API → Picsum → gradient
 
-## Commit History
-```
-4439801 feat: add Alamo location (21 total)
-76dcde4 feat: presence layer complete — GPS, camera, artifacts
-3b1b93e feat: I Was Here artifact layer
-5eca714 feat: camera then/now overlay
-ac03356 feat: GPS location trigger
-19fed83 feat: city-grouped LocationSelector
-ccb0c9e feat: 20 locations across 7 cities
-3593443 fix: move PostHog key to environment variable
-97c0aaa chore: add PostHog API key
-672cba2 feat: PostHog analytics
-7334d7d docs: update PROGRESS.md with session handoff
-a6f1071 fix: picsum seed images, reliable loading
-e563c97 fix: keyword-based era images
-a6f0890 feat: real curated Unsplash photos per era
-e12b4bf fix: splash centering + reliable image loading
-f43e66a chore: rename app to Timeless Moment
-8b10e6b feat: curated era images + splash screen
-31ffc62 fix: images and touch gestures for mobile
-de784ec fix: EraDetail scroll cutoff + safe area padding
-761d971 fix: use serve package for Railway static hosting
-2542daa fix: allow Railway host in Vite preview config
-93e9d50 docs: update PROGRESS.md with full session handoff
-00b5bfb fix: hooks order crash preventing image rendering
-19e9689 docs: clean up AGENTS.md trailing artifact
-0eb503f fix: image loading with picsum placeholder photos
-da565d4 feat: real SF content + location selector
-fe0ab6c feat: content package with real SF era data and LocationSelector
-2d1b5c4 feat: frontend scaffold v1
-69e4735 scaffold frontend with TemporalRibbon and ExperienceWindow
-f80dcdb repo skeleton
+## Supabase Tables Required
+
+The following tables must exist in Supabase for all features to work:
+
+```sql
+-- artifacts (already deployed)
+-- See apps/backend/schema.sql
+
+-- future_votes
+CREATE TABLE IF NOT EXISTS future_votes (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  era_id TEXT NOT NULL,
+  scenario_id TEXT NOT NULL,
+  device_id TEXT NOT NULL,
+  author_name TEXT NOT NULL DEFAULT 'Anonymous',
+  message TEXT,
+  UNIQUE(era_id, device_id)
+);
+ALTER TABLE future_votes ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "future_votes_select" ON future_votes FOR SELECT USING (true);
+CREATE POLICY "future_votes_insert" ON future_votes FOR INSERT WITH CHECK (true);
+CREATE POLICY "future_votes_update" ON future_votes FOR UPDATE USING (true);
+
+-- future_vote_tallies (view)
+CREATE OR REPLACE VIEW future_vote_tallies AS
+SELECT era_id, scenario_id, COUNT(*) as vote_count
+FROM future_votes
+GROUP BY era_id, scenario_id;
+
+-- pledges
+CREATE TABLE IF NOT EXISTS pledges (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  era_id TEXT NOT NULL,
+  device_id TEXT NOT NULL,
+  author_name TEXT NOT NULL DEFAULT 'Anonymous',
+  pledge_text TEXT NOT NULL
+);
+ALTER TABLE pledges ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "pledges_select" ON pledges FOR SELECT USING (true);
+CREATE POLICY "pledges_insert" ON pledges FOR INSERT WITH CHECK (length(pledge_text) <= 200);
 ```
 
 ## Environment Variables
@@ -116,27 +136,24 @@ f80dcdb repo skeleton
 - `SUPABASE_SERVICE_KEY` — Supabase service role key
 - `PORT` — Server port (default 3001)
 
-## Supabase (live)
-Schema deployed via `apps/backend/schema.sql`. Artifacts table with RLS: public SELECT, validated INSERT. Frontend uses anon key directly.
-
 ## What Next Session Should Tackle
 
-### Priority 1: Unsplash Key + More Curated Images
+### Priority 1: Deploy Supabase Tables
+- Run the SQL above in Supabase SQL editor to create `future_votes`, `future_vote_tallies`, and `pledges` tables
+- FutureVoting and pledge features will silently fail until tables exist
+
+### Priority 2: Unsplash Key + More Curated Images
 - Add `VITE_UNSPLASH_ACCESS_KEY` to Railway env vars (get free key at unsplash.com/developers)
-- 44 eras have curated Wikimedia images; Unsplash covers the rest when key is set
+- 45 eras have curated Wikimedia images; Unsplash covers the rest when key is set
 - Key gaps for manual curation: pre-photography eras (c.1500), future (2075)
 - AI-generated images for Alamo eras: see `docs/alamo-image-prompts.md`
 - CURATED map in `useEraImage.js` is easy to extend — just add era-id → URL entries
-
-### Priority 2: UX Refinements (was Priority 3)
 
 ### Priority 3: Lower Priority
 - Haptic feedback on ribbon scrub (if PWA)
 - Swipe left/right between eras
 - Location switching within experience
 - PWA manifest + service worker
-
 - Video support
-- Share artifact via share_token URL
 - Location search/filter
 - Offline mode
