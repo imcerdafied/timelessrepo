@@ -4730,6 +4730,289 @@
           ]
         }
       ]
+    },
+    {
+      "id": "alamo-stonevalley",
+      "name": "Alamo",
+      "city": "San Francisco",
+      "subtext": "Stone Valley Road, Alamo, CA",
+      "coordinates": {
+        "lat": 37.8521,
+        "lng": -122.0341
+      },
+      "tagline": "Rancho San Ramon was a million acres of cattle and oak. The suburb that replaced it is one of the wealthiest communities in California. The hills remember what was here before.",
+      "eras": [
+        {
+          "id": "alamo-1500",
+          "year_display": "c. 1500",
+          "label": "Bay Miwok Land",
+          "era_type": "past",
+          "image_query": "california hills,oak woodland,native,valley,nature",
+          "headline": "The Valley Between the Hills",
+          "description": "The San Ramon Valley — the broad inland valley between the Diablo Range to the east and the hills above Oakland to the west — was Bay Miwok territory, its communities living in the oak woodland and grassland that covered the valley floor and hillsides. The area around present-day Alamo was prime Bay Miwok habitat: the valley's reliable freshwater creeks, the dense stands of valley oak producing abundant acorns, the grasslands full of elk and pronghorn, and the mild inland climate that made year-round occupation comfortable. The Bay Miwok maintained permanent villages near reliable water sources, moving seasonally to gather food across a territory that extended from the bay to the inland valleys. Mount Diablo — visible from every part of the San Ramon Valley — was a sacred mountain, its summit used for ceremony and navigation across the region.",
+          "key_events": [
+            {
+              "year": "c. 500 CE",
+              "event": "Bay Miwok establish permanent villages along San Ramon Creek and its tributaries"
+            },
+            {
+              "year": "c. 1500",
+              "event": "San Ramon Valley supports a thriving Bay Miwok population estimated in the thousands"
+            },
+            {
+              "year": "1772",
+              "event": "Pedro Fages expedition crosses the valley — first Europeans to enter the San Ramon Valley"
+            },
+            {
+              "year": "1776",
+              "event": "Mission San Francisco de Asís established — Bay Miwok begin to be drawn into the mission system"
+            }
+          ],
+          "landscape": "The valley floor a mosaic of native bunchgrass and wildflower meadow, the creek corridors lined with sycamore, willow, and cottonwood. Valley oaks massive and ancient on the hillsides, their canopy shading the deer trails below. Mount Diablo to the east, its summit often visible above the hills. The air dry and warm in summer, the hills green after the winter rains. Tule elk moving through the grassland in herds.",
+          "sources": [
+            "Richard Levy, Bay Miwok in Handbook of North American Indians (1978)",
+            "Contra Costa County Historical Society, San Ramon Valley history",
+            "Alan Leventhal, Bay Miwok cultural geography research"
+          ]
+        },
+        {
+          "id": "alamo-1834",
+          "year_display": "1834",
+          "label": "Rancho San Ramon",
+          "era_type": "past",
+          "image_query": "california rancho,1830s,cattle,adobe,spanish",
+          "headline": "A Million Acres of Cattle",
+          "description": "In 1834, the Mexican government granted Rancho San Ramon — a vast land grant covering most of the San Ramon Valley — to Dolores Pacheco and later to Jose Maria Amador, a former soldier and mission mayordomo who became one of the most powerful rancheros in California. Amador's rancho was a cattle operation of enormous scale, its land stretching from the hills above Oakland across the entire valley to the slopes of Mount Diablo. The rancho economy was built on hide and tallow — cattle hides sold to Boston trading ships that became the basis for the leather goods trade, and rendered tallow for candles and soap. Richard Henry Dana's 'Two Years Before the Mast,' written in 1840, describes the California hide trade that made ranchos like San Ramon wealthy. The valley's creek-fed grasslands were ideal for the vast herds that rancho production required.",
+          "key_events": [
+            {
+              "year": "1834",
+              "event": "Rancho San Ramon granted — one of the largest land grants in the Bay Area"
+            },
+            {
+              "year": "1827-1850",
+              "event": "Jose Maria Amador operates the rancho — cattle herds numbering in the thousands"
+            },
+            {
+              "year": "1840",
+              "event": "Richard Henry Dana's 'Two Years Before the Mast' describes the California hide trade"
+            },
+            {
+              "year": "1848",
+              "event": "Treaty of Guadalupe Hidalgo — California transferred to the United States"
+            }
+          ],
+          "landscape": "The valley transformed by rancho cattle — the native bunchgrass grazed down and replaced by European annual grasses that would permanently change the valley's ecology. Adobe buildings at the rancho headquarters near the creek. Vast herds of cattle on the hillsides. The oak woodland still intact on the steeper slopes above the grazing land. The Camino del Valle running through the valley connecting the ranchos.",
+          "sources": [
+            "Richard Henry Dana, Two Years Before the Mast (1840)",
+            "Contra Costa County Historical Society rancho records",
+            "David Hornbeck, California Patterns (1983)"
+          ]
+        },
+        {
+          "id": "alamo-1856",
+          "year_display": "1856",
+          "label": "American Settlement",
+          "era_type": "past",
+          "image_query": "1850s,california,farmhouse,settlers,valley",
+          "headline": "The Settlers Arrive",
+          "description": "After California statehood in 1850, the San Ramon Valley attracted American settlers who purchased or squatted on former rancho land as the great Mexican land grants were broken up through litigation and debt. The community of Alamo — named by early settlers, possibly after the famous Texas mission — was established in the mid-1850s as a small farming and ranching center on the road between Martinez and San Jose. A school was established in 1852, one of the first in Contra Costa County. The Southern Pacific railroad bypassed the San Ramon Valley when it came through in 1891, running instead through the Livermore Pass, which meant the valley developed more slowly than the communities with rail access — a delay that preserved its rural character well into the 20th century.",
+          "key_events": [
+            {
+              "year": "1850",
+              "event": "California statehood — American settlers begin arriving in the San Ramon Valley"
+            },
+            {
+              "year": "1852",
+              "event": "First school established in Alamo — one of the earliest in Contra Costa County"
+            },
+            {
+              "year": "1856",
+              "event": "Alamo community established as a farming center on the valley road"
+            },
+            {
+              "year": "1891",
+              "event": "Southern Pacific bypasses the valley — rail goes through Livermore instead"
+            }
+          ],
+          "landscape": "The valley transitioning from rancho cattle to American mixed farming — wheat fields on the valley floor, orchards beginning on the lower hillsides, the oak woodland on the steeper slopes untouched. The dirt road through the valley connecting the small settlements. Mount Diablo still dominating the eastern horizon, its summit unchanged.",
+          "sources": [
+            "Contra Costa County Historical Society, Alamo settlement records",
+            "Elvi Moore, History of the San Ramon Valley (1977)",
+            "California Historical Society, Contra Costa County land records"
+          ]
+        },
+        {
+          "id": "alamo-1900",
+          "year_display": "1900s",
+          "label": "The Orchard Valley",
+          "era_type": "past",
+          "image_query": "1900s,orchard,california,rural,farming",
+          "headline": "Walnuts and Stone Fruit",
+          "description": "By the early 20th century, the San Ramon Valley had become a productive agricultural district of walnut orchards, stone fruit, and grain farming. The climate — hot dry summers, mild winters, reliable spring rains — was ideal for walnuts, and the valley's ranches converted thousands of acres from cattle grazing to orchard production. The walnut industry made the valley prosperous; the round hills that now carry expensive houses were then covered in orderly rows of walnut trees. Stone Valley Road — the route through Alamo that gave the community one of its landmark roads — was the main artery connecting the farms to the county road system. The valley's population was small, stable, and agricultural, its character closer to the 19th century rancho world than to the suburban Bay Area it would soon become.",
+          "key_events": [
+            {
+              "year": "1900-1930",
+              "event": "Walnut orchard expansion — thousands of acres converted from cattle to tree crops"
+            },
+            {
+              "year": "1914",
+              "event": "Improved road connections to Oakland begin opening the valley to outside commerce"
+            },
+            {
+              "year": "1920s",
+              "event": "Round Hill area farmed — the land that will become Alamo's most expensive real estate is walnut orchard"
+            },
+            {
+              "year": "1937",
+              "event": "Highway 21 (now Interstate 680 corridor) improves valley access"
+            }
+          ],
+          "landscape": "The valley floor covered in walnut orchards, their distinctive grey-barked trees in geometric rows on the flat ground. The hillsides above the orchards still largely open grassland, the oaks in the ravines. The creek running clear and seasonal through the orchard land. Mount Diablo visible above the orchard canopy on clear days. The smell of walnut husks in the fall harvest.",
+          "sources": [
+            "Contra Costa County Agricultural Commissioner records",
+            "Elvi Moore, History of the San Ramon Valley (1977)",
+            "California Walnut Growers Association historical records"
+          ]
+        },
+        {
+          "id": "alamo-1950",
+          "year_display": "1950s",
+          "label": "The Suburb Arrives",
+          "era_type": "past",
+          "image_query": "1950s,suburb,california,development,ranch house",
+          "headline": "The Orchards Come Down",
+          "description": "The postwar suburban expansion that transformed the Bay Area reached the San Ramon Valley in the late 1950s. The completion of State Route 21 (later Interstate 680) made the valley commutable to Oakland and San Francisco, and the walnut orchards began coming down in favor of ranch houses and subdivisions. Alamo's position — not incorporated as a city, remaining unincorporated Contra Costa County — meant development was less regulated than in neighboring Danville and Walnut Creek. The Round Hill Country Club, established in 1961, set the tone for what the valley was becoming: an affluent suburban retreat for Bay Area professionals who wanted more space, better schools, and a different kind of life than the cities offered. The Bay Miwok village, the rancho headquarters, the walnut orchard — each had left little visible trace by the time the swimming pools arrived.",
+          "key_events": [
+            {
+              "year": "1950s",
+              "event": "Postwar subdivision development begins — walnut orchards removed for housing tracts"
+            },
+            {
+              "year": "1956",
+              "event": "Interstate 680 corridor improvements accelerate valley commutability"
+            },
+            {
+              "year": "1961",
+              "event": "Round Hill Country Club established — the affluent suburban identity begins"
+            },
+            {
+              "year": "1960s",
+              "event": "Alamo's population grows rapidly — the agricultural community becomes a bedroom suburb"
+            }
+          ],
+          "landscape": "The valley in transformation — the walnut orchards being cleared one by one, the flat orchard land graded for ranch house subdivisions. The hills above still open. The creek now running through subdivision backyards rather than orchard rows. The school that had been the center of a farm community now serving the children of commuters.",
+          "sources": [
+            "Contra Costa County Planning Department historical records",
+            "Elvi Moore, History of the San Ramon Valley (1977)",
+            "SFGATE Bay Area suburban development history"
+          ]
+        },
+        {
+          "id": "alamo-1980",
+          "year_display": "1980s",
+          "label": "Silicon Valley's Bedroom",
+          "era_type": "past",
+          "image_query": "1980s,california,suburb,hills,affluent",
+          "headline": "The Tech Money Arrives",
+          "description": "The Silicon Valley technology boom of the 1980s sent money and families northward and eastward through the Bay Area as housing costs in Santa Clara County and the Peninsula became prohibitive. The San Ramon Valley — with its good schools, large lots, and relative affordability compared to Palo Alto or Los Altos — attracted engineers, managers, and executives from the technology industry. Alamo, the most rural and least developed of the valley communities, attracted the buyers who wanted the largest lots and the most privacy. The hills that had been walnut orchards a generation earlier were now being graded for the custom homes and gated communities that would define the community's character through the following decades. The commute — down the 680 to the 580 or across the hills on Crow Canyon — was long but the house was large.",
+          "key_events": [
+            {
+              "year": "1980s",
+              "event": "Silicon Valley boom sends tech families to the San Ramon Valley"
+            },
+            {
+              "year": "1982",
+              "event": "San Ramon incorporated — Alamo remains unincorporated, preserving its rural character"
+            },
+            {
+              "year": "1980s",
+              "event": "Custom home development accelerates on the Alamo hills"
+            },
+            {
+              "year": "1991",
+              "event": "Interstate 680 widening — commute corridor improved, accelerating growth"
+            }
+          ],
+          "landscape": "The hills above Alamo being graded for custom homes, the oaks preserved where required, removed where not. The valley floor fully suburban — the ranch houses of the 1950s and 60s now mature, their landscaping established. Las Trampas Regional Wilderness to the west the last intact landscape visible from the hilltop houses.",
+          "sources": [
+            "Contra Costa County assessor records",
+            "San Ramon Valley historical development data",
+            "Bay Area Council Economic Institute suburban growth studies"
+          ]
+        },
+        {
+          "id": "alamo-2001",
+          "year_display": "2001",
+          "label": "The Dot-Com Crash",
+          "era_type": "past",
+          "image_query": "2001,recession,california,suburb,quiet",
+          "headline": "When the Commute Stopped Making Sense",
+          "description": "The dot-com crash of 2000-2001 hit the San Ramon Valley in a specific way: the technology jobs that had sustained the commuter economy contracted, and the houses that had been purchased at peak prices suddenly carried mortgages that didn't match incomes. Alamo's real estate market — which had been among the most resilient in the Bay Area through earlier downturns — softened noticeably. But the structural factors that had made the valley attractive remained: the schools, the space, the Las Trampas hills visible from every backyard. The valley recovered faster than most of the Bay Area, and by 2005 the housing market had returned to its upward trajectory. The 2008 financial crisis brought a second, sharper correction, but the pattern held — Alamo's real estate declined less and recovered faster than comparable Bay Area communities.",
+          "key_events": [
+            {
+              "year": "2000-2001",
+              "event": "Dot-com crash — tech employment contracts, housing market softens"
+            },
+            {
+              "year": "2003-2006",
+              "event": "Recovery and new peak — Alamo median home price crosses $1 million"
+            },
+            {
+              "year": "2008",
+              "event": "Financial crisis — second correction, shallower and shorter than in lower-priced markets"
+            },
+            {
+              "year": "2012",
+              "event": "Full recovery — housing market resumes its upward trajectory"
+            }
+          ],
+          "landscape": "The suburb in quiet recession — the 'For Sale' signs on the large lots, the construction cranes less active on the hills. The Las Trampas wilderness unchanged above the subdivision rooflines. The creek, increasingly managed for flood control, running through the neighborhood parks.",
+          "sources": [
+            "Contra Costa County real estate records",
+            "Bay Area market data 2000-2012",
+            "SF Chronicle Bay Area housing coverage"
+          ]
+        },
+        {
+          "id": "alamo-2025",
+          "year_display": "2025",
+          "label": "Present Day",
+          "era_type": "present",
+          "image_query": "alamo california,hills,suburb,bay area,modern",
+          "headline": "One of the Wealthiest Zip Codes in California",
+          "description": "Alamo in 2025 is among the most affluent unincorporated communities in California — its median household income above $200,000, its median home value well above $2 million, its hills covered in custom homes with views of Mount Diablo and the Las Trampas ridge. The community has no city government — it remains unincorporated Contra Costa County — which has preserved its low-density, low-regulation character through decades of surrounding development. The walnut orchards are entirely gone; the Bay Miwok village sites are beneath subdivisions; the rancho adobe is a historical footnote. What remains is the geography: the same hills, the same valley, the same view of Mount Diablo that has been the constant reference point of every human community that has lived here for ten thousand years.",
+          "key_events": [],
+          "landscape": "Stone Valley Road running through the community, the hills above it carrying custom homes behind landscaped gates. The creek corridor preserved as a greenbelt through the neighborhood parks. Las Trampas Regional Wilderness visible to the west — the closest intact piece of the landscape the Bay Miwok knew. Mount Diablo to the east, unchanged, as it has always been.",
+          "sources": []
+        },
+        {
+          "id": "alamo-2075",
+          "year_display": "2075",
+          "label": "Futures",
+          "era_type": "future",
+          "image_query": "future,california,wildfire,drought,hills",
+          "headline": "The Fire Season",
+          "description": "The San Ramon Valley sits in the East Bay hills at the edge of the wildland-urban interface — the boundary between suburb and wildland where California's catastrophic fires have done their most devastating work. The Las Trampas hills above Alamo are the same fuel-dense chaparral and grassland that has burned repeatedly across the Bay Area.",
+          "landscape": "Either a community that has managed its relationship to the surrounding wildland — fire-resistant building codes, managed vegetation, insurance markets that still function — or one that has discovered what communities at the wildland-urban interface across California are discovering: that the hills that made the view are also the hills that carry the fire.",
+          "future_scenarios": [
+            {
+              "id": "managed-interface",
+              "label": "Managed Interface",
+              "sublabel": "The community adapts",
+              "description": "Stricter building codes, mandatory defensible space, and coordinated vegetation management have made Alamo genuinely fire-resistant. The Las Trampas wilderness is managed with prescribed burns that reduce fuel loads. The view of the hills is the same; the relationship to them is transformed. The community's affluence, which might have resisted change, instead funded the adaptation.",
+              "confidence": 0.44
+            },
+            {
+              "id": "fire-reckoning",
+              "label": "The Fire Reckoning",
+              "sublabel": "The hills burn",
+              "description": "A fire in the Las Trampas hills — driven by a late-season wind event after an extended drought — reaches the Alamo hillside homes. The pattern familiar from Paradise, from the Carr Fire, from the Oakland Hills in 1991 plays out in the San Ramon Valley. The valley floor survives; the hillside homes are the most exposed. Insurance has already become difficult to obtain. The reckoning that California has been postponing arrives in the zip code that thought it was safe.",
+              "confidence": 0.43
+            }
+          ],
+          "sources": []
+        }
+      ]
     }
   ]
 }
