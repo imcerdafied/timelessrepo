@@ -7,6 +7,7 @@ import ArtifactLayer from './ArtifactLayer'
 import CameraOverlay from './CameraOverlay'
 import EraDetail from './EraDetail'
 import FutureVoting from './FutureVoting'
+import ShareCard from './ShareCard'
 
 function oneSentence(text) {
   const match = text.match(/^(.*?[.!?])/)
@@ -37,6 +38,7 @@ export default function ExperienceWindow() {
   const [expanded, setExpanded] = useState(false)
   const [detailOpen, setDetailOpen] = useState(false)
   const [cameraOpen, setCameraOpen] = useState(false)
+  const [shareOpen, setShareOpen] = useState(false)
   const dragControls = useDragControls()
 
   const era = eras.find((e) => e.id === selectedEra)
@@ -153,6 +155,18 @@ export default function ExperienceWindow() {
 
       {/* Top right controls */}
       <div className="absolute right-4 top-4 z-20 flex items-center gap-2">
+        {/* Share button */}
+        <button
+          onClick={() => setShareOpen(true)}
+          className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-present/20 bg-surface/60 text-present/70 backdrop-blur-md transition-colors hover:bg-surface/80"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
+            <polyline points="16 6 12 2 8 6" />
+            <line x1="12" y1="2" x2="12" y2="15" />
+          </svg>
+        </button>
+        {/* Camera button */}
         <button
           onClick={() => setCameraOpen(true)}
           className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-present/20 bg-surface/60 text-present/70 backdrop-blur-md transition-colors hover:bg-surface/80"
@@ -162,6 +176,7 @@ export default function ExperienceWindow() {
             <circle cx="12" cy="13" r="4" />
           </svg>
         </button>
+        {/* Close button */}
         <button
           onClick={() => setSelectedLocation(null)}
           className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-present/20 bg-surface/60 text-present/70 backdrop-blur-md transition-colors hover:bg-surface/80"
@@ -342,6 +357,16 @@ export default function ExperienceWindow() {
       <AnimatePresence>
         {cameraOpen && <CameraOverlay onClose={() => setCameraOpen(false)} />}
       </AnimatePresence>
+
+      {/* Share card overlay */}
+      {shareOpen && (
+        <ShareCard
+          era={era}
+          locationName={locations.find((l) => l.id === selectedLocation)?.name}
+          imageUrl={imageUrl}
+          onClose={() => setShareOpen(false)}
+        />
+      )}
     </div>
   )
 }
