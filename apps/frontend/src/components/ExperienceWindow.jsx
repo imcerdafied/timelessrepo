@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence, motion, useDragControls } from 'framer-motion'
 import useStore from '../store/useStore'
 import { useEraImage } from '../hooks/useEraImage'
 import { useGyroscope } from '../hooks/useGyroscope'
@@ -7,9 +7,9 @@ import ArtifactLayer from './ArtifactLayer'
 import CameraOverlay from './CameraOverlay'
 import EraDetail from './EraDetail'
 
-function twoSentences(text) {
-  const match = text.match(/^(.*?[.!?])\s+(.*?[.!?])/)
-  return match ? match[1] + ' ' + match[2] : text.split('.')[0] + '.'
+function oneSentence(text) {
+  const match = text.match(/^(.*?[.!?])/)
+  return match ? match[1] : text.split('.')[0] + '.'
 }
 
 const eraColor = {
@@ -33,18 +33,21 @@ export default function ExperienceWindow() {
   const [imageLoaded, setImageLoaded] = useState(false)
   const [imageFailed, setImageFailed] = useState(false)
   const [prevEraId, setPrevEraId] = useState(null)
+  const [expanded, setExpanded] = useState(false)
   const [detailOpen, setDetailOpen] = useState(false)
   const [cameraOpen, setCameraOpen] = useState(false)
+  const dragControls = useDragControls()
 
   const era = eras.find((e) => e.id === selectedEra)
   const { url: imageUrl, credit, creditUrl } = useEraImage(era)
   const { tilt, needsPermission, requestPermission } = useGyroscope()
 
-  // Reset loading state when era changes
+  // Reset state when era changes
   if (era && era.id !== prevEraId) {
     setPrevEraId(era.id)
     setImageLoaded(false)
     setImageFailed(false)
+    setExpanded(false)
     setDetailOpen(false)
   }
 
@@ -72,7 +75,7 @@ export default function ExperienceWindow() {
         )}
       </AnimatePresence>
 
-      {/* Background image with Ken Burns + cross-dissolve + gyroscope parallax */}
+      {/* Background image — full bleed with Ken Burns + gyroscope parallax */}
       {!imageFailed && (
         <AnimatePresence mode="popLayout">
           <motion.div
@@ -109,12 +112,11 @@ export default function ExperienceWindow() {
         </AnimatePresence>
       )}
 
-      {/* Dark vignette overlay */}
+      {/* Bottom gradient — heavier at the bottom for text legibility */}
       <div
-        className="absolute inset-0"
+        className="absolute inset-0 pointer-events-none"
         style={{
-          background:
-            'radial-gradient(ellipse at center, transparent 40%, rgba(10,10,10,0.7) 100%), linear-gradient(to top, rgba(10,10,10,0.9) 0%, rgba(10,10,10,0.4) 35%, transparent 60%)',
+          background: 'linear-gradient(to top, rgba(10,10,10,0.85) 0%, rgba(10,10,10,0.4) 30%, transparent 55%)',
         }}
       />
 
@@ -124,7 +126,7 @@ export default function ExperienceWindow() {
           href={`${creditUrl}?utm_source=timeless_moment&utm_medium=referral`}
           target="_blank"
           rel="noopener noreferrer"
-          className="absolute bottom-2 right-2 z-[5] rounded bg-black/40 px-1.5 py-0.5 font-ui text-[9px] text-present/30 backdrop-blur-sm transition-colors hover:text-present/50"
+          className="absolute right-2 top-14 z-[5] rounded bg-black/40 px-1.5 py-0.5 font-ui text-[9px] text-present/30 backdrop-blur-sm transition-colors hover:text-present/50"
         >
           Photo by {credit}
         </a>
@@ -135,7 +137,7 @@ export default function ExperienceWindow() {
         {needsPermission && (
           <motion.button
             onClick={requestPermission}
-            className="absolute left-1/2 top-1/2 z-20 -translate-x-1/2 -translate-y-1/2 cursor-pointer rounded-full border border-past/30 bg-surface/80 px-4 py-2 backdrop-blur-md"
+            className="absolute left-1/2 top-[40%] z-20 -translate-x-1/2 cursor-pointer rounded-full border border-past/30 bg-surface/80 px-4 py-2 backdrop-blur-md"
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.9 }}
@@ -150,7 +152,6 @@ export default function ExperienceWindow() {
 
       {/* Top right controls */}
       <div className="absolute right-4 top-4 z-20 flex items-center gap-2">
-        {/* Camera button */}
         <button
           onClick={() => setCameraOpen(true)}
           className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-present/20 bg-surface/60 text-present/70 backdrop-blur-md transition-colors hover:bg-surface/80"
@@ -160,7 +161,6 @@ export default function ExperienceWindow() {
             <circle cx="12" cy="13" r="4" />
           </svg>
         </button>
-        {/* Back button */}
         <button
           onClick={() => setSelectedLocation(null)}
           className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-present/20 bg-surface/60 text-present/70 backdrop-blur-md transition-colors hover:bg-surface/80"
@@ -197,48 +197,132 @@ export default function ExperienceWindow() {
         </motion.div>
       </AnimatePresence>
 
-      {/* InfoCard — slides up from bottom, tap to expand. Hidden when detail sheet is open. */}
+      {/* Artifact count pill — floats above the bottom sheet */}
       <AnimatePresence>
-        {!detailOpen && (
+        {!expanded && !detailOpen && (
           <motion.div
-            key={era.id + '-info'}
-            className="absolute inset-x-0 bottom-0 z-10 px-5 pb-6"
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 20 }}
-            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+            className="absolute inset-x-0 z-10 flex justify-center"
+            style={{ bottom: '32%' }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
           >
-            {/* Artifact count pill */}
-            <div className="mb-3 flex justify-center">
-              <ArtifactLayer
-                era={era}
-                locationId={selectedLocation}
-                locationName={locations.find((l) => l.id === selectedLocation)?.name}
-                city={locations.find((l) => l.id === selectedLocation)?.city}
-              />
-            </div>
+            <ArtifactLayer
+              era={era}
+              locationId={selectedLocation}
+              locationName={locations.find((l) => l.id === selectedLocation)?.name}
+              city={locations.find((l) => l.id === selectedLocation)?.city}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
 
+      {/* Bottom sheet — peek state (headline + hint) or expanded (full text) */}
+      <motion.div
+        className="absolute inset-x-0 bottom-0 z-10"
+        style={{ touchAction: 'none' }}
+        animate={{ y: expanded ? '-45%' : 0 }}
+        transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+        drag="y"
+        dragControls={dragControls}
+        dragConstraints={{ top: 0, bottom: 0 }}
+        dragElastic={{ top: 0.3, bottom: 0.3 }}
+        dragListener={false}
+        onDragEnd={(_, info) => {
+          if (info.offset.y < -40 || info.velocity.y < -300) {
+            setExpanded(true)
+          } else if (info.offset.y > 40 || info.velocity.y > 300) {
+            setExpanded(false)
+          }
+        }}
+      >
+        {/* Drag handle */}
+        <div
+          className="flex cursor-grab justify-center pb-2 pt-2 active:cursor-grabbing"
+          onPointerDown={(e) => dragControls.start(e)}
+        >
+          <div className="h-1 w-8 rounded-full bg-present/25" />
+        </div>
+
+        <div
+          className="px-5 pb-5"
+          onClick={() => {
+            if (!expanded) setExpanded(true)
+          }}
+        >
+          <AnimatePresence mode="wait">
             <motion.div
-              className="cursor-pointer rounded-2xl border border-border bg-surface/90 p-5 backdrop-blur-xl shadow-lg shadow-black/30"
-              onClick={() => setDetailOpen(true)}
-              whileTap={{ scale: 0.98 }}
+              key={era.id + '-card'}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.25 }}
             >
               <h2 className="font-heading text-xl font-semibold leading-tight text-present">
                 {era.headline}
               </h2>
-              <p className="mt-2 font-ui text-sm leading-relaxed text-present/70">
-                {twoSentences(era.description)}
+              <p className={`mt-2 font-ui text-sm leading-relaxed text-present/70 ${expanded ? '' : 'line-clamp-2'}`}>
+                {expanded ? era.description : oneSentence(era.description)}
               </p>
-              <div className="mt-3 flex items-center gap-1.5 text-present/40">
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
-                  <path d="M6 2v8M2 6l4 4 4-4" />
-                </svg>
-                <span className="font-ui text-[11px] tracking-wide uppercase">Tap to explore</span>
+
+              {expanded && era.key_events && era.key_events.length > 0 && (
+                <motion.div
+                  className="mt-4"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.1 }}
+                >
+                  {era.key_events.slice(0, 3).map((evt, i) => (
+                    <div key={i} className="mt-2 flex gap-2">
+                      <span className="font-mono text-[10px] shrink-0" style={{ color: `${color}99` }}>
+                        {evt.year}
+                      </span>
+                      <span className="font-ui text-xs leading-relaxed text-present/50">
+                        {evt.event}
+                      </span>
+                    </div>
+                  ))}
+                </motion.div>
+              )}
+
+              {/* Action row */}
+              <div className="mt-3 flex items-center justify-between">
+                <div
+                  className="flex cursor-pointer items-center gap-1.5 text-present/40"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    if (expanded) {
+                      setDetailOpen(true)
+                      setExpanded(false)
+                    } else {
+                      setExpanded(true)
+                    }
+                  }}
+                >
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+                    <path d="M6 2v8M2 6l4 4 4-4" />
+                  </svg>
+                  <span className="font-ui text-[11px] tracking-wide uppercase">
+                    {expanded ? 'Full detail' : 'Tap to explore'}
+                  </span>
+                </div>
+                {expanded && (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      setExpanded(false)
+                    }}
+                    className="cursor-pointer font-ui text-[11px] tracking-wide text-present/30 uppercase transition-colors hover:text-present/50"
+                  >
+                    Collapse
+                  </button>
+                )}
               </div>
             </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          </AnimatePresence>
+        </div>
+      </motion.div>
 
       {/* Era Detail sheet */}
       <EraDetail
