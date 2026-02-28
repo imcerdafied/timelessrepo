@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import useStore from '../store/useStore'
 import { getImageUrl } from '../data/imageMap'
+import ArtifactLayer from './ArtifactLayer'
+import CameraOverlay from './CameraOverlay'
 import EraDetail from './EraDetail'
 
 function twoSentences(text) {
@@ -31,6 +33,7 @@ export default function ExperienceWindow() {
   const [imageFailed, setImageFailed] = useState(false)
   const [prevEraId, setPrevEraId] = useState(null)
   const [detailOpen, setDetailOpen] = useState(false)
+  const [cameraOpen, setCameraOpen] = useState(false)
 
   const era = eras.find((e) => e.id === selectedEra)
 
@@ -108,15 +111,28 @@ export default function ExperienceWindow() {
         }}
       />
 
-      {/* Back button — top right */}
-      <button
-        onClick={() => setSelectedLocation(null)}
-        className="absolute right-4 top-4 z-20 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-present/20 bg-surface/60 text-present/70 backdrop-blur-md transition-colors hover:bg-surface/80"
-      >
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
-          <path d="M11 3L3 11M3 3l8 8" />
-        </svg>
-      </button>
+      {/* Top right controls */}
+      <div className="absolute right-4 top-4 z-20 flex items-center gap-2">
+        {/* Camera button */}
+        <button
+          onClick={() => setCameraOpen(true)}
+          className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-present/20 bg-surface/60 text-present/70 backdrop-blur-md transition-colors hover:bg-surface/80"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+            <circle cx="12" cy="13" r="4" />
+          </svg>
+        </button>
+        {/* Back button */}
+        <button
+          onClick={() => setSelectedLocation(null)}
+          className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-present/20 bg-surface/60 text-present/70 backdrop-blur-md transition-colors hover:bg-surface/80"
+        >
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+            <path d="M11 3L3 11M3 3l8 8" />
+          </svg>
+        </button>
+      </div>
 
       {/* Era label + year — top left */}
       <AnimatePresence mode="wait">
@@ -155,6 +171,16 @@ export default function ExperienceWindow() {
             exit={{ opacity: 0, y: 20 }}
             transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
           >
+            {/* Artifact count pill */}
+            <div className="mb-3 flex justify-center">
+              <ArtifactLayer
+                era={era}
+                locationId={selectedLocation}
+                locationName={locations.find((l) => l.id === selectedLocation)?.name}
+                city={locations.find((l) => l.id === selectedLocation)?.city}
+              />
+            </div>
+
             <motion.div
               className="cursor-pointer rounded-2xl border border-border bg-surface/90 p-5 backdrop-blur-xl shadow-lg shadow-black/30"
               onClick={() => setDetailOpen(true)}
@@ -185,6 +211,11 @@ export default function ExperienceWindow() {
         color={color}
         locationName={locations.find((l) => l.id === selectedLocation)?.name}
       />
+
+      {/* Camera overlay */}
+      <AnimatePresence>
+        {cameraOpen && <CameraOverlay onClose={() => setCameraOpen(false)} />}
+      </AnimatePresence>
     </div>
   )
 }
