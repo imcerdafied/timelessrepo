@@ -30,6 +30,12 @@ export default function ArtifactLayer({ era, locationId, locationName, city }) {
   const dragControls = useDragControls()
   const coords = useGPS()
 
+  const closePanel = useCallback(() => {
+    setPanelOpen(false)
+    setFormOpen(false)
+    setSuccess(false)
+  }, [])
+
   const fetchArtifacts = useCallback(async () => {
     if (!locationId || !era?.id) return
     try {
@@ -80,7 +86,7 @@ export default function ArtifactLayer({ era, locationId, locationName, city }) {
         setMessage('')
         setEmoji('📍')
         await fetchArtifacts()
-        setTimeout(() => setSuccess(false), 2000)
+        setTimeout(() => setSuccess(false), 1500)
       }
     } catch {
       // Silent fail
@@ -110,15 +116,13 @@ export default function ArtifactLayer({ era, locationId, locationName, city }) {
       <AnimatePresence>
         {panelOpen && (
           <>
+            {/* Backdrop */}
             <motion.div
               className="absolute inset-0 z-30 bg-black/60"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              onClick={() => {
-                setPanelOpen(false)
-                setFormOpen(false)
-              }}
+              onClick={closePanel}
             />
 
             <motion.div
@@ -135,8 +139,7 @@ export default function ArtifactLayer({ era, locationId, locationName, city }) {
               dragListener={false}
               onDragEnd={(_, info) => {
                 if (info.offset.y > 100 || info.velocity.y > 500) {
-                  setPanelOpen(false)
-                  setFormOpen(false)
+                  closePanel()
                 }
               }}
             >
@@ -149,63 +152,93 @@ export default function ArtifactLayer({ era, locationId, locationName, city }) {
               </div>
 
               <div className="overflow-y-auto overscroll-contain px-5" style={{ maxHeight: 'calc(85vh - 24px)', paddingBottom: 'calc(1.5rem + env(safe-area-inset-bottom, 16px))' }}>
-                <h3 className="font-ui text-xs font-medium tracking-[0.2em] text-present/40 uppercase">
-                  Visitors — {era.year_display}
-                </h3>
+                {/* Header with title and close/back buttons */}
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    {formOpen && (
+                      <button
+                        onClick={() => setFormOpen(false)}
+                        className="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full text-present/40 transition-colors hover:text-present/60"
+                      >
+                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+                          <path d="M7.5 1.5L3 6l4.5 4.5" />
+                        </svg>
+                      </button>
+                    )}
+                    <h3 className="font-ui text-xs font-medium tracking-[0.2em] text-present/40 uppercase">
+                      {formOpen ? 'Leave Your Mark' : `Visitors — ${era.year_display}`}
+                    </h3>
+                  </div>
+                  <button
+                    onClick={closePanel}
+                    className="flex h-6 w-6 cursor-pointer items-center justify-center rounded-full text-present/40 transition-colors hover:text-present/60"
+                  >
+                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+                      <path d="M8 2L2 8M2 2l6 6" />
+                    </svg>
+                  </button>
+                </div>
 
                 {/* Success banner */}
                 <AnimatePresence>
                   {success && (
                     <motion.div
-                      className="mt-3 rounded-sm border border-past/30 bg-past/10 px-3 py-2"
+                      className="mt-3 flex items-center gap-2 rounded-sm border border-past/30 bg-past/10 px-3 py-2"
                       initial={{ opacity: 0, height: 0 }}
                       animate={{ opacity: 1, height: 'auto' }}
                       exit={{ opacity: 0, height: 0 }}
                     >
+                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#C8860A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M11.5 3.5L5.5 10 2.5 7" />
+                      </svg>
                       <span className="font-ui text-xs text-past">You were here.</span>
                     </motion.div>
                   )}
                 </AnimatePresence>
 
-                {/* Artifact list */}
-                {artifacts.length > 0 ? (
-                  <div className="mt-3 space-y-2">
-                    {artifacts.map((a) => (
-                      <div key={a.id} className="flex gap-3 rounded-sm border border-border bg-background/50 px-3 py-2.5">
-                        <span className="text-base">{a.emoji}</span>
-                        <div className="min-w-0 flex-1">
-                          <div className="flex items-baseline justify-between gap-2">
-                            <span className="font-ui text-xs font-medium text-present/80">
-                              {a.author_name}
-                            </span>
-                            <span className="shrink-0 font-mono text-[10px] text-present/25">
-                              {timeAgo(a.created_at)}
-                            </span>
+                {/* List view */}
+                {!formOpen && (
+                  <>
+                    {artifacts.length > 0 ? (
+                      <div className="mt-3 space-y-2">
+                        {artifacts.map((a) => (
+                          <div key={a.id} className="flex gap-3 rounded-sm border border-border bg-background/50 px-3 py-2.5">
+                            <span className="text-base">{a.emoji}</span>
+                            <div className="min-w-0 flex-1">
+                              <div className="flex items-baseline justify-between gap-2">
+                                <span className="font-ui text-xs font-medium text-present/80">
+                                  {a.author_name}
+                                </span>
+                                <span className="shrink-0 font-mono text-[10px] text-present/25">
+                                  {timeAgo(a.created_at)}
+                                </span>
+                              </div>
+                              {a.message && (
+                                <p className="mt-0.5 font-ui text-xs leading-relaxed text-present/50">
+                                  {a.message}
+                                </p>
+                              )}
+                            </div>
                           </div>
-                          {a.message && (
-                            <p className="mt-0.5 font-ui text-xs leading-relaxed text-present/50">
-                              {a.message}
-                            </p>
-                          )}
-                        </div>
+                        ))}
                       </div>
-                    ))}
-                  </div>
-                ) : (
-                  <p className="mt-4 font-ui text-xs text-present/30">
-                    No one has stood here yet. Be the first.
-                  </p>
+                    ) : (
+                      <p className="mt-4 font-ui text-xs text-present/30">
+                        No one has stood here yet. Be the first.
+                      </p>
+                    )}
+
+                    <button
+                      onClick={() => setFormOpen(true)}
+                      className="mt-4 w-full cursor-pointer rounded-sm border border-past/40 bg-past/15 py-3 font-ui text-xs font-medium tracking-[0.2em] text-past uppercase transition-colors hover:bg-past/25"
+                    >
+                      I Was Here
+                    </button>
+                  </>
                 )}
 
-                {/* I WAS HERE button / drop form */}
-                {!formOpen ? (
-                  <button
-                    onClick={() => setFormOpen(true)}
-                    className="mt-4 w-full cursor-pointer rounded-sm border border-past/40 bg-past/15 py-3 font-ui text-xs font-medium tracking-[0.2em] text-past uppercase transition-colors hover:bg-past/25"
-                  >
-                    I Was Here
-                  </button>
-                ) : (
+                {/* Form view */}
+                {formOpen && (
                   <motion.div
                     className="mt-4 space-y-3"
                     initial={{ opacity: 0, y: 8 }}
