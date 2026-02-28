@@ -85,6 +85,18 @@ Ambient soundscape system. Each era can have a looping MP3 soundscape that plays
 - See `docs/era-audio-prompts.md` for ElevenLabs generation prompts (all cities)
 - See `docs/generate-alamo-audio.sh` for batch generation script
 
+### Era Characters (`apps/frontend/src/data/era-characters.js`)
+Historical character chat system. After 90 seconds in an era, a notification pill appears: "Someone wants to speak with you." Tapping opens a character introduction (name, role, opening line), then a full chat interface. Conversation powered by Claude API via backend proxy. Characters are era-locked — they cannot know about events after their time.
+
+**Architecture:**
+- `era-characters.js` — `ERA_CHARACTERS` map (~65 characters across all cities) with name, role, accent, opening_line, system_prompt
+- `useDwellTime.js` hook — 90-second timer, resets on era change, dismissed once per session (`sessionStorage`)
+- `CharacterChat.jsx` — three-phase UI: notification pill → introduction card → full chat
+- `characterService.js` — frontend service, calls `/api/character/chat`
+- `apps/backend/src/routes/character.js` — Express route, proxies to Claude API (claude-sonnet-4-5) with era-locked system prompt
+- Requires `ANTHROPIC_API_KEY` in backend env vars
+- Phase 2 (not built): ElevenLabs TTS voice output, Web Speech API voice input. See `docs/character-voice-assignments.md`.
+
 ### Config
 - Vite proxy: `/api` → `http://localhost:3001` for local dev
 - PostHog analytics integrated
@@ -145,6 +157,7 @@ CREATE POLICY "pledges_insert" ON pledges FOR INSERT WITH CHECK (length(pledge_t
 **Backend:**
 - `SUPABASE_URL` — Supabase project URL
 - `SUPABASE_SERVICE_KEY` — Supabase service role key
+- `ANTHROPIC_API_KEY` — Anthropic API key (for era character chat)
 - `PORT` — Server port (default 3001)
 
 ## What Next Session Should Tackle

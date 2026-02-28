@@ -5,8 +5,11 @@ import { useEraImage } from '../hooks/useEraImage'
 import { useGyroscope } from '../hooks/useGyroscope'
 import { useEraAudio } from '../hooks/useEraAudio'
 import { audioService } from '../services/audioService'
+import { useDwellTime } from '../hooks/useDwellTime'
+import { ERA_CHARACTERS } from '../data/era-characters'
 import ArtifactLayer from './ArtifactLayer'
 import CameraOverlay from './CameraOverlay'
+import { CharacterChat } from './CharacterChat'
 import EraDetail from './EraDetail'
 import FutureVoting from './FutureVoting'
 import ShareCard from './ShareCard'
@@ -41,12 +44,20 @@ export default function ExperienceWindow() {
   const [detailOpen, setDetailOpen] = useState(false)
   const [cameraOpen, setCameraOpen] = useState(false)
   const [shareOpen, setShareOpen] = useState(false)
+  const [characterOpen, setCharacterOpen] = useState(false)
+  const [charDismissed, setCharDismissed] = useState(false)
   const dragControls = useDragControls()
 
   const era = eras.find((e) => e.id === selectedEra)
   const { url: imageUrl, credit, creditUrl } = useEraImage(era)
   const { tilt, needsPermission, requestPermission } = useGyroscope()
   const { audioEnabled, hasAudio, toggle: toggleAudio } = useEraAudio(era)
+  const hasCharacter = !!ERA_CHARACTERS[era?.id]
+  const { dwellMet, dismiss: dismissCharacter } = useDwellTime(
+    era?.id,
+    hasCharacter && !charDismissed
+  )
+  const showCharacterNotification = dwellMet && hasCharacter && !characterOpen && !charDismissed
 
   // Reset state when era changes
   if (era && era.id !== prevEraId) {
@@ -55,6 +66,8 @@ export default function ExperienceWindow() {
     setImageFailed(false)
     setExpanded(false)
     setDetailOpen(false)
+    setCharacterOpen(false)
+    setCharDismissed(false)
   }
 
   if (!era) return null
@@ -399,6 +412,20 @@ export default function ExperienceWindow() {
           onClose={() => setShareOpen(false)}
         />
       )}
+
+      {/* Character chat — appears after 90s dwell time */}
+      <AnimatePresence>
+        {(showCharacterNotification || characterOpen) && (
+          <CharacterChat
+            era={era}
+            onDismiss={() => {
+              setCharacterOpen(false)
+              setCharDismissed(true)
+              dismissCharacter()
+            }}
+          />
+        )}
+      </AnimatePresence>
     </div>
   )
 }

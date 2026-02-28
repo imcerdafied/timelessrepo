@@ -1,6 +1,7 @@
 import express from 'express'
 import cors from 'cors'
 import { createClient } from '@supabase/supabase-js'
+import characterRoutes from './src/routes/character.js'
 
 const app = express()
 const PORT = process.env.PORT || 3001
@@ -16,6 +17,9 @@ let supabase = null
 if (supabaseUrl && supabaseKey) {
   supabase = createClient(supabaseUrl, supabaseKey)
 }
+
+// Character chat — Claude API proxy
+app.use('/api/character', characterRoutes)
 
 // Health check
 app.get('/api/health', (_req, res) => {
