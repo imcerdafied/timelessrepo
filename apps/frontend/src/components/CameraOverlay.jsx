@@ -2,6 +2,7 @@ import { useState, useRef, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import useStore from '../store/useStore'
 import { useEraImage } from '../hooks/useEraImage'
+import { useGyroscope } from '../hooks/useGyroscope'
 
 const eraColor = {
   past: '#C8860A',
@@ -23,6 +24,7 @@ export default function CameraOverlay({ onClose }) {
 
   const era = eras.find((e) => e.id === selectedEra)
   const { url: imageUrl } = useEraImage(era)
+  const { tilt } = useGyroscope()
 
   useEffect(() => {
     let cancelled = false
@@ -106,16 +108,21 @@ export default function CameraOverlay({ onClose }) {
         autoPlay
       />
 
-      {/* Historical overlay image */}
+      {/* Historical overlay image with gyroscope parallax */}
       {imageUrl && (
         <div
-          className="absolute inset-0"
-          style={{ opacity }}
+          className="absolute overflow-hidden"
+          style={{ inset: '-8%', opacity }}
         >
           <img
             src={imageUrl}
             alt={era?.label}
             className="h-full w-full object-cover"
+            style={{
+              transform: `translate(${tilt.x * 0.4}px, ${tilt.y * 0.4}px)`,
+              transition: 'transform 0.1s ease-out',
+              willChange: 'transform',
+            }}
           />
         </div>
       )}

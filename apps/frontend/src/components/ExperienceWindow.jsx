@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import useStore from '../store/useStore'
 import { useEraImage } from '../hooks/useEraImage'
+import { useGyroscope } from '../hooks/useGyroscope'
 import ArtifactLayer from './ArtifactLayer'
 import CameraOverlay from './CameraOverlay'
 import EraDetail from './EraDetail'
@@ -37,6 +38,7 @@ export default function ExperienceWindow() {
 
   const era = eras.find((e) => e.id === selectedEra)
   const { url: imageUrl, credit, creditUrl } = useEraImage(era)
+  const { tilt, needsPermission, requestPermission } = useGyroscope()
 
   // Reset loading state when era changes
   if (era && era.id !== prevEraId) {
@@ -70,12 +72,13 @@ export default function ExperienceWindow() {
         )}
       </AnimatePresence>
 
-      {/* Background image with Ken Burns + cross-dissolve */}
+      {/* Background image with Ken Burns + cross-dissolve + gyroscope parallax */}
       {!imageFailed && (
         <AnimatePresence mode="popLayout">
           <motion.div
             key={era.id}
-            className="absolute inset-0"
+            className="absolute overflow-hidden"
+            style={{ inset: '-8%' }}
             initial={{ opacity: 0 }}
             animate={{ opacity: imageLoaded ? 1 : 0 }}
             exit={{ opacity: 0 }}
@@ -86,6 +89,11 @@ export default function ExperienceWindow() {
               alt={era.label}
               loading={isFirstEra ? 'eager' : 'lazy'}
               className="h-full w-full object-cover"
+              style={{
+                transform: `translate(${tilt.x * 0.4}px, ${tilt.y * 0.4}px)`,
+                transition: 'transform 0.1s ease-out',
+                willChange: 'transform',
+              }}
               initial={{ scale: 1.0 }}
               animate={{ scale: 1.08 }}
               transition={{
@@ -121,6 +129,24 @@ export default function ExperienceWindow() {
           Photo by {credit}
         </a>
       )}
+
+      {/* iOS gyroscope permission pill */}
+      <AnimatePresence>
+        {needsPermission && (
+          <motion.button
+            onClick={requestPermission}
+            className="absolute left-1/2 top-1/2 z-20 -translate-x-1/2 -translate-y-1/2 cursor-pointer rounded-full border border-past/30 bg-surface/80 px-4 py-2 backdrop-blur-md"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <span className="font-ui text-xs tracking-wide text-past">
+              Move through this era &rarr;
+            </span>
+          </motion.button>
+        )}
+      </AnimatePresence>
 
       {/* Top right controls */}
       <div className="absolute right-4 top-4 z-20 flex items-center gap-2">
