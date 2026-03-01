@@ -1,5 +1,6 @@
 import express from 'express'
 import cors from 'cors'
+import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import { createClient } from '@supabase/supabase-js'
@@ -110,12 +111,19 @@ app.all('/api/{*splat}', (req, res) => {
 
 // Serve frontend static build (must come AFTER all /api routes)
 const frontendDist = path.join(__dirname, '..', 'frontend', 'dist')
-app.use(express.static(frontendDist))
 
-// SPA catch-all: everything that isn't /api and isn't a static file gets index.html
-app.use((req, res) => {
-  res.sendFile(path.join(frontendDist, 'index.html'))
-})
+if (fs.existsSync(frontendDist)) {
+  console.log('Frontend dist found, serving static files')
+  app.use(express.static(frontendDist))
+  app.use((req, res) => {
+    res.sendFile(path.join(frontendDist, 'index.html'))
+  })
+} else {
+  console.error('WARNING: Frontend dist not found at', frontendDist)
+  app.use((req, res) => {
+    res.status(503).json({ error: 'Frontend not built', path: frontendDist })
+  })
+}
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)

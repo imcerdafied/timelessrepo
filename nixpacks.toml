@@ -1,11 +1,16 @@
 [phases.setup]
-nixPkgs = ["nodejs_22"]
+nixPkgs = ["nodejs_20"]
 
 [phases.install]
-cmds = ["cd apps/frontend && npm install --legacy-peer-deps", "cd apps/backend && npm install"]
+cmds = [
+  "cd apps/frontend && npm install --legacy-peer-deps",
+  "cd apps/backend && npm install"
+]
 
 [phases.build]
-cmds = ["cd apps/frontend && npm run build"]
+cmds = [
+  "cd apps/frontend && npm run build"
+]
 
 [start]
 cmd = "node apps/backend/server.js"
