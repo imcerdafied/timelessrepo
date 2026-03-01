@@ -8,4 +8,4 @@ cmds = ["cd apps/frontend && npm install --legacy-peer-deps", "cd apps/backend &
 cmds = ["cd apps/frontend && npm run build"]
 
 [start]
-cmd = "cd apps/backend && node server.js"
+cmd = "node apps/backend/server.js"
