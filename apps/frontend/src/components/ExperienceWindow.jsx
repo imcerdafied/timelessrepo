@@ -286,129 +286,143 @@ export default function ExperienceWindow() {
         )}
       </AnimatePresence>
 
-      {/* Bottom sheet — peek state or expanded full text */}
-      <motion.div
-        className="absolute inset-x-0 bottom-0 z-10"
-        style={{ touchAction: 'none' }}
-        animate={{ y: expanded ? '-55vh' : 0 }}
-        transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-        drag="y"
-        dragControls={dragControls}
-        dragConstraints={{ top: 0, bottom: 0 }}
-        dragElastic={{ top: 0.3, bottom: 0.3 }}
-        dragListener={false}
-        onDragEnd={(_, info) => {
-          if (info.offset.y < -40 || info.velocity.y < -300) {
-            setExpanded(true)
-          } else if (info.offset.y > 40 || info.velocity.y > 300) {
-            setExpanded(false)
-          }
-        }}
-        onTouchStart={(e) => { touchStartY.current = e.touches[0].clientY }}
-        onTouchEnd={(e) => {
-          if (touchStartY.current === null) return
-          const delta = touchStartY.current - e.changedTouches[0].clientY
-          if (delta > 40) setExpanded(true)
-          if (delta < -40) setExpanded(false)
-          touchStartY.current = null
-        }}
-      >
-        {/* Solid background when expanded for text legibility */}
-        {expanded && (
-          <div className="absolute inset-0 rounded-t-2xl bg-neutral-950/95" />
-        )}
-
-        {/* Drag handle — tappable to toggle */}
+      {/* Bottom sheet — peek state (inline) or expanded (fixed overlay) */}
+      {expanded ? (
         <div
-          className="relative flex cursor-grab flex-col items-center pb-1 pt-2 active:cursor-grabbing"
-          onPointerDown={(e) => dragControls.start(e)}
-          onClick={() => setExpanded(!expanded)}
+          style={{
+            position: 'fixed',
+            bottom: 0,
+            left: 0,
+            right: 0,
+            height: '85vh',
+            zIndex: 10,
+            backgroundColor: 'rgba(10,10,10,0.97)',
+            borderTopLeftRadius: 16,
+            borderTopRightRadius: 16,
+            display: 'flex',
+            flexDirection: 'column',
+          }}
         >
-          <div className="h-1 w-8 rounded-full bg-present/25" />
-          {!expanded && (
+          {/* Drag handle — tappable to collapse */}
+          <div
+            className="flex cursor-pointer flex-col items-center pb-1 pt-2"
+            onClick={() => setExpanded(false)}
+          >
+            <div className="h-1 w-8 rounded-full bg-present/25" />
+          </div>
+
+          {/* Scrollable content */}
+          <div style={{ flex: 1, overflowY: 'auto', padding: '0 20px 20px' }}>
+            <h2 className="font-heading text-xl font-semibold leading-tight text-present">
+              {era.headline}
+            </h2>
+            <p className="mt-2 font-ui text-sm leading-relaxed text-present/70">
+              {era.description}
+            </p>
+
+            {era.era_type === 'future' && (
+              <FutureVoting era={era} />
+            )}
+
+            {era.era_type !== 'future' && era.key_events && era.key_events.length > 0 && (
+              <div className="mt-4">
+                {era.key_events.slice(0, 3).map((evt, i) => (
+                  <div key={i} className="mt-2 flex gap-2">
+                    <span className="font-mono text-[10px] shrink-0" style={{ color: `${color}99` }}>
+                      {evt.year}
+                    </span>
+                    <span className="font-ui text-xs leading-relaxed text-present/50">
+                      {evt.event}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Action row */}
+            <div className="mt-3 flex items-center justify-between">
+              <div
+                className="flex cursor-pointer items-center gap-1.5 text-present/40"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  setDetailOpen(true)
+                  setExpanded(false)
+                }}
+              >
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+                  <path d="M6 2v8M2 6l4 4 4-4" />
+                </svg>
+                <span className="font-ui text-[11px] tracking-wide uppercase">
+                  Full detail
+                </span>
+              </div>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation()
+                  setExpanded(false)
+                }}
+                className="cursor-pointer font-ui text-[11px] tracking-wide text-present/30 uppercase transition-colors hover:text-present/50"
+              >
+                Collapse
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <motion.div
+          className="absolute inset-x-0 bottom-0 z-10"
+          style={{ touchAction: 'none' }}
+          drag="y"
+          dragControls={dragControls}
+          dragConstraints={{ top: 0, bottom: 0 }}
+          dragElastic={{ top: 0.3, bottom: 0.3 }}
+          dragListener={false}
+          onDragEnd={(_, info) => {
+            if (info.offset.y < -40 || info.velocity.y < -300) {
+              setExpanded(true)
+            }
+          }}
+          onTouchStart={(e) => { touchStartY.current = e.touches[0].clientY }}
+          onTouchEnd={(e) => {
+            if (touchStartY.current === null) return
+            const delta = touchStartY.current - e.changedTouches[0].clientY
+            if (delta > 40) setExpanded(true)
+            touchStartY.current = null
+          }}
+        >
+          {/* Drag handle — tappable to expand */}
+          <div
+            className="relative flex cursor-grab flex-col items-center pb-1 pt-2 active:cursor-grabbing"
+            onPointerDown={(e) => dragControls.start(e)}
+            onClick={() => setExpanded(true)}
+          >
+            <div className="h-1 w-8 rounded-full bg-present/25" />
             <span className="mt-1 font-ui text-[9px] tracking-wider text-present/20 uppercase">
               Swipe up to read
             </span>
-          )}
-        </div>
+          </div>
 
-        <div className={`relative px-5 pb-4 ${expanded ? 'max-h-[55vh] overflow-y-auto' : ''}`}>
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={era.id + '-card'}
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.25 }}
-            >
-              <h2 className="font-heading text-xl font-semibold leading-tight text-present">
-                {era.headline}
-              </h2>
-              <p className={`mt-2 font-ui text-sm leading-relaxed text-present/70 ${expanded ? '' : 'line-clamp-2'}`}>
-                {expanded ? era.description : oneSentence(era.description)}
-              </p>
-
-              {expanded && era.era_type === 'future' && (
-                <FutureVoting era={era} />
-              )}
-
-              {expanded && era.era_type !== 'future' && era.key_events && era.key_events.length > 0 && (
-                <motion.div
-                  className="mt-4"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.1 }}
-                >
-                  {era.key_events.slice(0, 3).map((evt, i) => (
-                    <div key={i} className="mt-2 flex gap-2">
-                      <span className="font-mono text-[10px] shrink-0" style={{ color: `${color}99` }}>
-                        {evt.year}
-                      </span>
-                      <span className="font-ui text-xs leading-relaxed text-present/50">
-                        {evt.event}
-                      </span>
-                    </div>
-                  ))}
-                </motion.div>
-              )}
-
-              {/* Action row */}
-              <div className="mt-3 flex items-center justify-between">
-                {expanded ? (
-                  <div
-                    className="flex cursor-pointer items-center gap-1.5 text-present/40"
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      setDetailOpen(true)
-                      setExpanded(false)
-                    }}
-                  >
-                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
-                      <path d="M6 2v8M2 6l4 4 4-4" />
-                    </svg>
-                    <span className="font-ui text-[11px] tracking-wide uppercase">
-                      Full detail
-                    </span>
-                  </div>
-                ) : (
-                  <div className="h-4" />
-                )}
-                {expanded && (
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      setExpanded(false)
-                    }}
-                    className="cursor-pointer font-ui text-[11px] tracking-wide text-present/30 uppercase transition-colors hover:text-present/50"
-                  >
-                    Collapse
-                  </button>
-                )}
-              </div>
-            </motion.div>
-          </AnimatePresence>
-        </div>
-      </motion.div>
+          <div className="relative px-5 pb-4">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={era.id + '-card'}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.25 }}
+              >
+                <h2 className="font-heading text-xl font-semibold leading-tight text-present">
+                  {era.headline}
+                </h2>
+                <p className="mt-2 font-ui text-sm leading-relaxed text-present/70 line-clamp-2">
+                  {oneSentence(era.description)}
+                </p>
+                <div className="mt-3 h-4" />
+              </motion.div>
+            </AnimatePresence>
+          </div>
+        </motion.div>
+      )}
 
       {/* Era Detail sheet */}
       <EraDetail

@@ -134,21 +134,47 @@ export function CharacterChat({ era, onDismiss }) {
   // Phase 3: Chat interface
   return (
     <motion.div
-      className="absolute inset-0 z-40 flex flex-col bg-black/95 backdrop-blur-md"
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        width: '100%',
+        boxSizing: 'border-box',
+        zIndex: 40,
+        display: 'flex',
+        flexDirection: 'column',
+        background: 'rgba(0,0,0,0.95)',
+        backdropFilter: 'blur(12px)',
+        WebkitBackdropFilter: 'blur(12px)',
+      }}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
-      {/* Header */}
-      <div className="flex items-center justify-between border-b border-white/10 p-4">
+      {/* Header with safe area */}
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          paddingTop: 'max(16px, env(safe-area-inset-top))',
+          paddingLeft: 16,
+          paddingRight: 16,
+          paddingBottom: 12,
+          borderBottom: '1px solid rgba(255,255,255,0.1)',
+          backgroundColor: '#000',
+        }}
+      >
         <button
           onClick={onDismiss}
-          className="flex cursor-pointer items-center gap-2 text-sm text-white/60"
+          style={{ display: 'flex', alignItems: 'center', gap: 8, background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(255,255,255,0.6)', fontSize: 14 }}
         >
           <span>&larr;</span>
           <span>Back to {era.label}</span>
         </button>
-        <span className="text-xs text-white/40">{character.name}, {era.year_display}</span>
+        <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)' }}>{character.name}, {era.year_display}</span>
       </div>
 
       {/* Messages */}
@@ -189,18 +215,38 @@ export function CharacterChat({ era, onDismiss }) {
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Input */}
+      {/* Input row */}
       <div
-        className="flex items-center gap-2 border-t border-white/10 bg-black"
+        role="search"
         style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 8,
           padding: '12px 16px',
           paddingRight: 'max(16px, env(safe-area-inset-right))',
           paddingBottom: 'max(16px, env(safe-area-inset-bottom))',
+          borderTop: '1px solid rgba(255,255,255,0.1)',
+          backgroundColor: '#000',
+          boxSizing: 'border-box',
+          width: '100%',
         }}
       >
         <input
-          style={{ flex: 1, minWidth: 0 }}
-          className="rounded-full bg-white/10 px-4 py-3 text-sm text-white outline-none placeholder:text-white/30"
+          type="text"
+          inputMode="text"
+          style={{
+            flex: 1,
+            minWidth: 0,
+            maxWidth: 'calc(100% - 60px)',
+            boxSizing: 'border-box',
+            borderRadius: 9999,
+            backgroundColor: 'rgba(255,255,255,0.1)',
+            padding: '12px 16px',
+            fontSize: 14,
+            color: '#fff',
+            outline: 'none',
+            border: 'none',
+          }}
           placeholder={`Ask ${character.name.split(' ')[0]} anything...`}
           value={input}
           onChange={e => setInput(e.target.value)}
@@ -213,12 +259,23 @@ export function CharacterChat({ era, onDismiss }) {
           data-lpignore="true"
         />
         <button
-          style={{ flexShrink: 0, width: 44, height: 44 }}
-          className="flex cursor-pointer items-center justify-center rounded-full bg-amber-600 disabled:opacity-30"
+          style={{
+            flexShrink: 0,
+            width: 44,
+            height: 44,
+            borderRadius: 9999,
+            backgroundColor: '#d97706',
+            border: 'none',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            opacity: loading || !input.trim() ? 0.3 : 1,
+          }}
           onClick={handleSend}
           disabled={loading || !input.trim()}
         >
-          <span className="text-lg leading-none text-white">&rarr;</span>
+          <span style={{ fontSize: 18, lineHeight: 1, color: '#fff' }}>&rarr;</span>
         </button>
       </div>
     </motion.div>
