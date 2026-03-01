@@ -103,13 +103,22 @@ app.post('/api/artifacts', async (req, res) => {
   res.json({ success: true, artifact: data })
 })
 
-// Serve frontend static build in production
+// Catch-all for unmatched /api routes (must come after all API registrations)
+app.all('/api/{*splat}', (req, res) => {
+  res.status(404).json({ error: 'API route not found', path: req.path })
+})
+
+// Serve frontend static build (must come AFTER all /api routes)
 const frontendDist = path.join(__dirname, '..', 'frontend', 'dist')
 app.use(express.static(frontendDist))
+
+// SPA catch-all: everything that isn't /api and isn't a static file gets index.html
 app.use((req, res) => {
   res.sendFile(path.join(frontendDist, 'index.html'))
 })
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
+  console.log(`API routes: /api/health, /api/character/chat, /api/character/test, /api/artifacts`)
+  console.log(`Frontend dist: ${frontendDist}`)
 })
