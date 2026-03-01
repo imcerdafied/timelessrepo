@@ -42,12 +42,13 @@ export function CharacterChat({ era, onDismiss }) {
         ...newMessages,
         { role: 'assistant', content: response }
       ])
-    } catch {
+    } catch (err) {
+      const errorMsg = err.message || 'Unknown error'
       setMessages([
         ...newMessages,
         {
           role: 'assistant',
-          content: "I'm sorry, I cannot hear you clearly just now."
+          content: `[Error: ${errorMsg}]`
         }
       ])
     } finally {

@@ -20,7 +20,7 @@ export async function sendCharacterMessage(
     })
   })
 
-  if (!response.ok) throw new Error('Character response failed')
   const data = await response.json()
+  if (!response.ok) throw new Error(data.detail || data.error || 'Character response failed')
   return data.response
 }

@@ -49,17 +49,35 @@ CRITICAL INSTRUCTIONS:
     const text = response.content[0]?.text || ''
     res.json({ response: text })
   } catch (err) {
-    console.error('Character chat error:', {
+    console.error('Character chat error:', JSON.stringify({
       message: err.message,
       status: err.status,
-      type: err.type,
-      code: err.code,
-      stack: err.stack,
+      error: err.error,
+      stack: err.stack
+    }))
+    res.status(500).json({
+      error: 'Character unavailable',
+      detail: err.message
     })
-    const isDev = process.env.NODE_ENV !== 'production'
-    res.status(err.status || 500).json({
-      error: isDev ? err.message : 'Character unavailable',
-      ...(isDev && { type: err.type, code: err.code }),
+  }
+})
+
+router.get('/test', async (req, res) => {
+  try {
+    const response = await client.messages.create({
+      model: 'claude-sonnet-4-6',
+      max_tokens: 50,
+      messages: [{ role: 'user', content: 'Say hello in one word.' }]
+    })
+    res.json({
+      success: true,
+      response: response.content[0].text
+    })
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      error: err.message,
+      status: err.status
     })
   }
 })
