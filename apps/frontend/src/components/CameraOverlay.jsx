@@ -1,31 +1,26 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import useStore from '../store/useStore'
 import { useEraImage } from '../hooks/useEraImage'
-import { useGyroscope } from '../hooks/useGyroscope'
-
-const eraColor = {
-  past: '#C8860A',
-  present: '#F5F5F5',
-  future: '#1E4D8C',
-}
 
 export default function CameraOverlay({ onClose }) {
   const eras = useStore((s) => s.eras)
   const selectedEra = useStore((s) => s.selectedEra)
-  const setSelectedEra = useStore((s) => s.setSelectedEra)
+  const selectedLocation = useStore((s) => s.selectedLocation)
+  const locations = useStore((s) => s.locations)
   const videoRef = useRef(null)
   const streamRef = useRef(null)
-  const sliderRef = useRef(null)
-  const [opacity, setOpacity] = useState(0.5)
+  const containerRef = useRef(null)
   const [cameraReady, setCameraReady] = useState(false)
   const [cameraError, setCameraError] = useState(false)
+  const [dividerX, setDividerX] = useState(0.5)
   const [dragging, setDragging] = useState(false)
 
   const era = eras.find((e) => e.id === selectedEra)
   const { url: imageUrl } = useEraImage(era)
-  const { tilt } = useGyroscope()
+  const locationName = locations.find((l) => l.id === selectedLocation)?.name
 
+  // Start camera
   useEffect(() => {
     let cancelled = false
 
@@ -61,12 +56,13 @@ export default function CameraOverlay({ onClose }) {
     }
   }, [])
 
-  const handleSliderMove = useCallback(
+  // Drag handlers for split divider
+  const handleMove = useCallback(
     (clientX) => {
-      if (!sliderRef.current) return
-      const rect = sliderRef.current.getBoundingClientRect()
-      const x = Math.max(0, Math.min(clientX - rect.left, rect.width))
-      setOpacity(x / rect.width)
+      if (!containerRef.current) return
+      const rect = containerRef.current.getBoundingClientRect()
+      const x = Math.max(0.05, Math.min((clientX - rect.left) / rect.width, 0.95))
+      setDividerX(x)
     },
     [],
   )
@@ -74,17 +70,17 @@ export default function CameraOverlay({ onClose }) {
   const onPointerDown = useCallback(
     (e) => {
       setDragging(true)
-      handleSliderMove(e.clientX)
+      handleMove(e.clientX)
       e.currentTarget.setPointerCapture(e.pointerId)
     },
-    [handleSliderMove],
+    [handleMove],
   )
 
   const onPointerMove = useCallback(
     (e) => {
-      if (dragging) handleSliderMove(e.clientX)
+      if (dragging) handleMove(e.clientX)
     },
-    [dragging, handleSliderMove],
+    [dragging, handleMove],
   )
 
   const onPointerUp = useCallback(() => {
@@ -99,120 +95,98 @@ export default function CameraOverlay({ onClose }) {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.3 }}
     >
-      {/* Camera feed */}
-      <video
-        ref={videoRef}
-        className="absolute inset-0 h-full w-full object-cover"
-        playsInline
-        muted
-        autoPlay
-      />
-
-      {/* Historical overlay image with gyroscope parallax */}
-      {imageUrl && (
-        <div
-          className="absolute overflow-hidden"
-          style={{ inset: '-8%', opacity }}
-        >
-          <img
-            src={imageUrl}
-            alt={era?.label}
-            className="h-full w-full object-cover"
-            style={{
-              transform: `translate(${tilt.x * 0.4}px, ${tilt.y * 0.4}px)`,
-              transition: 'transform 0.1s ease-out',
-              willChange: 'transform',
-            }}
-          />
-        </div>
-      )}
-
-      {/* Camera error fallback */}
-      {cameraError && (
-        <div className="absolute inset-0 flex items-center justify-center bg-surface">
-          <p className="font-ui text-sm text-present/40">Camera not available</p>
-        </div>
-      )}
-
-      {/* Top bar: era info + close */}
-      <div className="absolute inset-x-0 top-0 z-10 bg-gradient-to-b from-black/70 to-transparent px-5 pb-12 pt-[calc(env(safe-area-inset-top,16px)+8px)]">
-        <div className="flex items-start justify-between">
-          <div>
-            {era && (
-              <>
-                <span className="font-ui text-[10px] tracking-[0.2em] text-present/50 uppercase">
-                  {era.year_display}
-                </span>
-                <h2 className="mt-0.5 font-heading text-lg font-semibold text-present">
-                  {era.headline}
-                </h2>
-                <span
-                  className="mt-1 inline-block rounded-sm px-2 py-0.5 font-ui text-[10px] tracking-wider uppercase"
-                  style={{
-                    color: eraColor[era.era_type],
-                    backgroundColor: `${eraColor[era.era_type]}18`,
-                    border: `1px solid ${eraColor[era.era_type]}30`,
-                  }}
-                >
-                  {era.label}
-                </span>
-              </>
-            )}
-          </div>
-          <button
-            onClick={onClose}
-            className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-present/20 bg-surface/60 text-present/70 backdrop-blur-md"
+      {/* Full-screen container for split view */}
+      <div
+        ref={containerRef}
+        className="absolute inset-0 touch-none"
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+      >
+        {/* LEFT side: era historical image (clipped to divider) */}
+        {imageUrl && (
+          <div
+            className="absolute inset-0 overflow-hidden"
+            style={{ clipPath: `inset(0 ${(1 - dividerX) * 100}% 0 0)` }}
           >
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
-              <path d="M11 3L3 11M3 3l8 8" />
-            </svg>
-          </button>
-        </div>
-      </div>
+            <img
+              src={imageUrl}
+              alt={era?.label}
+              className="h-full w-full object-cover"
+            />
+          </div>
+        )}
 
-      {/* Era selector pills */}
-      <div className="absolute inset-x-0 top-[calc(env(safe-area-inset-top,16px)+100px)] z-10 overflow-x-auto px-5">
-        <div className="flex gap-2">
-          {eras.map((e) => (
-            <button
-              key={e.id}
-              onClick={() => setSelectedEra(e.id)}
-              className={`cursor-pointer whitespace-nowrap rounded-sm border px-2.5 py-1 font-mono text-[10px] transition-colors ${
-                e.id === selectedEra
-                  ? 'border-past/40 bg-past/20 text-past'
-                  : 'border-present/10 bg-black/40 text-present/40 backdrop-blur-sm'
-              }`}
-            >
-              {e.year_display}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Bottom controls: slider */}
-      <div className="absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-black/70 to-transparent px-5 pb-[calc(env(safe-area-inset-bottom,16px)+16px)] pt-12">
-        <div className="mb-2 flex justify-between font-ui text-[10px] tracking-[0.15em] text-present/40 uppercase">
-          <span>Live</span>
-          <span>Then</span>
-        </div>
+        {/* RIGHT side: camera feed (clipped from divider) */}
         <div
-          ref={sliderRef}
-          className="relative h-10 cursor-pointer touch-none rounded-sm border border-border bg-surface/30"
-          onPointerDown={onPointerDown}
-          onPointerMove={onPointerMove}
-          onPointerUp={onPointerUp}
+          className="absolute inset-0 overflow-hidden"
+          style={{ clipPath: `inset(0 0 0 ${dividerX * 100}%)` }}
         >
-          {/* Fill */}
-          <div
-            className="absolute inset-y-0 left-0 rounded-sm bg-past/20"
-            style={{ width: `${opacity * 100}%` }}
-          />
-          {/* Thumb */}
-          <div
-            className="absolute top-1/2 h-6 w-1 -translate-y-1/2 rounded-full bg-past shadow-lg"
-            style={{ left: `calc(${opacity * 100}% - 2px)` }}
+          <video
+            ref={videoRef}
+            className="h-full w-full object-cover"
+            playsInline
+            muted
+            autoPlay
           />
         </div>
+
+        {/* Camera error fallback */}
+        {cameraError && (
+          <div
+            className="absolute inset-0 flex items-center justify-center bg-surface"
+            style={{ clipPath: `inset(0 0 0 ${dividerX * 100}%)` }}
+          >
+            <p className="font-ui text-sm text-present/40">Camera not available</p>
+          </div>
+        )}
+
+        {/* Divider line + handle */}
+        <div
+          className="absolute inset-y-0 z-20"
+          style={{ left: `${dividerX * 100}%`, transform: 'translateX(-50%)' }}
+        >
+          {/* Vertical line */}
+          <div className="absolute inset-y-0 left-1/2 w-[2px] -translate-x-1/2 bg-white/60" />
+
+          {/* Drag handle circle */}
+          <div className="absolute left-1/2 top-1/2 flex h-10 w-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 border-white/80 bg-black/50 backdrop-blur-sm">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round">
+              <path d="M4 8H1M12 8h3M5 5L2 8l3 3M11 5l3 3-3 3" />
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom left: era label */}
+      <div
+        className="absolute bottom-0 left-0 z-30 bg-gradient-to-t from-black/60 to-transparent pb-[calc(env(safe-area-inset-bottom,16px)+16px)] pl-5 pr-20 pt-12"
+      >
+        <span className="font-ui text-[10px] tracking-[0.2em] text-past/80 uppercase">
+          {locationName}, {era?.year_display}
+        </span>
+      </div>
+
+      {/* Bottom right: LIVE indicator */}
+      <div
+        className="absolute bottom-0 right-0 z-30 pb-[calc(env(safe-area-inset-bottom,16px)+16px)] pr-5"
+      >
+        <span className="flex items-center gap-1.5 font-ui text-[10px] tracking-[0.2em] text-present/60 uppercase">
+          <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-red-500" />
+          Live
+        </span>
+      </div>
+
+      {/* Close button - top right */}
+      <div className="absolute right-4 top-[calc(env(safe-area-inset-top,16px)+8px)] z-30">
+        <button
+          onClick={onClose}
+          className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-present/20 bg-surface/60 text-present/70 backdrop-blur-md"
+        >
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+            <path d="M11 3L3 11M3 3l8 8" />
+          </svg>
+        </button>
       </div>
     </motion.div>
   )

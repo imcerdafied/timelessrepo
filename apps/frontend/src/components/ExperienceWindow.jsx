@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { AnimatePresence, motion, useDragControls } from 'framer-motion'
 import useStore from '../store/useStore'
 import { useEraImage } from '../hooks/useEraImage'
@@ -47,6 +47,7 @@ export default function ExperienceWindow() {
   const [characterOpen, setCharacterOpen] = useState(false)
   const [charDismissed, setCharDismissed] = useState(false)
   const dragControls = useDragControls()
+  const touchStartY = useRef(null)
 
   const era = eras.find((e) => e.id === selectedEra)
   const { url: imageUrl, credit, creditUrl } = useEraImage(era)
@@ -303,6 +304,14 @@ export default function ExperienceWindow() {
             setExpanded(false)
           }
         }}
+        onTouchStart={(e) => { touchStartY.current = e.touches[0].clientY }}
+        onTouchEnd={(e) => {
+          if (touchStartY.current === null) return
+          const delta = touchStartY.current - e.changedTouches[0].clientY
+          if (delta > 40) setExpanded(true)
+          if (delta < -40) setExpanded(false)
+          touchStartY.current = null
+        }}
       >
         {/* Solid background when expanded for text legibility */}
         {expanded && (
@@ -311,11 +320,16 @@ export default function ExperienceWindow() {
 
         {/* Drag handle — tappable to toggle */}
         <div
-          className="relative flex cursor-grab justify-center pb-2 pt-2 active:cursor-grabbing"
+          className="relative flex cursor-grab flex-col items-center pb-1 pt-2 active:cursor-grabbing"
           onPointerDown={(e) => dragControls.start(e)}
           onClick={() => setExpanded(!expanded)}
         >
           <div className="h-1 w-8 rounded-full bg-present/25" />
+          {!expanded && (
+            <span className="mt-1 font-ui text-[9px] tracking-wider text-present/20 uppercase">
+              Swipe up to read
+            </span>
+          )}
         </div>
 
         <div className={`relative px-5 pb-4 ${expanded ? 'max-h-[55vh] overflow-y-auto' : ''}`}>

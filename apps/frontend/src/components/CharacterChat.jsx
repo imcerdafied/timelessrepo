@@ -191,22 +191,34 @@ export function CharacterChat({ era, onDismiss }) {
 
       {/* Input */}
       <div
-        className="flex items-center gap-2 border-t border-white/10 p-4"
-        style={{ paddingBottom: 'max(1rem, env(safe-area-inset-bottom))' }}
+        className="flex items-center gap-2 border-t border-white/10 bg-black"
+        style={{
+          padding: '12px 16px',
+          paddingRight: 'max(16px, env(safe-area-inset-right))',
+          paddingBottom: 'max(16px, env(safe-area-inset-bottom))',
+        }}
       >
         <input
-          className="min-w-0 flex-1 rounded-full bg-white/10 px-4 py-3 text-sm text-white outline-none placeholder:text-white/30"
+          style={{ flex: 1, minWidth: 0 }}
+          className="rounded-full bg-white/10 px-4 py-3 text-sm text-white outline-none placeholder:text-white/30"
           placeholder={`Ask ${character.name.split(' ')[0]} anything...`}
           value={input}
           onChange={e => setInput(e.target.value)}
           onKeyDown={e => e.key === 'Enter' && handleSend()}
+          autoComplete="off"
+          autoCorrect="off"
+          autoCapitalize="off"
+          spellCheck="false"
+          data-form-type="other"
+          data-lpignore="true"
         />
         <button
+          style={{ flexShrink: 0, width: 44, height: 44 }}
+          className="flex cursor-pointer items-center justify-center rounded-full bg-amber-600 disabled:opacity-30"
           onClick={handleSend}
           disabled={loading || !input.trim()}
-          className="flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center rounded-full bg-amber-600 disabled:opacity-30"
         >
-          <span className="text-lg text-white">&rarr;</span>
+          <span className="text-lg leading-none text-white">&rarr;</span>
         </button>
       </div>
     </motion.div>
