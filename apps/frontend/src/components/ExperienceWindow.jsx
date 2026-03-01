@@ -66,6 +66,7 @@ export default function ExperienceWindow() {
     setImageFailed(false)
     setExpanded(false)
     setDetailOpen(false)
+    setCameraOpen(false)
     setCharacterOpen(false)
     setCharDismissed(false)
   }

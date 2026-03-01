@@ -47,7 +47,7 @@ export function CharacterChat({ era, onDismiss }) {
         ...newMessages,
         {
           role: 'assistant',
-          content: "I'm sorry — I cannot hear you clearly just now."
+          content: "I'm sorry, I cannot hear you clearly just now."
         }
       ])
     } finally {
@@ -140,18 +140,19 @@ export function CharacterChat({ era, onDismiss }) {
     >
       {/* Header */}
       <div className="flex items-center justify-between border-b border-present/10 p-4">
-        <div>
+        <button
+          onClick={onDismiss}
+          className="flex cursor-pointer items-center gap-1.5 rounded-lg border border-present/15 bg-present/[0.06] px-3 py-1.5 font-ui text-xs text-present/50 transition-colors hover:bg-present/10 hover:text-present/70"
+        >
+          <span className="text-sm">&larr;</span>
+          Back to {era.label}
+        </button>
+        <div className="text-right">
           <div className="font-ui text-xs tracking-widest text-past uppercase">
             {era.year_display}
           </div>
-          <div className="font-heading text-present">{character.name}</div>
+          <div className="font-heading text-sm text-present">{character.name}</div>
         </div>
-        <button
-          onClick={onDismiss}
-          className="cursor-pointer font-ui text-xl text-present/40 transition-colors hover:text-present/70"
-        >
-          &times;
-        </button>
       </div>
 
       {/* Messages */}
@@ -208,6 +209,20 @@ export function CharacterChat({ era, onDismiss }) {
             placeholder={`Ask ${character.name.split(' ')[0]} anything...`}
             className="flex-1 rounded-xl border border-present/15 bg-present/[0.08] px-4 py-3 font-ui text-sm text-present placeholder-present/30 focus:border-past/50 focus:outline-none"
           />
+          {/* Muted mic icon — voice coming soon */}
+          <button
+            onClick={() => {/* Voice input coming in Phase 2 */}}
+            className="flex h-[46px] w-10 shrink-0 cursor-default items-center justify-center rounded-xl border border-present/10 bg-present/[0.04]"
+            title="Voice coming soon"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-present/20">
+              <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
+              <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+              <line x1="12" y1="19" x2="12" y2="23" />
+              <line x1="8" y1="23" x2="16" y2="23" />
+              <line x1="1" y1="1" x2="23" y2="23" strokeWidth="2" />
+            </svg>
+          </button>
           <button
             onClick={handleSend}
             disabled={loading || !input.trim()}
@@ -217,7 +232,7 @@ export function CharacterChat({ era, onDismiss }) {
           </button>
         </div>
         <div className="mt-2 text-center font-ui text-xs text-present/20">
-          Speaking with {character.name} in {era.year_display}
+          Text only for now
         </div>
       </div>
     </motion.div>

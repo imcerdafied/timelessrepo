@@ -26,20 +26,20 @@ export default function TemporalRibbon() {
   const setSelectedEra = useStore((s) => s.setSelectedEra)
   const scrollRef = useRef(null)
 
+  const nodeRefs = useRef({})
+
   const scrollToNode = useCallback(
     (id, behavior = 'smooth') => {
-      const container = scrollRef.current
-      if (!container) return
-      const index = eras.findIndex((e) => e.id === id)
-      if (index === -1) return
-      const containerWidth = container.offsetWidth
-      const targetCenter = index * NODE_TOTAL + NODE_SIZE / 2
-      container.scrollTo({
-        left: targetCenter - containerWidth / 2,
-        behavior,
-      })
+      const node = nodeRefs.current[id]
+      if (node) {
+        node.scrollIntoView({
+          behavior,
+          inline: 'center',
+          block: 'nearest',
+        })
+      }
     },
-    [eras],
+    [],
   )
 
   useEffect(() => {
@@ -74,6 +74,7 @@ export default function TemporalRibbon() {
           return (
             <motion.button
               key={era.id}
+              ref={(el) => { nodeRefs.current[era.id] = el }}
               onClick={() => {
                 posthog.capture('era_selected', { era_id: era.id, era_label: era.label, era_type: era.era_type, location_id: useStore.getState().selectedLocation })
                 setSelectedEra(era.id)
