@@ -140,20 +140,15 @@ export function CharacterChat({ era, onDismiss }) {
       exit={{ opacity: 0 }}
     >
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-present/10 p-4">
+      <div className="flex items-center justify-between border-b border-white/10 p-4">
         <button
           onClick={onDismiss}
-          className="flex cursor-pointer items-center gap-1.5 rounded-lg border border-present/15 bg-present/[0.06] px-3 py-1.5 font-ui text-xs text-present/50 transition-colors hover:bg-present/10 hover:text-present/70"
+          className="flex cursor-pointer items-center gap-2 text-sm text-white/60"
         >
-          <span className="text-sm">&larr;</span>
-          Back to {era.label}
+          <span>&larr;</span>
+          <span>Back to {era.label}</span>
         </button>
-        <div className="text-right">
-          <div className="font-ui text-xs tracking-widest text-past uppercase">
-            {era.year_display}
-          </div>
-          <div className="font-heading text-sm text-present">{character.name}</div>
-        </div>
+        <span className="text-xs text-white/40">{character.name}, {era.year_display}</span>
       </div>
 
       {/* Messages */}
@@ -196,38 +191,23 @@ export function CharacterChat({ era, onDismiss }) {
 
       {/* Input */}
       <div
-        className="border-t border-present/10"
-        style={{
-          padding: '0.75rem 1rem',
-          paddingBottom: 'calc(0.75rem + env(safe-area-inset-bottom, 0px))',
-          paddingRight: 'calc(1rem + env(safe-area-inset-right, 0px))',
-        }}
+        className="flex items-center gap-2 border-t border-white/10 p-4"
+        style={{ paddingBottom: 'max(1rem, env(safe-area-inset-bottom))' }}
       >
-        <div className="flex items-center gap-2">
-          <input
-            type="text"
-            value={input}
-            onChange={e => setInput(e.target.value)}
-            onKeyDown={e => {
-              if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault()
-                handleSend()
-              }
-            }}
-            placeholder={`Ask ${character.name.split(' ')[0]} anything...`}
-            className="min-w-0 flex-1 rounded-xl border border-present/15 bg-present/[0.08] px-3 py-3 font-ui text-sm text-present placeholder-present/30 focus:border-past/50 focus:outline-none"
-          />
-          <button
-            onClick={handleSend}
-            disabled={loading || !input.trim()}
-            className="flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center rounded-xl bg-past font-ui text-sm font-medium text-background transition-colors duration-200 hover:bg-past/80 disabled:bg-present/10 disabled:text-present/30"
-          >
-            &rarr;
-          </button>
-        </div>
-        <div className="mt-1.5 text-center font-ui text-[10px] text-present/20">
-          Text only for now
-        </div>
+        <input
+          className="min-w-0 flex-1 rounded-full bg-white/10 px-4 py-3 text-sm text-white outline-none placeholder:text-white/30"
+          placeholder={`Ask ${character.name.split(' ')[0]} anything...`}
+          value={input}
+          onChange={e => setInput(e.target.value)}
+          onKeyDown={e => e.key === 'Enter' && handleSend()}
+        />
+        <button
+          onClick={handleSend}
+          disabled={loading || !input.trim()}
+          className="flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center rounded-full bg-amber-600 disabled:opacity-30"
+        >
+          <span className="text-lg text-white">&rarr;</span>
+        </button>
       </div>
     </motion.div>
   )
