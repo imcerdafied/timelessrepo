@@ -4747,7 +4747,7 @@
           "year_display": "c. 1500",
           "label": "Bay Miwok Land",
           "era_type": "past",
-          "image_query": "california oak woodland valley native landscape golden hills",
+          "image_query": "california oak woodland valley native landscape",
           "headline": "The Valley Between the Hills",
           "description": "The San Ramon Valley — the broad inland valley between the Diablo Range to the east and the hills above Oakland to the west — was Bay Miwok territory, its communities living in the oak woodland and grassland that covered the valley floor and hillsides. The area around present-day Alamo was prime Bay Miwok habitat: the valley's reliable freshwater creeks, the dense stands of valley oak producing abundant acorns, the grasslands full of elk and pronghorn, and the mild inland climate that made year-round occupation comfortable. The Bay Miwok maintained permanent villages near reliable water sources, moving seasonally to gather food across a territory that extended from the bay to the inland valleys. Mount Diablo — visible from every part of the San Ramon Valley — was a sacred mountain, its summit used for ceremony and navigation across the region.",
           "key_events": [
@@ -4879,7 +4879,7 @@
           "year_display": "1950s",
           "label": "The Suburb Arrives",
           "era_type": "past",
-          "image_query": "1950s,suburb,california,development,ranch house",
+          "image_query": "1950s california suburb ranch house tract homes",
           "headline": "The Orchards Come Down",
           "description": "The postwar suburban expansion that transformed the Bay Area reached the San Ramon Valley in the late 1950s. The completion of State Route 21 (later Interstate 680) made the valley commutable to Oakland and San Francisco, and the walnut orchards began coming down in favor of ranch houses and subdivisions. Alamo's position — not incorporated as a city, remaining unincorporated Contra Costa County — meant development was less regulated than in neighboring Danville and Walnut Creek. The Round Hill Country Club, established in 1961, set the tone for what the valley was becoming: an affluent suburban retreat for Bay Area professionals who wanted more space, better schools, and a different kind of life than the cities offered. The Bay Miwok village, the rancho headquarters, the walnut orchard — each had left little visible trace by the time the swimming pools arrived.",
           "key_events": [
@@ -4914,7 +4914,7 @@
           "era_type": "past",
           "image_query": "1980s,california,suburb,hills,affluent",
           "headline": "The Tech Money Arrives",
-          "description": "The Silicon Valley technology boom of the 1980s sent money and families northward and eastward through the Bay Area as housing costs in Santa Clara County and the Peninsula became prohibitive. The San Ramon Valley — with its good schools, large lots, and relative affordability compared to Palo Alto or Los Altos — attracted engineers, managers, and executives from the technology industry. Alamo, the most rural and least developed of the valley communities, attracted the buyers who wanted the largest lots and the most privacy. The hills that had been walnut orchards a generation earlier were now being graded for the custom homes and gated communities that would define the community's character through the following decades. The commute — down the 680 to the 580 or across the hills on Crow Canyon — was long but the house was large.",
+          "description": "The Silicon Valley technology boom of the 1980s sent money and families northward and eastward through the Bay Area as housing costs in Santa Clara County and the Peninsula became prohibitive. The San Ramon Valley, with its good schools, large lots, and relative affordability compared to Palo Alto or Los Altos, attracted engineers, managers, and executives from the technology industry. Alamo, the most rural and least developed of the valley communities, attracted the buyers who wanted the largest lots and the most privacy. The hills that had been walnut orchards a generation earlier were now being graded for the custom homes and gated communities that would define the community's character through the following decades. The commute down the 680 to the 580 or across the hills on Crow Canyon was long but the house was large.",
           "key_events": [
             {
               "year": "1980s",
@@ -4922,7 +4922,7 @@
             },
             {
               "year": "1982",
-              "event": "San Ramon incorporated — Alamo remains unincorporated, preserving its rural character"
+              "event": "San Ramon incorporated while Alamo remains unincorporated, preserving its rural character"
             },
             {
               "year": "1980s",
@@ -4930,10 +4930,10 @@
             },
             {
               "year": "1991",
-              "event": "Interstate 680 widening — commute corridor improved, accelerating growth"
+              "event": "Interstate 680 widening improves the commute corridor, accelerating growth"
             }
           ],
-          "landscape": "The hills above Alamo being graded for custom homes, the oaks preserved where required, removed where not. The valley floor fully suburban — the ranch houses of the 1950s and 60s now mature, their landscaping established. Las Trampas Regional Wilderness to the west the last intact landscape visible from the hilltop houses.",
+          "landscape": "The hills above Alamo being graded for custom homes, the oaks preserved where required, removed where not. The valley floor fully suburban, the ranch houses of the 1950s and 60s now mature, their landscaping established. Las Trampas Regional Wilderness to the west the last intact landscape visible from the hilltop houses.",
           "sources": [
             "Contra Costa County assessor records",
             "San Ramon Valley historical development data",
@@ -4945,28 +4945,28 @@
           "year_display": "2001",
           "label": "The Dot-Com Crash",
           "era_type": "past",
-          "image_query": "2001,recession,california,suburb,quiet",
+          "image_query": "empty california suburb quiet street for sale sign",
           "headline": "When the Commute Stopped Making Sense",
-          "description": "The dot-com crash of 2000-2001 hit the San Ramon Valley in a specific way: the technology jobs that had sustained the commuter economy contracted, and the houses that had been purchased at peak prices suddenly carried mortgages that didn't match incomes. Alamo's real estate market — which had been among the most resilient in the Bay Area through earlier downturns — softened noticeably. But the structural factors that had made the valley attractive remained: the schools, the space, the Las Trampas hills visible from every backyard. The valley recovered faster than most of the Bay Area, and by 2005 the housing market had returned to its upward trajectory. The 2008 financial crisis brought a second, sharper correction, but the pattern held — Alamo's real estate declined less and recovered faster than comparable Bay Area communities.",
+          "description": "The dot-com crash of 2000-2001 hit the San Ramon Valley in a specific way: the technology jobs that had sustained the commuter economy contracted, and the houses that had been purchased at peak prices suddenly carried mortgages that didn't match incomes. Alamo's real estate market, which had been among the most resilient in the Bay Area through earlier downturns, softened noticeably. But the structural factors that had made the valley attractive remained: the schools, the space, the Las Trampas hills visible from every backyard. The valley recovered faster than most of the Bay Area, and by 2005 the housing market had returned to its upward trajectory. The 2008 financial crisis brought a second, sharper correction, but the pattern held: Alamo's real estate declined less and recovered faster than comparable Bay Area communities.",
           "key_events": [
             {
               "year": "2000-2001",
-              "event": "Dot-com crash — tech employment contracts, housing market softens"
+              "event": "Dot-com crash: tech employment contracts, housing market softens"
             },
             {
               "year": "2003-2006",
-              "event": "Recovery and new peak — Alamo median home price crosses $1 million"
+              "event": "Recovery and new peak, Alamo median home price crosses $1 million"
             },
             {
               "year": "2008",
-              "event": "Financial crisis — second correction, shallower and shorter than in lower-priced markets"
+              "event": "Financial crisis brings a second correction, shallower and shorter than in lower-priced markets"
             },
             {
               "year": "2012",
-              "event": "Full recovery — housing market resumes its upward trajectory"
+              "event": "Full recovery as housing market resumes its upward trajectory"
             }
           ],
-          "landscape": "The suburb in quiet recession — the 'For Sale' signs on the large lots, the construction cranes less active on the hills. The Las Trampas wilderness unchanged above the subdivision rooflines. The creek, increasingly managed for flood control, running through the neighborhood parks.",
+          "landscape": "The suburb in quiet recession, the 'For Sale' signs on the large lots, the construction cranes less active on the hills. The Las Trampas wilderness unchanged above the subdivision rooflines. The creek, increasingly managed for flood control, running through the neighborhood parks.",
           "sources": [
             "Contra Costa County real estate records",
             "Bay Area market data 2000-2012",
@@ -4980,9 +4980,9 @@
           "era_type": "present",
           "image_query": "san ramon valley california mount diablo hills",
           "headline": "One of the Wealthiest Zip Codes in California",
-          "description": "Alamo in 2025 is among the most affluent unincorporated communities in California — its median household income above $200,000, its median home value well above $2 million, its hills covered in custom homes with views of Mount Diablo and the Las Trampas ridge. The community has no city government — it remains unincorporated Contra Costa County — which has preserved its low-density, low-regulation character through decades of surrounding development. The walnut orchards are entirely gone; the Bay Miwok village sites are beneath subdivisions; the rancho adobe is a historical footnote. What remains is the geography: the same hills, the same valley, the same view of Mount Diablo that has been the constant reference point of every human community that has lived here for ten thousand years.",
+          "description": "Alamo in 2025 is among the most affluent unincorporated communities in California, its median household income above $200,000, its median home value well above $2 million, its hills covered in custom homes with views of Mount Diablo and the Las Trampas ridge. The community has no city government. It remains unincorporated Contra Costa County, which has preserved its low-density, low-regulation character through decades of surrounding development. The walnut orchards are entirely gone; the Bay Miwok village sites are beneath subdivisions; the rancho adobe is a historical footnote. What remains is the geography: the same hills, the same valley, the same view of Mount Diablo that has been the constant reference point of every human community that has lived here for ten thousand years.",
           "key_events": [],
-          "landscape": "Stone Valley Road running through the community, the hills above it carrying custom homes behind landscaped gates. The creek corridor preserved as a greenbelt through the neighborhood parks. Las Trampas Regional Wilderness visible to the west — the closest intact piece of the landscape the Bay Miwok knew. Mount Diablo to the east, unchanged, as it has always been.",
+          "landscape": "Stone Valley Road running through the community, the hills above it carrying custom homes behind landscaped gates. The creek corridor preserved as a greenbelt through the neighborhood parks. Las Trampas Regional Wilderness visible to the west, the closest intact piece of the landscape the Bay Miwok knew. Mount Diablo to the east, unchanged, as it has always been.",
           "sources": []
         },
         {
@@ -4990,10 +4990,10 @@
           "year_display": "2075",
           "label": "Futures",
           "era_type": "future",
-          "image_query": "future,california,wildfire,drought,hills",
+          "image_query": "california wildfire smoke hills evacuation",
           "headline": "The Fire Season",
-          "description": "The San Ramon Valley sits in the East Bay hills at the edge of the wildland-urban interface — the boundary between suburb and wildland where California's catastrophic fires have done their most devastating work. The Las Trampas hills above Alamo are the same fuel-dense chaparral and grassland that has burned repeatedly across the Bay Area.",
-          "landscape": "Either a community that has managed its relationship to the surrounding wildland — fire-resistant building codes, managed vegetation, insurance markets that still function — or one that has discovered what communities at the wildland-urban interface across California are discovering: that the hills that made the view are also the hills that carry the fire.",
+          "description": "The San Ramon Valley sits in the East Bay hills at the edge of the wildland-urban interface, the boundary between suburb and wildland where California's catastrophic fires have done their most devastating work. The Las Trampas hills above Alamo are the same fuel-dense chaparral and grassland that has burned repeatedly across the Bay Area.",
+          "landscape": "Either a community that has managed its relationship to the surrounding wildland through fire-resistant building codes, managed vegetation, and insurance markets that still function, or one that has discovered what communities at the wildland-urban interface across California are discovering: that the hills that made the view are also the hills that carry the fire.",
           "future_scenarios": [
             {
               "id": "managed-interface",
@@ -5006,7 +5006,7 @@
               "id": "fire-reckoning",
               "label": "The Fire Reckoning",
               "sublabel": "The hills burn",
-              "description": "A fire in the Las Trampas hills — driven by a late-season wind event after an extended drought — reaches the Alamo hillside homes. The pattern familiar from Paradise, from the Carr Fire, from the Oakland Hills in 1991 plays out in the San Ramon Valley. The valley floor survives; the hillside homes are the most exposed. Insurance has already become difficult to obtain. The reckoning that California has been postponing arrives in the zip code that thought it was safe.",
+              "description": "A fire in the Las Trampas hills, driven by a late-season wind event after an extended drought, reaches the Alamo hillside homes. The pattern familiar from Paradise, from the Carr Fire, from the Oakland Hills in 1991 plays out in the San Ramon Valley. The valley floor survives; the hillside homes are the most exposed. Insurance has already become difficult to obtain. The reckoning that California has been postponing arrives in the zip code that thought it was safe.",
               "confidence": 0.43
             }
           ],

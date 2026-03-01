@@ -3,8 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion'
 
 const screens = [
   {
-    title: 'Every place has a story.',
-    body: 'Stand anywhere in the world and see what was here\u00a0\u2014 before you, before anyone you know, before memory itself.',
+    title: 'Every place exists across time.',
+    body: 'Stand anywhere in the world and see what was here. What came before you and before anyone you know. And what might come after you and anyone you know.',
   },
   {
     title: 'Move through time.',
@@ -66,7 +66,7 @@ export default function Onboarding({ onComplete }) {
     const deltaX = e.changedTouches[0].clientX - touchStartX.current
     touchStartX.current = null
     if (deltaX < -50) {
-      // Swipe left — advance
+      // Swipe left to advance
       if (screen.isFinal) {
         finish()
       } else {
@@ -160,7 +160,7 @@ export default function Onboarding({ onComplete }) {
             ))}
           </div>
 
-          {/* Begin button — only on final screen */}
+          {/* Begin button, only on final screen */}
           {screen.isFinal ? (
             <button
               onClick={(e) => {

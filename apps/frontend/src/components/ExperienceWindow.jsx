@@ -286,7 +286,7 @@ export default function ExperienceWindow() {
 
       {/* Bottom sheet — peek state (~140px) or expanded */}
       <motion.div
-        className="absolute inset-x-0 bottom-0 z-10"
+        className={`absolute inset-x-0 bottom-0 z-10 ${expanded ? 'bg-neutral-950/95' : ''}`}
         style={{ touchAction: 'none' }}
         animate={{ y: expanded ? '-55vh' : 0 }}
         transition={{ type: 'spring', stiffness: 300, damping: 30 }}
