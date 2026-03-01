@@ -2,10 +2,10 @@
 nixPkgs = ["nodejs_22"]
 
 [phases.install]
-cmds = ["cd apps/frontend && npm install --legacy-peer-deps"]
+cmds = ["cd apps/frontend && npm install --legacy-peer-deps", "cd apps/backend && npm install"]
 
 [phases.build]
 cmds = ["cd apps/frontend && npm run build"]
 
 [start]
-cmd = "cd apps/frontend && npm run preview"
+cmd = "cd apps/backend && node server.js"

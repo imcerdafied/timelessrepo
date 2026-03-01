@@ -2,4 +2,4 @@
 builder = "nixpacks"
 
 [deploy]
-startCommand = "cd apps/frontend && npm install && npm run build && npm run preview"
+startCommand = "cd apps/backend && node server.js"

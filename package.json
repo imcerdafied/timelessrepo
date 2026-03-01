@@ -1,7 +1,7 @@
 {
   "name": "timeless",
   "scripts": {
-    "build": "cd apps/frontend && npm install && npm run build",
-    "start": "cd apps/frontend && npm run preview"
+    "build": "cd apps/frontend && npm install --legacy-peer-deps && npm run build && cd ../backend && npm install",
+    "start": "cd apps/backend && node server.js"
   }
 }

@@ -1,8 +1,11 @@
 import express from 'express'
 import cors from 'cors'
+import path from 'path'
+import { fileURLToPath } from 'url'
 import { createClient } from '@supabase/supabase-js'
 import characterRoutes from './src/routes/character.js'
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const app = express()
 const PORT = process.env.PORT || 3001
 
@@ -100,6 +103,13 @@ app.post('/api/artifacts', async (req, res) => {
   res.json({ success: true, artifact: data })
 })
 
+// Serve frontend static build in production
+const frontendDist = path.join(__dirname, '..', 'frontend', 'dist')
+app.use(express.static(frontendDist))
+app.use((req, res) => {
+  res.sendFile(path.join(frontendDist, 'index.html'))
+})
+
 app.listen(PORT, () => {
-  console.log(`Backend running on port ${PORT}`)
+  console.log(`Server running on port ${PORT}`)
 })
