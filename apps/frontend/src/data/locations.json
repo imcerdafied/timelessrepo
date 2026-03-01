@@ -5013,6 +5013,1130 @@
           "sources": []
         }
       ]
+    },
+    {
+      "id": "tokyo-shinjuku",
+      "name": "Shinjuku",
+      "subtext": "Shinjuku, Tokyo",
+      "city": "Tokyo",
+      "coordinates": {
+        "lat": 35.6938,
+        "lng": 139.7034
+      },
+      "tagline": "From feudal highway station to neon canyon, Shinjuku is the perpetual crossroads of Tokyo.",
+      "eras": [
+        {
+          "id": "tokyo-shinjuku-1500",
+          "year_display": "c. 1500",
+          "label": "Musashi Province",
+          "era_type": "past",
+          "image_query": "japan,forest,shrine,ancient,peaceful",
+          "headline": "A Station on the Old Road",
+          "description": "Before Shinjuku was a district, it was forest. The Musashino Plain stretched west from Edo Bay, covered in dense zelkova and oak. Small Shinto shrines marked the crossroads where paths led toward the mountains. Farmers worked terraced paddies along streams that would one day be buried under concrete. The land belonged to no one in the way modern cities understand ownership. It simply was, shaped by seasons and the slow rhythm of rice cultivation.",
+          "key_events": [
+            {
+              "year": "c. 1100",
+              "event": "Settlements established along the Koshu Kaido highway route"
+            },
+            {
+              "year": "1398",
+              "event": "Suwa Shrine founded in what is now Shinjuku"
+            },
+            {
+              "year": "1468",
+              "event": "Ota Dokan builds Edo Castle, transforming the region's political geography"
+            }
+          ],
+          "landscape": "Dense deciduous forest of zelkova, oak, and Japanese cedar. Clear streams flowing east toward the bay. Terraced rice paddies in the valleys. The air smelled of pine resin and wet earth. Mount Fuji visible on clear days, impossibly close.",
+          "sources": [
+            "Hidenobu Jinnai, Tokyo: A Spatial Anthropology (1995)",
+            "Shinjuku Historical Museum archives"
+          ]
+        },
+        {
+          "id": "tokyo-shinjuku-1698",
+          "year_display": "1698",
+          "label": "Edo Post Station",
+          "era_type": "past",
+          "image_query": "edo,japan,historical,woodblock,town",
+          "headline": "Naitō Shinjuku, the New Station",
+          "description": "In 1698, Shinjuku was officially designated as the first post station on the Koshu Kaido, the highway connecting Edo to the provinces. Naitō Shinjuku, named for the daimyo whose estate bordered it, became a rest stop for travelers: tea houses, inns, stables, and the inevitable pleasure quarters. The station served samurai on official business, merchants hauling goods, and pilgrims heading to mountain temples. The population was small but cosmopolitan in its way, shaped by the constant flow of strangers.",
+          "key_events": [
+            {
+              "year": "1698",
+              "event": "Naitō Shinjuku established as official post station on the Koshu Kaido"
+            },
+            {
+              "year": "1699",
+              "event": "Tea houses and inns begin operating along the highway"
+            },
+            {
+              "year": "1718",
+              "event": "Station temporarily closed due to moral concerns about the pleasure quarters, reopened 1772"
+            }
+          ],
+          "landscape": "A long street of wooden buildings, two stories, paper screens glowing at night. Horse stables, the smell of rice and miso. Beyond the station, Edo stretched east in a vast grid of canals and bridges. The highway ran west into forest and farms.",
+          "sources": [
+            "Constantine Vaporis, Breaking Barriers: Travel and the State in Early Modern Japan (1994)",
+            "Shinjuku Ward History Project"
+          ]
+        },
+        {
+          "id": "tokyo-shinjuku-1868",
+          "year_display": "1868",
+          "label": "Meiji Restoration",
+          "era_type": "past",
+          "image_query": "tokyo,meiji,japan,1870s,modernization,railway",
+          "headline": "The Train Arrives",
+          "description": "The Meiji Restoration of 1868 transformed Japan from a feudal society to an industrializing nation in a single generation. For Shinjuku, the decisive moment came in 1885 when the railway station opened, connecting the old highway post town to the new rail network. The train replaced the horse. The station replaced the inn. Shinjuku began its transformation from rural way station to urban junction. The old Naitō estate became Shinjuku Gyoen garden. Western-style buildings appeared alongside traditional wooden structures. Japan was remaking itself, and Shinjuku was remaking itself with it.",
+          "key_events": [
+            {
+              "year": "1868",
+              "event": "Meiji Restoration ends 250 years of Tokugawa rule; Japan begins rapid modernization"
+            },
+            {
+              "year": "1885",
+              "event": "Shinjuku station opens on the Nippon Railway; the post town becomes a rail junction"
+            },
+            {
+              "year": "1906",
+              "event": "Shinjuku Gyoen opens as a public garden on the former Naitō estate"
+            }
+          ],
+          "landscape": "The new station, a modest wooden structure, surrounded by fields that would soon be streets. Telegraph poles along the railway line. Horse-drawn carriages alongside the new rail tracks. The old post town buildings, some converted to new uses, others abandoned. In the distance, the expanding city of Tokyo creeping westward.",
+          "sources": [
+            "Edward Seidensticker, Low City, High City (1983)",
+            "Hidenobu Jinnai, Tokyo: A Spatial Anthropology (1995)"
+          ]
+        },
+        {
+          "id": "tokyo-shinjuku-1923",
+          "year_display": "1923",
+          "label": "Great Kanto Earthquake",
+          "era_type": "past",
+          "image_query": "tokyo,earthquake,1923,destruction,japan,historical",
+          "headline": "The Ground Opens",
+          "description": "On September 1, 1923, a magnitude 7.9 earthquake struck the Kanto Plain. In central Tokyo, fires swept through the dense wooden neighborhoods, killing over 100,000 people. But western Shinjuku, with its newer construction and wider streets, survived relatively intact. In the aftermath, tens of thousands of refugees fled west from the burning city center to Shinjuku. The disaster permanently shifted Tokyo's center of gravity westward. Shinjuku station, already an important rail junction, became the gateway to the new Tokyo.",
+          "key_events": [
+            {
+              "year": "1923",
+              "event": "Great Kanto Earthquake destroys central Tokyo; Shinjuku survives and becomes refugee center"
+            },
+            {
+              "year": "1924",
+              "event": "Reconstruction begins with wider streets and fireproof buildings"
+            },
+            {
+              "year": "1925",
+              "event": "Shinjuku station becomes the busiest in the western suburbs as population shifts"
+            }
+          ],
+          "landscape": "Rubble and ash to the east, where fires burned for days. In Shinjuku, intact buildings and parks became refugee camps. Tent cities along the rail lines. The smell of smoke drifting from the old city. New wooden shacks rising among the permanent buildings.",
+          "sources": [
+            "J. Charles Schencking, The Great Kanto Earthquake and the Chimera of National Reconstruction (2013)",
+            "Edward Seidensticker, Tokyo Rising (1990)"
+          ]
+        },
+        {
+          "id": "tokyo-shinjuku-1945",
+          "year_display": "1945",
+          "label": "Occupation Black Market",
+          "era_type": "past",
+          "image_query": "tokyo,postwar,1945,ruins,japan,occupation",
+          "headline": "The Market in the Ruins",
+          "description": "By August 1945, American firebombing had destroyed most of Tokyo. Shinjuku station still stood, and around it grew one of the largest black markets in Japan. The yamiichi operated in plain sight: rice, cigarettes, American chocolate, penicillin, clothing, tools, anything needed to survive. Japanese police could not control it; American occupation forces largely ignored it, understanding that without the black markets, people would starve. The markets were dangerous, essential, and strangely democratic, a place where former soldiers, housewives, Korean laborers, and yakuza traded side by side.",
+          "key_events": [
+            {
+              "year": "March 1945",
+              "event": "Firebombing raids destroy much of Tokyo; Shinjuku station area partially survives"
+            },
+            {
+              "year": "August 1945",
+              "event": "Japan surrenders; American occupation begins"
+            },
+            {
+              "year": "September 1945",
+              "event": "Black markets emerge around Shinjuku station within weeks of surrender"
+            },
+            {
+              "year": "1946",
+              "event": "An estimated 45,000 stalls operate in Tokyo's black markets"
+            }
+          ],
+          "landscape": "Vast fields of rubble stretching to the horizon, broken only by a few concrete buildings and the station. Around the station, a chaotic sprawl of wooden stalls, canvas tents, and improvised shops. The smell of grilling sweet potatoes, cigarette smoke, and the chemical tang of American DDT. GIs in jeeps. Japanese in worn clothing, carrying bundles.",
+          "sources": [
+            "John Dower, Embracing Defeat: Japan in the Wake of World War II (1999)",
+            "Mark Gayn, Japan Diary (1948)"
+          ]
+        },
+        {
+          "id": "tokyo-shinjuku-1968",
+          "year_display": "1968",
+          "label": "Student Revolution",
+          "era_type": "past",
+          "image_query": "tokyo,protest,1968,students,japan,demonstration",
+          "headline": "The Year Everything Burned",
+          "description": "In 1968, Japan erupted. Student radicals of the Zengakuren movement occupied universities, battled riot police with wooden staves and Molotov cocktails, and transformed Shinjuku into a battleground. On October 21, International Anti-War Day, thousands of students occupied Shinjuku station, stopping all train service. The riot police responded with tear gas and mass arrests. Folk singers gathered in the station plaza nightly, drawing crowds that blurred the line between audience and protest. For a brief, incandescent moment, Shinjuku was the center of Japanese counterculture.",
+          "key_events": [
+            {
+              "year": "January 1968",
+              "event": "Zengakuren students occupy universities across Tokyo"
+            },
+            {
+              "year": "June 1968",
+              "event": "Shinjuku Folk Guerrilla concerts begin in the station plaza"
+            },
+            {
+              "year": "October 1968",
+              "event": "International Anti-War Day: students occupy Shinjuku station, 743 arrested"
+            },
+            {
+              "year": "1969",
+              "event": "Riot police storm Yasuda Auditorium at Tokyo University, ending the occupation"
+            }
+          ],
+          "landscape": "Shinjuku's neon signs reflecting off riot shields. Tear gas drifting across the station plaza. Students in helmets, towels over their faces. The sound of wooden staves hitting shields. Folk guitars in the underpass. The energy of a city that has decided, for one evening, to be ungovernable.",
+          "sources": [
+            "William Marotti, Money, Trains, and Guillotines: Art and Revolution in 1960s Japan (2013)",
+            "Stuart Dowsey, Zengakuren: Japan's Revolutionary Students (1970)"
+          ]
+        },
+        {
+          "id": "tokyo-shinjuku-1988",
+          "year_display": "1988",
+          "label": "Bubble Economy",
+          "era_type": "past",
+          "image_query": "tokyo,neon,1980s,shinjuku,night,japan,city",
+          "headline": "The City That Never Sleeps",
+          "description": "At the peak of Japan's bubble economy, the land beneath the Imperial Palace was theoretically worth more than all of California. Shinjuku was the epicenter of this delirium: the Kabukicho entertainment district, the tallest skyscrapers in Asia, and the busiest train station on Earth (3.5 million passengers daily). Salary men drank until the last train, then slept in capsule hotels. Hostess clubs charged $500 for a bottle of whiskey. The Shinjuku skyline was a vertical city of glass and light, built on the conviction that Japanese asset prices could only go up.",
+          "key_events": [
+            {
+              "year": "1985",
+              "event": "Plaza Accord triggers yen appreciation and asset bubble"
+            },
+            {
+              "year": "1988",
+              "event": "Shinjuku skyscraper district becomes Tokyo's new CBD"
+            },
+            {
+              "year": "1989",
+              "event": "Nikkei peaks at 38,957; land prices at all-time highs"
+            },
+            {
+              "year": "1991",
+              "event": "Bubble bursts; Japan enters the Lost Decade"
+            }
+          ],
+          "landscape": "Glass towers catching sunset. Kabukicho's neon canyon: pink, blue, gold, the kanji glowing in vertical columns. Salary men in dark suits, moving in rivers toward the station. The pachislot parlors roaring. Taxi queues stretching around the block. Everything bright, everything expensive, everything temporary.",
+          "sources": [
+            "Alex Kerr, Dogs and Demons: The Fall of Modern Japan (2001)",
+            "Edward Seidensticker, Tokyo Rising (1990)"
+          ]
+        },
+        {
+          "id": "tokyo-shinjuku-2025",
+          "year_display": "2025",
+          "label": "The Crossroads",
+          "era_type": "present",
+          "image_query": "shinjuku,tokyo,modern,city,night,2024,neon",
+          "headline": "3.5 Million People a Day",
+          "description": "Shinjuku station remains the busiest in the world: 3.5 million people pass through daily, more than the population of most countries' capital cities. The district layers its histories without apology. Kabukicho's neon still blazes, though the clientele has shifted from salary men to tourists and the robot restaurant replaced the hostess bar as the signature experience. The skyscrapers house multinational headquarters. Golden Gai, a labyrinth of 200 tiny bars in converted shacks, survives as a living fossil of 1960s drinking culture. Old and new coexist in the way that only Tokyo manages: without nostalgia, without erasure.",
+          "key_events": [
+            {
+              "year": "2016",
+              "event": "Southern terrace of Shinjuku station redeveloped with new bus terminal"
+            },
+            {
+              "year": "2020",
+              "event": "COVID empties the station; Kabukicho goes dark for the first time in decades"
+            },
+            {
+              "year": "2023",
+              "event": "Inbound tourism surges past pre-COVID levels; Shinjuku becomes Japan's most visited district"
+            },
+            {
+              "year": "2025",
+              "event": "Station renovation continues; the intersection of old infrastructure and new Tokyo"
+            }
+          ],
+          "landscape": "The most sensory-overwhelming place on Earth. Screens stacked ten stories high. The station's underground city stretching for kilometers. Golden Gai's six-seat bars. Homeless encampments in the park. Tourists, commuters, hosts and hostesses in costume. The perpetual sound of train announcements, crossing signals, and the murmur of three million conversations.",
+          "sources": [
+            "Florent Chavouet, Tokyo on Foot (2009)",
+            "Japan National Tourism Organization data (2024)"
+          ]
+        },
+        {
+          "id": "tokyo-shinjuku-2075",
+          "year_display": "2075",
+          "label": "Vertical Tokyo",
+          "era_type": "future",
+          "image_query": "tokyo,future,cyberpunk,city,night,futuristic",
+          "headline": "The City That Shrank Upward",
+          "description": "Japan's population has fallen from 125 million to 85 million, but Tokyo has barely shrunk. The megacity absorbed the nation's remaining population even as the countryside emptied. Shinjuku, rebuilt after the infrastructure crisis of the 2040s, is now a vertical city: residential towers integrated with farms, offices, and parks at every level. The station processes 4 million daily passengers, most of them autonomous vehicle transfers rather than traditional rail. Kabukicho survives as a heritage entertainment district, its neon now powered by building-integrated solar. The robots that were a tourist gimmick in 2025 now run the logistics of daily life.",
+          "future_scenarios": [
+            {
+              "id": "vertical-integration",
+              "label": "Vertical Integration",
+              "sublabel": "Towers as complete ecosystems",
+              "description": "Shinjuku's new towers combine housing, workspaces, vertical farms, and parks in single structures. Commuting distances collapse. The station becomes more transit hub than commuter gateway.",
+              "confidence": 0.42
+            },
+            {
+              "id": "heritage-preservation",
+              "label": "Heritage Freeze",
+              "sublabel": "Golden Gai preserved in amber",
+              "description": "Tokyo designates Golden Gai and Kabukicho as cultural preservation zones, maintaining the physical structures while the city transforms around them. Living museums of 20th century nightlife.",
+              "confidence": 0.35
+            },
+            {
+              "id": "depopulation-rewild",
+              "label": "Selective Rewilding",
+              "sublabel": "Nature reclaims the margins",
+              "description": "As population falls, outer Shinjuku neighborhoods are deliberately returned to forest. The Musashino Plain reappears in fragments, a controlled experiment in urban de-growth.",
+              "confidence": 0.23
+            }
+          ],
+          "sources": [
+            "National Institute of Population and Social Security Research projections",
+            "Tokyo Metropolitan Government 2050 Urban Strategy"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tokyo-asakusa",
+      "name": "Asakusa",
+      "subtext": "Taito, Tokyo",
+      "city": "Tokyo",
+      "coordinates": {
+        "lat": 35.7148,
+        "lng": 139.7967
+      },
+      "tagline": "Tokyo's oldest entertainment district, where the sacred and the profane have always been neighbors.",
+      "eras": [
+        {
+          "id": "tokyo-asakusa-1500",
+          "year_display": "c. 1500",
+          "label": "Senso-ji Origins",
+          "era_type": "past",
+          "image_query": "japan,temple,ancient,tokyo,buddhist,peaceful",
+          "headline": "The Temple and the River",
+          "description": "Senso-ji, Tokyo's oldest temple, was founded in 645 CE after two fishermen pulled a golden statue of Kannon from the Sumida River. By 1500, the temple had been a pilgrimage destination for eight centuries. The surrounding village served pilgrims: inns, food stalls, and craftsmen making religious goods. The Sumida River connected Asakusa to the fishing villages of Edo Bay. The area was rural, sacred, and defined by the rhythm of temple bells and the seasonal flooding of the river.",
+          "key_events": [
+            {
+              "year": "645 CE",
+              "event": "Senso-ji temple founded after fishermen discover a Kannon statue in the Sumida River"
+            },
+            {
+              "year": "942",
+              "event": "Taira no Kinmasa rebuilds Senso-ji and establishes the Kaminarimon (Thunder Gate)"
+            },
+            {
+              "year": "c. 1500",
+              "event": "Temple complex serves as the religious and commercial center of the region"
+            }
+          ],
+          "landscape": "The great temple rising from marshland. The Sumida River, wide and tidal, dotted with fishing boats. Rice paddies and lotus ponds surrounding the temple grounds. The Kaminarimon gate marking the entrance to the sacred precinct. Pilgrims approaching on foot along muddy paths.",
+          "sources": [
+            "Timon Screech, Tokyo Before Tokyo: Power and Magic in the Shogun's City (2020)",
+            "Senso-ji temple historical records"
+          ]
+        },
+        {
+          "id": "tokyo-asakusa-1700",
+          "year_display": "1700",
+          "label": "Pleasure Quarter",
+          "era_type": "past",
+          "image_query": "edo,japan,ukiyo-e,entertainment,historical",
+          "headline": "The Floating World Arrives",
+          "description": "In 1657, the Yoshiwara licensed pleasure quarter was relocated next to Asakusa after the Great Meireki Fire destroyed its original location. The proximity of the sacred (Senso-ji) and the profane (Yoshiwara) defined Asakusa's character forever after. By 1700, the district was Edo's entertainment capital: kabuki theaters, sumo wrestling, street performers, food stalls, and the constant flow of people between temple and pleasure quarter. The ukiyo-e artists found their subjects here. Asakusa was where high and low culture collided.",
+          "key_events": [
+            {
+              "year": "1657",
+              "event": "Yoshiwara pleasure quarter relocated adjacent to Asakusa after the Meireki Fire"
+            },
+            {
+              "year": "1685",
+              "event": "Kabuki theaters cluster around Asakusa, establishing it as the entertainment center of Edo"
+            },
+            {
+              "year": "1700",
+              "event": "Asakusa's Nakamise shopping street becomes the most famous commercial strip in Japan"
+            }
+          ],
+          "landscape": "Lantern-lit streets crowded with every class of Edo society. Kabuki theaters with painted banners. The Nakamise arcade stretching from Kaminarimon to the temple. The smell of grilled eel and soba. Beyond the temple precincts, the walled Yoshiwara with its own economy of beauty and confinement.",
+          "sources": [
+            "Amy Stanley, Selling Women: Prostitution, Markets, and the Household in Early Modern Japan (2012)",
+            "Andrew Markus, The Pleasure Quarter and Tokugawa Culture (1985)"
+          ]
+        },
+        {
+          "id": "tokyo-asakusa-1890",
+          "year_display": "1890",
+          "label": "Meiji Modernity",
+          "era_type": "past",
+          "image_query": "tokyo,meiji,japan,1890s,modernization,city",
+          "headline": "Twelve Stories Over Tokyo",
+          "description": "In 1890, the Ryounkaku (Cloud-Surpassing Tower) opened in Asakusa. At twelve stories and 52 meters, it was the tallest building in Japan and one of the first to have an electric elevator. Asakusa was embracing Western modernity with Japanese enthusiasm: cinema arrived in 1897, making Asakusa Japan's movie capital. The district was the Times Square of Tokyo, a place where new technologies and traditional entertainment existed side by side. The Meiji government was modernizing Japan at breakneck speed, and Asakusa was where ordinary people experienced the future.",
+          "key_events": [
+            {
+              "year": "1890",
+              "event": "Ryounkaku tower opens, the tallest building in Japan with electric elevator"
+            },
+            {
+              "year": "1897",
+              "event": "First motion pictures shown in Asakusa; the district becomes Japan's cinema capital"
+            },
+            {
+              "year": "1903",
+              "event": "Asakusa Opera opens, blending Western opera with Japanese performance traditions"
+            }
+          ],
+          "landscape": "The twelve-story tower visible from across the city. Electric lights, still a novelty, illuminating the entertainment streets. Horse-drawn carriages and rickshaws. Western clothing alongside kimono. The temple unchanged at the center, surrounded by a city reinventing itself at impossible speed.",
+          "sources": [
+            "Edward Seidensticker, Low City, High City (1983)",
+            "Donald Richie, A Lateral View: Essays on Contemporary Japan (1992)"
+          ]
+        },
+        {
+          "id": "tokyo-asakusa-1923",
+          "year_display": "1923",
+          "label": "Great Earthquake",
+          "era_type": "past",
+          "image_query": "tokyo,earthquake,1923,destruction,asakusa,japan",
+          "headline": "The Temple Falls",
+          "description": "The Great Kanto Earthquake of September 1, 1923, devastated Asakusa. The dense wooden entertainment district was destroyed by fires that raged for days. The Ryounkaku tower, Asakusa's landmark, was damaged beyond repair and later demolished by the army. Senso-ji survived the initial earthquake but was damaged. Tens of thousands died in eastern Tokyo, many drowned in the Sumida River trying to escape the flames. In the aftermath, Asakusa rebuilt, but the reconstruction marked the beginning of its long decline as Tokyo's entertainment center shifted westward to Shinjuku and Shibuya.",
+          "key_events": [
+            {
+              "year": "September 1, 1923",
+              "event": "Great Kanto Earthquake strikes; fires devastate Asakusa and eastern Tokyo"
+            },
+            {
+              "year": "1923",
+              "event": "Ryounkaku tower damaged; later demolished as a safety hazard"
+            },
+            {
+              "year": "1924-1930",
+              "event": "Asakusa rebuilt with wider streets and fireproof buildings, but loses population to western Tokyo"
+            }
+          ],
+          "landscape": "Rubble and ash where the entertainment district stood. The skeleton of the Ryounkaku tower, tilted and cracked. Senso-ji damaged but standing. Refugees camped along the Sumida River. The smell of smoke lingering for weeks. Temporary shacks and relief stations replacing the theaters and restaurants.",
+          "sources": [
+            "J. Charles Schencking, The Great Kanto Earthquake and the Chimera of National Reconstruction (2013)",
+            "Edward Seidensticker, Tokyo Rising (1990)"
+          ]
+        },
+        {
+          "id": "tokyo-asakusa-1945",
+          "year_display": "1945",
+          "label": "Firebombing",
+          "era_type": "past",
+          "image_query": "tokyo,firebombing,1945,destruction,war,japan",
+          "headline": "The Night the Sky Burned",
+          "description": "On the night of March 9-10, 1945, 334 American B-29 bombers dropped incendiary bombs across eastern Tokyo. Asakusa, with its dense wooden buildings, was devastated. An estimated 100,000 people died in a single night, the deadliest air raid in human history. Senso-ji was destroyed. The Sumida River, where people fled to escape the firestorm, was choked with bodies. Asakusa's entertainment district, its temples, its homes, its history, reduced to ash in hours. The rebuilding would take decades, and the district would never fully recover its pre-war vitality.",
+          "key_events": [
+            {
+              "year": "March 10, 1945",
+              "event": "Operation Meetinghouse firebombing destroys Asakusa and eastern Tokyo; 100,000 dead"
+            },
+            {
+              "year": "April 1945",
+              "event": "Senso-ji temple completely destroyed by incendiary bombing"
+            },
+            {
+              "year": "August 1945",
+              "event": "Japan surrenders; American occupation begins"
+            }
+          ],
+          "landscape": "Nothing. Flat, ash-covered ground stretching to the river. The skeleton of Senso-ji's main hall. Temporary shelters made from corrugated metal. The Sumida River, still carrying debris. Silence where there had been the most noise in Tokyo.",
+          "sources": [
+            "Mark Selden, A Forgotten Holocaust: US Bombing Strategy (2007)",
+            "Cary Karacas, Place, Public Memory, and the Tokyo Air Raids (2010)"
+          ]
+        },
+        {
+          "id": "tokyo-asakusa-1960",
+          "year_display": "1960",
+          "label": "Reconstruction",
+          "era_type": "past",
+          "image_query": "tokyo,1960s,reconstruction,japan,postwar,temple",
+          "headline": "Rebuilding Sacred Ground",
+          "description": "Senso-ji was rebuilt in 1958, thirteen years after the firebombing. The new temple was reinforced concrete, not wood. Its reconstruction anchored Asakusa's recovery, but the district's role had changed. Shinjuku and Shibuya had replaced Asakusa as Tokyo's entertainment centers. The movie theaters were closing as television arrived. Asakusa became a place of memory: older Tokyoites came to remember what the city had been, while younger people looked west to the new neon districts. The Nakamise shopping street survived, selling the same traditional goods to a shrinking audience.",
+          "key_events": [
+            {
+              "year": "1951",
+              "event": "Kaminarimon (Thunder Gate) rebuilt with donations from Panasonic founder Matsushita Konosuke"
+            },
+            {
+              "year": "1958",
+              "event": "Senso-ji main hall rebuilt in reinforced concrete"
+            },
+            {
+              "year": "1960",
+              "event": "Asakusa's cinema district begins declining as television replaces movies"
+            }
+          ],
+          "landscape": "The rebuilt temple, gleaming and slightly too perfect. The Nakamise arcade, colorful but less crowded than memory insists. Older buildings mixed with cheap postwar construction. The sense of a neighborhood that has survived but lost its purpose. The Sumida River, now lined with concrete embankments.",
+          "sources": [
+            "Theodore Bestor, Neighborhood Tokyo (1989)",
+            "Paul Waley, Tokyo: City of Stories (1991)"
+          ]
+        },
+        {
+          "id": "tokyo-asakusa-2000",
+          "year_display": "2000",
+          "label": "Tourist Revival",
+          "era_type": "past",
+          "image_query": "asakusa,temple,tokyo,tourists,sensoji,japan",
+          "headline": "Rediscovered by the World",
+          "description": "By 2000, Asakusa had been rediscovered. International tourism, growing steadily since the 1980s, transformed the district into one of Tokyo's most visited destinations. The temple drew 30 million visitors annually. The Nakamise arcade boomed with souvenir sales. Traditional crafts that had survived in Asakusa, from knife-making to kimono dyeing, found new audiences. The district's old-fashioned quality, once a liability, became its greatest asset. Asakusa was authentic old Tokyo in a city that had demolished most of its past.",
+          "key_events": [
+            {
+              "year": "1995",
+              "event": "Tokyo Skytree planned for adjacent Sumida ward, promising to bring new visitors"
+            },
+            {
+              "year": "2000",
+              "event": "Senso-ji draws 30 million annual visitors, majority from overseas"
+            },
+            {
+              "year": "2003",
+              "event": "Asakusa designated as Special Tourism Zone by Tokyo Metropolitan Government"
+            }
+          ],
+          "landscape": "The great red lantern of Kaminarimon, the most photographed object in Tokyo. Tourists from every country filling the Nakamise arcade. The temple incense smoke drifting over selfie sticks. Behind the main streets, quiet residential blocks where the old Asakusa survives: soba shops, public baths, craftsmen's workshops.",
+          "sources": [
+            "Tokyo Metropolitan Government tourism statistics",
+            "Matt Alt, Pure Invention: How Japan Made the Modern World (2020)"
+          ]
+        },
+        {
+          "id": "tokyo-asakusa-2025",
+          "year_display": "2025",
+          "label": "Living Heritage",
+          "era_type": "present",
+          "image_query": "asakusa,senso-ji,tokyo,2024,modern,temple,japan",
+          "headline": "The Oldest Place in the Newest City",
+          "description": "Senso-ji remains the spiritual anchor of old Tokyo, drawing over 30 million visitors a year. The Tokyo Skytree, visible from the temple grounds, marks the contrast between ancient and hypermodern that defines Asakusa. Traditional craftsmen, the last artisans of old Edo, still work in the back streets. But the neighborhood is changing: Airbnb has transformed residential blocks, and the visitor economy has displaced many longtime residents. Asakusa is simultaneously the most authentic and the most performed version of old Tokyo, a place where heritage is both preserved and consumed.",
+          "key_events": [
+            {
+              "year": "2012",
+              "event": "Tokyo Skytree opens in adjacent Sumida, visible from Senso-ji grounds"
+            },
+            {
+              "year": "2020",
+              "event": "COVID empties Asakusa; local businesses face existential crisis without tourists"
+            },
+            {
+              "year": "2023",
+              "event": "Tourism surges back; visitor numbers exceed pre-COVID peaks"
+            },
+            {
+              "year": "2025",
+              "event": "Ongoing tension between heritage preservation and tourism commercialization"
+            }
+          ],
+          "landscape": "The Kaminarimon gate lit by a massive red paper lantern. The Nakamise arcade packed with visitors. Behind it, Senso-ji wreathed in incense smoke, its concrete structure now old enough to feel historic. The Skytree rising 634 meters in the background, a needle of light. Side streets where elderly residents sit outside shops that have been in families for generations.",
+          "sources": [
+            "Japan National Tourism Organization (2024)",
+            "Asakusa Traditional Crafts Association"
+          ]
+        },
+        {
+          "id": "tokyo-asakusa-2075",
+          "year_display": "2075",
+          "label": "Digital Shrine",
+          "era_type": "future",
+          "image_query": "tokyo,temple,future,japan,futuristic,spiritual",
+          "headline": "The Temple Endures",
+          "description": "Senso-ji has survived earthquakes, firebombing, economic collapse, and depopulation. In 2075, it still stands, rebuilt again after typhoon damage in the 2050s, this time with climate-resilient materials that replicate the appearance of traditional architecture. Asakusa's population has declined with Japan's demographic collapse, but the temple draws visitors from across Asia and the world. The Nakamise arcade now serves a mix of human visitors and telepresence tourists. The traditional crafts survive, taught by the last generation of masters to students who may be the last generation to learn them.",
+          "future_scenarios": [
+            {
+              "id": "craft-continuity",
+              "label": "Living Craft",
+              "sublabel": "Artisan traditions survive through new apprentices",
+              "description": "Government programs and international interest sustain Asakusa's traditional crafts. Young artisans from around the world apprentice with Edo-era craft families, creating a global network of traditional Japanese techniques.",
+              "confidence": 0.38
+            },
+            {
+              "id": "museum-district",
+              "label": "Open-Air Museum",
+              "sublabel": "Heritage preserved, community transformed",
+              "description": "Asakusa becomes Tokyo's primary heritage district: beautifully maintained but no longer a living neighborhood. The craftsmen are performers; the residents are caretakers. Authentic in appearance, artificial in life.",
+              "confidence": 0.4
+            },
+            {
+              "id": "spiritual-hub",
+              "label": "Spiritual Revival",
+              "sublabel": "Temple as community anchor in aging society",
+              "description": "As Japan ages and depopulates, Senso-ji becomes a genuine spiritual and community center again. The temple provides social services, community meals, and meaning in a society struggling with loneliness and demographic decline.",
+              "confidence": 0.22
+            }
+          ],
+          "sources": [
+            "National Institute of Population and Social Security Research projections",
+            "UNESCO Intangible Cultural Heritage reports on Japanese crafts"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "paris-marais",
+      "name": "Le Marais",
+      "subtext": "3rd & 4th arrondissements, Paris",
+      "city": "Paris",
+      "coordinates": {
+        "lat": 48.8566,
+        "lng": 2.3622
+      },
+      "tagline": "From medieval marsh to aristocratic quarter to Jewish ghetto to the most fashionable streets in Paris.",
+      "eras": [
+        {
+          "id": "paris-marais-1500",
+          "year_display": "c. 1500",
+          "label": "Royal Quarter",
+          "era_type": "past",
+          "image_query": "paris,medieval,architecture,historical,france",
+          "headline": "Where Kings Built Palaces",
+          "description": "The Marais, meaning 'the marsh,' was drained and built upon from the 12th century onward. By 1500, it had become the most fashionable quarter of Paris. The great noble families built their hotels particuliers here, the elegant townhouses with interior courtyards that still define the district's architecture. The Place Royale (now Place des Vosges) would not be built for another century, but the Marais was already the center of Parisian aristocratic life, a district of wealth, culture, and political intrigue within the medieval walls.",
+          "key_events": [
+            {
+              "year": "1240",
+              "event": "Knights Templar establish their fortress in the northern Marais"
+            },
+            {
+              "year": "1407",
+              "event": "The Duke of Orleans is assassinated on Rue Vieille du Temple, triggering civil war"
+            },
+            {
+              "year": "c. 1500",
+              "event": "Noble families dominate the quarter; Gothic and early Renaissance hotels particuliers line narrow streets"
+            }
+          ],
+          "landscape": "Narrow medieval streets winding between stone mansions. Church spires above tile roofs. The Seine to the south, the old walls to the north. Mud, horse traffic, the smell of bread from bakeries and sewage from open gutters. The sound of church bells marking the hours. Aristocrats in silk, servants in wool, beggars on every corner.",
+          "sources": [
+            "Andrew Hussey, Paris: The Secret History (2006)",
+            "Colin Jones, Paris: Biography of a City (2004)"
+          ]
+        },
+        {
+          "id": "paris-marais-1614",
+          "year_display": "1614",
+          "label": "Place Royale",
+          "era_type": "past",
+          "image_query": "paris,place des vosges,historical,france,architecture",
+          "headline": "The First Planned Square in Europe",
+          "description": "In 1612, the Place Royale opened with a grand carousel celebrating the marriage of Louis XIII. It was the first planned square in Paris and arguably in Europe: 36 identical houses of red brick and cream stone, built to a uniform design around a formal garden. The square was the apex of the Marais's golden age. Aristocrats, writers, and courtiers filled the surrounding streets. Madame de Sevigne wrote her famous letters from the Hotel Carnavalet nearby. The Marais was the beating heart of French culture, politics, and social life.",
+          "key_events": [
+            {
+              "year": "1605",
+              "event": "Henri IV commissions the Place Royale (now Place des Vosges)"
+            },
+            {
+              "year": "1612",
+              "event": "Grand carousel celebrates the square's inauguration; it becomes the center of Parisian social life"
+            },
+            {
+              "year": "1614",
+              "event": "The Marais reaches its peak as the aristocratic center of Paris"
+            }
+          ],
+          "landscape": "The perfect symmetry of the Place Royale: red brick, cream stone, slate roofs. Carriages clattering on cobblestones. Aristocrats walking beneath the arcades. The formal garden at the center, clipped hedges, gravel paths. Behind the grand facade, a labyrinth of narrower streets where artisans, merchants, and servants lived.",
+          "sources": [
+            "Hilary Ballon, The Paris of Henri IV: Architecture and Urbanism (1991)",
+            "Alistair Horne, Seven Ages of Paris (2002)"
+          ]
+        },
+        {
+          "id": "paris-marais-1789",
+          "year_display": "1789",
+          "label": "Revolution",
+          "era_type": "past",
+          "image_query": "paris,french revolution,1789,bastille,france",
+          "headline": "The Bastille Falls",
+          "description": "On July 14, 1789, a crowd of Parisians stormed the Bastille, a medieval fortress-prison at the eastern edge of the Marais. The Revolution had begun. The Marais's aristocrats fled or were arrested. Their elegant hotels became government offices, workshops, or tenements. The Revolution transformed the Marais from the most exclusive neighborhood in Paris to one of the most democratic. The Place Royale was renamed Place des Vosges. Streets were renamed. The old order, inscribed in the district's very stones, was being erased.",
+          "key_events": [
+            {
+              "year": "July 14, 1789",
+              "event": "Storming of the Bastille at the eastern edge of the Marais"
+            },
+            {
+              "year": "1792",
+              "event": "Aristocratic properties confiscated; hotels particuliers subdivided into workshops and tenements"
+            },
+            {
+              "year": "1793",
+              "event": "Place Royale renamed Place des Vosges in honor of the first department to pay its taxes"
+            }
+          ],
+          "landscape": "Smoke over the Bastille. Crowds surging through narrow streets, carrying weapons improvised from furniture and tools. Tricolor cockades on every hat. The aristocratic mansions suddenly empty, their gates forced open. Revolutionary pamphlets pasted on ancient walls. The sound of cannon and musketry, then the roar of a crowd discovering its own power.",
+          "sources": [
+            "Simon Schama, Citizens: A Chronicle of the French Revolution (1989)",
+            "Robert Darnton, The Great Cat Massacre and Other Episodes in French Cultural History (1984)"
+          ]
+        },
+        {
+          "id": "paris-marais-1850",
+          "year_display": "1850",
+          "label": "Haussmann Bypassed",
+          "era_type": "past",
+          "image_query": "paris,haussmann,19th century,france,renovation,historical",
+          "headline": "The Boulevard That Never Came",
+          "description": "Baron Haussmann's renovation of Paris between 1853 and 1870 drove wide boulevards through the medieval city, demolishing entire neighborhoods. The Marais was largely spared, not out of respect for its architecture but because its aristocratic mansions had been subdivided into workshops and tenements that the state could not easily condemn. Haussmann's boulevards curved around the Marais, leaving its medieval street plan intact. This accident of politics and economics preserved the district's architectural heritage while condemning it to decades of neglect. The Marais became a working-class enclave, its noble buildings slowly crumbling around the craftsmen who occupied them.",
+          "key_events": [
+            {
+              "year": "1853",
+              "event": "Haussmann begins transforming Paris; the Marais is largely bypassed"
+            },
+            {
+              "year": "1860",
+              "event": "Annexation of surrounding communes expands Paris; the Marais becomes a central district rather than an edge"
+            },
+            {
+              "year": "1870",
+              "event": "Haussmann dismissed; the Marais remains unaltered, preserved by neglect"
+            }
+          ],
+          "landscape": "Medieval streets surrounded by Haussmann's new boulevards. The contrast is stark: wide, tree-lined avenues with uniform cream-stone buildings stop at the Marais's border, where narrow lanes twist between Renaissance mansions converted to workshops. The sound of looms and hammers from upper floors. Artisans' signs in French, Yiddish, and German. Beautiful buildings in progressive decay.",
+          "sources": [
+            "David Harvey, Paris, Capital of Modernity (2003)",
+            "Colin Jones, Paris: Biography of a City (2004)"
+          ]
+        },
+        {
+          "id": "paris-marais-1860",
+          "year_display": "1860",
+          "label": "Jewish Quarter",
+          "era_type": "past",
+          "image_query": "paris,jewish quarter,marais,historical,france,19th century",
+          "headline": "The Pletzl Takes Shape",
+          "description": "After the Revolution granted Jews full citizenship, the Marais became the center of Jewish Paris. The Pletzl (Yiddish for 'little square') formed around the Rue des Rosiers, where Ashkenazi Jews from Eastern Europe built synagogues, schools, and shops. The Marais, abandoned by the aristocracy and overlooked by Haussmann's boulevards, became a working-class quarter of artisans, small manufacturers, and immigrants. Tailors, hat-makers, and jewelers worked in the former salons of the nobility. The buildings crumbled elegantly, too beautiful to demolish, too unfashionable to renovate.",
+          "key_events": [
+            {
+              "year": "1791",
+              "event": "French Revolution grants full citizenship to Jews; migration to Paris accelerates"
+            },
+            {
+              "year": "1850s",
+              "event": "Haussmann's renovation bypasses the Marais; the district declines while remaining architecturally intact"
+            },
+            {
+              "year": "1860",
+              "event": "Eastern European Jewish immigration transforms the Rue des Rosiers into the Pletzl"
+            }
+          ],
+          "landscape": "Renaissance mansions converted to workshops, their courtyards filled with looms and pressing machines. Hebrew and Yiddish signs alongside French. The smell of challah and schmaltz on Fridays. Orthodox men in black coats walking to synagogue. The sound of sewing machines from every upper floor. Beautiful decay: carved stone angels watching over immigrant tailors.",
+          "sources": [
+            "Paula Hyman, The Jews of Modern France (1998)",
+            "Michel Roblin, Les Juifs de Paris (1952)"
+          ]
+        },
+        {
+          "id": "paris-marais-1942",
+          "year_display": "1942",
+          "label": "The Roundup",
+          "era_type": "past",
+          "image_query": "paris,1942,occupation,france,wartime,historical",
+          "headline": "The Vel d'Hiv",
+          "description": "On July 16-17, 1942, French police rounded up 13,152 Jews in Paris, including 4,115 children. The Marais's Jewish community was devastated. Families who had lived on Rue des Rosiers for generations were taken to the Velodrome d'Hiver, then to Drancy transit camp, then to Auschwitz. Almost none returned. The roundup was organized and executed entirely by French authorities, not German soldiers. This fact would take France decades to acknowledge. The Marais's Jewish quarter survived the war, but with the absence of thousands who had made it alive.",
+          "key_events": [
+            {
+              "year": "June 1940",
+              "event": "German occupation of Paris begins; anti-Jewish laws imposed"
+            },
+            {
+              "year": "July 16-17, 1942",
+              "event": "Vel d'Hiv roundup: French police arrest 13,152 Jews, including 4,115 children"
+            },
+            {
+              "year": "1944",
+              "event": "Liberation of Paris; the scale of Jewish deportation begins to be understood"
+            },
+            {
+              "year": "1995",
+              "event": "President Chirac formally acknowledges French responsibility for the roundup"
+            }
+          ],
+          "landscape": "The streets of the Pletzl, emptied. Doors left open, meals abandoned on tables. A child's shoe on the stairs. French police vans idling on Rue des Rosiers. Neighbors watching from windows, or not watching. The yellow stars. The lists of names. The ordinary bureaucratic machinery of genocide.",
+          "sources": [
+            "Laurent Joly, La rafle du Vel d'Hiv (2022)",
+            "Michael Marrus and Robert Paxton, Vichy France and the Jews (1981)"
+          ]
+        },
+        {
+          "id": "paris-marais-1998",
+          "year_display": "1998",
+          "label": "Gay Paris",
+          "era_type": "past",
+          "image_query": "paris,marais,gay quarter,nightlife,france,1990s",
+          "headline": "The New Marais",
+          "description": "By the 1990s, the Marais had transformed again. Gentrification brought galleries, boutiques, and restaurants. The district became the center of gay Paris, with bars, clubs, and shops along Rue Sainte-Croix de la Bretonnerie. The Jewish community remained on Rue des Rosiers, creating an unusual neighborhood where falafel shops and gay bars shared the same medieval streets. The Marais was fashionable again for the first time since the Revolution, its beautiful architecture finally restored. Fashion houses moved into hotels particuliers. The district became what it had always been: a place where different communities coexisted in productive tension.",
+          "key_events": [
+            {
+              "year": "1962",
+              "event": "Andre Malraux's preservation law protects the Marais from demolition, beginning decades of restoration"
+            },
+            {
+              "year": "1980s",
+              "event": "Gay bars and clubs open along Rue Sainte-Croix de la Bretonnerie"
+            },
+            {
+              "year": "1998",
+              "event": "France wins the World Cup; the Marais celebrates as a symbol of multicultural Paris"
+            }
+          ],
+          "landscape": "Restored 17th-century facades lit by gallery spotlights. Rainbow flags next to menorahs in windows. The smell of falafel from Rue des Rosiers competing with espresso from new cafes. Young people in designer clothing walking past Holocaust memorial plaques. Every surface restored, every cobblestone perfect, the beauty almost aggressive in its completeness.",
+          "sources": [
+            "Michael Sibalis, Urban Space and Homosexuality in Paris (2004)",
+            "Didier Eribon, Returning to Reims (2009)"
+          ]
+        },
+        {
+          "id": "paris-marais-2025",
+          "year_display": "2025",
+          "label": "Heritage Chic",
+          "era_type": "present",
+          "image_query": "paris,marais,2024,modern,architecture,france,street",
+          "headline": "The Most Beautiful Contradiction in Paris",
+          "description": "The Marais in 2025 is Paris at its most layered. The Place des Vosges is as beautiful as it was in 1612. Rue des Rosiers still serves the best falafel in Europe, though the Jewish community has shrunk as rents have risen. The gay scene has diffused across Paris as acceptance has grown, but the Marais remains symbolically central. Fashion brands occupy restored hotels particuliers. The district's genius is its refusal to be only one thing: aristocratic, revolutionary, Jewish, gay, fashionable, it holds all of these identities simultaneously, each inscribed in its stones.",
+          "key_events": [
+            {
+              "year": "2015",
+              "event": "Charlie Hebdo and kosher supermarket attacks heighten security concerns in the Marais"
+            },
+            {
+              "year": "2020",
+              "event": "COVID lockdowns empty the tourist streets; locals reclaim the neighborhood temporarily"
+            },
+            {
+              "year": "2024",
+              "event": "Paris Olympics bring global attention; the Marais is among the most visited districts"
+            },
+            {
+              "year": "2025",
+              "event": "Ongoing tension between preservation, tourism pressure, and residential life"
+            }
+          ],
+          "landscape": "Perfect 17th-century facades reflecting in puddles on cobblestones. The colonnade of the Place des Vosges framing a garden where children play. The smell of bread, falafel, and expensive perfume. Tourists, locals, fashion people, and families sharing medieval streets barely wide enough for two people to pass.",
+          "sources": [
+            "Paris Tourism Office statistics (2024)",
+            "Ina Caro, Paris to the Past (2011)"
+          ]
+        },
+        {
+          "id": "paris-marais-2075",
+          "year_display": "2075",
+          "label": "Climate Resilient City",
+          "era_type": "future",
+          "image_query": "paris,future,green,sustainable,architecture,france",
+          "headline": "The Quarter That Adapted",
+          "description": "Paris in 2075 has been reshaped by climate adaptation. The Marais, with its dense medieval street plan and thick stone walls, proved naturally climate-resilient: the narrow streets provide shade, the massive buildings maintain thermal mass, the courtyards create microclimates. While newer districts struggled with heat waves, the Marais's medieval urbanism turned out to be better adapted to 21st-century temperatures than 20th-century planning. The district remains the most beautiful contradiction in Paris: ancient buildings housing future technologies, historical wounds visible alongside present vitality.",
+          "future_scenarios": [
+            {
+              "id": "medieval-resilience",
+              "label": "Medieval Resilience",
+              "sublabel": "Old urbanism solves new problems",
+              "description": "The Marais's medieval street plan, once seen as a constraint, proves ideal for climate adaptation. Narrow streets provide shade, stone buildings moderate temperature. The district becomes a model for climate-resilient urban design.",
+              "confidence": 0.45
+            },
+            {
+              "id": "living-museum",
+              "label": "Living Museum",
+              "sublabel": "Preserved but performative",
+              "description": "Tourism pressure and heritage protection freeze the Marais in amber. Every building is restored, every street is beautiful, but the community that gave the district its character has been priced out.",
+              "confidence": 0.35
+            },
+            {
+              "id": "community-trust",
+              "label": "Community Trust",
+              "sublabel": "Residents reclaim the quarter",
+              "description": "Community land trusts and cooperative housing stabilize the Marais's residential population. The Jewish and gay communities maintain their presence through collective ownership, resisting displacement.",
+              "confidence": 0.2
+            }
+          ],
+          "sources": [
+            "Paris Climate Action Plan 2050",
+            "Mairie de Paris urban planning documents"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "paris-montmartre",
+      "name": "Montmartre",
+      "subtext": "18th arrondissement, Paris",
+      "city": "Paris",
+      "coordinates": {
+        "lat": 48.8867,
+        "lng": 2.3431
+      },
+      "tagline": "The hilltop where bohemians, painters, and revolutionaries made the modern world.",
+      "eras": [
+        {
+          "id": "paris-montmartre-1500",
+          "year_display": "c. 1500",
+          "label": "Sacred Hill",
+          "era_type": "past",
+          "image_query": "paris,hilltop,vineyard,medieval,france,church",
+          "headline": "The Mount of Martyrs",
+          "description": "Montmartre, the 'Mount of Martyrs,' took its name from Saint Denis, who was supposedly beheaded on the hill in the 3rd century and walked six miles carrying his own head. By 1500, the butte was a village outside the walls of Paris: vineyards, windmills, and the ancient Benedictine abbey at the summit. The gypsum quarries that honeycomb the hill were already being mined. From the top, all of Paris was visible, a walled city of perhaps 200,000 people along the Seine. Montmartre was rural, sacred, and peripheral, connected to the city but not of it.",
+          "key_events": [
+            {
+              "year": "c. 250 CE",
+              "event": "Saint Denis martyred on the hill, according to tradition"
+            },
+            {
+              "year": "1133",
+              "event": "Benedictine abbey founded at the summit of Montmartre"
+            },
+            {
+              "year": "c. 1500",
+              "event": "Village of vineyards and windmills serves as Paris's rural hinterland"
+            }
+          ],
+          "landscape": "A steep hill rising above the Paris plain, crowned by the abbey. Terraced vineyards on the south-facing slopes. Windmills turning on the crest. Stone quarries scarring the hillside. The walled city of Paris visible to the south, its cathedral spires and river bridges. Sheep grazing on the upper slopes. A rural idyll minutes from the largest city in Europe.",
+          "sources": [
+            "Andrew Hussey, Paris: The Secret History (2006)",
+            "Ruth Harris, The Man on Devil's Island (2010)"
+          ]
+        },
+        {
+          "id": "paris-montmartre-1871",
+          "year_display": "1871",
+          "label": "The Commune",
+          "era_type": "past",
+          "image_query": "paris,commune,1871,revolution,france,barricade",
+          "headline": "The Hill Where Revolution Began",
+          "description": "On March 18, 1871, the government sent troops to seize cannons stored on the heights of Montmartre. The women of the neighborhood surrounded the soldiers and convinced them to refuse orders. Two generals were shot. The Paris Commune had begun. For 72 days, Paris governed itself: free schools, equal pay for women, separation of church and state, direct democracy. Montmartre was the Commune's spiritual home, a working-class neighborhood that had always been slightly outside the control of central Paris. The Commune was crushed in the Semaine Sanglante, the Bloody Week of May 1871, when government troops killed an estimated 20,000 Parisians.",
+          "key_events": [
+            {
+              "year": "March 18, 1871",
+              "event": "Women of Montmartre prevent seizure of cannons; the Commune begins"
+            },
+            {
+              "year": "March-May 1871",
+              "event": "Paris Commune governs the city: free schools, equal pay, direct democracy"
+            },
+            {
+              "year": "May 21-28, 1871",
+              "event": "Semaine Sanglante: government troops retake Paris; 20,000 killed"
+            }
+          ],
+          "landscape": "Barricades across the steep streets. Red flags on the windmills. The cannons on the summit, pointing down at the city. Working-class women and men armed with whatever they could find. Below, Haussmann's boulevards, designed partly to prevent exactly this kind of insurrection. The sharp crack of rifles from the barricades.",
+          "sources": [
+            "Robert Tombs, The Paris Commune 1871 (1999)",
+            "Carolyn Eichner, Surmounting the Barricades: Women in the Paris Commune (2004)"
+          ]
+        },
+        {
+          "id": "paris-montmartre-1889",
+          "year_display": "1889",
+          "label": "Belle Epoque",
+          "era_type": "past",
+          "image_query": "montmartre,moulin rouge,paris,belle epoque,1889,france",
+          "headline": "The Moulin Rouge Opens",
+          "description": "In October 1889, the Moulin Rouge opened at the foot of Montmartre with a giant red windmill on its roof and a garden with an elephant-shaped building. The same year, the Eiffel Tower opened for the Universal Exposition. Paris was the capital of the world, and Montmartre was the capital of Paris's nightlife. Toulouse-Lautrec, who lived on the butte, began painting the dancers and drinkers who would make the cabaret immortal. The Chat Noir, the Lapin Agile, and dozens of other cabarets made Montmartre the birthplace of modern entertainment: the first place where popular culture became art.",
+          "key_events": [
+            {
+              "year": "1881",
+              "event": "Le Chat Noir cabaret opens, establishing Montmartre's bohemian reputation"
+            },
+            {
+              "year": "1889",
+              "event": "Moulin Rouge opens; Toulouse-Lautrec begins painting its performers"
+            },
+            {
+              "year": "1889",
+              "event": "Eiffel Tower completed for the Universal Exposition; Paris declares itself the modern capital"
+            }
+          ],
+          "landscape": "The great red windmill of the Moulin Rouge, lit by electric lights (still a novelty). Can-can dancers in the garden. Toulouse-Lautrec sketching at his corner table. Gas-lit streets climbing the butte, artists' studios in converted windmills. The Sacre-Coeur basilica under construction at the summit, white and enormous and hated by the left as a symbol of conservative revenge for the Commune.",
+          "sources": [
+            "John Richardson, A Life of Picasso, Volume I (1991)",
+            "T. J. Clark, The Painting of Modern Life (1984)"
+          ]
+        },
+        {
+          "id": "paris-montmartre-1907",
+          "year_display": "1907",
+          "label": "The Bateau-Lavoir",
+          "era_type": "past",
+          "image_query": "montmartre,paris,artists,bohemian,1900s,france",
+          "headline": "Where Modern Art Was Invented",
+          "description": "In 1907, the Bateau-Lavoir, a ramshackle building on the Rue Ravignan, housed the greatest concentration of artistic genius in history. Picasso was painting Les Demoiselles d'Avignon. Braque was next door. Apollinaire, Max Jacob, Juan Gris, and Modigliani were regulars. Gertrude Stein climbed the hill to buy paintings for almost nothing. Montmartre was cheap, chaotic, and free, the perfect conditions for revolution. The cafes served as studios, galleries, and debating societies. In a few square blocks, the artists of Montmartre destroyed the Western tradition of representational art and invented the modern.",
+          "key_events": [
+            {
+              "year": "1904",
+              "event": "Picasso moves into the Bateau-Lavoir; the building becomes the center of the avant-garde"
+            },
+            {
+              "year": "1907",
+              "event": "Picasso paints Les Demoiselles d'Avignon, the painting that launched Cubism"
+            },
+            {
+              "year": "1908",
+              "event": "Braque and Picasso develop Cubism; the art world shifts permanently"
+            }
+          ],
+          "landscape": "The Bateau-Lavoir: wooden, leaking, cold in winter, stifling in summer. Studios crammed with canvases, wine bottles, and the remnants of meals. The steep streets of the butte, lined with small cafes. At the summit, the nearly-completed Sacre-Coeur. Below, all of Paris: Haussmann's boulevards, the Seine, the Eiffel Tower. From up here, you could see the whole city and feel completely outside it.",
+          "sources": [
+            "John Richardson, A Life of Picasso (1991-2007)",
+            "Dan Franck, Bohemian Paris: Picasso, Modigliani, Matisse, and the Birth of Modern Art (2001)"
+          ]
+        },
+        {
+          "id": "paris-montmartre-1942",
+          "year_display": "1942",
+          "label": "Occupation",
+          "era_type": "past",
+          "image_query": "paris,1942,german occupation,france,wartime,montmartre",
+          "headline": "The Hill Under the Boot",
+          "description": "During the German occupation, Montmartre lived a double life. The cabarets stayed open, German officers frequenting the Moulin Rouge and the Lapin Agile. But in the back streets, Resistance networks operated. The butte's steep narrow streets and underground quarry tunnels made it ideal for clandestine movement. Artists who remained, like Picasso, resisted through the act of continuing to create. The privation was extreme: no coal, little food, the constant fear of denunciation. Montmartre's tradition of defiance, from the Commune onward, expressed itself quietly now: in hidden radios, in forged papers, in the simple refusal to collaborate.",
+          "key_events": [
+            {
+              "year": "June 1940",
+              "event": "German troops march through Paris; swastika flag raised at the summit of Montmartre"
+            },
+            {
+              "year": "1942",
+              "event": "Jewish residents of Montmartre deported; Resistance networks use quarry tunnels for clandestine movement"
+            },
+            {
+              "year": "August 1944",
+              "event": "Liberation of Paris; Montmartre barricades echo 1871"
+            }
+          ],
+          "landscape": "German soldiers posing for photographs at the Sacre-Coeur. The Moulin Rouge's red windmill turning for a different audience. Empty shops on the Rue Lepic. Shuttered windows. Propaganda posters on every wall. In the hidden spaces: Resistance meetings in wine cellars, coded messages left in cafes, the sound of BBC French Service radio turned to a whisper.",
+          "sources": [
+            "Alan Riding, And the Show Went On: Cultural Life in Nazi-Occupied Paris (2010)",
+            "Ronald Rosbottom, When Paris Went Dark (2014)"
+          ]
+        },
+        {
+          "id": "paris-montmartre-1950",
+          "year_display": "1950",
+          "label": "Existentialist Paris",
+          "era_type": "past",
+          "image_query": "paris,1950s,cafe,montmartre,france,postwar",
+          "headline": "After the Storm",
+          "description": "After liberation, the artistic center of Paris shifted from Montmartre to Saint-Germain-des-Pres, where Sartre and de Beauvoir held court in the cafes. But Montmartre retained its character as a working-class neighborhood with a bohemian veneer. The Place du Tertre portrait painters were already becoming a tourist attraction. The Lapin Agile survived, selling the memory of the pre-war avant-garde. Jacques Brel sang in the cabarets. The hill was living on reputation, but the reputation was magnificent, and the neighborhood life beneath the myth was genuine: immigrant families, small shops, cheap rent, and the view from the top of the steps that made everything else bearable.",
+          "key_events": [
+            {
+              "year": "1944",
+              "event": "Liberation of Paris; Montmartre celebrates on the Sacre-Coeur steps"
+            },
+            {
+              "year": "1950",
+              "event": "Artistic center shifts to Saint-Germain; Montmartre begins its transition to tourist destination"
+            },
+            {
+              "year": "1952",
+              "event": "Sacre-Coeur basilica consecrated, 38 years after completion; Montmartre becomes pilgrimage site"
+            }
+          ],
+          "landscape": "The Sacre-Coeur gleaming white above the city. The Place du Tertre filling with tourists rather than artists. Edith Piaf's voice from a radio in a cafe. The smell of Gauloises and cheap wine. Working-class families in the northern streets. The Moulin Rouge reopened, its windmill turning for a new generation. The view from the top: all of Paris rebuilding, cranes everywhere, hope mixed with exhaustion.",
+          "sources": [
+            "Alistair Horne, Seven Ages of Paris (2002)",
+            "Agnes Poirier, Left Bank: Art, Passion, and the Rebirth of Paris 1940-1950 (2018)"
+          ]
+        },
+        {
+          "id": "paris-montmartre-1965",
+          "year_display": "1965",
+          "label": "Tourist Montmartre",
+          "era_type": "past",
+          "image_query": "montmartre,paris,artists,1960s,france,tourist,sacre coeur",
+          "headline": "The Myth Becomes the Product",
+          "description": "By 1965, Montmartre had become its own legend. The artists had left for Montparnasse, then Saint-Germain-des-Pres, then studios on the periphery. But the Place du Tertre still filled with painters selling portraits to tourists, performing the role of bohemia that Picasso and his generation had lived authentically. The Sacre-Coeur drew millions. Amelie had not yet been filmed but the district was already becoming the version of Paris that the world imagined: charming, artistic, slightly unreal. The working-class neighborhoods on the hill's north side remained gritty and immigrant, invisible to the tourist gaze.",
+          "key_events": [
+            {
+              "year": "1958",
+              "event": "New Wave cinema uses Montmartre as a location; the district enters the global imagination"
+            },
+            {
+              "year": "1965",
+              "event": "Place du Tertre portrait artists become Montmartre's defining tourist attraction"
+            },
+            {
+              "year": "1970s",
+              "event": "Gentrification begins on the south slopes while the north remains working class"
+            }
+          ],
+          "landscape": "Tourists climbing the steps to Sacre-Coeur. Portrait artists at easels in the Place du Tertre. The vineyard on Rue des Saules, maintained as a historical curiosity. Postcard stands everywhere. Behind the tourist facade: North African and Portuguese immigrant families in the northern streets, cheap hotels, a different Montmartre invisible to visitors.",
+          "sources": [
+            "W. Scott Haine, The World of the Paris Cafe (1996)",
+            "David Harvey, Paris, Capital of Modernity (2003)"
+          ]
+        },
+        {
+          "id": "paris-montmartre-2025",
+          "year_display": "2025",
+          "label": "Layered Paris",
+          "era_type": "present",
+          "image_query": "montmartre,paris,2024,modern,sacre coeur,france",
+          "headline": "Every Version of Montmartre, All at Once",
+          "description": "Montmartre in 2025 holds all its layers visible. The Sacre-Coeur at the summit, still controversial (built to 'expiate' the Commune). The Place du Tertre with its portrait painters, now a self-conscious performance of bohemia. The Moulin Rouge, still operating, selling the idea of can-can Paris. But also: the Goutte d'Or neighborhood on the north side, one of the most diverse in Paris, where African and Middle Eastern communities have built new versions of Parisian life. The butte resists simplification. It is tourist trap and living neighborhood, myth and reality, sacred and profane, all at once.",
+          "key_events": [
+            {
+              "year": "2015",
+              "event": "Terror attacks near Montmartre increase security presence and change the atmosphere of the district"
+            },
+            {
+              "year": "2020",
+              "event": "COVID empties the Sacre-Coeur steps; locals rediscover the butte without tourists"
+            },
+            {
+              "year": "2024",
+              "event": "Paris Olympics bring record visitors; Montmartre is among the most photographed sites"
+            },
+            {
+              "year": "2025",
+              "event": "Ongoing debate about balancing tourism, preservation, and neighborhood life"
+            }
+          ],
+          "landscape": "The white dome of Sacre-Coeur against the sky. The steps crowded with tourists and locals and street musicians. The narrow streets of the butte, some unchanged since Toulouse-Lautrec. In the Goutte d'Or, African fabric shops and halal butchers alongside hipster coffee bars. The perpetual tension between the Montmartre that visitors come to see and the Montmartre that Parisians actually live in.",
+          "sources": [
+            "Paris Tourism Office statistics (2024)",
+            "Maud Chirio and Ludivine Bantigny, La France a l'heure du monde (2018)"
+          ]
+        },
+        {
+          "id": "paris-montmartre-2075",
+          "year_display": "2075",
+          "label": "The Eternal Butte",
+          "era_type": "future",
+          "image_query": "paris,future,montmartre,green,sustainable,france",
+          "headline": "The Hill Abides",
+          "description": "Montmartre's topography saved it. While lower-lying Paris struggled with heat islands and flooding from the Seine, the butte's elevation, steep streets, and stone buildings created a naturally cooled microclimate. The quarry tunnels, dangerous for centuries, were repurposed as geothermal cooling systems. The Sacre-Coeur, always a symbol of something, became a symbol of resilience. The artists never truly returned, but the creative energy relocated to the hill's digital studios. Montmartre proved what it had always demonstrated: that places with strong identities survive, adapt, and endure.",
+          "future_scenarios": [
+            {
+              "id": "geothermal-butte",
+              "label": "Geothermal Butte",
+              "sublabel": "Quarry tunnels become cooling infrastructure",
+              "description": "The ancient gypsum quarries beneath Montmartre are converted into a geothermal cooling network, making the butte one of the most comfortable neighborhoods in a hotter Paris.",
+              "confidence": 0.4
+            },
+            {
+              "id": "digital-bohemia",
+              "label": "Digital Bohemia",
+              "sublabel": "New artists, new medium, same spirit",
+              "description": "AI artists and digital creators establish studios on the butte, drawn by the mythology and the rent subsidies offered by a city desperate to maintain Montmartre's creative identity.",
+              "confidence": 0.35
+            },
+            {
+              "id": "sanctuary-hill",
+              "label": "Sanctuary Hill",
+              "sublabel": "Montmartre as urban refuge",
+              "description": "As climate pressures mount, Montmartre's elevation and microclimate make it a desirable refuge. The population densifies, the community diversifies, and the hill becomes what it was in 1871: a place that governs itself.",
+              "confidence": 0.25
+            }
+          ],
+          "sources": [
+            "Paris Climate Action Plan 2050",
+            "Institut Paris Region urban development projections"
+          ]
+        }
+      ]
     }
   ]
 }
