@@ -25,6 +25,15 @@ export function CharacterChat({ era, onDismiss }) {
     return () => document.head.removeChild(style)
   }, [])
 
+  // Disable autocorrect on contenteditable via DOM attributes
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.setAttribute('spellcheck', 'false')
+      inputRef.current.setAttribute('autocorrect', 'off')
+      inputRef.current.setAttribute('autocomplete', 'off')
+    }
+  }, [])
+
   if (!character) return null
 
   async function handleSend() {
@@ -228,6 +237,7 @@ export function CharacterChat({ era, onDismiss }) {
           alignItems: 'center',
           gap: '8px',
           padding: '12px 16px',
+          paddingRight: 'max(16px, env(safe-area-inset-right, 16px))',
           paddingBottom: 'max(12px, env(safe-area-inset-bottom))',
           backgroundColor: '#111',
           borderTop: '1px solid rgba(255,255,255,0.1)',
@@ -240,6 +250,12 @@ export function CharacterChat({ era, onDismiss }) {
           ref={inputRef}
           contentEditable
           suppressContentEditableWarning
+          spellCheck={false}
+          autoCorrect="off"
+          autoCapitalize="off"
+          data-gramm="false"
+          data-gramm_editor="false"
+          data-enable-grammarly="false"
           onKeyDown={(e) => {
             if (e.key === 'Enter' && !e.shiftKey) {
               e.preventDefault()
