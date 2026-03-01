@@ -118,7 +118,12 @@ export default function TemporalRibbon() {
                 }}
                 transition={{ duration: 0.2 }}
               >
-                {era.year_display}
+                {era.year_display.startsWith('c.') ? (
+                  <>
+                    <span className="text-[10px] opacity-50">c.&nbsp;</span>
+                    <span>{era.year_display.slice(3)}</span>
+                  </>
+                ) : era.year_display}
                 {audioService.hasAudio(era.id) && (
                   <span className="text-past/60 text-[10px]">&#9835;</span>
                 )}

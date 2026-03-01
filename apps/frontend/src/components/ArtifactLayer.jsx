@@ -102,13 +102,17 @@ export default function ArtifactLayer({ era, locationId, locationName, city }) {
       {/* Count pill — bottom of era view */}
       <motion.button
         onClick={() => setPanelOpen(true)}
-        className="cursor-pointer rounded-sm border border-border bg-surface/80 px-3 py-1.5 backdrop-blur-sm transition-colors hover:border-present/20"
+        className={`cursor-pointer rounded-sm border px-3 py-1.5 backdrop-blur-sm transition-colors ${
+          count > 0
+            ? 'border-border bg-surface/80 hover:border-present/20'
+            : 'border-present/10 bg-transparent hover:border-present/20'
+        }`}
         whileTap={{ scale: 0.97 }}
       >
-        <span className="font-ui text-[10px] tracking-[0.15em] text-present/50 uppercase">
+        <span className="font-ui text-[10px] tracking-[0.15em] text-present/40 uppercase">
           {count > 0
             ? `${count} ${count === 1 ? 'person' : 'people'} stood here in ${era.year_display}`
-            : 'Be the first'}
+            : 'Leave a note'}
         </span>
       </motion.button>
 

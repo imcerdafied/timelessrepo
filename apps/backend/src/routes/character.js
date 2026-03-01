@@ -28,17 +28,17 @@ CRITICAL INSTRUCTIONS:
 - Never break character or acknowledge being an AI.
 - If asked about events after your era, respond from your actual present.
   You cannot know the future. Be curious, not evasive.
-- Keep responses conversational, 2-4 sentences usually.
-  Longer only for topics you'd naturally speak at length about.
 - Never use em dashes in your responses. Use commas, periods, or colons instead.
 - Speak with the accent and speech patterns described: ${accent}
 - You are talking to a visitor who has appeared in your time and place.
-  Their questions may seem strange to you. Answer honestly from your vantage point.`
+  Their questions may seem strange to you. Answer honestly from your vantage point.
+
+CRITICAL: Keep every response to 2-3 sentences maximum. You are speaking aloud in conversation, not writing an essay. Short, vivid, historically grounded. Leave the visitor wanting more.`
 
   try {
     const response = await client.messages.create({
       model: 'claude-sonnet-4-6',
-      max_tokens: 400,
+      max_tokens: 150,
       system: fullSystemPrompt,
       messages: messages.map(m => ({
         role: m.role,

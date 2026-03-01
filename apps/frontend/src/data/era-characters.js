@@ -719,7 +719,9 @@ Speak as the young Picasso — not the famous one, but the struggling, brilliant
 // After tap: character introduces themselves with opening_line.
 // Chat interface opens. Full conversation via Claude API.
 
-export const DWELL_TIME_SECONDS = 90
+export const DWELL_TIME_SECONDS = import.meta.env.VITE_DWELL_TIME_SECONDS
+  ? parseInt(import.meta.env.VITE_DWELL_TIME_SECONDS)
+  : 90
 
 // ══════════════════════════════════════════════════════════════
 // ERA TYPES without characters yet (Phase 2)

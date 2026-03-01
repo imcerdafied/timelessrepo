@@ -83,14 +83,14 @@ export default function ExperienceWindow() {
         <div className="absolute inset-0" style={{ background: eraGradient[era.era_type] }} />
       )}
 
-      {/* Shimmer loading state */}
+      {/* Dark skeleton loading state */}
       <AnimatePresence>
         {!imageLoaded && !imageFailed && (
           <motion.div
-            key="shimmer"
-            className="shimmer absolute inset-0"
+            key="skeleton"
+            className="absolute inset-0 animate-pulse bg-neutral-800"
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.4 }}
+            transition={{ duration: 0.5 }}
           />
         )}
       </AnimatePresence>
