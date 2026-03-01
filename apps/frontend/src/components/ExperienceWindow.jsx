@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react'
+import { createPortal } from 'react-dom'
 import { AnimatePresence, motion, useDragControls } from 'framer-motion'
 import useStore from '../store/useStore'
 import { useEraImage } from '../hooks/useEraImage'
@@ -50,7 +51,7 @@ export default function ExperienceWindow() {
   const touchStartY = useRef(null)
 
   const era = eras.find((e) => e.id === selectedEra)
-  const { url: imageUrl, credit, creditUrl } = useEraImage(era)
+  const { url: imageUrl } = useEraImage(era)
   const { tilt, needsPermission, requestPermission } = useGyroscope()
   const { audioEnabled, hasAudio, toggle: toggleAudio } = useEraAudio(era)
   const hasCharacter = !!ERA_CHARACTERS[era?.id]
@@ -140,18 +141,6 @@ export default function ExperienceWindow() {
           background: 'linear-gradient(to top, rgba(10,10,10,0.85) 0%, rgba(10,10,10,0.4) 30%, transparent 55%)',
         }}
       />
-
-      {/* Unsplash credit */}
-      {credit && (
-        <a
-          href={`${creditUrl}?utm_source=timeless_moment&utm_medium=referral`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="absolute right-2 top-14 z-[5] rounded bg-black/40 px-1.5 py-0.5 font-ui text-[9px] text-present/30 backdrop-blur-sm transition-colors hover:text-present/50"
-        >
-          Photo by {credit}
-        </a>
-      )}
 
       {/* iOS gyroscope permission pill */}
       <AnimatePresence>
@@ -249,19 +238,34 @@ export default function ExperienceWindow() {
           exit={{ opacity: 0, y: -8 }}
           transition={{ duration: 0.3, delay: 0.2 }}
         >
-          <span
-            className="rounded-full px-3 py-1 font-ui text-xs font-medium tracking-wide uppercase"
+          <div
             style={{
-              color,
-              backgroundColor: `${color}18`,
-              border: `1px solid ${color}30`,
+              backgroundColor: 'rgba(0,0,0,0.55)',
+              backdropFilter: 'blur(8px)',
+              WebkitBackdropFilter: 'blur(8px)',
+              borderRadius: 999,
+              padding: '4px 10px',
+              border: '1px solid rgba(255,255,255,0.1)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 6,
             }}
           >
-            {era.label}
-          </span>
-          <span className="font-mono text-xs" style={{ color: `${color}99` }}>
-            {era.year_display}
-          </span>
+            <span
+              className="font-ui uppercase"
+              style={{
+                color: '#f59e0b',
+                fontSize: 11,
+                fontWeight: 600,
+                letterSpacing: '0.08em',
+              }}
+            >
+              {era.label}
+            </span>
+            <span className="font-mono" style={{ color: 'rgba(245,158,11,0.6)', fontSize: 11 }}>
+              {era.year_display}
+            </span>
+          </div>
         </motion.div>
       </AnimatePresence>
 
@@ -286,7 +290,7 @@ export default function ExperienceWindow() {
         )}
       </AnimatePresence>
 
-      {/* Bottom sheet — peek state (inline) or expanded (fixed overlay) */}
+      {/* Bottom sheet — collapsed peek or expanded fixed overlay */}
       {expanded ? (
         <div
           style={{
@@ -303,15 +307,33 @@ export default function ExperienceWindow() {
             flexDirection: 'column',
           }}
         >
-          {/* Drag handle — tappable to collapse */}
-          <div
-            className="flex cursor-pointer flex-col items-center pb-1 pt-2"
-            onClick={() => setExpanded(false)}
-          >
+          {/* Header with drag handle and close button */}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', paddingTop: 8, paddingBottom: 4 }}>
             <div className="h-1 w-8 rounded-full bg-present/25" />
+            <button
+              onClick={() => setExpanded(false)}
+              style={{
+                position: 'absolute',
+                right: 16,
+                top: 8,
+                width: 28,
+                height: 28,
+                borderRadius: 9999,
+                border: '1px solid rgba(255,255,255,0.15)',
+                backgroundColor: 'rgba(255,255,255,0.08)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+              }}
+            >
+              <svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="rgba(245,245,245,0.6)" strokeWidth="1.5" strokeLinecap="round">
+                <path d="M11 3L3 11M3 3l8 8" />
+              </svg>
+            </button>
           </div>
 
-          {/* Scrollable content */}
+          {/* Scrollable content — full description + key events + landscape */}
           <div style={{ flex: 1, overflowY: 'auto', padding: '0 20px 20px' }}>
             <h2 className="font-heading text-xl font-semibold leading-tight text-present">
               {era.headline}
@@ -326,7 +348,7 @@ export default function ExperienceWindow() {
 
             {era.era_type !== 'future' && era.key_events && era.key_events.length > 0 && (
               <div className="mt-4">
-                {era.key_events.slice(0, 3).map((evt, i) => (
+                {era.key_events.map((evt, i) => (
                   <div key={i} className="mt-2 flex gap-2">
                     <span className="font-mono text-[10px] shrink-0" style={{ color: `${color}99` }}>
                       {evt.year}
@@ -339,33 +361,11 @@ export default function ExperienceWindow() {
               </div>
             )}
 
-            {/* Action row */}
-            <div className="mt-3 flex items-center justify-between">
-              <div
-                className="flex cursor-pointer items-center gap-1.5 text-present/40"
-                onClick={(e) => {
-                  e.stopPropagation()
-                  setDetailOpen(true)
-                  setExpanded(false)
-                }}
-              >
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
-                  <path d="M6 2v8M2 6l4 4 4-4" />
-                </svg>
-                <span className="font-ui text-[11px] tracking-wide uppercase">
-                  Full detail
-                </span>
-              </div>
-              <button
-                onClick={(e) => {
-                  e.stopPropagation()
-                  setExpanded(false)
-                }}
-                className="cursor-pointer font-ui text-[11px] tracking-wide text-present/30 uppercase transition-colors hover:text-present/50"
-              >
-                Collapse
-              </button>
-            </div>
+            {era.landscape && (
+              <p className="mt-4 font-ui text-sm italic leading-relaxed text-present/50">
+                {era.landscape}
+              </p>
+            )}
           </div>
         </div>
       ) : (
@@ -448,9 +448,9 @@ export default function ExperienceWindow() {
         />
       )}
 
-      {/* Character chat — appears after 90s dwell time */}
-      <AnimatePresence>
-        {(showCharacterNotification || characterOpen) && (
+      {/* Character chat — portal to body to avoid overflow:hidden clipping */}
+      {(showCharacterNotification || characterOpen) && createPortal(
+        <AnimatePresence>
           <CharacterChat
             era={era}
             onDismiss={() => {
@@ -459,8 +459,9 @@ export default function ExperienceWindow() {
               dismissCharacter()
             }}
           />
-        )}
-      </AnimatePresence>
+        </AnimatePresence>,
+        document.body
+      )}
     </div>
   )
 }
