@@ -137,12 +137,9 @@ export function CharacterChat({ era, onDismiss }) {
       style={{
         position: 'fixed',
         top: 0,
+        left: 0,
         right: 0,
         bottom: 0,
-        left: 0,
-        width: '100vw',
-        height: '100vh',
-        boxSizing: 'border-box',
         zIndex: 9999,
         display: 'flex',
         flexDirection: 'column',
@@ -236,8 +233,7 @@ export function CharacterChat({ era, onDismiss }) {
           style={{
             flex: 1,
             minWidth: 0,
-            maxWidth: 'calc(100% - 56px)',
-            boxSizing: 'border-box',
+            width: 0,
             borderRadius: 9999,
             backgroundColor: 'rgba(255,255,255,0.1)',
             padding: '12px 16px',
