@@ -62,6 +62,54 @@ CRITICAL: Keep every response to 2-3 sentences maximum. You are speaking aloud i
   }
 })
 
+router.post('/speak', async (req, res) => {
+  const { text, voiceId } = req.body
+
+  if (!text || !voiceId) {
+    return res.status(400).json({ error: 'text and voiceId required' })
+  }
+
+  const ELEVEN_API_KEY = process.env.ELEVENLABS_API_KEY
+  if (!ELEVEN_API_KEY) {
+    return res.status(500).json({ error: 'ElevenLabs API key not configured' })
+  }
+
+  try {
+    const response = await fetch(
+      `https://api.elevenlabs.io/v1/text-to-speech/${voiceId}/stream`,
+      {
+        method: 'POST',
+        headers: {
+          'xi-api-key': ELEVEN_API_KEY,
+          'Content-Type': 'application/json',
+          'Accept': 'audio/mpeg'
+        },
+        body: JSON.stringify({
+          text: text,
+          model_id: 'eleven_turbo_v2',
+          voice_settings: {
+            stability: 0.5,
+            similarity_boost: 0.75,
+            style: 0.3,
+            use_speaker_boost: true
+          }
+        })
+      }
+    )
+
+    if (!response.ok) {
+      const err = await response.text()
+      return res.status(500).json({ error: 'ElevenLabs error', detail: err })
+    }
+
+    res.setHeader('Content-Type', 'audio/mpeg')
+    res.setHeader('Transfer-Encoding', 'chunked')
+    response.body.pipe(res)
+  } catch (err) {
+    res.status(500).json({ error: err.message })
+  }
+})
+
 router.get('/test', async (req, res) => {
   try {
     const response = await client.messages.create({

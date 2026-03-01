@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ERA_CHARACTERS } from '../data/era-characters'
 import { sendCharacterMessage } from '../services/characterService'
+import { voiceService } from '../services/voiceService'
 
 export function CharacterChat({ era, onDismiss }) {
   const character = ERA_CHARACTERS[era?.id]
@@ -9,6 +10,7 @@ export function CharacterChat({ era, onDismiss }) {
   // phases: notification → introduction → chat
   const [messages, setMessages] = useState([])
   const [loading, setLoading] = useState(false)
+  const [voiceEnabled, setVoiceEnabled] = useState(voiceService.enabled)
   const messagesEndRef = useRef(null)
   const inputRef = useRef(null)
 
@@ -60,6 +62,7 @@ export function CharacterChat({ era, onDismiss }) {
         ...newMessages,
         { role: 'assistant', content: response }
       ])
+      voiceService.speak(response, era?.id)
     } catch (err) {
       const errorMsg = err.message || 'Unknown error'
       setMessages([
@@ -182,13 +185,21 @@ export function CharacterChat({ era, onDismiss }) {
         }}
       >
         <button
-          onClick={onDismiss}
+          onClick={() => { voiceService.stop(); onDismiss() }}
           style={{ display: 'flex', alignItems: 'center', gap: 8, background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(255,255,255,0.6)', fontSize: 14 }}
         >
           <span>&larr;</span>
           <span>Back to {era.label}</span>
         </button>
-        <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)' }}>{character.name}, {era.year_display}</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)' }}>{character.name}, {era.year_display}</span>
+          <button
+            onClick={() => setVoiceEnabled(voiceService.toggle())}
+            style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 16, padding: 4 }}
+          >
+            {voiceEnabled ? '\u{1F50A}' : '\u{1F507}'}
+          </button>
+        </div>
       </div>
 
       {/* Messages */}
