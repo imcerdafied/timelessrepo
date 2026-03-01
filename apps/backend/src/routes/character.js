@@ -104,7 +104,9 @@ router.post('/speak', async (req, res) => {
 
     res.setHeader('Content-Type', 'audio/mpeg')
     res.setHeader('Transfer-Encoding', 'chunked')
-    response.body.pipe(res)
+    const { Readable } = await import('stream')
+    const nodeStream = Readable.fromWeb(response.body)
+    nodeStream.pipe(res)
   } catch (err) {
     res.status(500).json({ error: err.message })
   }
