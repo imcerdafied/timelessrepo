@@ -1,42 +1,36 @@
 class VoiceService {
   constructor() {
-    this.currentAudio = null
+    this.audio = new Audio()
+    this.audio.preload = 'none'
     this.enabled = localStorage.getItem('characterVoiceEnabled') !== 'false'
   }
 
   async speak(text, eraId) {
     if (!this.enabled) return
-
-    // Stop any currently playing voice
     this.stop()
 
-    const { ERA_CHARACTER_VOICES } = await import('../data/character-voices.js')
-    const voiceId = ERA_CHARACTER_VOICES[eraId] || 'pNInz6obpgDQGcFmaJgB'
-
     try {
-      const response = await fetch('/api/character/speak', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text, voiceId })
+      // Build URL with query params so Audio src can load it directly
+      // This works on iOS Safari because we set src before play()
+      const params = new URLSearchParams({
+        text: text.slice(0, 500),
+        eraId: eraId || 'alamo-1834'
       })
 
-      if (!response.ok) throw new Error('Voice request failed')
+      this.audio = new Audio(`/api/character/speak-stream?${params}`)
+      this.audio.preload = 'auto'
 
-      const blob = await response.blob()
-      const url = URL.createObjectURL(blob)
-
-      this.currentAudio = new Audio(url)
-      this.currentAudio.onended = () => URL.revokeObjectURL(url)
-      await this.currentAudio.play()
+      // iOS Safari requires play() to be called, then it loads
+      await this.audio.play()
     } catch (err) {
-      console.error('Voice playback error:', err)
+      console.error('Voice error:', err)
     }
   }
 
   stop() {
-    if (this.currentAudio) {
-      this.currentAudio.pause()
-      this.currentAudio = null
+    if (this.audio) {
+      this.audio.pause()
+      this.audio.src = ''
     }
   }
 

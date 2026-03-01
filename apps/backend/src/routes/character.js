@@ -112,6 +112,57 @@ router.post('/speak', async (req, res) => {
   }
 })
 
+router.get('/speak-stream', async (req, res) => {
+  const { text, eraId } = req.query
+
+  const voiceMap = {
+    'alamo-1834': 'pNInz6obpgDQGcFmaJgB',
+    'mission-1776': 'VR6AewLTigWG4xSOukaG',
+    'mission-1906': 'EXAVITQu4vr4xnSDxMaL',
+    'mission-1969': 'pNInz6obpgDQGcFmaJgB',
+    'embarcadero-1934': 'VR6AewLTigWG4xSOukaG',
+    'chinatown-1882': 'TxGEqnHWrfWFTfGW9XjX',
+  }
+
+  const voiceId = voiceMap[eraId] || 'pNInz6obpgDQGcFmaJgB'
+  const ELEVEN_API_KEY = process.env.ELEVENLABS_API_KEY
+
+  if (!ELEVEN_API_KEY) {
+    return res.status(500).json({ error: 'ElevenLabs API key not configured' })
+  }
+
+  try {
+    const response = await fetch(
+      `https://api.elevenlabs.io/v1/text-to-speech/${voiceId}/stream`,
+      {
+        method: 'POST',
+        headers: {
+          'xi-api-key': ELEVEN_API_KEY,
+          'Content-Type': 'application/json',
+          'Accept': 'audio/mpeg'
+        },
+        body: JSON.stringify({
+          text: text?.slice(0, 500) || 'Hello',
+          model_id: 'eleven_turbo_v2',
+          voice_settings: { stability: 0.5, similarity_boost: 0.75 }
+        })
+      }
+    )
+
+    if (!response.ok) {
+      const err = await response.text()
+      return res.status(500).json({ error: 'ElevenLabs error', detail: err })
+    }
+
+    res.setHeader('Content-Type', 'audio/mpeg')
+    res.setHeader('Cache-Control', 'no-cache')
+    const { Readable } = await import('stream')
+    Readable.fromWeb(response.body).pipe(res)
+  } catch (err) {
+    res.status(500).json({ error: err.message })
+  }
+})
+
 router.get('/test', async (req, res) => {
   try {
     const response = await client.messages.create({
