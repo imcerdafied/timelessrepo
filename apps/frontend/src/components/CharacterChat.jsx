@@ -137,17 +137,16 @@ export function CharacterChat({ era, onDismiss }) {
       style={{
         position: 'fixed',
         top: 0,
-        left: 0,
         right: 0,
         bottom: 0,
-        width: '100%',
+        left: 0,
+        width: '100vw',
+        height: '100vh',
         boxSizing: 'border-box',
-        zIndex: 40,
+        zIndex: 9999,
         display: 'flex',
         flexDirection: 'column',
-        background: 'rgba(0,0,0,0.95)',
-        backdropFilter: 'blur(12px)',
-        WebkitBackdropFilter: 'blur(12px)',
+        backgroundColor: '#000',
       }}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -220,15 +219,15 @@ export function CharacterChat({ era, onDismiss }) {
         role="search"
         style={{
           display: 'flex',
+          flexDirection: 'row',
           alignItems: 'center',
           gap: 8,
-          padding: '12px 16px',
-          paddingRight: 'max(16px, env(safe-area-inset-right))',
-          paddingBottom: 'max(16px, env(safe-area-inset-bottom))',
+          backgroundColor: '#111',
           borderTop: '1px solid rgba(255,255,255,0.1)',
-          backgroundColor: '#000',
-          boxSizing: 'border-box',
+          padding: 12,
+          paddingBottom: 'max(12px, env(safe-area-inset-bottom))',
           width: '100%',
+          boxSizing: 'border-box',
         }}
       >
         <input
@@ -237,7 +236,7 @@ export function CharacterChat({ era, onDismiss }) {
           style={{
             flex: 1,
             minWidth: 0,
-            maxWidth: 'calc(100% - 60px)',
+            maxWidth: 'calc(100% - 56px)',
             boxSizing: 'border-box',
             borderRadius: 9999,
             backgroundColor: 'rgba(255,255,255,0.1)',
@@ -260,11 +259,11 @@ export function CharacterChat({ era, onDismiss }) {
         />
         <button
           style={{
-            flexShrink: 0,
             width: 44,
             height: 44,
-            borderRadius: 9999,
-            backgroundColor: '#d97706',
+            flexShrink: 0,
+            borderRadius: 22,
+            backgroundColor: '#b45309',
             border: 'none',
             cursor: 'pointer',
             display: 'flex',

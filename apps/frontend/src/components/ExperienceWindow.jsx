@@ -307,34 +307,22 @@ export default function ExperienceWindow() {
             flexDirection: 'column',
           }}
         >
-          {/* Header with drag handle and close button */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', paddingTop: 8, paddingBottom: 4 }}>
-            <div className="h-1 w-8 rounded-full bg-present/25" />
-            <button
-              onClick={() => setExpanded(false)}
-              style={{
-                position: 'absolute',
-                right: 16,
-                top: 8,
-                width: 28,
-                height: 28,
-                borderRadius: 9999,
-                border: '1px solid rgba(255,255,255,0.15)',
-                backgroundColor: 'rgba(255,255,255,0.08)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                cursor: 'pointer',
-              }}
-            >
-              <svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="rgba(245,245,245,0.6)" strokeWidth="1.5" strokeLinecap="round">
-                <path d="M11 3L3 11M3 3l8 8" />
-              </svg>
-            </button>
+          {/* Drag handle — swipe down to close */}
+          <div
+            style={{ display: 'flex', justifyContent: 'center', paddingTop: 10, paddingBottom: 6 }}
+            onTouchStart={(e) => { touchStartY.current = e.touches[0].clientY }}
+            onTouchEnd={(e) => {
+              if (touchStartY.current === null) return
+              const delta = touchStartY.current - e.changedTouches[0].clientY
+              if (delta < -40) setExpanded(false)
+              touchStartY.current = null
+            }}
+          >
+            <div style={{ width: 48, height: 5, borderRadius: 3, backgroundColor: 'rgba(245,245,245,0.5)' }} />
           </div>
 
           {/* Scrollable content — full description + key events + landscape */}
-          <div style={{ flex: 1, overflowY: 'auto', padding: '0 20px 20px' }}>
+          <div style={{ flex: 1, overflowY: 'auto', padding: '0 24px 20px 20px' }}>
             <h2 className="font-heading text-xl font-semibold leading-tight text-present">
               {era.headline}
             </h2>
