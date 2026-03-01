@@ -166,7 +166,7 @@ export default function ArtifactLayer({ era, locationId, locationName, city }) {
                       </button>
                     )}
                     <h3 className="font-ui text-xs font-medium tracking-[0.2em] text-present/40 uppercase">
-                      {formOpen ? 'Leave Your Mark' : `Visitors — ${era.year_display}`}
+                      {formOpen ? 'Leave Your Mark' : `Visitors, ${era.year_display}`}
                     </h3>
                   </div>
                   <button

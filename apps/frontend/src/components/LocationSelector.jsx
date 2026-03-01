@@ -39,7 +39,7 @@ export default function LocationSelector() {
     if (!eras?.length) return ''
     const first = eras[0].year_display
     const last = eras[eras.length - 1].year_display
-    return `${first} — ${last}`
+    return `${first} to ${last}`
   }
 
   return (

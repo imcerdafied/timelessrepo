@@ -88,7 +88,7 @@ export default function EraDetail({ era, open, onClose, color, locationName }) {
                       border: `1px solid ${color}30`,
                     }}
                   >
-                    {era.year_display} — {typeLabel[era.era_type]}
+                    {era.year_display} &middot; {typeLabel[era.era_type]}
                   </span>
                   {locationName && (
                     <p className="mt-2 font-ui text-[11px] tracking-wide text-present/40 uppercase">
