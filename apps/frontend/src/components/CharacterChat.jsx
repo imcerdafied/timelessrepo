@@ -8,22 +8,31 @@ export function CharacterChat({ era, onDismiss }) {
   const [phase, setPhase] = useState('notification')
   // phases: notification → introduction → chat
   const [messages, setMessages] = useState([])
-  const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
   const messagesEndRef = useRef(null)
+  const inputRef = useRef(null)
 
   // Auto-scroll to latest message
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
 
+  // Inject contenteditable placeholder CSS
+  useEffect(() => {
+    const style = document.createElement('style')
+    style.innerText = '[contenteditable]:empty:before { content: attr(data-placeholder); color: rgba(255,255,255,0.35); pointer-events: none; }'
+    document.head.appendChild(style)
+    return () => document.head.removeChild(style)
+  }, [])
+
   if (!character) return null
 
   async function handleSend() {
-    if (!input.trim() || loading) return
+    const text = inputRef.current?.innerText?.trim()
+    if (!text || loading) return
 
-    const userMessage = input.trim()
-    setInput('')
+    inputRef.current.innerText = ''
+    const userMessage = text
     setLoading(true)
 
     const newMessages = [
@@ -213,64 +222,64 @@ export function CharacterChat({ era, onDismiss }) {
 
       {/* Input row */}
       <div
-        role="search"
         style={{
           display: 'flex',
           flexDirection: 'row',
           alignItems: 'center',
-          gap: 8,
+          gap: '8px',
+          padding: '12px 16px',
+          paddingBottom: 'max(12px, env(safe-area-inset-bottom))',
           backgroundColor: '#111',
           borderTop: '1px solid rgba(255,255,255,0.1)',
-          padding: 12,
-          paddingBottom: 'max(12px, env(safe-area-inset-bottom))',
-          width: '100%',
           boxSizing: 'border-box',
+          position: 'relative',
+          zIndex: 1,
         }}
       >
-        <input
-          type="text"
-          inputMode="text"
+        <div
+          ref={inputRef}
+          contentEditable
+          suppressContentEditableWarning
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+              e.preventDefault()
+              handleSend()
+            }
+          }}
+          data-placeholder={`Ask ${character.name.split(' ')[0]} anything...`}
           style={{
             flex: 1,
             minWidth: 0,
-            width: 0,
-            borderRadius: 9999,
             backgroundColor: 'rgba(255,255,255,0.1)',
-            padding: '12px 16px',
-            fontSize: 14,
-            color: '#fff',
+            borderRadius: '24px',
+            padding: '10px 16px',
+            color: 'white',
+            fontSize: '15px',
             outline: 'none',
-            border: 'none',
+            minHeight: '20px',
+            maxHeight: '80px',
+            overflowY: 'auto',
+            wordBreak: 'break-word',
           }}
-          placeholder={`Ask ${character.name.split(' ')[0]} anything...`}
-          value={input}
-          onChange={e => setInput(e.target.value)}
-          onKeyDown={e => e.key === 'Enter' && handleSend()}
-          autoComplete="off"
-          autoCorrect="off"
-          autoCapitalize="off"
-          spellCheck="false"
-          data-form-type="other"
-          data-lpignore="true"
         />
         <button
+          onMouseDown={(e) => { e.preventDefault(); handleSend() }}
           style={{
-            width: 44,
-            height: 44,
             flexShrink: 0,
-            borderRadius: 22,
+            width: '44px',
+            height: '44px',
+            borderRadius: '22px',
             backgroundColor: '#b45309',
             border: 'none',
-            cursor: 'pointer',
+            color: 'white',
+            fontSize: '18px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            opacity: loading || !input.trim() ? 0.3 : 1,
+            cursor: 'pointer',
           }}
-          onClick={handleSend}
-          disabled={loading || !input.trim()}
         >
-          <span style={{ fontSize: 18, lineHeight: 1, color: '#fff' }}>&rarr;</span>
+          &rarr;
         </button>
       </div>
     </motion.div>
