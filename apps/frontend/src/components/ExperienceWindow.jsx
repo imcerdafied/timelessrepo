@@ -285,9 +285,9 @@ export default function ExperienceWindow() {
         )}
       </AnimatePresence>
 
-      {/* Bottom sheet — peek state (~140px) or expanded */}
+      {/* Bottom sheet — peek state or expanded full text */}
       <motion.div
-        className={`absolute inset-x-0 bottom-0 z-10 ${expanded ? 'bg-neutral-950/95' : ''}`}
+        className="absolute inset-x-0 bottom-0 z-10"
         style={{ touchAction: 'none' }}
         animate={{ y: expanded ? '-55vh' : 0 }}
         transition={{ type: 'spring', stiffness: 300, damping: 30 }}
@@ -304,20 +304,21 @@ export default function ExperienceWindow() {
           }
         }}
       >
-        {/* Drag handle */}
+        {/* Solid background when expanded for text legibility */}
+        {expanded && (
+          <div className="absolute inset-0 rounded-t-2xl bg-neutral-950/95" />
+        )}
+
+        {/* Drag handle — tappable to toggle */}
         <div
-          className="flex cursor-grab justify-center pb-2 pt-2 active:cursor-grabbing"
+          className="relative flex cursor-grab justify-center pb-2 pt-2 active:cursor-grabbing"
           onPointerDown={(e) => dragControls.start(e)}
+          onClick={() => setExpanded(!expanded)}
         >
           <div className="h-1 w-8 rounded-full bg-present/25" />
         </div>
 
-        <div
-          className="px-5 pb-4"
-          onClick={() => {
-            if (!expanded) setExpanded(true)
-          }}
-        >
+        <div className={`relative px-5 pb-4 ${expanded ? 'max-h-[55vh] overflow-y-auto' : ''}`}>
           <AnimatePresence mode="wait">
             <motion.div
               key={era.id + '-card'}
@@ -359,25 +360,25 @@ export default function ExperienceWindow() {
 
               {/* Action row */}
               <div className="mt-3 flex items-center justify-between">
-                <div
-                  className="flex cursor-pointer items-center gap-1.5 text-present/40"
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    if (expanded) {
+                {expanded ? (
+                  <div
+                    className="flex cursor-pointer items-center gap-1.5 text-present/40"
+                    onClick={(e) => {
+                      e.stopPropagation()
                       setDetailOpen(true)
                       setExpanded(false)
-                    } else {
-                      setExpanded(true)
-                    }
-                  }}
-                >
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
-                    <path d="M6 2v8M2 6l4 4 4-4" />
-                  </svg>
-                  <span className="font-ui text-[11px] tracking-wide uppercase">
-                    {expanded ? 'Full detail' : 'Tap to explore'}
-                  </span>
-                </div>
+                    }}
+                  >
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+                      <path d="M6 2v8M2 6l4 4 4-4" />
+                    </svg>
+                    <span className="font-ui text-[11px] tracking-wide uppercase">
+                      Full detail
+                    </span>
+                  </div>
+                ) : (
+                  <div className="h-4" />
+                )}
                 {expanded && (
                   <button
                     onClick={(e) => {
