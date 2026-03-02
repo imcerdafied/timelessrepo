@@ -14,21 +14,17 @@ const ERA_AMBIENT = {
   'alamo-2075': `${SUPABASE_URL}/storage/v1/object/public/era-audio/alamo-2075.mp3`,
 }
 
-// Layer 2: Era music (Suno-generated, public domain, or Spotify)
-// Add entries here as music files are uploaded to Supabase
-// Spotify entries use { type: 'spotify', uri: '...' }
-// File entries use { type: 'file', url: '...' }
-const ERA_MUSIC = {
-  // Alamo — add as Suno files are generated and uploaded
-  // 'alamo-1834': { type: 'file', url: `${SUPABASE_URL}/storage/v1/object/public/era-audio/alamo-1834-music.mp3` },
+// Layer 2: Era music (public domain from Internet Archive)
+const SUPABASE_AUDIO_BASE = 'https://rqhmegnxtdlvytpxamjn.supabase.co/storage/v1/object/public/era-audio'
 
-  // High-priority Spotify entries — these work immediately
-  // once Spotify embed support is added (Phase 2)
-  // 'sf-haight-summer': { type: 'spotify', uri: 'spotify:playlist:37i9dQZF1DX4UtSsGT1Sbe' },
-  // 'sf-castro-harvey': { type: 'spotify', uri: 'spotify:playlist:37i9dQZF1DXaXB8fQg7xof' },
-  // 'lagos-2025': { type: 'spotify', uri: 'spotify:playlist:37i9dQZF1DX4JAvHpjipBk' },
-  // 'nyc-1977': { type: 'spotify', uri: 'spotify:playlist:37i9dQZF1DX0XUfTFmNBRM' },
-  // 'paris-montmartre-2001': { type: 'spotify', uri: 'spotify:album:5dqC4MoaeHqicPBTaAMFpR' },
+const ERA_MUSIC = {
+  'alamo-1834': { type: 'file', url: `${SUPABASE_AUDIO_BASE}/alamo-1834-music.mp3` },
+  'alamo-1856': { type: 'file', url: `${SUPABASE_AUDIO_BASE}/alamo-1856-music.mp3` },
+  'alamo-1900': { type: 'file', url: `${SUPABASE_AUDIO_BASE}/alamo-1900-music.mp3` },
+  'alamo-1950': { type: 'file', url: `${SUPABASE_AUDIO_BASE}/alamo-1950-music.mp3` },
+  'alamo-1969': { type: 'file', url: `${SUPABASE_AUDIO_BASE}/alamo-1969-music.mp3` },
+  'nyc-wall-street-1929': { type: 'file', url: `${SUPABASE_AUDIO_BASE}/nyc-wall-street-1929-music.mp3` },
+  'london-whitechapel-1940': { type: 'file', url: `${SUPABASE_AUDIO_BASE}/london-whitechapel-1940-music.mp3` },
 }
 
 class AudioService {
