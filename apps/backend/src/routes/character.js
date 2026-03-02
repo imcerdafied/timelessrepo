@@ -116,15 +116,15 @@ router.get('/speak-stream', async (req, res) => {
   const { text, eraId } = req.query
 
   const voiceMap = {
-    'alamo-1834': 'pNInz6obpgDQGcFmaJgB',
-    'mission-1776': 'VR6AewLTigWG4xSOukaG',
-    'mission-1906': 'EXAVITQu4vr4xnSDxMaL',
-    'mission-1969': 'pNInz6obpgDQGcFmaJgB',
-    'embarcadero-1934': 'VR6AewLTigWG4xSOukaG',
-    'chinatown-1882': 'TxGEqnHWrfWFTfGW9XjX',
+    'alamo-1834': 'JBFqnCBsd6RMkjVDRZzb',       // Jose — George (Warm Storyteller)
+    'mission-1776': 'onwK4e9ZLuTAKqWW03F9',     // Padre Palou — Daniel (Formal)
+    'mission-1906': 'EXAVITQu4vr4xnSDxMaL',    // Rosa — Sarah (Mature, Confident)
+    'mission-1969': 'cjVigY5qzO86Huf0OWal',     // Chavez — Eric (Smooth, Trustworthy)
+    'embarcadero-1934': 'nPczCjzI2devNBz1zQrb', // Bridges — Brian (Deep, Resonant)
+    'chinatown-1882': 'pqHfZKP75CvOlQylNhV4',   // Lee Wong — Bill (Wise, Old)
   }
 
-  const voiceId = voiceMap[eraId] || 'pNInz6obpgDQGcFmaJgB'
+  const voiceId = voiceMap[eraId] || 'JBFqnCBsd6RMkjVDRZzb'
   const ELEVEN_API_KEY = process.env.ELEVENLABS_API_KEY
 
   if (!ELEVEN_API_KEY) {
