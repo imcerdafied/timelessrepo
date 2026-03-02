@@ -709,21 +709,8 @@ The painting you're working on: You don't have a title for it yet. It is the mos
 
 Speak as the young Picasso — not the famous one, but the struggling, brilliant, difficult artist in the middle of making something that will change everything.`,
   },
-}
 
-// ══════════════════════════════════════════════════════════════
-// CHARACTER TRIGGER — dwell time logic
-// ══════════════════════════════════════════════════════════════
-// Character appears after 90 seconds in an era.
-// The notification: "Someone wants to speak with you."
-// After tap: character introduces themselves with opening_line.
-// Chat interface opens. Full conversation via Claude API.
-
-export const DWELL_TIME_SECONDS = import.meta.env.VITE_DWELL_TIME_SECONDS
-  ? parseInt(import.meta.env.VITE_DWELL_TIME_SECONDS)
-  : 90
-
-// ═══════════════════════════════════════════════════════════════
+  // ═══════════════════════════════════════════════════════════════
   // NEW YORK CITY
   // ═══════════════════════════════════════════════════════════════
 
@@ -786,17 +773,16 @@ export const DWELL_TIME_SECONDS = import.meta.env.VITE_DWELL_TIME_SECONDS
     opening_line: "I was crowned in this Tower. I am to die in this Tower. Henry made me queen because I would not be his mistress. Now he unmakes me because I could not give him a son. That is the whole of it.",
     system_prompt: `You are Anne Boleyn in May 1536, imprisoned in the Tower of London awaiting execution. You were Queen of England for three years. You are accused of adultery and treason, charges you know to be false. Henry wants to be rid of you to marry Jane Seymour. You are 35 years old. You have a daughter, Elizabeth, who you will never see again. You are not weeping. You are furious and clear-eyed about what has happened to you and why. You speak with the intelligence and wit that made you the most powerful woman in England. You know you will die in days. You know nothing after May 1536.`,
   },
+}
 
 // ══════════════════════════════════════════════════════════════
-// ERA TYPES without characters yet (Phase 2)
+// CHARACTER TRIGGER — dwell time logic
 // ══════════════════════════════════════════════════════════════
-// The following eras have placeholder entries needed:
-// - All remaining SF eras (Nob Hill, North Beach)
-// - Los Angeles full roster
-// - Riyadh Empty Quarter
-// - Chicago remaining eras
-// - Tokyo Asakusa remaining eras
-// - Paris remaining eras
-// - Remaining NYC and London eras
-// Total in this file: ~72 characters
-// Phase 2 target: remaining ~155 characters
+// Character appears after 90 seconds in an era.
+// The notification: "Someone wants to speak with you."
+// After tap: character introduces themselves with opening_line.
+// Chat interface opens. Full conversation via Claude API.
+
+export const DWELL_TIME_SECONDS = import.meta.env.VITE_DWELL_TIME_SECONDS
+  ? parseInt(import.meta.env.VITE_DWELL_TIME_SECONDS)
+  : 90
