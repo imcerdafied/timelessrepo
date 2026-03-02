@@ -38,7 +38,7 @@ generate() {
     -H "Content-Type: application/json" \
     -d "{
       \"text\": \"$prompt\",
-      \"duration_seconds\": 45,
+      \"duration_seconds\": 30,
       \"prompt_influence\": 0.3
     }" \
     --output "$output"
