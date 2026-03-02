@@ -6137,6 +6137,1537 @@
           ]
         }
       ]
+    },
+    {
+      "id": "nyc-wall-street",
+      "name": "Wall Street",
+      "subtext": "Financial District, Manhattan",
+      "coordinates": {
+        "lat": 40.7074,
+        "lng": -74.0113
+      },
+      "tagline": "A street that became the engine of American capitalism. Built on the site of a Dutch colonial wall, it has defined who wins and loses in America for 400 years.",
+      "eras": [
+        {
+          "id": "nyc-wall-street-1626",
+          "year_display": "c. 1626",
+          "label": "Lenape Homeland",
+          "era_type": "past",
+          "image_query": "manhattan,forest,river,nature,indigenous",
+          "headline": "The Island Before the Money",
+          "description": "The Lenape people called it Manahatta, the island of many hills. The southern tip where Wall Street now stands was a landscape of salt marsh, freshwater streams, and hardwood forest teeming with oysters, deer, and wild turkey. The Lenape had no concept of land ownership. When Peter Minuit arrived in 1626 and reportedly traded goods worth 60 guilders for the island, the Lenape likely understood the exchange as a sharing agreement, not a sale.",
+          "key_events": [
+            {
+              "year": "c. 1200",
+              "event": "Lenape settlements well established across Manahatta, with seasonal camps on the southern tip near abundant oyster beds"
+            },
+            {
+              "year": "1524",
+              "event": "Giovanni da Verrazzano sails into the harbor, the first European to sight Manahatta"
+            },
+            {
+              "year": "1609",
+              "event": "Henry Hudson sails up the river that will bear his name, trading with Lenape along the shore"
+            },
+            {
+              "year": "1626",
+              "event": "Peter Minuit arrives and conducts the legendary purchase of Manahatta from the Lenape"
+            }
+          ],
+          "landscape": "A tidal estuary lapped at the southern shore of Manahatta. Chestnut and hickory trees covered the hills. Freshwater springs fed small creeks that cut through the forest to the harbor. Oyster reefs the size of city blocks lined the shallows. The air smelled of salt marsh, decaying leaves, and woodsmoke from Lenape cooking fires. At night, the only light was the stars and the glow of campfires along the shore.",
+          "sources": [
+            "Eric Sanderson, Mannahatta: A Natural History of New York City (2009)",
+            "Edwin Burrows and Mike Wallace, Gotham: A History of New York City to 1898 (1999)",
+            "Robert Grumet, The Munsee Indians: A History (2009)"
+          ]
+        },
+        {
+          "id": "nyc-wall-street-1700",
+          "year_display": "1700",
+          "label": "New Amsterdam",
+          "era_type": "past",
+          "image_query": "dutch,colonial,wall,settlement,1700s",
+          "headline": "The Wall That Named a Street",
+          "description": "In 1653 the Dutch built a wooden palisade wall across the width of lower Manhattan to defend against the English and the Lenape. The street that ran alongside it became Wall Street. By 1700 the wall was gone, but the name stuck. The Dutch had also established America's first slave market at the foot of Wall Street in 1711. The wealth that would build New York's financial center was inseparable from the labor of enslaved Africans who cleared land, built docks, and hauled cargo.",
+          "key_events": [
+            {
+              "year": "1653",
+              "event": "Dutch West India Company orders construction of a wooden palisade wall across lower Manhattan"
+            },
+            {
+              "year": "1664",
+              "event": "English seize New Amsterdam without firing a shot. It becomes New York."
+            },
+            {
+              "year": "1699",
+              "event": "The wall is dismantled. Wall Street remains as a name and a dirt road."
+            },
+            {
+              "year": "1711",
+              "event": "New York establishes a slave market at the foot of Wall Street, operating until 1762"
+            }
+          ],
+          "landscape": "A rough wooden palisade twelve feet high stretching from the East River to the Hudson. On the city side, a muddy lane where merchants and farmers moved goods on carts. Dutch gabled houses with tile roofs lined the narrow streets to the south. The harbor was thick with sailing ships. Beyond the wall to the north, farmland and forest. The sound of hammers, livestock, and Dutch and English spoken in the same sentence.",
+          "sources": [
+            "Russell Shorto, The Island at the Center of the World (2004)",
+            "Edwin Burrows and Mike Wallace, Gotham (1999)",
+            "New York Historical Society, Slavery in New York exhibition catalog (2005)"
+          ]
+        },
+        {
+          "id": "nyc-wall-street-1789",
+          "year_display": "1789",
+          "label": "First Capital",
+          "era_type": "past",
+          "image_query": "federal hall,colonial,government,american revolution,1789",
+          "headline": "Where America Became America",
+          "description": "On April 30, 1789, George Washington stood on the balcony of Federal Hall at 26 Wall Street and took the oath of office as the first President of the United States. For sixteen months, New York was the capital of the new republic. Alexander Hamilton, working from a small office nearby, was building the financial architecture of the nation. He proposed a national bank, federal assumption of state debts, and a stock exchange. Wall Street was becoming Wall Street.",
+          "key_events": [
+            {
+              "year": "1789",
+              "event": "George Washington inaugurated as first President at Federal Hall on Wall Street"
+            },
+            {
+              "year": "1790",
+              "event": "Hamilton negotiates the Compromise of 1790, trading the capital's move to the Potomac for federal assumption of state war debts"
+            },
+            {
+              "year": "1792",
+              "event": "Twenty-four brokers sign the Buttonwood Agreement under a tree on Wall Street, creating what will become the New York Stock Exchange"
+            },
+            {
+              "year": "1789",
+              "event": "Congress passes the first tariff act, establishing customs revenue collection at the port of New York"
+            }
+          ],
+          "landscape": "Federal Hall dominated the street with its columned portico and balcony. Cobblestones replaced the old mud. Coffee houses where merchants gathered to trade lined the blocks between Wall Street and the waterfront. Horse-drawn carriages clattered over stone. The harbor was visible from the intersection of Wall and Broad, masts rising above the rooftops. The smell of coffee, horse manure, and salt air mingled in the summer heat.",
+          "sources": [
+            "Ron Chernow, Alexander Hamilton (2004)",
+            "Edwin Burrows and Mike Wallace, Gotham (1999)",
+            "National Park Service, Federal Hall National Memorial historical records"
+          ]
+        },
+        {
+          "id": "nyc-wall-street-1869",
+          "year_display": "1869",
+          "label": "Black Friday",
+          "era_type": "past",
+          "image_query": "wall street,1860s,panic,gold,financial,victorian",
+          "headline": "The First Great Scandal",
+          "description": "On September 24, 1869, Jay Gould and James Fisk attempted to corner the gold market. They had bribed officials in the Grant administration to prevent the Treasury from selling gold, then bought massive quantities to drive the price up. When President Grant finally ordered the Treasury to sell, the price collapsed in minutes. Fortunes were wiped out. Firms failed. The panic spread from Wall Street to farms across the country as credit froze and commodity prices swung wildly.",
+          "key_events": [
+            {
+              "year": "1863",
+              "event": "New York Stock Exchange establishes its first permanent headquarters on Broad Street"
+            },
+            {
+              "year": "September 24, 1869",
+              "event": "Black Friday panic as the gold corner collapses, ruining hundreds of investors and triggering a national credit crisis"
+            },
+            {
+              "year": "1870",
+              "event": "Congressional investigation exposes corruption but results in no criminal charges against Gould or Fisk"
+            },
+            {
+              "year": "1873",
+              "event": "The Panic of 1873 triggers a six-year depression, the worst economic crisis in American history to that point"
+            }
+          ],
+          "landscape": "Wall Street was now a canyon of stone and iron. The buildings had grown to five and six stories, casting the narrow street in permanent shadow. Telegraph wires hung overhead in thick tangles. Messenger boys ran between offices carrying trade slips. On Black Friday the crowd outside the Gold Room on Broad Street grew so dense that police had to form cordons. Men wept openly on the sidewalk. The ticker tape machines chattered out ruin.",
+          "sources": [
+            "Kenneth Ackerman, The Gold Ring: Jim Fisk, Jay Gould, and Black Friday (2005)",
+            "Steve Fraser, Every Man a Speculator: A History of Wall Street in American Life (2005)",
+            "H.W. Brands, American Colossus: The Triumph of Capitalism 1865-1900 (2010)"
+          ]
+        },
+        {
+          "id": "nyc-wall-street-1929",
+          "year_display": "1929",
+          "label": "The Crash",
+          "era_type": "past",
+          "image_query": "wall street,1929,crash,crowd,panic,great depression",
+          "headline": "The Day the Music Stopped",
+          "description": "On October 29, 1929, the stock market lost 12% of its value in a single day. Sixteen million shares were traded in a panic so intense that the ticker tape ran hours behind. The crash did not cause the Great Depression on its own, but it shattered the speculative mania that had driven the Roaring Twenties and exposed the fragility of an economy built on margin debt and unregulated finance. Within three years, the market had lost 89% of its peak value. Thousands of banks failed. A quarter of America was unemployed.",
+          "key_events": [
+            {
+              "year": "October 24, 1929",
+              "event": "Black Thursday: the market drops sharply, bankers organize a buying pool to stabilize prices"
+            },
+            {
+              "year": "October 29, 1929",
+              "event": "Black Tuesday: 16 million shares traded, the market collapses, and the buying pool abandons its support"
+            },
+            {
+              "year": "1932",
+              "event": "The Dow Jones reaches its Depression low of 41.22, down 89% from its 1929 peak of 381"
+            },
+            {
+              "year": "1933",
+              "event": "The Glass-Steagall Act separates commercial and investment banking, creating regulatory walls that will hold for 66 years"
+            }
+          ],
+          "landscape": "Crowds filled Wall Street and spilled onto Broadway. Police mounted barricades at the corner of Broad and Wall. The neoclassical facade of the Stock Exchange, completed in 1903, loomed over a human sea of dark suits and fedoras. Ticker tape littered the gutters in drifts. The sound was a sustained roar of voices, punctuated by the clang of the closing bell. Inside, the trading floor was chaos. Clerks worked through the night tallying losses that would take years to comprehend.",
+          "sources": [
+            "John Kenneth Galbraith, The Great Crash 1929 (1955)",
+            "Maury Klein, Rainbow's End: The Crash of 1929 (2001)",
+            "New York Stock Exchange historical archives"
+          ]
+        },
+        {
+          "id": "nyc-wall-street-1987",
+          "year_display": "1987",
+          "label": "Black Monday",
+          "era_type": "past",
+          "image_query": "wall street,1980s,trading floor,computers,stock market",
+          "headline": "The Machine Panic",
+          "description": "On October 19, 1987, the Dow Jones dropped 22.6% in a single day, the largest one-day percentage decline in its history. Unlike 1929, this crash was accelerated by computers. Program trading, a new automated strategy that sold stocks when prices fell below certain thresholds, created a feedback loop of machine-driven selling that overwhelmed human traders. The crash came and went without causing a depression, but it revealed that the financial system had become faster and more fragile than anyone had understood.",
+          "key_events": [
+            {
+              "year": "October 19, 1987",
+              "event": "Black Monday: the Dow drops 508 points, or 22.6%, in a single session"
+            },
+            {
+              "year": "October 20, 1987",
+              "event": "Federal Reserve Chairman Alan Greenspan issues a one-sentence statement affirming the Fed's readiness to provide liquidity, calming markets"
+            },
+            {
+              "year": "1988",
+              "event": "SEC introduces circuit breakers to halt trading during extreme declines, a direct response to Black Monday"
+            },
+            {
+              "year": "1987",
+              "event": "The Brady Commission report identifies program trading and portfolio insurance as key accelerants of the crash"
+            }
+          ],
+          "landscape": "The trading floor was no longer a place of handwritten slips and chalkboards. CRT monitors glowed green and amber at every station. Traders in colored jackets shouted into telephones while screens scrolled red numbers. The floor was ankle-deep in paper by noon. Outside on Wall Street, television news crews set up live shots against the backdrop of the Exchange columns. The old stone buildings now stood alongside glass-and-steel towers. The Financial District had grown upward and outward, a canyon of money that could lose more wealth in an afternoon than existed in most nations.",
+          "sources": [
+            "Diana Henriques, A First-Class Catastrophe: The Road to Black Monday (2017)",
+            "Report of the Presidential Task Force on Market Mechanisms (Brady Commission, 1988)",
+            "SEC Division of Market Regulation, The October 1987 Market Break (1988)"
+          ]
+        },
+        {
+          "id": "nyc-wall-street-2001",
+          "year_display": "2001",
+          "label": "After the Towers",
+          "era_type": "past",
+          "image_query": "lower manhattan,september 11,dust,aftermath,memorial",
+          "headline": "The Dust Settled Here",
+          "description": "When the Twin Towers collapsed on September 11, 2001, the debris cloud rolled south through the Financial District and coated Wall Street in inches of gray ash. The Stock Exchange closed for four trading days, the longest shutdown since 1933. When it reopened on September 17, the Dow fell 684 points. But the physical and psychological damage went far deeper than markets. Lower Manhattan became a disaster zone. The air was toxic with pulverized concrete, asbestos, and human remains. Workers returned to offices covered in dust to find their world had changed entirely.",
+          "key_events": [
+            {
+              "year": "September 11, 2001",
+              "event": "Collapse of the World Trade Center towers sends debris clouds across the Financial District"
+            },
+            {
+              "year": "September 17, 2001",
+              "event": "NYSE reopens after the longest shutdown since the Great Depression. The Dow falls 7.1%."
+            },
+            {
+              "year": "2001-2002",
+              "event": "Lower Manhattan loses an estimated 100,000 jobs and thousands of residents as businesses and families relocate"
+            },
+            {
+              "year": "2003",
+              "event": "The Liberty Bond program provides $8 billion in tax-exempt financing to rebuild and retain businesses in Lower Manhattan"
+            }
+          ],
+          "landscape": "Ash covered everything. Cars, mailboxes, window ledges, and the cobblestones of Wall Street were all the same pale gray. National Guard checkpoints blocked intersections south of Canal Street. The smell was acrid and chemical, a burning that persisted for months. Paper from the towers drifted for miles. At night, the work lights at Ground Zero cast an otherworldly glow over the skyline. On the steps of Federal Hall, someone had placed an American flag and a hand-lettered sign that read 'The Spirit of America.'",
+          "sources": [
+            "Jim Dwyer and Kevin Flynn, 102 Minutes: The Untold Story of the Fight to Survive Inside the Twin Towers (2005)",
+            "National Commission on Terrorist Attacks, The 9/11 Commission Report (2004)",
+            "Alliance for Downtown New York, post-9/11 recovery reports"
+          ]
+        },
+        {
+          "id": "nyc-wall-street-2025",
+          "year_display": "2025",
+          "label": "Present Day",
+          "era_type": "present",
+          "image_query": "wall street,new york stock exchange,financial district,modern,manhattan",
+          "headline": "The Algorithm's Floor",
+          "description": "The New York Stock Exchange still opens with a bell at 9:30 AM, but the trading floor that once held 5,000 screaming brokers now hosts fewer than 300. Most trading happens in server farms in New Jersey, where algorithms execute millions of transactions per second. Wall Street the physical place has become Wall Street the brand: a backdrop for CNBC broadcasts and tourist selfies in front of the Charging Bull. The 2008 crisis reshaped everything. Dodd-Frank regulations, the rise of fintech, and the shift to remote work have hollowed out the Financial District as a place where people actually work. Lower Manhattan has reinvented itself as a residential neighborhood, its office towers converted to luxury apartments.",
+          "key_events": [
+            {
+              "year": "2012",
+              "event": "Hurricane Sandy floods the NYSE and subway tunnels, shutting down trading for two days"
+            },
+            {
+              "year": "2020",
+              "event": "COVID-19 empties the Financial District; NYSE goes fully electronic for the first time in 228 years"
+            },
+            {
+              "year": "2023",
+              "event": "Silicon Valley Bank collapses in 48 hours, the fastest bank run in history, driven by social media"
+            },
+            {
+              "year": "2024",
+              "event": "NYSE daily volume regularly exceeds 10 billion shares, nearly all executed by algorithms"
+            }
+          ],
+          "landscape": "The narrow canyon of Wall Street looks much as it did a century ago: Federal Hall's columns, Trinity Church's spire, the Exchange's Corinthian facade. But the street itself has been pedestrianized in sections, with cafe seating where taxis once idled. The Charging Bull draws crowds of tourists. Office workers are scarce compared to a decade ago, many buildings now residential. Security barriers, installed after 9/11, have been softened with planters and benches. The trading floor is largely ceremonial, a television set for market opens and celebrity bell-ringings.",
+          "sources": [
+            "Michael Lewis, Flash Boys (2014)",
+            "Wall Street Journal, Future of the Financial District series (2023)",
+            "Alliance for Downtown New York, Lower Manhattan demographics report (2024)"
+          ]
+        },
+        {
+          "id": "nyc-wall-street-2075",
+          "year_display": "2075",
+          "label": "Flooded Street",
+          "era_type": "future",
+          "image_query": "flooded,city,climate change,futuristic,seawall,manhattan",
+          "headline": "The Water and the Money",
+          "description": "Sea level rise projections for New York Harbor range from two to six feet by 2075 under different emissions scenarios. Wall Street sits barely above current sea level on landfill that extends the original Manhattan shoreline. The question is not whether the water comes, but how the most concentrated node of financial power on earth responds to a threat that money alone cannot solve.",
+          "future_scenarios": [
+            {
+              "id": "fortress-finance",
+              "label": "Fortress Finance",
+              "sublabel": "Armored infrastructure",
+              "description": "A $20 billion seawall and flood gate system protects Lower Manhattan. Wall Street operates behind engineered barriers, the trading floors elevated, the subway tunnels sealed. The Financial District becomes an island within an island, protected while surrounding neighborhoods flood during storm surges.",
+              "confidence": 0.45
+            },
+            {
+              "id": "digital-dispersal",
+              "label": "Digital Dispersal",
+              "sublabel": "Wall Street without the street",
+              "description": "The physical trading floor closed years ago. Financial operations have dispersed to data centers on high ground in New Jersey and upstate New York. Wall Street itself is a historical district, the old buildings converted to museums and housing. The Charging Bull statue stands behind a glass seawall, a monument to an era when finance required a physical address.",
+              "confidence": 0.35
+            }
+          ],
+          "landscape": "High-tide marks stain the granite facades at knee height. Deployable flood barriers rise from slots in the sidewalk when storm warnings sound. The old cobblestones of Wall Street have been replaced with permeable surfaces that channel water to underground cisterns. On calm days, the street looks almost as it did a century ago, but the waterline in the harbor is visibly higher, and the sound of pump stations running beneath the street is constant. Seabirds nest on the ledges of buildings that once housed trading floors.",
+          "sources": [
+            "New York City Panel on Climate Change, Assessment Reports",
+            "NYC Mayor's Office of Climate Resiliency, Lower Manhattan Coastal Resilience Plan",
+            "U.S. Army Corps of Engineers, New York-New Jersey Harbor and Tributaries Study"
+          ]
+        }
+      ],
+      "city": "New York"
+    },
+    {
+      "id": "nyc-central-park",
+      "name": "Central Park",
+      "subtext": "Midtown Manhattan",
+      "coordinates": {
+        "lat": 40.7851,
+        "lng": -73.9683
+      },
+      "tagline": "A designed wilderness in the center of the most vertical city on earth. The land was cleared of a thriving Black community called Seneca Village to build a park for everyone.",
+      "eras": [
+        {
+          "id": "nyc-central-park-1609",
+          "year_display": "c. 1609",
+          "label": "Lenape Fishing Grounds",
+          "era_type": "past",
+          "image_query": "manhattan,forest,stream,rocky,nature,wilderness",
+          "headline": "The Land Before the Grid",
+          "description": "Before Manhattan was a city, the land that would become Central Park was a rugged landscape of rocky outcroppings, dense forest, and streams feeding into the East and Hudson Rivers. The Lenape used this terrain as hunting and fishing grounds, moving through the area seasonally. The schist bedrock that would later support skyscrapers broke through the surface here in dramatic formations, creating a terrain so rough that European settlers would avoid building on it for two centuries.",
+          "key_events": [
+            {
+              "year": "c. 1200",
+              "event": "Lenape maintain seasonal camps and fishing sites along streams in the area now occupied by the park"
+            },
+            {
+              "year": "1609",
+              "event": "Henry Hudson's crew encounters Lenape in the harbor. The interior of the island remains dense forest."
+            },
+            {
+              "year": "1626",
+              "event": "Dutch purchase of Manahatta. The mid-island terrain is considered too rocky and hilly for farming."
+            },
+            {
+              "year": "1700s",
+              "event": "Small farms and settlements appear at the edges, but the rocky interior remains largely uncleared"
+            }
+          ],
+          "landscape": "Rocky ridges of Manhattan schist pushed through thin soil, their surfaces scored by the glaciers that had retreated ten thousand years earlier. Hardwood forest covered the hills between the outcroppings. Streams ran through ravines thick with fern and moss. Red-tailed hawks circled above the canopy. Deer trails wound between boulders. The terrain was steep enough in places that you could stand on a rock and see over the treetops to the rivers on either side of the island.",
+          "sources": [
+            "Eric Sanderson, Mannahatta: A Natural History of New York City (2009)",
+            "Roy Rosenzweig and Elizabeth Blackmar, The Park and the People: A History of Central Park (1992)",
+            "Robert Grumet, The Munsee Indians: A History (2009)"
+          ]
+        },
+        {
+          "id": "nyc-central-park-1820",
+          "year_display": "1820",
+          "label": "Seneca Village",
+          "era_type": "past",
+          "image_query": "african american,village,1800s,community,church,historical",
+          "headline": "The Village They Erased",
+          "description": "In 1825 Andrew Williams, a Black man, purchased land near what is now 85th Street and Central Park West. Within a decade, a community called Seneca Village had grown around his purchase. By the 1850s it was home to approximately 260 residents, two-thirds of them Black, with three churches, a school, and a cemetery. It was one of the most significant African American property-owning communities in New York. Its residents had the stability and means to vote in an era when Black suffrage required property ownership. The city destroyed it all to build a park.",
+          "key_events": [
+            {
+              "year": "1825",
+              "event": "Andrew Williams and Epiphany Davis purchase lots near present-day 85th Street, founding what becomes Seneca Village"
+            },
+            {
+              "year": "1827",
+              "event": "New York abolishes slavery. Free Black communities grow across Manhattan."
+            },
+            {
+              "year": "1853",
+              "event": "New York State legislature authorizes use of eminent domain to acquire land for Central Park, including Seneca Village"
+            },
+            {
+              "year": "1857",
+              "event": "Seneca Village residents are evicted. Their homes, churches, and cemetery are demolished."
+            }
+          ],
+          "landscape": "A hillside community of wooden houses, vegetable gardens, and goat pens. Three church steeples rose above the tree line. AME Zion Church anchored the community. Children walked to the Colored School on the hill. The streets were unpaved but well-trodden paths between neighbors who owned their land. Smoke rose from cookstoves. In the cemetery, headstones marked the permanence this community had built. To the south, the Manhattan grid was advancing uptown, block by block, and the residents of Seneca Village could see it coming.",
+          "sources": [
+            "Roy Rosenzweig and Elizabeth Blackmar, The Park and the People: A History of Central Park (1992)",
+            "Cynthia Copeland, Seneca Village, New York, and African American History (2011)",
+            "Central Park Conservancy and Columbia University, Seneca Village Archaeological Project"
+          ]
+        },
+        {
+          "id": "nyc-central-park-1858",
+          "year_display": "1858",
+          "label": "The Clearing",
+          "era_type": "past",
+          "image_query": "central park,construction,1860s,landscape,olmsted,historical",
+          "headline": "Manufacturing Paradise",
+          "description": "Frederick Law Olmsted and Calvert Vaux won the design competition for Central Park in 1858 with their Greensward Plan. What followed was the largest public works project in American history to that point. Twenty thousand workers reshaped 843 acres of land, moving more earth than was excavated for the Panama Canal. They drained swamps, blasted bedrock, planted hundreds of thousands of trees, and built an intricate system of sunken transverse roads so that city traffic could cross the park without being seen. Every meadow, every hill, every seemingly natural pond was engineered.",
+          "key_events": [
+            {
+              "year": "1858",
+              "event": "Olmsted and Vaux's Greensward Plan wins the Central Park design competition out of 33 entries"
+            },
+            {
+              "year": "1858-1873",
+              "event": "Construction employs 20,000 workers who move 10 million cartloads of earth and plant 270,000 trees and shrubs"
+            },
+            {
+              "year": "1859",
+              "event": "The park opens to the public in stages, beginning with the lower sections. Ice skating on the Lake becomes an immediate sensation."
+            },
+            {
+              "year": "1863",
+              "event": "Draft Riots sweep Manhattan. Mobs attack Black residents. Some victims are lynched in areas near the park."
+            }
+          ],
+          "landscape": "A vast construction site. Gunpowder blasts shattered bedrock. Teams of horses hauled earth in carts along muddy roads. Workers laid drainage pipes in trenches that stretched for miles. The skeleton of the Bethesda Terrace rose from scaffolding. Sections already planted showed the contrast between Olmsted's vision and the raw chaos of construction. In completed areas, elms formed arching canopies over newly paved walks, while a hundred yards away, dynamite charges sent plumes of rock dust into the sky.",
+          "sources": [
+            "Roy Rosenzweig and Elizabeth Blackmar, The Park and the People (1992)",
+            "Witold Rybczynski, A Clearing in the Distance: Frederick Law Olmsted and America (1999)",
+            "Central Park Conservancy historical records"
+          ]
+        },
+        {
+          "id": "nyc-central-park-1900",
+          "year_display": "1900",
+          "label": "The Gilded Promenade",
+          "era_type": "past",
+          "image_query": "central park,victorian,carriages,1900,gilded age,promenade",
+          "headline": "The Rich Man's Lawn",
+          "description": "By 1900 Central Park had become what its critics feared: a pleasure ground for the wealthy. Horse-drawn carriages paraded along the drives. The mansions of Fifth Avenue's Millionaire's Row looked directly over the park's eastern edge. The Dakota apartment building towered over the western boundary. Olmsted's democratic vision of a park for all classes had been partially realized, but the reality was stratified. The wealthy rode. The working class walked. Immigrants were barely tolerated.",
+          "key_events": [
+            {
+              "year": "1880",
+              "event": "The Metropolitan Museum of Art opens its permanent home on the park's eastern edge, beginning the 'Museum Mile'"
+            },
+            {
+              "year": "1884",
+              "event": "The Dakota apartment building opens on Central Park West, signaling the park's power to anchor luxury development"
+            },
+            {
+              "year": "1898",
+              "event": "Greater New York consolidation creates a city of 3.4 million. Central Park becomes the shared backyard of the world's second-largest city."
+            },
+            {
+              "year": "1901",
+              "event": "Automobiles appear on the park drives for the first time, beginning a century-long conflict between cars and pedestrians"
+            }
+          ],
+          "landscape": "Elm-lined paths canopied in green. The Mall was a parade of Victorian fashion: parasols, top hats, bustled dresses. Horse-drawn carriages moved in slow circuits along the drives, their passengers nodding to acquaintances. The Bethesda Fountain anchored the center of the park's social geography. Rowboats dotted the Lake. Sheep grazed on what was literally called the Sheep Meadow. The air smelled of horse manure, cut grass, and the perfume of women who had walked across Fifth Avenue to stroll.",
+          "sources": [
+            "David Nasaw, Going Out: The Rise and Fall of Public Amusements (1993)",
+            "Roy Rosenzweig and Elizabeth Blackmar, The Park and the People (1992)",
+            "Museum of the City of New York, Gilded Age photograph collection"
+          ]
+        },
+        {
+          "id": "nyc-central-park-1969",
+          "year_display": "1969",
+          "label": "Concert in the Park",
+          "era_type": "past",
+          "image_query": "central park,concert,1960s,crowd,peace,hippie",
+          "headline": "The People's Stage",
+          "description": "In the late 1960s Central Park became the stage for a generation's political and cultural awakening. Anti-Vietnam War rallies filled the Great Lawn with hundreds of thousands of protesters. Be-ins and love-ins transformed Sheep Meadow into a countercultural gathering place. The park was both a political arena and a free concert venue. Barbra Streisand played to 135,000 people in 1967. The Summer Stage and Shakespeare in the Park brought art to anyone who showed up.",
+          "key_events": [
+            {
+              "year": "1967",
+              "event": "Barbra Streisand performs a free concert in the Sheep Meadow for 135,000 people"
+            },
+            {
+              "year": "1968",
+              "event": "Anti-Vietnam War demonstrations fill the Great Lawn. Police clash with protesters on park drives."
+            },
+            {
+              "year": "1969",
+              "event": "Over 50,000 attend an Earth Day predecessor rally. The park becomes a symbol of the environmental movement."
+            },
+            {
+              "year": "1969",
+              "event": "Stonewall uprising occurs blocks south. Gay rights activists begin organizing gatherings in the park."
+            }
+          ],
+          "landscape": "The Great Lawn was worn to bare earth from overuse, a brown oval ringed by apartment towers. Blankets and sleeping bags covered every inch during concerts. The smell of marijuana and patchouli drifted across the meadow. Acoustic guitars competed from different clusters of young people. Frisbees arced overhead. The Bethesda Fountain plaza had become an informal gathering point for musicians, poets, and draft resisters. At the edges, mounted police watched from the tree line.",
+          "sources": [
+            "Roy Rosenzweig and Elizabeth Blackmar, The Park and the People (1992)",
+            "Sara Cedar Miller, Central Park: An American Masterpiece (2003)",
+            "New York Times archives, 1967-1970"
+          ]
+        },
+        {
+          "id": "nyc-central-park-1980",
+          "year_display": "1980",
+          "label": "Lennon Shot",
+          "era_type": "past",
+          "image_query": "strawberry fields,john lennon,memorial,central park,1980",
+          "headline": "The End of an Illusion",
+          "description": "On December 8, 1980, Mark David Chapman shot John Lennon four times in the back as he entered the Dakota apartment building on Central Park West. Lennon died at Roosevelt Hospital an hour later. Within hours, mourners began gathering in Central Park across from the Dakota. The vigil grew to tens of thousands. The park that had hosted the counterculture's celebrations now absorbed its grief. Strawberry Fields, the memorial landscape dedicated in 1985, became one of the most visited sites in the park.",
+          "key_events": [
+            {
+              "year": "December 8, 1980",
+              "event": "John Lennon shot and killed outside the Dakota. Spontaneous vigils form in Central Park within hours."
+            },
+            {
+              "year": "December 14, 1980",
+              "event": "Ten minutes of silence observed worldwide. Over 100,000 gather in the park's Bandshell area."
+            },
+            {
+              "year": "1981",
+              "event": "Central Park reaches its nadir of neglect. Crime, graffiti, and decay lead to calls for private management."
+            },
+            {
+              "year": "1985",
+              "event": "Strawberry Fields dedicated as an international garden of peace. The 'Imagine' mosaic becomes an instant landmark."
+            }
+          ],
+          "landscape": "The park in 1980 was at its lowest point since its creation. Graffiti covered the Bethesda Terrace. Broken glass littered the paths. The Great Lawn was a dustbowl. Muggings were so common that most New Yorkers avoided the park after dark. But on the night of December 8, candles flickered across the Sheep Meadow as thousands stood in silence. Transistor radios played 'Imagine' from different directions, the sound overlapping and slightly out of sync, creating an accidental choir that echoed off the darkened apartment buildings along Central Park West.",
+          "sources": [
+            "Philip Norman, John Lennon: The Life (2008)",
+            "Sara Cedar Miller, Central Park: An American Masterpiece (2003)",
+            "Central Park Conservancy, founding records and restoration history"
+          ]
+        },
+        {
+          "id": "nyc-central-park-2001",
+          "year_display": "2001",
+          "label": "Candlelight Vigils",
+          "era_type": "past",
+          "image_query": "central park,candlelight,vigil,september 11,memorial",
+          "headline": "The City's Living Room",
+          "description": "In the days after September 11, 2001, Central Park became the place where New Yorkers went to be together. Spontaneous candlelight vigils formed at Strawberry Fields, the Bethesda Fountain, and the Great Lawn. Missing-person flyers were posted on lampposts along the park drives. The smoke from Ground Zero was visible from the park's southern reaches, a gray column rising above the midtown skyline. People who could not bear to be in their apartments came to the park to sit on benches and stare at nothing.",
+          "key_events": [
+            {
+              "year": "September 11, 2001",
+              "event": "Spontaneous candlelight vigils form across the park as thousands gather to mourn"
+            },
+            {
+              "year": "September 2001",
+              "event": "Missing-person flyers cover lampposts and park benches throughout the park's southern sections"
+            },
+            {
+              "year": "October 2001",
+              "event": "Paul Simon performs 'The Sound of Silence' at a Concert for New York City benefit at Madison Square Garden. Memorial events continue in the park."
+            },
+            {
+              "year": "2004",
+              "event": "Christo and Jeanne-Claude install 'The Gates,' 7,503 saffron-colored panels across 23 miles of park paths, in a gesture of civic renewal"
+            }
+          ],
+          "landscape": "Candle flames reflected in the surface of the Lake. Handwritten signs, flowers, and American flags were taped to every available surface. The usual sounds of the park were muted. No boom boxes, no arguments, no street performers competing for attention. People spoke quietly or did not speak at all. The smoke plume from downtown was visible above the tree line from the Belvedere Castle. At night the southern sky glowed orange. The park smelled of wax, flowers, and the faint chemical tang that drifted north for weeks.",
+          "sources": [
+            "Sara Cedar Miller, Central Park: An American Masterpiece (2003)",
+            "New York Times, September-October 2001 reporting",
+            "Central Park Conservancy annual report, 2001"
+          ]
+        },
+        {
+          "id": "nyc-central-park-2025",
+          "year_display": "2025",
+          "label": "Present Day",
+          "era_type": "present",
+          "image_query": "central park,field hospital,pandemic,tents,2020,covid",
+          "headline": "The Emergency Room on the Lawn",
+          "description": "In late March 2020, Samaritan's Purse erected a 68-bed emergency field hospital on the East Meadow of Central Park, across from Mount Sinai Hospital. White medical tents rose on the grass where joggers usually ran. Inside, COVID-19 patients were intubated within sight of the Metropolitan Museum of Art. The field hospital operated for a month, treating 315 patients. It was the most visible symbol of New York's pandemic crisis, an image from a war zone transplanted to the most famous urban park in the world.",
+          "key_events": [
+            {
+              "year": "March 2020",
+              "event": "New York becomes the epicenter of the U.S. COVID-19 pandemic. Hospitals run out of beds and ventilators."
+            },
+            {
+              "year": "March 29, 2020",
+              "event": "Samaritan's Purse erects a 68-bed field hospital on the East Meadow of Central Park"
+            },
+            {
+              "year": "April 2020",
+              "event": "New York records over 800 COVID deaths in a single day. Refrigerated morgue trucks line the streets outside hospitals."
+            },
+            {
+              "year": "May 2020",
+              "event": "The field hospital is dismantled after treating 315 patients. The grass underneath is flattened and brown."
+            }
+          ],
+          "landscape": "White medical tents with peaked roofs stood in neat rows on the East Meadow, their generator hum audible from Fifth Avenue. Ambulances idled on the park drive. Medical workers in full PPE moved between the tents. The rest of the park was eerily quiet. Joggers ran in wide arcs around other people. Playgrounds were wrapped in caution tape. The Great Lawn was empty on a spring afternoon for perhaps the first time in its history. Cherry blossoms bloomed along the Reservoir track with no one to photograph them.",
+          "sources": [
+            "Samaritan's Purse, Emergency Field Hospital deployment records",
+            "New York Times, COVID-19 coverage, March-May 2020",
+            "Central Park Conservancy, pandemic response documentation"
+          ]
+        },
+        {
+          "id": "nyc-central-park-2075",
+          "year_display": "2075",
+          "label": "Climate Refuge",
+          "era_type": "future",
+          "image_query": "park,futuristic,green,cooling,urban forest,climate",
+          "headline": "The Green Lung",
+          "description": "As New York's average summer temperature has risen by 5 to 8 degrees Fahrenheit, Central Park's 843 acres of tree canopy and open water have become the city's most critical cooling infrastructure. The park is no longer a luxury. It is a survival resource. On extreme heat days, the temperature inside the park can be 15 degrees cooler than the surrounding streets.",
+          "future_scenarios": [
+            {
+              "id": "climate-commons",
+              "label": "Climate Commons",
+              "sublabel": "Managed cooling refuge",
+              "description": "Central Park has been redesigned as a climate resilience hub. The tree canopy has been expanded with heat-tolerant species. Solar-powered cooling stations line the paths. The Reservoir has been converted to a freshwater reserve. On extreme heat days, the park functions as an emergency shelter, with capacity for 50,000 people in shaded, cooled zones.",
+              "confidence": 0.48
+            },
+            {
+              "id": "fortress-park",
+              "label": "Fortress Park",
+              "sublabel": "Privatized green space",
+              "description": "The park's cooling value has made the surrounding real estate the most expensive on earth. Access has been restricted by a permit system that critics call economic segregation by another name. The same dynamic that destroyed Seneca Village has returned: the park exists for everyone in theory, but in practice it serves those who can afford to live beside it.",
+              "confidence": 0.3
+            }
+          ],
+          "landscape": "The tree canopy is denser than Olmsted ever planned, a deliberate thickening to maximize shade. Species have shifted. Southern magnolias and live oaks grow where sugar maples once stood, the plant palette migrating north with the temperature. Misting stations line the Mall. The Reservoir shimmers behind a living fence of native grasses that filter runoff. On a July afternoon when the streets outside reach 110 degrees, the air under the elms is still breathable, still moving. Birdsong is different now. Carolina wrens and mockingbirds have replaced some of the sparrows. The Great Lawn is no longer great for concerts. It is great for staying alive.",
+          "sources": [
+            "New York City Panel on Climate Change, Assessment Reports",
+            "Central Park Conservancy, Climate Adaptation Master Plan",
+            "NASA Goddard Institute for Space Studies, urban heat island research"
+          ]
+        }
+      ],
+      "city": "New York"
+    },
+    {
+      "id": "london-tower",
+      "name": "Tower of London",
+      "city": "London",
+      "subtext": "City of London",
+      "coordinates": {
+        "lat": 51.5081,
+        "lng": -0.0759
+      },
+      "tagline": "A palace, a prison, an execution site, a zoo, and now a tourist attraction. Every English monarch for 500 years either lived here, imprisoned enemies here, or was imprisoned here themselves.",
+      "eras": [
+        {
+          "id": "london-tower-1066",
+          "year_display": "1066",
+          "label": "Norman Conquest",
+          "era_type": "past",
+          "image_query": "tower of london,medieval,fortress,stone,norman",
+          "headline": "The Conqueror's Keep",
+          "description": "William of Normandy defeated Harold Godwinson at Hastings in October 1066, but he did not march directly on London. He circled the city, burning Southwark, crossing the Thames at Wallingford, and waited for London's leaders to surrender. When they did, his first act was to build a fortress on the southeast corner of the old Roman wall. The White Tower, begun around 1078 in Caen limestone shipped from Normandy, was the tallest building in London. It was not built to protect the city. It was built to intimidate it.",
+          "key_events": [
+            {
+              "year": "1066",
+              "event": "William the Conqueror defeats Harold at Hastings and is crowned at Westminster on Christmas Day"
+            },
+            {
+              "year": "c. 1078",
+              "event": "Construction begins on the White Tower, designed by Gundulf, Bishop of Rochester"
+            },
+            {
+              "year": "1097",
+              "event": "White Tower completed under William Rufus, standing 90 feet tall in pale Caen stone"
+            },
+            {
+              "year": "1100",
+              "event": "Ranulf Flambard, Bishop of Durham, becomes the Tower's first recorded prisoner and its first escapee"
+            }
+          ],
+          "landscape": "A massive pale stone keep rising above the timber buildings of London, visible from every point in the city. The Thames lapping against the southern wall, broader and shallower than it is today. Roman wall remnants incorporated into the new fortification. The smell of river mud, fresh-cut stone, and wood smoke. Norman French spoken inside the walls, English outside them.",
+          "sources": [
+            "Edward Impey and Geoffrey Parnell, The Tower of London: The Official Illustrated History (2000)",
+            "Marc Morris, The Norman Conquest (2012)",
+            "Historic Royal Palaces archaeological records"
+          ]
+        },
+        {
+          "id": "london-tower-1483",
+          "year_display": "1483",
+          "label": "Princes in the Tower",
+          "era_type": "past",
+          "image_query": "tower of london,medieval,dark,gothic,stone walls",
+          "headline": "The Disappeared",
+          "description": "In April 1483, twelve-year-old Edward V became king of England. His uncle Richard, Duke of Gloucester, was named Lord Protector and lodged Edward and his younger brother Richard in the Tower, which was still a royal residence. The boys were seen playing in the Tower grounds through the summer. Then they vanished. Richard declared himself king in June. No one saw the princes alive again. In 1674, workers found a wooden chest containing two small skeletons beneath a staircase in the White Tower.",
+          "key_events": [
+            {
+              "year": "April 1483",
+              "event": "Edward IV dies suddenly; his twelve-year-old son becomes Edward V"
+            },
+            {
+              "year": "June 1483",
+              "event": "Richard of Gloucester has himself declared king as Richard III, claiming Edward's children are illegitimate"
+            },
+            {
+              "year": "Summer 1483",
+              "event": "The princes are last seen alive, spotted through windows playing in the Tower grounds"
+            },
+            {
+              "year": "1674",
+              "event": "Two child skeletons discovered beneath a Tower staircase, reburied at Westminster Abbey by order of Charles II"
+            }
+          ],
+          "landscape": "The Tower complex now sprawling across 12 acres, a small city within the city. Multiple curtain walls, a water-filled moat, the chapel of St. John gleaming with candles inside the White Tower. Ravens on the battlements. The Thames Gate, later called Traitors' Gate, where prisoners arrived by boat. The smell of the menagerie that had been kept since Henry III received three leopards as a diplomatic gift.",
+          "sources": [
+            "David Baldwin, The Lost Prince: The Survival of Richard of York (2007)",
+            "Alison Weir, The Princes in the Tower (1992)",
+            "Historic Royal Palaces, Tower of London records"
+          ]
+        },
+        {
+          "id": "london-tower-1536",
+          "year_display": "1536",
+          "label": "Anne Boleyn Executed",
+          "era_type": "past",
+          "image_query": "tower of london,tudor,execution,scaffold,historical",
+          "headline": "The Queen on the Green",
+          "description": "On May 19, 1536, Anne Boleyn walked from her lodgings in the Queen's House to a scaffold erected on Tower Green. She had been queen of England for three years. Henry VIII had broken with Rome, dissolved the monasteries, and reshaped English religion to marry her. Now he wanted her dead so he could marry Jane Seymour. The charges were almost certainly fabricated: adultery, incest, treason. A French swordsman, imported specially because the English axe was considered too crude, took her head with a single stroke.",
+          "key_events": [
+            {
+              "year": "May 2, 1536",
+              "event": "Anne Boleyn arrested and brought to the Tower by barge through Traitors' Gate"
+            },
+            {
+              "year": "May 15, 1536",
+              "event": "Anne tried in the Tower's Great Hall before 2,000 spectators; convicted unanimously"
+            },
+            {
+              "year": "May 19, 1536",
+              "event": "Anne Boleyn beheaded on Tower Green by a French swordsman; buried in the Chapel of St. Peter ad Vincula"
+            },
+            {
+              "year": "May 30, 1536",
+              "event": "Henry VIII marries Jane Seymour, eleven days after Anne's execution"
+            }
+          ],
+          "landscape": "Tower Green, a small patch of grass enclosed by the chapel, the Queen's House, and the inner wall. A low wooden scaffold draped in black cloth. Straw scattered to absorb the blood. A small crowd of officials and courtiers. The chapel of St. Peter ad Vincula a few steps away, its floor already covering the remains of earlier executions. The sound of the river and the cry of gulls.",
+          "sources": [
+            "Eric Ives, The Life and Death of Anne Boleyn (2004)",
+            "Alison Weir, The Lady in the Tower (2009)",
+            "Letters and Papers of Henry VIII, National Archives"
+          ]
+        },
+        {
+          "id": "london-tower-1605",
+          "year_display": "1605",
+          "label": "Gunpowder Plot",
+          "era_type": "past",
+          "image_query": "tower of london,jacobean,dungeon,torch,dark stone",
+          "headline": "The Rack and the Confession",
+          "description": "On November 5, 1605, Guy Fawkes was discovered in the cellars beneath the House of Lords with 36 barrels of gunpowder, enough to reduce the building and everyone in it to rubble. He was taken to the Tower and held in the dungeon beneath the White Tower. King James I personally authorized the use of torture, writing that the interrogators should begin with gentle methods and proceed to the worst. Fawkes held out for two days before the rack broke him. His signature on his confession is barely legible, a scrawl from hands too damaged to grip the pen.",
+          "key_events": [
+            {
+              "year": "November 5, 1605",
+              "event": "Guy Fawkes discovered beneath Parliament with 36 barrels of gunpowder"
+            },
+            {
+              "year": "November 6, 1605",
+              "event": "Fawkes brought to the Tower; King James authorizes escalating torture"
+            },
+            {
+              "year": "November 9, 1605",
+              "event": "Fawkes breaks under torture and reveals the names of his co-conspirators"
+            },
+            {
+              "year": "January 31, 1606",
+              "event": "Fawkes and fellow conspirators hanged, drawn, and quartered at Westminster"
+            }
+          ],
+          "landscape": "The dungeon beneath the White Tower, stone walls sweating with damp. Torchlight and shadow. The rack, a wooden frame with rollers at each end. The scrape of iron on stone. Above ground, the Tower complex functioning as an armory, a mint, and a records office. The menagerie still present: lions pacing behind bars near the main entrance, a tourist attraction even in 1605.",
+          "sources": [
+            "Antonia Fraser, The Gunpowder Plot: Terror and Faith in 1605 (1996)",
+            "James Sharpe, Remember, Remember: A Cultural History of Guy Fawkes Day (2005)",
+            "National Archives, SP 14/216 (Fawkes interrogation records)"
+          ]
+        },
+        {
+          "id": "london-tower-1941",
+          "year_display": "1941",
+          "label": "Last Execution",
+          "era_type": "past",
+          "image_query": "tower of london,wartime,1940s,military,london blitz",
+          "headline": "The Final Prisoner",
+          "description": "On August 15, 1941, Josef Jakobs, a German spy captured after parachuting into a field in Huntingdonshire, was executed by firing squad in the Tower of London. He had broken his ankle on landing, so he could not stand before the rifles. He was strapped to a plain wooden chair. A target was pinned over his heart. Eight soldiers from the Scots Guards fired. He was the last person executed at the Tower, ending a tradition of state killing that stretched back nearly 900 years.",
+          "key_events": [
+            {
+              "year": "September 1940",
+              "event": "The Blitz begins; Tower of London hit by incendiary bombs, damaging the North Bastion"
+            },
+            {
+              "year": "January 31, 1941",
+              "event": "Josef Jakobs parachutes into Huntingdonshire with a radio, forged papers, and a German sausage"
+            },
+            {
+              "year": "August 5, 1941",
+              "event": "Jakobs convicted of espionage by military tribunal at the Duke of York's Headquarters"
+            },
+            {
+              "year": "August 15, 1941",
+              "event": "Jakobs executed by firing squad in the Tower's miniature rifle range; the last person put to death here"
+            }
+          ],
+          "landscape": "The Tower during wartime: sandbags piled against medieval walls, barrage balloons floating overhead, anti-aircraft guns on the roof of the White Tower. The Crown Jewels removed to a secret location. The moat drained and planted as a victory garden. Bomb damage visible on the outer walls. The miniature rifle range where Jakobs died was a small indoor space, its floor covered with cinders, its walls of stone and earth.",
+          "sources": [
+            "Leonard Sellers, Shot in the Tower (1997)",
+            "Historic Royal Palaces, WWII records",
+            "National Archives, WO 71/1236 (Jakobs court martial)"
+          ]
+        },
+        {
+          "id": "london-tower-1952",
+          "year_display": "1952",
+          "label": "Coronation Prep",
+          "era_type": "past",
+          "image_query": "crown jewels,tower of london,1950s,coronation,royal",
+          "headline": "The Crown Comes Home",
+          "description": "When George VI died on February 6, 1952, the Crown Jewels were retrieved from their wartime hiding place and returned to the Tower for the first time since 1939. The Imperial State Crown needed to be resized for the new queen's smaller head. The coronation of Elizabeth II on June 2, 1953, was the first to be televised, and 27 million people in Britain watched. The Tower, which had been a garrison and a bomb shelter during the war, began its transformation into the heritage attraction it is today.",
+          "key_events": [
+            {
+              "year": "February 1952",
+              "event": "George VI dies; Crown Jewels returned to the Tower from their secret wartime vault"
+            },
+            {
+              "year": "1952-1953",
+              "event": "Crown Jeweller resizes and polishes the Imperial State Crown, St. Edward's Crown, and the Sovereign's Orb"
+            },
+            {
+              "year": "June 2, 1953",
+              "event": "Coronation of Elizabeth II at Westminster Abbey; 27 million Britons watch on television"
+            },
+            {
+              "year": "1967",
+              "event": "New Jewel House opens in the Waterloo Block, replacing the cramped Martin Tower display"
+            }
+          ],
+          "landscape": "The Tower rebuilding after bomb damage. Scaffolding on the outer walls. The moat still a garden, not yet refilled. Inside the Jewel House, goldsmith's tools laid out beside the Imperial State Crown with its 2,868 diamonds. The Koh-i-Noor diamond set into the Queen Mother's crown. Outside, postwar London visible through the embrasures: cranes rebuilding the City, the dome of St. Paul's still standing amid the rubble.",
+          "sources": [
+            "Anna Keay, The Crown Jewels (2011)",
+            "Historic Royal Palaces, Jewel House records",
+            "BBC Archives, Coronation broadcast (1953)"
+          ]
+        },
+        {
+          "id": "london-tower-2000",
+          "year_display": "2000",
+          "label": "Tourist London",
+          "era_type": "past",
+          "image_query": "tower of london,tourists,beefeater,modern,tourism",
+          "headline": "Three Million a Year",
+          "description": "By the year 2000, the Tower of London had completed its transformation from working fortress to heritage site. Three million visitors a year filed through the gates, making it the most visited paid attraction in Britain. The Yeoman Warders, known as Beefeaters, gave their theatrical tours. The ravens, whose legend says that Britain will fall if they ever leave the Tower, had their wings clipped to ensure they stayed. The Crown Jewels, displayed on a moving walkway to keep the crowds flowing, drew the longest queues.",
+          "key_events": [
+            {
+              "year": "1988",
+              "event": "Tower of London designated a UNESCO World Heritage Site"
+            },
+            {
+              "year": "1994",
+              "event": "New Crown Jewels display opens with moving walkway to manage 2.5 million annual viewers"
+            },
+            {
+              "year": "2000",
+              "event": "Annual visitor numbers reach 3 million; Tower becomes Britain's most visited paid attraction"
+            },
+            {
+              "year": "2004",
+              "event": "First female Yeoman Warder, Moira Cameron, appointed after 522 years of male-only tradition"
+            }
+          ],
+          "landscape": "Crowds queuing along the south wall. Audio guides in twelve languages. The Ceremony of the Keys performed nightly at 9:53 PM, as it has been for over 700 years. Ravens hopping on Tower Green, fed raw meat by the Ravenmaster. School groups in high-visibility vests. The White Tower's interior arranged as an exhibition space, medieval armor displayed where prisoners once slept. Tower Bridge framing the view to the east. The glass towers of the City rising behind the medieval walls.",
+          "sources": [
+            "Historic Royal Palaces Annual Report (2000)",
+            "UNESCO World Heritage Site nomination document (1988)",
+            "Christopher Hibbert, The Tower of London (1971, revised 2001)"
+          ]
+        },
+        {
+          "id": "london-tower-2025",
+          "year_display": "2025",
+          "label": "Post-Brexit Symbol",
+          "era_type": "present",
+          "image_query": "tower of london,modern,london skyline,thames,2024",
+          "headline": "Whose Fortress Is This",
+          "description": "In 2025 the Tower of London sits at the intersection of competing national narratives. For some it represents an unbroken thread of English sovereignty, a fortress that predates Parliament and has outlasted every invader. For others it is a monument to state violence, colonialism, and the concentrated power of the Crown. The Koh-i-Noor diamond, taken from India, remains in the Crown Jewels despite decades of repatriation requests. The Tower still draws 3 million visitors a year, but the stories told inside its walls are changing.",
+          "key_events": [
+            {
+              "year": "2014",
+              "event": "Blood Swept Lands and Seas of Red: 888,246 ceramic poppies fill the Tower moat, one for each British WWI death"
+            },
+            {
+              "year": "2020",
+              "event": "COVID closes the Tower for the first time since WWII; Yeoman Warders confined to quarters inside the walls"
+            },
+            {
+              "year": "2022",
+              "event": "Death of Elizabeth II; Crown Jewels take on new significance as Charles III prepares for coronation"
+            },
+            {
+              "year": "2023",
+              "event": "Coronation of Charles III renews debate over the Koh-i-Noor diamond and colonial-era acquisitions"
+            }
+          ],
+          "landscape": "The White Tower framed by the glass skyscrapers of the City, a medieval fortress dwarfed by modern finance. The Shard visible to the south, the Gherkin to the north. Tourists photographing ravens. The Thames Clipper boats passing at speed. Beefeaters posing for selfies in Tudor-era uniforms. The moat, now grassed over and peaceful, where 888,246 poppies once stood.",
+          "sources": [
+            "Historic Royal Palaces Strategic Review (2024)",
+            "The Guardian, Tower of London coverage (2014-2024)",
+            "Dan Jones, Tower: An Epic History of the Tower of London (2011)"
+          ]
+        },
+        {
+          "id": "london-tower-2075",
+          "year_display": "2075",
+          "label": "Thames Barrier Fails",
+          "era_type": "future",
+          "image_query": "futuristic,london,flood,thames,climate change,fortress",
+          "headline": "The Drowning Keep",
+          "description": "The Thames Barrier, built in 1984 and designed for conditions that no longer exist, was originally expected to last until 2030. Extensions and upgrades bought time, but sea level rise of over a meter, combined with increased storm surges, has overwhelmed London's flood defenses. The Tower of London, which has stood beside the Thames for a thousand years, now stands partially in it.",
+          "key_events": [],
+          "landscape": "The White Tower still stands, as it has for a millennium, but the water line now reaches the base of its walls at high tide. The moat is no longer decorative. It fills and drains with the Thames twice daily, salt water pooling in the medieval foundations. Traitors' Gate is permanently submerged. The Crown Jewels have been moved to higher ground. Ravens still patrol the upper battlements, indifferent to the water below. The Tower endures, as it always has, but the city around it is unrecognizable.",
+          "sources": [],
+          "future_scenarios": [
+            {
+              "id": "managed-flood",
+              "label": "Managed Inundation",
+              "sublabel": "Controlled tidal flooding",
+              "description": "A new Thames Barrier downstream at Long Reach protects central London during surge events, but routine high tides now regularly flood the Tower's lower levels. The site has been redesigned as an amphibious heritage attraction, with waterproof ground floors and elevated walkways. Visitors arrive by boat, as medieval prisoners once did.",
+              "confidence": 0.45
+            },
+            {
+              "id": "fortress-island",
+              "label": "The Island Fortress",
+              "sublabel": "Permanent flood adaptation",
+              "description": "The Thames has reclaimed the eastern City, and the Tower of London is now effectively an island at high tide. A new seawall protects the White Tower itself, but the outer wards flood daily. The site has become a powerful symbol of climate change: a thousand-year-old fortress slowly being swallowed by the river it was built to command.",
+              "confidence": 0.35
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "london-soho",
+      "name": "Soho",
+      "city": "London",
+      "subtext": "West End, London",
+      "coordinates": {
+        "lat": 51.5137,
+        "lng": -0.1337
+      },
+      "tagline": "One square mile that has been the center of London bohemia for 300 years. French Huguenots, then immigrants, then artists, then queer Londoners, then media companies, then tourists.",
+      "eras": [
+        {
+          "id": "london-soho-1685",
+          "year_display": "1685",
+          "label": "Huguenot Refuge",
+          "era_type": "past",
+          "image_query": "london,1600s,huguenot,refugee,historical,church",
+          "headline": "The First Refugees",
+          "description": "In October 1685, Louis XIV revoked the Edict of Nantes, stripping French Protestants of their legal protections. Tens of thousands of Huguenots fled France. Many landed in London, and they clustered in the fields north of Leicester Square that were just beginning to be developed into streets. Soho was barely a neighborhood yet, just muddy lanes and new brick houses. The Huguenots filled it with silk weavers, silversmiths, clockmakers, and a French-speaking church on what is now Soho Square. From its first days as a real neighborhood, Soho was defined by people who had come from somewhere else.",
+          "key_events": [
+            {
+              "year": "1685",
+              "event": "Louis XIV revokes the Edict of Nantes; 50,000 Huguenots flee to England over the following decade"
+            },
+            {
+              "year": "1689",
+              "event": "French Protestant Church established on what is now Soho Square"
+            },
+            {
+              "year": "1690s",
+              "event": "Greek Street, Frith Street, and Dean Street laid out and developed, named after the landowners and builders"
+            },
+            {
+              "year": "1720",
+              "event": "Soho established as a prosperous artisan quarter; Huguenot craftsmen dominate the luxury trades"
+            }
+          ],
+          "landscape": "Newly built brick terraces on unpaved streets. The fields of the old hunting grounds still visible at the edges of the development. Workshop sounds: looms clacking behind shuttered windows, the tap of silversmith's hammers. French spoken in the streets alongside English. The spire of the Huguenot chapel rising above Soho Square, which still had a garden at its center. The smell of dye vats and cooking. London's first continental neighborhood.",
+          "sources": [
+            "Robin Gwynn, Huguenot Heritage (2001)",
+            "Judith Summers, Soho: A History of London's Most Colourful Neighbourhood (1989)",
+            "Survey of London, Volumes 33-34: St. Anne, Soho"
+          ]
+        },
+        {
+          "id": "london-soho-1854",
+          "year_display": "1854",
+          "label": "Cholera Epidemic",
+          "era_type": "past",
+          "image_query": "victorian,london,street,1850s,public health,water pump",
+          "headline": "Death at the Pump",
+          "description": "In the final week of August 1854, cholera killed 127 people in a three-block radius around the Broad Street water pump in Soho. The prevailing theory blamed bad air. Dr. John Snow, a physician living nearby, went door to door mapping every death and traced the outbreak to a single contaminated well. The pump handle was removed on September 8. The epidemic subsided. Snow's investigation became the founding case study of modern epidemiology. He proved that cholera was waterborne, not airborne, and changed the way cities understood disease forever.",
+          "key_events": [
+            {
+              "year": "August 31, 1854",
+              "event": "Cholera outbreak explodes in Soho; 127 people die within three days of the Broad Street pump"
+            },
+            {
+              "year": "September 1854",
+              "event": "Dr. John Snow maps every cholera death and traces the source to the Broad Street pump"
+            },
+            {
+              "year": "September 8, 1854",
+              "event": "Parish authorities remove the pump handle; the epidemic begins to subside"
+            },
+            {
+              "year": "1855",
+              "event": "Snow publishes his findings; the germ theory of disease begins to replace miasma theory"
+            }
+          ],
+          "landscape": "Narrow streets packed with tenements, workshops, and cowsheds. The Broad Street pump at a busy intersection, serving hundreds of households. Open cesspits behind the houses, one of them leaking into the well. The stench of an overcrowded mid-Victorian neighborhood with no proper sewerage. Coffins stacked outside houses. Lime scattered on doorsteps. The pump still flowing, clear and cold and lethal.",
+          "sources": [
+            "Steven Johnson, The Ghost Map (2006)",
+            "John Snow, On the Mode of Communication of Cholera (1855)",
+            "Stephanie Snow, John Snow: The Making of a Hero (2008)"
+          ]
+        },
+        {
+          "id": "london-soho-1916",
+          "year_display": "1916",
+          "label": "Zeppelin Raids",
+          "era_type": "past",
+          "image_query": "london,zeppelin,wartime,1916,night,bombing",
+          "headline": "Fire from the Sky",
+          "description": "On September 8, 1915, a German Zeppelin dropped bombs on the Strand, Holborn, and the edges of Soho, killing 22 people. It was among the first deliberate aerial bombings of a civilian population in history. Londoners had never looked up in fear before. By 1916, regular Zeppelin and later Gotha bomber raids had transformed life in the West End. Theaters and restaurants dimmed their lights. Soho's foreign-born population, many of them German and Italian, faced suspicion and hostility from neighbors who had lived alongside them for years.",
+          "key_events": [
+            {
+              "year": "May 31, 1915",
+              "event": "First Zeppelin raid on London kills seven people in East London"
+            },
+            {
+              "year": "September 8, 1915",
+              "event": "Zeppelin L-13 drops bombs on the Strand and Holborn, hitting near Soho's southern edge"
+            },
+            {
+              "year": "1916",
+              "event": "Anti-German riots break out across London; German-owned shops in Soho attacked and looted"
+            },
+            {
+              "year": "1917",
+              "event": "Gotha bombers replace Zeppelins; raids become more frequent and more deadly"
+            }
+          ],
+          "landscape": "The West End blacked out after dark, gas lamps extinguished or hooded. Searchlight beams sweeping the sky above Soho Square. The distant drone of Zeppelin engines, a sound no civilian had ever heard before. Shattered glass on Dean Street. Restaurants with German or Austrian names hastily repainted. The Foreign Quarter, as Soho was still called, suddenly foreign in the wrong way.",
+          "sources": [
+            "Jerry White, Zeppelin Nights: London in the First World War (2014)",
+            "Ian Castle, London 1914-17: The Zeppelin Menace (2008)",
+            "Imperial War Museum, Home Front records"
+          ]
+        },
+        {
+          "id": "london-soho-1955",
+          "year_display": "1955",
+          "label": "Jazz and Coffee",
+          "era_type": "past",
+          "image_query": "soho london,1950s,jazz club,coffee bar,bohemian",
+          "headline": "Bebop and Espresso",
+          "description": "In 1953, Gina Lojacono opened the Moka Bar on Frith Street, the first espresso bar in Britain, with a gleaming Gaggia machine imported from Milan. Two years later, Ronnie Scott began hosting jazz sessions in a basement on Gerrard Street. Within a few years, Soho had more jazz clubs, coffee bars, and music venues per square foot than anywhere in Europe. The coffee bars drew teenagers who could not get into pubs. The jazz clubs drew musicians from across the Atlantic. Soho in the 1950s was the incubator for everything that would become the 1960s.",
+          "key_events": [
+            {
+              "year": "1953",
+              "event": "Moka Bar opens on Frith Street with London's first Gaggia espresso machine"
+            },
+            {
+              "year": "1955",
+              "event": "Ronnie Scott starts hosting jazz sessions in a Gerrard Street basement"
+            },
+            {
+              "year": "1958",
+              "event": "The 2i's Coffee Bar on Old Compton Street launches the careers of Tommy Steele and Cliff Richard"
+            },
+            {
+              "year": "1959",
+              "event": "Ronnie Scott's Jazz Club opens its permanent home on Frith Street, still operating today"
+            }
+          ],
+          "landscape": "Basement stairs leading down to low-ceilinged rooms thick with cigarette smoke and saxophone. The hiss of espresso machines in narrow shopfronts. Teenagers in drainpipe trousers queuing on Old Compton Street. Jukeboxes playing imported American records. French, Italian, and Greek restaurant signs along every street. The Marquee Club on Wardour Street. Soho at its most cosmopolitan, a neighborhood where you could eat pasta, drink espresso, hear jazz, and buy a book banned everywhere else in Britain, all within a ten-minute walk.",
+          "sources": [
+            "Robert Murphy, Smash Palace: Soho and the Art of Noise (2019)",
+            "Judith Summers, Soho: A History of London's Most Colourful Neighbourhood (1989)",
+            "Ronnie Scott's Jazz Club archive"
+          ]
+        },
+        {
+          "id": "london-soho-1967",
+          "year_display": "1967",
+          "label": "Summer of Free",
+          "era_type": "past",
+          "image_query": "1960s,london,counterculture,soho,liberation",
+          "headline": "The Law Changes",
+          "description": "On July 27, 1967, the Sexual Offences Act partially decriminalized homosexuality in England and Wales. The law was cautious and limited: it applied only to consenting adults over 21, in private, and not to the military or merchant navy. But for the queer community that had long made Soho its home, it was a beginning. The neighborhood already had gay pubs and clubs operating in a twilight of tolerance and police harassment. After 1967, Soho began its transformation into the heart of queer London, a role it would hold for the next half century.",
+          "key_events": [
+            {
+              "year": "1957",
+              "event": "Wolfenden Report recommends decriminalizing homosexuality; Parliament ignores it for a decade"
+            },
+            {
+              "year": "July 27, 1967",
+              "event": "Sexual Offences Act partially decriminalizes homosexuality in England and Wales"
+            },
+            {
+              "year": "1967",
+              "event": "Gay Liberation Front holds early meetings in Soho basements"
+            },
+            {
+              "year": "1972",
+              "event": "First London Pride march passes through Soho with approximately 2,000 participants"
+            }
+          ],
+          "landscape": "Old Compton Street beginning its long transformation. The Colony Room Club on Dean Street, where Francis Bacon drank with Lucian Freud and the Soho literati. The French House on Dean Street, where De Gaulle had drafted his Free French appeal. Gay pubs with blacked-out windows. The Raymond Revuebar advertising striptease in neon. Carnaby Street one block west, already overrun with tourists. The real Soho was in the basements and back rooms, where the interesting people went.",
+          "sources": [
+            "Matt Houlbrook, Queer London (2005)",
+            "Patrick Higgins, Heterosexual Dictatorship (1996)",
+            "National Archives, Home Office records on the Sexual Offences Act"
+          ]
+        },
+        {
+          "id": "london-soho-1984",
+          "year_display": "1984",
+          "label": "AIDS Crisis",
+          "era_type": "past",
+          "image_query": "london,1980s,soho,memorial,candlelight,community",
+          "headline": "The Plague Years",
+          "description": "The first cases of AIDS in Britain were diagnosed in 1981, and by 1984 the epidemic was devastating Soho's gay community. Men were dying in their twenties and thirties. The government's public health response was slow and often hostile. Tabloid newspapers printed headlines calling it the \"gay plague.\" In Soho, the community organized its own response. The Terrence Higgins Trust, founded in 1982 and named after one of the first British men to die of AIDS, set up on Gray's Inn Road. Gay bars on Old Compton Street became distribution points for safe sex information when the government would not provide it.",
+          "key_events": [
+            {
+              "year": "1982",
+              "event": "Terrence Higgins Trust founded after one of the first British AIDS deaths"
+            },
+            {
+              "year": "1984",
+              "event": "AIDS cases rising sharply in London; gay community in Soho begins grassroots organizing"
+            },
+            {
+              "year": "1987",
+              "event": "Government 'Don't Die of Ignorance' campaign launched; widely criticized as too little, too late"
+            },
+            {
+              "year": "1988",
+              "event": "Section 28 passed, prohibiting the 'promotion of homosexuality' in schools, further isolating the community during the crisis"
+            }
+          ],
+          "landscape": "Old Compton Street quieter than it should have been. Memorial notices in pub windows. Flowers left on doorsteps. The fear visible in the eyes of young men. The Terrence Higgins Trust shopfront on a side street, staffed by volunteers. Benefit concerts at the Astoria. Community fundraisers in pubs where the bartenders knew every face, and noticed when one stopped coming. The neighborhood closing ranks around its own.",
+          "sources": [
+            "Simon Garfield, The End of Innocence: Britain in the Time of AIDS (1994)",
+            "Terrence Higgins Trust archive",
+            "Matt Cook, Queer Domesticities: Homosexuality and Home Life in Twentieth-Century London (2014)"
+          ]
+        },
+        {
+          "id": "london-soho-1999",
+          "year_display": "1999",
+          "label": "Admiral Duncan Bombing",
+          "era_type": "past",
+          "image_query": "admiral duncan,soho,memorial,flowers,london pub",
+          "headline": "The Nail Bomb",
+          "description": "On April 30, 1999, a nail bomb exploded inside the Admiral Duncan pub on Old Compton Street, killing three people and injuring 79. Andrea Dykes, who was pregnant, died alongside her friends John Light and Nick Moore. The bomber, David Copeland, was a neo-Nazi who had already bombed Brixton and Brick Lane in the preceding two weeks, targeting Black, Bangladeshi, and gay communities in succession. The response from Soho was immediate and overwhelming. Thousands gathered on Old Compton Street the following evening. The pub reopened within weeks.",
+          "key_events": [
+            {
+              "year": "April 17, 1999",
+              "event": "First nail bomb in Brixton market injures 48 people"
+            },
+            {
+              "year": "April 24, 1999",
+              "event": "Second nail bomb on Brick Lane injures 13 people"
+            },
+            {
+              "year": "April 30, 1999",
+              "event": "Third nail bomb at the Admiral Duncan pub in Soho kills three and injures 79"
+            },
+            {
+              "year": "June 30, 2000",
+              "event": "David Copeland convicted of three counts of murder and sentenced to six concurrent life terms"
+            }
+          ],
+          "landscape": "The front of the Admiral Duncan blown out, glass and debris covering Old Compton Street. Emergency vehicles blocking Charing Cross Road. Survivors stumbling out of the pub with nail wounds. By the next evening, the street transformed: thousands of people, candles, flowers piled against the pub's facade, the queer community and its allies refusing to be driven from their neighborhood. The pub sign repainted, the windows replaced. Soho carrying on.",
+          "sources": [
+            "Graeme McLagan and Nick Lowles, Mr Evil: The Secret Life of Pub Bomber and Killer David Copeland (2000)",
+            "BBC News, Admiral Duncan bombing coverage (1999)",
+            "Metropolitan Police, Operation Marathon investigation files"
+          ]
+        },
+        {
+          "id": "london-soho-2025",
+          "year_display": "2025",
+          "label": "Present Day",
+          "era_type": "present",
+          "image_query": "soho london,night,modern,old compton street,2016",
+          "headline": "The Morning After",
+          "description": "On the night of June 23, 2016, the bars of Soho stayed open late as the referendum results came in. The City of Westminster voted 69% Remain. London voted 60% Remain. England and Wales voted Leave. By 4 AM, when the result was clear, Old Compton Street was still full of people in a state of disbelief. Soho, the most cosmopolitan square mile in Britain, a neighborhood built by French refugees and sustained by Italian restaurateurs, Greek Cypriot grocers, and queer Londoners from everywhere, had woken up in a country that had voted to pull away from Europe.",
+          "key_events": [
+            {
+              "year": "June 23, 2016",
+              "event": "EU referendum: UK votes 51.9% to leave the European Union; London votes overwhelmingly Remain"
+            },
+            {
+              "year": "2017-2019",
+              "event": "European workers who staffed Soho's restaurants and bars begin leaving as Brexit uncertainty grows"
+            },
+            {
+              "year": "2020",
+              "event": "COVID lockdowns empty Soho completely; outdoor dining temporarily transforms the streetscape"
+            },
+            {
+              "year": "2024",
+              "event": "Soho rebounds but transformed: higher rents, fewer independent businesses, more corporate chains"
+            }
+          ],
+          "landscape": "Old Compton Street on a Friday night, still the beating heart of queer London but increasingly a tourist destination. Rainbow flags and Pret A Manger. The French House still pouring Ricard. Ronnie Scott's still hosting jazz. Dean Street still lined with media offices, though many are now WeWork spaces. The sex shops mostly gone, replaced by craft cocktail bars. The energy of a neighborhood that has survived everything but is not sure it can survive becoming fashionable.",
+          "sources": [
+            "Robert Elms, London Made Us (2020)",
+            "Financial Times, Brexit and London's hospitality industry (2019)",
+            "Judith Summers, Soho: A History (1989, updated edition 2016)"
+          ]
+        },
+        {
+          "id": "london-soho-2075",
+          "year_display": "2075",
+          "label": "Memory District",
+          "era_type": "future",
+          "image_query": "futuristic,london,soho,neon,preserved,heritage",
+          "headline": "Everything Preserved, Nothing Alive",
+          "description": "Soho in 2075 faces the paradox of every historic bohemian quarter: the qualities that made it culturally vital are destroyed by the economic forces that recognize its value. The question is whether a neighborhood can be preserved without being embalmed.",
+          "key_events": [],
+          "landscape": "The streets are immaculate. Every Georgian and Victorian facade has been restored. The Admiral Duncan plaque is polished weekly. Ronnie Scott's still operates, though it is now owned by a heritage trust. Old Compton Street is pedestrianized, lined with restaurants that charge what Soho restaurants have always charged when adjusted for inflation, which is to say: too much. The question that hangs in the air is whether this is still Soho, or a museum of Soho. The Huguenots, the jazz musicians, the queer pioneers, the artists who made this place what it was, all came here because it was cheap and no one was watching. Neither of those things is true anymore.",
+          "sources": [],
+          "future_scenarios": [
+            {
+              "id": "heritage-quarter",
+              "label": "Heritage Quarter",
+              "sublabel": "Preserved but sanitized",
+              "description": "Soho has been designated a protected cultural district. The buildings are maintained, the street layout preserved, the history commemorated on every corner. But the rents are controlled by corporate landlords and the only businesses that survive are chains and luxury brands. The bohemia has moved east, as it always does, to wherever is cheapest.",
+              "confidence": 0.5
+            },
+            {
+              "id": "digital-soho",
+              "label": "Digital Bohemia",
+              "sublabel": "Virtual counterculture",
+              "description": "Soho's role as a physical gathering place for outsiders has migrated online, but the neighborhood retains symbolic power. The bars are AR-enhanced. The jazz clubs stream to global audiences. The community is dispersed but still identifies with these few streets. Soho is a brand as much as a place, but the brand still means something.",
+              "confidence": 0.3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "london-whitechapel",
+      "name": "Whitechapel",
+      "city": "London",
+      "subtext": "East London",
+      "coordinates": {
+        "lat": 51.5194,
+        "lng": -0.0607
+      },
+      "tagline": "London has always sent its poor to the East End. Huguenots, then Irish, then Jews, then Bangladeshis, then artists, then tech workers. The neighborhood changes but the displacement never stops.",
+      "eras": [
+        {
+          "id": "london-whitechapel-1660",
+          "year_display": "c. 1660",
+          "label": "Huguenot Weavers",
+          "era_type": "past",
+          "image_query": "spitalfields,london,weaving,silk,historical,1600s",
+          "headline": "The Silk Streets",
+          "description": "The Huguenot weavers who settled in Spitalfields and Whitechapel from the 1680s onward transformed the East End into the center of England's silk industry. They built elegant terraced houses on streets like Fournier Street and Princelet Street, with large attic windows designed to flood their looms with light. At their peak, the Spitalfields silk weavers employed over 15,000 people. The houses they built still stand. The attic windows, designed for looms, have served a dozen different communities since.",
+          "key_events": [
+            {
+              "year": "1685",
+              "event": "Revocation of the Edict of Nantes drives tens of thousands of Huguenots from France"
+            },
+            {
+              "year": "1690s",
+              "event": "Huguenot weavers establish silk workshops across Spitalfields; Fournier Street becomes a prosperous artisan quarter"
+            },
+            {
+              "year": "1743",
+              "event": "Spitalfields silk industry at its peak, employing over 15,000 workers across the East End"
+            },
+            {
+              "year": "1773",
+              "event": "Spitalfields Acts regulate silk wages, the first minimum wage legislation in British history"
+            }
+          ],
+          "landscape": "Terraced brick houses with wide attic windows, built to catch every hour of daylight for the looms. The clatter of hand-powered weaving frames audible from the street. Rolls of silk drying on lines strung across narrow courts. The Huguenot chapel on Brick Lane, which would later become a Methodist chapel, then a synagogue, then a mosque. Mulberry trees planted in back gardens to feed silkworms. French spoken in the markets, English in the pubs. The smell of sizing and dye.",
+          "sources": [
+            "Dan Cruickshank, Spitalfields: The History of a Nation in a Handful of Streets (2016)",
+            "Robin Gwynn, Huguenot Heritage (2001)",
+            "Survey of London, Volume 27: Spitalfields and Mile End New Town"
+          ]
+        },
+        {
+          "id": "london-whitechapel-1888",
+          "year_display": "1888",
+          "label": "Jack the Ripper",
+          "era_type": "past",
+          "image_query": "whitechapel,victorian,london,fog,gaslight,1888",
+          "headline": "The Abyss",
+          "description": "Between August and November 1888, five women were murdered in Whitechapel in a manner so violent that the case became the most famous unsolved crime in history. But the murders were a symptom, not the disease. Whitechapel in 1888 was the most overcrowded, impoverished district in the British Empire. 900,000 people were packed into the East End. Common lodging houses charged fourpence a night. The women who were killed, Mary Ann Nichols, Annie Chapman, Elizabeth Stride, Catherine Eddowes, and Mary Jane Kelly, were all desperately poor, sleeping rough or in doss houses, trying to survive in a neighborhood that the rest of London preferred not to see.",
+          "key_events": [
+            {
+              "year": "August 31, 1888",
+              "event": "Mary Ann Nichols found murdered on Buck's Row; the Whitechapel murders begin"
+            },
+            {
+              "year": "September-November 1888",
+              "event": "Four more women killed; police receive letters signed 'Jack the Ripper,' a name coined by the press"
+            },
+            {
+              "year": "1888",
+              "event": "The murders draw national attention to East End poverty; charitable missions flood the neighborhood"
+            },
+            {
+              "year": "1889",
+              "event": "Charles Booth publishes his poverty map, coloring Whitechapel's streets black for 'lowest class, vicious, semi-criminal'"
+            }
+          ],
+          "landscape": "Gaslit streets giving way to pitch-dark courts and alleys. Common lodging houses with 80 beds to a room, separated by curtains. The stink of the slaughterhouses on Wentworth Street. Gin palaces blazing with light. Street sellers, beggars, dock workers. The Ten Bells pub on Commercial Street. Raw sewage in the gutters. Fog so thick it tasted of coal. A neighborhood where 233 people shared a single outdoor privy.",
+          "sources": [
+            "Hallie Rubenhold, The Five: The Untold Lives of the Women Killed by Jack the Ripper (2019)",
+            "Charles Booth, Life and Labour of the People in London (1889-1903)",
+            "Jack London, The People of the Abyss (1903)"
+          ]
+        },
+        {
+          "id": "london-whitechapel-1910",
+          "year_display": "1910",
+          "label": "Jewish East End",
+          "era_type": "past",
+          "image_query": "jewish,east london,1910,market,yiddish,historical",
+          "headline": "The Golden Land",
+          "description": "By 1910, the Jewish population of the East End had reached approximately 150,000, making it the largest Jewish community in Britain and one of the largest in Europe. They had fled the pogroms of the Russian Empire, arriving at the docks with nothing and building a world in the streets around Whitechapel Road. Yiddish was the street language. The Whitechapel Library, opened in 1892, became known as the 'university of the ghetto.' Anarchist and socialist newspapers published from Brick Lane. The Yiddish theater on Commercial Road drew audiences from across London.",
+          "key_events": [
+            {
+              "year": "1881-1905",
+              "event": "Waves of Jewish refugees arrive from Russia, Poland, and Romania following escalating pogroms"
+            },
+            {
+              "year": "1902",
+              "event": "The Pavilion Theatre on Whitechapel Road becomes a full-time Yiddish theater"
+            },
+            {
+              "year": "1905",
+              "event": "Aliens Act passed, Britain's first immigration control, aimed directly at restricting Jewish arrivals"
+            },
+            {
+              "year": "1911",
+              "event": "Sidney Street Siege: police and soldiers battle anarchists in a Stepney house; Winston Churchill arrives to direct operations"
+            }
+          ],
+          "landscape": "Petticoat Lane market on a Sunday morning: thousands of stalls selling everything, the crowd so dense you moved at the speed of the person in front of you. Yiddish lettering on shop signs along Whitechapel Road. Beigel shops open 24 hours for the night-shift workers. The synagogue on Brick Lane, formerly a Huguenot chapel, its congregation of thousands. The Workers' Circle meeting rooms above a tailor's shop. The smell of salt beef, rye bread, and the acid tang of the leather works. A neighborhood that had created its own complete world within a dozen streets.",
+          "sources": [
+            "William Fishman, East End Jewish Radicals 1875-1914 (1975)",
+            "Rachel Lichtenstein and Iain Sinclair, Rodinsky's Room (1999)",
+            "Jewish Museum London, East End collection"
+          ]
+        },
+        {
+          "id": "london-whitechapel-1940",
+          "year_display": "1940",
+          "label": "The Blitz",
+          "era_type": "past",
+          "image_query": "london blitz,east end,1940,bombing,wartime,fire",
+          "headline": "Fifty-Seven Nights",
+          "description": "On September 7, 1940, the Luftwaffe began bombing London. The East End, with its docks, warehouses, and dense housing, was hit first and hit hardest. The first night of the Blitz killed 430 people in East London. The bombing continued for 57 consecutive nights. Whitechapel was devastated. Entire streets disappeared. The Bethnal Green tube disaster of March 3, 1943, killed 173 people in a crush at the station entrance during an air raid warning. The East End bore the brunt of the war on the home front, and the working-class communities who lived there knew it.",
+          "key_events": [
+            {
+              "year": "September 7, 1940",
+              "event": "First night of the Blitz: 430 East Londoners killed in a single night of bombing"
+            },
+            {
+              "year": "September-November 1940",
+              "event": "London bombed for 57 consecutive nights; East End sustains the heaviest damage"
+            },
+            {
+              "year": "March 3, 1943",
+              "event": "Bethnal Green tube disaster: 173 people crushed to death entering the shelter during a raid warning"
+            },
+            {
+              "year": "1945",
+              "event": "War ends; large areas of Whitechapel are rubble, entire streets erased from the map"
+            }
+          ],
+          "landscape": "The docks on fire, burning so brightly that the river reflected flame. Anti-aircraft batteries in Victoria Park. Families sleeping on the platforms of Whitechapel station, their bedding rolled up each morning. Bombed-out houses with one wall still standing, wallpaper visible, a staircase climbing to nothing. Anderson shelters in back gardens. The all-clear siren sounding at dawn. Children evacuated to the countryside returning to find their homes gone. Rubble everywhere, and on the rubble, rosebay willowherb blooming pink, the first plant to colonize bombed ground.",
+          "sources": [
+            "Philip Ziegler, London at War (1995)",
+            "Juliet Gardiner, The Blitz: The British Under Attack (2010)",
+            "Imperial War Museum, oral history collection"
+          ]
+        },
+        {
+          "id": "london-whitechapel-1978",
+          "year_display": "1978",
+          "label": "Rock Against Racism",
+          "era_type": "past",
+          "image_query": "victoria park,london,1978,concert,punk,carnival",
+          "headline": "The Carnival in the Park",
+          "description": "On April 30, 1978, approximately 100,000 people marched from Trafalgar Square to Victoria Park in Hackney for the Rock Against Racism carnival. The Clash, Steel Pulse, X-Ray Spex, and Tom Robinson headlined. The march passed directly through the East End, where the National Front had been building support by exploiting white working-class resentment toward the Bangladeshi community. The concert was a direct response to the rising tide of racist violence in Whitechapel and Brick Lane, where attacks on Bangladeshi residents had become routine.",
+          "key_events": [
+            {
+              "year": "1976",
+              "event": "Eric Clapton makes racist remarks on stage in Birmingham; Rock Against Racism movement founded in response"
+            },
+            {
+              "year": "1978",
+              "event": "Altab Ali, a 25-year-old Bangladeshi garment worker, murdered in a racist attack near Whitechapel station"
+            },
+            {
+              "year": "April 30, 1978",
+              "event": "100,000 people march to Victoria Park for the Rock Against Racism concert; The Clash headline"
+            },
+            {
+              "year": "1979",
+              "event": "National Front vote collapses in East London council elections; the movement never recovers locally"
+            }
+          ],
+          "landscape": "The march snaking through Whitechapel Road, past the Bangladeshi restaurants on Brick Lane, past the boarded-up storefronts and the National Front graffiti, into Victoria Park. A temporary stage, massive speakers, The Clash playing 'White Riot' to a crowd that stretched across the park. Punk rockers, reggae fans, trade unionists, students, and East End families who had come because they were tired of being afraid. Homemade banners reading 'NF = No Fun.' The sound carrying across the rooftops of Hackney.",
+          "sources": [
+            "Red Saunders and Roger Huddle, Reminiscences of RAR (2016)",
+            "Paul Gilroy, There Ain't No Black in the Union Jack (1987)",
+            "Socialist Workers Party archive, Rock Against Racism collection"
+          ]
+        },
+        {
+          "id": "london-whitechapel-1993",
+          "year_display": "1993",
+          "label": "Brick Lane",
+          "era_type": "past",
+          "image_query": "brick lane,london,bangladeshi,curry houses,1990s",
+          "headline": "Banglatown",
+          "description": "By 1993, Brick Lane had become the center of the Bangladeshi community in Britain. The street that had once been Huguenot, then Jewish, was now lined with Bangladeshi restaurants, grocers, fabric shops, and community organizations. The local council officially recognized the area as 'Banglatown' and installed bilingual street signs in English and Bengali. The curry houses, many opened by former seamen who had jumped ship in the 1950s and 1960s, became famous across London. The community had fought for decades against racist violence, poverty, and overcrowded housing to build something permanent.",
+          "key_events": [
+            {
+              "year": "1971",
+              "event": "Bangladesh gains independence; new wave of immigration to the existing East London community"
+            },
+            {
+              "year": "1978",
+              "event": "Murder of Altab Ali catalyzes Bangladeshi community organizing in the East End"
+            },
+            {
+              "year": "1993",
+              "event": "BNP wins council seat on Isle of Dogs; Brick Lane community mobilizes in response"
+            },
+            {
+              "year": "1998",
+              "event": "Brick Lane officially branded 'Banglatown' with new street signage in Bengali and English"
+            }
+          ],
+          "landscape": "Brick Lane on a Friday evening: the touts outside every curry house calling out prices and promises. The neon signs in English and Bengali. The smell of cumin, coriander, and mustard oil drifting from kitchen vents. The Jamme Masjid mosque at the corner of Fournier Street, the same building that was a Huguenot chapel in the 1740s and a synagogue in the 1890s. Sari shops next to the Beigel Bake, which stayed open 24 hours and still does. A neighborhood layering its histories into every building.",
+          "sources": [
+            "Geoff Dench, Kate Gavron, and Michael Young, The New East End (2006)",
+            "Claire Alexander, The Art of Being Black (1996)",
+            "Tower Hamlets Local History Library and Archives"
+          ]
+        },
+        {
+          "id": "london-whitechapel-2012",
+          "year_display": "2012",
+          "label": "Olympic Displacement",
+          "era_type": "past",
+          "image_query": "london olympics,stratford,east london,redevelopment,2012",
+          "headline": "The Regeneration Game",
+          "description": "The 2012 London Olympics were centered on Stratford, two miles northeast of Whitechapel, and the redevelopment transformed the entire East End. The Olympic Park was built on industrial land and allotments, displacing existing communities and small businesses. The promise was that the investment would benefit local residents. Property prices in Whitechapel doubled in the decade surrounding the games. Shoreditch, just north of Whitechapel, became one of the most expensive neighborhoods in London. The artists who had moved there in the 1990s because it was cheap were priced out by the developers who followed them.",
+          "key_events": [
+            {
+              "year": "2005",
+              "event": "London wins bid to host 2012 Olympics; East London designated for massive redevelopment"
+            },
+            {
+              "year": "2007-2011",
+              "event": "Olympic construction displaces communities, allotments, and small businesses from Stratford marshes"
+            },
+            {
+              "year": "July 2012",
+              "event": "Olympic Games held in Stratford; Queen Elizabeth Olympic Park opens on former industrial land"
+            },
+            {
+              "year": "2012-2020",
+              "event": "Property prices across East London double; Bangladeshi community in Whitechapel faces accelerating displacement"
+            }
+          ],
+          "landscape": "Cranes visible in every direction from the Whitechapel Road. New glass apartment blocks rising beside Victorian terraces. Estate agents' boards in Bengali and English. The Gherkin, the Shard, and the Olympic Park all visible from the roof of the Whitechapel Gallery. Artisan coffee shops opening on streets where kebab shops once served night-shift workers. The old Truman Brewery on Brick Lane converted into a market and event space. Construction noise constant. The neighborhood between two identities, the old East End and the new, neither one quite settled.",
+          "sources": [
+            "Iain Sinclair, Ghost Milk: Calling Time on the Grand Project (2011)",
+            "Anna Minton, Ground Control: Fear and Happiness in the Twenty-First-Century City (2009)",
+            "Greater London Authority, Olympic Legacy reports"
+          ]
+        },
+        {
+          "id": "london-whitechapel-2025",
+          "year_display": "2025",
+          "label": "Present Day",
+          "era_type": "present",
+          "image_query": "shoreditch,east london,modern,tech,gentrification,2019",
+          "headline": "The Fifth Wave",
+          "description": "By 2019, the gentrification of the East End had reached a stage that would have been unimaginable a generation earlier. Shoreditch, once a byword for poverty, had become 'Silicon Roundabout,' home to hundreds of tech startups. The displacement rippled outward. Whitechapel itself was being transformed by Crossrail, with a massive new station that would cut travel time to Heathrow to 40 minutes. The Bangladeshi community, which had built Brick Lane into a cultural landmark, watched property values rise and their children move to Barking and Dagenham, further east, repeating the pattern that had driven every previous community from the same streets.",
+          "key_events": [
+            {
+              "year": "2010",
+              "event": "Government designates Shoreditch as 'Tech City'; startup culture displaces artist culture"
+            },
+            {
+              "year": "2015",
+              "event": "Whitechapel Gallery expansion opens; the East End's cultural profile rises further"
+            },
+            {
+              "year": "2018",
+              "event": "Crossrail (Elizabeth Line) station construction dominates Whitechapel Road for years"
+            },
+            {
+              "year": "2019",
+              "event": "Average house price in Tower Hamlets reaches 15 times average local salary"
+            }
+          ],
+          "landscape": "Whitechapel Road in 2019: the Royal London Hospital, the East London Mosque, the Whitechapel Gallery, and the enormous Crossrail construction site all within a five-minute walk. Scaffolding and hoardings obscuring half the street. The market still operating on weekdays, selling fruit, fabric, and phone cases. The Beigel Bake still open 24 hours, its queue now including tourists with cameras. New apartment blocks advertising studio flats at prices that would buy a house in most of England. Brick Lane curry houses competing with ramen bars and sourdough pizza. Five centuries of immigration layered into every block.",
+          "sources": [
+            "Sukhdev Sandhu, Night Haunts: A Journey Through the London Night (2007, updated 2019)",
+            "Tower Hamlets Borough Profile (2019)",
+            "Financial Times, East London gentrification series (2018-2019)"
+          ]
+        },
+        {
+          "id": "london-whitechapel-2075",
+          "year_display": "2075",
+          "label": "Sixth Wave",
+          "era_type": "future",
+          "image_query": "futuristic,east london,gentrification,diverse,urban future",
+          "headline": "Who Comes Next",
+          "description": "The pattern that has defined Whitechapel for four centuries shows no sign of ending. Each wave of immigrants built a community, was displaced by rising costs, and was replaced by the next wave. The question for 2075 is whether this cycle continues, or whether something breaks it.",
+          "key_events": [],
+          "landscape": "Fournier Street in 2075, the building on the corner that has been a Huguenot chapel, a Methodist chapel, a synagogue, and a mosque. What will it be next? The street itself will still be there, the Georgian brickwork maintained by whatever heritage regime exists. The attic windows that the Huguenot weavers designed for their looms still letting in the light. But the community inside the buildings will have changed again, as it always does, as it always has. The East End absorbs each new arrival, transforms itself, and moves on.",
+          "sources": [],
+          "future_scenarios": [
+            {
+              "id": "climate-migration",
+              "label": "Climate Migrants",
+              "sublabel": "New arrivals from flooded regions",
+              "description": "Rising sea levels and extreme heat in South Asia, the Middle East, and sub-Saharan Africa have driven a new wave of migration to London. Whitechapel, with its established diaspora communities and its tradition of absorbing newcomers, becomes a first stop again. The Bangladeshi restaurants on Brick Lane serve a new generation of arrivals, from places that no longer exist as they were.",
+              "confidence": 0.45
+            },
+            {
+              "id": "preserved-displacement",
+              "label": "The Museum Street",
+              "sublabel": "Heritage preservation without community",
+              "description": "Brick Lane has been designated a heritage zone. The buildings are protected. The curry house signs are maintained. But the Bangladeshi community has dispersed entirely to outer London and Essex. The street is a stage set of multiculturalism, visited by tourists who photograph the Bengali street signs without knowing anyone who reads them. The cycle of displacement has completed another turn.",
+              "confidence": 0.35
+            }
+          ]
+        }
+      ]
     }
   ]
 }
