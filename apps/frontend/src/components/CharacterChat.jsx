@@ -4,8 +4,8 @@ import { ERA_CHARACTERS } from '../data/era-characters'
 import { sendCharacterMessage } from '../services/characterService'
 import { voiceService } from '../services/voiceService'
 
-export function CharacterChat({ era, onDismiss }) {
-  const character = ERA_CHARACTERS[era?.id]
+export function CharacterChat({ era, onDismiss, character: characterProp, venueContext, backLabel }) {
+  const character = characterProp || ERA_CHARACTERS[era?.id]
   const [phase, setPhase] = useState('notification')
   // phases: notification → introduction → chat
   const [messages, setMessages] = useState([])
@@ -56,7 +56,8 @@ export function CharacterChat({ era, onDismiss }) {
       const response = await sendCharacterMessage(
         character,
         messages,
-        userMessage
+        userMessage,
+        venueContext
       )
       setMessages([
         ...newMessages,
@@ -189,7 +190,7 @@ export function CharacterChat({ era, onDismiss }) {
           style={{ display: 'flex', alignItems: 'center', gap: 8, background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(255,255,255,0.6)', fontSize: 14 }}
         >
           <span>&larr;</span>
-          <span>Back to {era.label}</span>
+          <span>{backLabel ? `Leave ${backLabel}` : `Back to ${era.label}`}</span>
         </button>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)' }}>{character.name}, {era.year_display}</span>

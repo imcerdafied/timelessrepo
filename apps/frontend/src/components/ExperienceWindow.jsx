@@ -8,12 +8,15 @@ import { useEraAudio } from '../hooks/useEraAudio'
 import { audioService } from '../services/audioService'
 import { useDwellTime } from '../hooks/useDwellTime'
 import { ERA_CHARACTERS } from '../data/era-characters'
+import { getVenuesForEra } from '../data/venues'
 import ArtifactLayer from './ArtifactLayer'
 import CameraOverlay from './CameraOverlay'
 import { CharacterChat } from './CharacterChat'
 import EraDetail from './EraDetail'
 import FutureVoting from './FutureVoting'
 import ShareCard from './ShareCard'
+import VenueCard from './VenueCard'
+import VenueScene from './VenueScene'
 
 function oneSentence(text) {
   const match = text.match(/^(.*?[.!?])/)
@@ -47,10 +50,12 @@ export default function ExperienceWindow() {
   const [shareOpen, setShareOpen] = useState(false)
   const [characterOpen, setCharacterOpen] = useState(false)
   const [charDismissed, setCharDismissed] = useState(false)
+  const [activeVenue, setActiveVenue] = useState(null)
   const dragControls = useDragControls()
   const touchStartY = useRef(null)
 
   const era = eras.find((e) => e.id === selectedEra)
+  const venues = getVenuesForEra(era?.id)
   const { url: imageUrl } = useEraImage(era)
   const { tilt, needsPermission, requestPermission } = useGyroscope()
   const { audioEnabled, hasAudio, toggle: toggleAudio } = useEraAudio(era)
@@ -71,6 +76,7 @@ export default function ExperienceWindow() {
     setCameraOpen(false)
     setCharacterOpen(false)
     setCharDismissed(false)
+    setActiveVenue(null)
   }
 
   if (!era) return null
@@ -354,6 +360,27 @@ export default function ExperienceWindow() {
                 {era.landscape}
               </p>
             )}
+
+            {venues.length > 0 && (
+              <div style={{ marginTop: '24px' }}>
+                <div style={{
+                  color: 'rgba(255,255,255,0.35)',
+                  fontSize: '11px',
+                  letterSpacing: '0.1em',
+                  textTransform: 'uppercase',
+                  marginBottom: '12px'
+                }}>
+                  ENTER THIS ERA
+                </div>
+                {venues.map(venue => (
+                  <VenueCard
+                    key={venue.id}
+                    venue={venue}
+                    onEnter={setActiveVenue}
+                  />
+                ))}
+              </div>
+            )}
           </div>
         </div>
       ) : (
@@ -449,6 +476,15 @@ export default function ExperienceWindow() {
           />
         </AnimatePresence>,
         document.body
+      )}
+
+      {/* Venue scene overlay */}
+      {activeVenue && (
+        <VenueScene
+          venue={activeVenue}
+          era={era}
+          onClose={() => setActiveVenue(null)}
+        />
       )}
     </div>
   )

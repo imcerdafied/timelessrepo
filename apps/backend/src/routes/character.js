@@ -10,7 +10,7 @@ if (!process.env.ANTHROPIC_API_KEY) {
 const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
 
 router.post('/chat', async (req, res) => {
-  const { system_prompt, accent, messages } = req.body
+  const { system_prompt, accent, messages, venue_context } = req.body
 
   if (!process.env.ANTHROPIC_API_KEY) {
     return res.status(503).json({ error: 'ANTHROPIC_API_KEY not configured' })
@@ -20,8 +20,13 @@ router.post('/chat', async (req, res) => {
     return res.status(400).json({ error: 'Missing required fields' })
   }
 
+  // Build system prompt with optional venue context
+  const basePrompt = venue_context
+    ? `${venue_context}\n\n${system_prompt}`
+    : system_prompt
+
   // Enforce era constraint in system prompt
-  const fullSystemPrompt = `${system_prompt}
+  const fullSystemPrompt = `${basePrompt}
 
 CRITICAL INSTRUCTIONS:
 - Stay in character completely. You are this person, in this time.
