@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import { AnimatePresence, motion, useDragControls } from 'framer-motion'
 import useStore from '../store/useStore'
@@ -8,7 +8,7 @@ import { useEraAudio } from '../hooks/useEraAudio'
 import { audioService } from '../services/audioService'
 import { useDwellTime } from '../hooks/useDwellTime'
 import { ERA_CHARACTERS } from '../data/era-characters'
-import { getVenuesForEra } from '../data/venues'
+import { getVenuesForEra, getAutoplayVenue } from '../data/venues'
 import ArtifactLayer from './ArtifactLayer'
 import CameraOverlay from './CameraOverlay'
 import { CharacterChat } from './CharacterChat'
@@ -51,6 +51,8 @@ export default function ExperienceWindow() {
   const [characterOpen, setCharacterOpen] = useState(false)
   const [charDismissed, setCharDismissed] = useState(false)
   const [activeVenue, setActiveVenue] = useState(null)
+  const [isAutoplay, setIsAutoplay] = useState(false)
+  const [autoplayTriggered, setAutoplayTriggered] = useState(false)
   const dragControls = useDragControls()
   const touchStartY = useRef(null)
 
@@ -77,7 +79,25 @@ export default function ExperienceWindow() {
     setCharacterOpen(false)
     setCharDismissed(false)
     setActiveVenue(null)
+    setIsAutoplay(false)
+    setAutoplayTriggered(false)
   }
+
+  // Auto-trigger scene when era has an autoplay venue
+  useEffect(() => {
+    if (!era || autoplayTriggered || activeVenue) return
+    const autoVenue = getAutoplayVenue(era.id)
+    if (!autoVenue) return
+
+    const timer = setTimeout(() => {
+      if (!autoplayTriggered) {
+        setActiveVenue(autoVenue)
+        setIsAutoplay(true)
+        setAutoplayTriggered(true)
+      }
+    }, 3000)
+    return () => clearTimeout(timer)
+  }, [era?.id, autoplayTriggered, activeVenue])
 
   if (!era) return null
 
@@ -483,7 +503,8 @@ export default function ExperienceWindow() {
         <VenueScene
           venue={activeVenue}
           era={era}
-          onClose={() => setActiveVenue(null)}
+          autoplay={isAutoplay}
+          onClose={() => { setActiveVenue(null); setIsAutoplay(false) }}
         />
       )}
     </div>

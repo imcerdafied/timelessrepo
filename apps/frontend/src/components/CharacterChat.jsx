@@ -4,11 +4,14 @@ import { ERA_CHARACTERS } from '../data/era-characters'
 import { sendCharacterMessage } from '../services/characterService'
 import { voiceService } from '../services/voiceService'
 
-export function CharacterChat({ era, onDismiss, character: characterProp, venueContext, backLabel }) {
+export function CharacterChat({ era, onDismiss, character: characterProp, venueContext, backLabel, sceneIntro }) {
   const character = characterProp || ERA_CHARACTERS[era?.id]
-  const [phase, setPhase] = useState('notification')
+  // If sceneIntro provided, skip straight to chat with the intro as first message
+  const [phase, setPhase] = useState(sceneIntro ? 'chat' : 'notification')
   // phases: notification → introduction → chat
-  const [messages, setMessages] = useState([])
+  const [messages, setMessages] = useState(
+    sceneIntro ? [{ role: 'assistant', content: sceneIntro }] : []
+  )
   const [loading, setLoading] = useState(false)
   const [voiceEnabled, setVoiceEnabled] = useState(voiceService.enabled)
   const messagesEndRef = useRef(null)

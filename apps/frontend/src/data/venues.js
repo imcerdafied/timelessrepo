@@ -11,6 +11,7 @@ export const VENUES = {
     tagline: 'The rancho headquarters at dusk',
     description: 'Adobe buildings near the creek. Vaqueros returning from the hills. Jos\u00e9 Maria Amador holds court in the corridor.',
     scene_prompt: `It is late afternoon at Rancho San Ramon, 1834. The light is golden. Cattle can be heard in the distance. Jos\u00e9 Maria Amador sits in the shaded corridor of the adobe headquarters, drinking wine from the rancho's own vines. He is the most powerful man in the valley and he knows it. He is gracious, curious about visitors, and deeply proud of what he has built. The smell of tallow fires and leather is in the air.`,
+    scene_intro: `You are standing on Rancho San Ramon. Everything you can see, the valley, the hills, the cattle moving on the far slopes, this is mine, by grant of the Mexican government. I am Jos\u00e9 Maria Amador, and you have arrived at a good time. The vaqueros returned this morning with word that the spring herds are larger than any year I can remember.`,
     characters: ['alamo-1834'],
     media_type: 'conversation',
     duration_hint: '5-10 min',
@@ -86,6 +87,7 @@ export const VENUES = {
     tagline: 'Duke Ellington has the house band',
     description: 'The most famous jazz club in America. Black performers, white audiences from downtown. The glamour and the contradiction.',
     scene_prompt: `It is Saturday night at the Cotton Club, Harlem, 1925. Duke Ellington's band is playing. The room is packed: white socialites from downtown who came uptown for the jazz, the excitement, the otherness. The performers are Black. The owners are white gangsters connected to Owney Madden. Black Harlem residents cannot get a table. The music is extraordinary. The arrangement is humiliating. Duke Ellington plays as if he owns the room because in every way that matters, he does.`,
+    scene_intro: `Welcome to the Cotton Club. Sit anywhere you like, though I should tell you, the best tables went to the men in the silk suits an hour ago. I am Duke Ellington, and my band and I will be playing until two in the morning. Listen first. Then we can talk.`,
     characters: ['har-1925'],
     media_type: 'performance',
     duration_hint: '5-10 min',
@@ -98,6 +100,24 @@ export const VENUES = {
       opening_line: 'Welcome to the Cotton Club. The music is mine. The room is not. But that is a problem for another evening.',
       voice_id: 'JBFqnCBsd6RMkjVDRZzb',
     }
+  },
+
+  // LONDON SOHO 1854
+  'london-soho-1854-broad-street': {
+    id: 'london-soho-1854-broad-street',
+    locationId: 'london-soho',
+    eraId: 'london-soho-1854',
+    name: 'Broad Street',
+    type: 'conversation',
+    icon: '\u{1F4CD}',
+    tagline: 'The epicentre of the cholera epidemic',
+    description: 'September 1854. Dr. John Snow walks the streets of Soho with a notebook, mapping deaths. He believes he knows what is killing people.',
+    scene_prompt: `It is September 1854 on Broad Street in Soho, London. A cholera epidemic has killed over 500 people in this neighbourhood in the last two weeks. The smell is overwhelming. Dr. John Snow is walking the streets with a notebook, interviewing survivors, counting the dead house by house. He is building a map that will prove cholera spreads through contaminated water from the Broad Street pump, not through bad air as every other doctor believes. He is methodical, exhausted, and absolutely certain he is right.`,
+    scene_intro: `I have been walking these streets for three days with a notebook and a growing certainty that I am right and every doctor in London is wrong. My name is John Snow. I am a physician. And I believe I know what is killing your neighbors.`,
+    characters: ['london-soho-1854'],
+    media_type: 'conversation',
+    duration_hint: '5-10 min',
+    is_interactive: true,
   },
 
   // LONDON SOHO 1967
@@ -129,4 +149,9 @@ export const VENUES = {
 // Helper to get venues for a specific era
 export const getVenuesForEra = (eraId) => {
   return Object.values(VENUES).filter(v => v.eraId === eraId)
+}
+
+// Get the first venue with scene_intro for autoplay
+export const getAutoplayVenue = (eraId) => {
+  return Object.values(VENUES).find(v => v.eraId === eraId && v.scene_intro)
 }
