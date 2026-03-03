@@ -1,13 +1,16 @@
-import { useRef } from 'react'
 import { motion } from 'framer-motion'
 
-export default function ShareCard({ story, episode, onClose }) {
-  const cardRef = useRef(null)
+export default function ShareCard({ story, episode, votedOption, percent, onClose }) {
+  const firstName = story.character_name.split(' ')[0]
 
   async function handleShare() {
+    const text = votedOption && percent != null
+      ? `"${episode.vote_question}" — ${percent}% of readers chose "${votedOption.label}"`
+      : `"${episode.vote_question}" — ${firstName}'s story on Dispatch`
+
     const shareData = {
-      title: `${story.title} — Story Universe`,
-      text: `"${episode.scene.slice(0, 120)}..." — ${story.character}, ${story.year}`,
+      title: `${story.title} — Dispatch`,
+      text,
       url: window.location.href,
     }
 
@@ -15,9 +18,7 @@ export default function ShareCard({ story, episode, onClose }) {
       if (navigator.share) {
         await navigator.share(shareData)
       } else {
-        await navigator.clipboard.writeText(
-          `${shareData.text}\n\n${shareData.url}`
-        )
+        await navigator.clipboard.writeText(`${text}\n\ndispatch.app`)
       }
     } catch {
       // User cancelled share
@@ -33,7 +34,7 @@ export default function ShareCard({ story, episode, onClose }) {
         position: 'fixed',
         inset: 0,
         zIndex: 9999,
-        backgroundColor: 'rgba(0,0,0,0.9)',
+        backgroundColor: 'rgba(0,0,0,0.95)',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -58,76 +59,60 @@ export default function ShareCard({ story, episode, onClose }) {
         &times;
       </button>
 
-      {/* Card */}
-      <div
-        ref={cardRef}
-        style={{
-          width: '100%',
-          maxWidth: 340,
-          backgroundColor: '#111',
-          borderRadius: 16,
-          overflow: 'hidden',
-          border: '1px solid rgba(255,255,255,0.08)',
-        }}
-      >
-        {/* Top bar */}
+      {/* Shareable stat card */}
+      <div style={{
+        width: '100%',
+        maxWidth: 340,
+        backgroundColor: '#000',
+        borderRadius: 16,
+        overflow: 'hidden',
+        border: '1px solid rgba(245,158,11,0.3)',
+        padding: '32px 24px',
+      }}>
+        {/* DISPATCH branding */}
         <div style={{
-          padding: '16px 20px',
-          borderBottom: '1px solid rgba(255,255,255,0.06)',
+          fontSize: 10,
+          letterSpacing: '0.2em',
+          textTransform: 'uppercase',
+          color: '#f59e0b',
+          marginBottom: 24,
+          fontWeight: 600,
         }}>
-          <div style={{
-            fontSize: 10,
-            letterSpacing: '0.15em',
-            textTransform: 'uppercase',
-            color: '#C8860A',
-            marginBottom: 4,
-          }}>
-            STORY UNIVERSE
-          </div>
-          <div style={{
-            fontSize: 18,
-            fontWeight: 600,
-            fontFamily: "'Playfair Display', serif",
-            color: 'white',
-          }}>
-            {story.title}
-          </div>
+          DISPATCH
         </div>
 
-        {/* Quote */}
-        <div style={{ padding: '20px 20px 16px' }}>
+        {/* Vote question */}
+        <div style={{
+          fontSize: 18,
+          fontFamily: "Georgia, 'Times New Roman', serif",
+          color: 'white',
+          lineHeight: 1.5,
+          marginBottom: 20,
+        }}>
+          {episode.vote_question}
+        </div>
+
+        {/* Result */}
+        {votedOption && percent != null && (
           <div style={{
             fontSize: 15,
-            fontStyle: 'italic',
-            lineHeight: 1.6,
-            color: 'rgba(255,255,255,0.8)',
-            fontFamily: "'Playfair Display', serif",
+            color: '#f59e0b',
+            fontWeight: 500,
+            marginBottom: 24,
           }}>
-            &ldquo;{episode.scene.slice(0, 200)}&rdquo;
+            {percent}% of readers chose &ldquo;{votedOption.label}&rdquo;
           </div>
-        </div>
+        )}
 
         {/* Footer */}
         <div style={{
-          padding: '12px 20px 16px',
-          borderTop: '1px solid rgba(255,255,255,0.06)',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
+          fontSize: 12,
+          color: 'rgba(255,255,255,0.25)',
+          letterSpacing: '0.06em',
+          borderTop: '1px solid rgba(255,255,255,0.08)',
+          paddingTop: 16,
         }}>
-          <span style={{
-            fontSize: 12,
-            color: 'rgba(255,255,255,0.4)',
-          }}>
-            {story.character}, {story.year}
-          </span>
-          <span style={{
-            fontSize: 11,
-            color: 'rgba(255,255,255,0.25)',
-            letterSpacing: '0.06em',
-          }}>
-            {episode.title}
-          </span>
+          dispatch.app
         </div>
       </div>
 
@@ -136,7 +121,7 @@ export default function ShareCard({ story, episode, onClose }) {
         onClick={handleShare}
         style={{
           marginTop: 20,
-          backgroundColor: '#C8860A',
+          backgroundColor: '#f59e0b',
           color: '#000',
           border: 'none',
           borderRadius: 12,
@@ -146,7 +131,7 @@ export default function ShareCard({ story, episode, onClose }) {
           cursor: 'pointer',
         }}
       >
-        Share This Moment
+        Share
       </button>
     </motion.div>
   )

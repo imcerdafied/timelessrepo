@@ -29,8 +29,6 @@ router.post('/chat', async (req, res) => {
 CRITICAL INSTRUCTIONS:
 - Stay in character completely. You are this person, in this time.
 - Never break character or acknowledge being an AI.
-- If asked about events after your era, respond from your actual present.
-  You cannot know the future. Be curious, not evasive.
 - Never use em dashes in your responses. Use commas, periods, or colons instead.
 - Keep every response to 2-3 sentences maximum.
 - You are speaking aloud in conversation, not writing an essay.`
@@ -110,7 +108,7 @@ router.post('/speak', async (req, res) => {
 // GET /api/story/votes/:episodeId — get vote tallies
 router.get('/votes/:episodeId', async (req, res) => {
   if (!supabase) {
-    return res.json({ tallies: {} })
+    return res.json({ tallies: {}, total: 0 })
   }
 
   const { episodeId } = req.params
@@ -127,34 +125,35 @@ router.get('/votes/:episodeId', async (req, res) => {
     for (const row of (data || [])) {
       tallies[row.option_chosen] = (tallies[row.option_chosen] || 0) + 1
     }
+    const total = data?.length || 0
 
-    res.json({ tallies })
+    res.json({ tallies, total })
   } catch (err) {
     console.error('Vote tally error:', err.message)
-    res.json({ tallies: {} })
+    res.json({ tallies: {}, total: 0 })
   }
 })
 
 // POST /api/story/vote — cast a vote
 router.post('/vote', async (req, res) => {
-  const { episodeId, option, userId } = req.body
+  const { episodeId, optionId, sessionId } = req.body
 
-  if (!episodeId || !option) {
-    return res.status(400).json({ error: 'episodeId and option required' })
+  if (!episodeId || !optionId) {
+    return res.status(400).json({ error: 'episodeId and optionId required' })
   }
 
   if (!supabase) {
-    return res.json({ success: true, tallies: { [option]: 1 } })
+    return res.json({ success: true, tallies: { [optionId]: 1 }, total: 1 })
   }
 
   try {
-    // Upsert: one vote per user per episode
+    // Upsert: one vote per session per episode
     const { error: upsertError } = await supabase
       .from('story_votes')
       .upsert({
         episode_id: episodeId,
-        option_chosen: option,
-        user_id: userId || 'anonymous',
+        option_chosen: optionId,
+        user_id: sessionId || 'anonymous',
       }, {
         onConflict: 'episode_id,user_id'
       })
@@ -173,8 +172,9 @@ router.post('/vote', async (req, res) => {
     for (const row of (data || [])) {
       tallies[row.option_chosen] = (tallies[row.option_chosen] || 0) + 1
     }
+    const total = data?.length || 0
 
-    res.json({ success: true, tallies })
+    res.json({ success: true, tallies, total })
   } catch (err) {
     console.error('Vote error:', err.message)
     res.status(500).json({ error: 'Vote failed', detail: err.message })

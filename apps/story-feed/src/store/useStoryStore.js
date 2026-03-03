@@ -1,29 +1,25 @@
 import { create } from 'zustand'
 
 const useStoryStore = create((set, get) => ({
-  // Active story/episode
   activeStory: null,
   activeEpisode: null,
 
-  // User's vote history: { episodeId: optionChosen }
+  // { episodeId: optionId }
   votes: {},
 
-  // Which branch each story is on for this user
+  // { episodeId: consequence }
   branches: {},
 
-  // Chat history per episode
+  // { episodeId: [messages] }
   chatHistory: {},
 
   setActiveStory: (story) => set({ activeStory: story }),
   setActiveEpisode: (episode) => set({ activeEpisode: episode }),
 
-  castVote: (episodeId, option, consequence) => {
+  castVote: (episodeId, optionId, consequence) => {
     set(state => ({
-      votes: { ...state.votes, [episodeId]: option },
-      branches: {
-        ...state.branches,
-        [episodeId]: consequence
-      }
+      votes: { ...state.votes, [episodeId]: optionId },
+      branches: { ...state.branches, [episodeId]: consequence }
     }))
   },
 
@@ -31,10 +27,7 @@ const useStoryStore = create((set, get) => ({
     set(state => ({
       chatHistory: {
         ...state.chatHistory,
-        [episodeId]: [
-          ...(state.chatHistory[episodeId] || []),
-          message
-        ]
+        [episodeId]: [...(state.chatHistory[episodeId] || []), message]
       }
     }))
   },
@@ -42,11 +35,9 @@ const useStoryStore = create((set, get) => ({
   getNextEpisode: (story, currentEpisode) => {
     const { branches } = get()
     const votedBranch = branches[currentEpisode.id]
-    const nextDay = currentEpisode.day + 1
-
-    // Find episode matching next day and current branch
+    const nextNumber = currentEpisode.number + 1
     return story.episodes.find(e =>
-      e.day === nextDay &&
+      e.number === nextNumber &&
       (!e.branch || e.branch === votedBranch)
     )
   }

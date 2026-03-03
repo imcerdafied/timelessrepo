@@ -1,3 +1,12 @@
+export function getSessionId() {
+  let id = localStorage.getItem('dispatch_session')
+  if (!id) {
+    id = crypto.randomUUID()
+    localStorage.setItem('dispatch_session', id)
+  }
+  return id
+}
+
 export async function sendStoryMessage(story, episode, history, userMessage) {
   const response = await fetch('/api/story/chat', {
     method: 'POST',
@@ -6,10 +15,7 @@ export async function sendStoryMessage(story, episode, history, userMessage) {
       storyId: story.id,
       episodeId: episode.id,
       system_prompt: story.system_prompt,
-      messages: [
-        ...history,
-        { role: 'user', content: userMessage }
-      ]
+      messages: [...history, { role: 'user', content: userMessage }]
     })
   })
 
@@ -18,11 +24,12 @@ export async function sendStoryMessage(story, episode, history, userMessage) {
   return data.response
 }
 
-export async function castVote(episodeId, option, userId) {
+export async function castVote(episodeId, optionId) {
+  const sessionId = getSessionId()
   const response = await fetch('/api/story/vote', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ episodeId, option, userId })
+    body: JSON.stringify({ episodeId, optionId, sessionId })
   })
 
   const data = await response.json()
