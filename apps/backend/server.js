@@ -113,13 +113,13 @@ app.all('/api/{*splat}', (req, res) => {
   res.status(404).json({ error: 'API route not found', path: req.path })
 })
 
-// Serve story-feed at /story path
+// Serve story-feed at /dispatch path
 const storyDistPath = path.join(__dirname, '..', 'story-feed', 'dist')
 
 if (fs.existsSync(storyDistPath)) {
-  console.log('Story-feed dist found, serving at /story')
-  app.use('/story', express.static(storyDistPath))
-  app.get('/story/*', (req, res) => {
+  console.log('Story-feed dist found, serving at /dispatch')
+  app.use('/dispatch', express.static(storyDistPath))
+  app.get('/dispatch/{*splat}', (req, res) => {
     res.sendFile(path.join(storyDistPath, 'index.html'))
   })
 }
