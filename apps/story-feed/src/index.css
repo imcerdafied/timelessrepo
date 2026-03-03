@@ -1,0 +1,20 @@
+@import "tailwindcss";
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: #000;
+  color: white;
+  -webkit-font-smoothing: antialiased;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+@theme {
+  --color-background: #0A0A0A;
+  --color-surface: #141414;
+  --color-border: #222222;
+  --color-past: #C8860A;
+  --color-future: #1E4D8C;
+  --color-present: #F5F5F5;
+  --font-heading: 'Playfair Display', serif;
+  --font-ui: 'Inter', sans-serif;
+}

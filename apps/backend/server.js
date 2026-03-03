@@ -5,6 +5,7 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 import { createClient } from '@supabase/supabase-js'
 import characterRoutes from './src/routes/character.js'
+import storyRoutes from './src/routes/story.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const app = express()
@@ -24,6 +25,9 @@ if (supabaseUrl && supabaseKey) {
 
 // Character chat — Claude API proxy
 app.use('/api/character', characterRoutes)
+
+// Story Universe — chat, TTS, voting
+app.use('/api/story', storyRoutes)
 
 // Health check
 app.get('/api/health', (_req, res) => {
@@ -109,6 +113,17 @@ app.all('/api/{*splat}', (req, res) => {
   res.status(404).json({ error: 'API route not found', path: req.path })
 })
 
+// Serve story-feed at /story path
+const storyDistPath = path.join(__dirname, '..', 'story-feed', 'dist')
+
+if (fs.existsSync(storyDistPath)) {
+  console.log('Story-feed dist found, serving at /story')
+  app.use('/story', express.static(storyDistPath))
+  app.get('/story/*', (req, res) => {
+    res.sendFile(path.join(storyDistPath, 'index.html'))
+  })
+}
+
 // Serve frontend static build (must come AFTER all /api routes)
 const frontendDist = path.join(__dirname, '..', 'frontend', 'dist')
 
@@ -127,6 +142,6 @@ if (fs.existsSync(frontendDist)) {
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
-  console.log(`API routes: /api/health, /api/character/chat, /api/character/test, /api/artifacts`)
+  console.log(`API routes: /api/health, /api/character/chat, /api/story/chat, /api/artifacts`)
   console.log(`Frontend dist: ${frontendDist}`)
 })

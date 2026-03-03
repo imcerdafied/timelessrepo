@@ -4,12 +4,14 @@ nixPkgs = ["nodejs_20"]
 [phases.install]
 cmds = [
   "cd apps/frontend && npm install --legacy-peer-deps",
+  "cd apps/story-feed && npm install --legacy-peer-deps",
   "cd apps/backend && npm install"
 ]
 
 [phases.build]
 cmds = [
-  "cd apps/frontend && npm run build"
+  "cd apps/frontend && npm run build",
+  "cd apps/story-feed && npm run build"
 ]
 
 [start]
