@@ -1,10 +1,7 @@
 import { motion } from 'framer-motion'
 
-const UNSPLASH_BASE = 'https://source.unsplash.com/800x600/?'
-
 export default function StoryCard({ story, onPlay }) {
   const episodeCount = story.episodes.length
-  const imageUrl = `${UNSPLASH_BASE}${encodeURIComponent(story.cover_image_query)}`
 
   return (
     <motion.div
@@ -25,7 +22,7 @@ export default function StoryCard({ story, onPlay }) {
       {/* Cover image */}
       <div style={{ position: 'relative', height: 220, overflow: 'hidden' }}>
         <img
-          src={imageUrl}
+          src={story.cover_image}
           alt={story.title}
           loading="lazy"
           style={{

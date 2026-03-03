@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import useStoryStore from '../store/useStoryStore'
 
 export default function VoteBar({ episode, story, onVoted }) {
@@ -51,12 +51,12 @@ export default function VoteBar({ episode, story, onVoted }) {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         style={{
-          fontSize: 18,
+          fontSize: 24,
           fontWeight: 600,
           fontFamily: "'Playfair Display', serif",
           color: 'white',
           textAlign: 'center',
-          marginBottom: 24,
+          marginBottom: 32,
           lineHeight: 1.4,
         }}
       >
@@ -64,13 +64,13 @@ export default function VoteBar({ episode, story, onVoted }) {
       </motion.div>
 
       {/* Options */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
         {episode.vote_options.map((option, i) => (
           <motion.button
             key={option}
-            initial={{ opacity: 0, x: i === 0 ? -20 : 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.2 + i * 0.15 }}
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 + i * 0.15 }}
             onClick={() => !hasVoted && handleVote(option)}
             disabled={hasVoted}
             style={{
@@ -78,20 +78,24 @@ export default function VoteBar({ episode, story, onVoted }) {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
-              padding: '16px 20px',
+              height: 64,
+              padding: '0 24px',
               borderRadius: 14,
               border: hasVoted && votes[episode.id] === option
-                ? '1px solid #C8860A'
-                : '1px solid rgba(255,255,255,0.12)',
+                ? '2px solid #C8860A'
+                : '1px solid rgba(200,134,10,0.4)',
               backgroundColor: hasVoted
-                ? 'rgba(255,255,255,0.04)'
-                : 'rgba(255,255,255,0.06)',
+                ? 'rgba(255,255,255,0.03)'
+                : 'rgba(200,134,10,0.06)',
               color: 'white',
-              fontSize: 15,
+              fontSize: 16,
+              fontWeight: 500,
               cursor: hasVoted ? 'default' : 'pointer',
               textAlign: 'left',
               overflow: 'hidden',
               fontFamily: "'Inter', sans-serif",
+              width: '100%',
+              boxSizing: 'border-box',
             }}
           >
             {/* Percentage bar background */}
@@ -99,15 +103,15 @@ export default function VoteBar({ episode, story, onVoted }) {
               <motion.div
                 initial={{ width: 0 }}
                 animate={{ width: `${getPercent(option)}%` }}
-                transition={{ duration: 0.8, ease: 'easeOut' }}
+                transition={{ duration: 1, ease: 'easeOut', delay: 0.2 }}
                 style={{
                   position: 'absolute',
                   left: 0,
                   top: 0,
                   bottom: 0,
                   backgroundColor: votes[episode.id] === option
-                    ? 'rgba(200,134,10,0.15)'
-                    : 'rgba(255,255,255,0.04)',
+                    ? 'rgba(200,134,10,0.2)'
+                    : 'rgba(255,255,255,0.05)',
                   borderRadius: 14,
                 }}
               />
@@ -117,13 +121,13 @@ export default function VoteBar({ episode, story, onVoted }) {
               <motion.span
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: 0.5 }}
+                transition={{ delay: 0.8 }}
                 style={{
                   position: 'relative',
                   zIndex: 1,
-                  fontSize: 13,
-                  color: 'rgba(255,255,255,0.5)',
-                  fontWeight: 500,
+                  fontSize: 15,
+                  color: votes[episode.id] === option ? '#C8860A' : 'rgba(255,255,255,0.5)',
+                  fontWeight: 600,
                 }}
               >
                 {getPercent(option)}%

@@ -6,8 +6,6 @@ import { voiceService } from '../services/voiceService'
 import VoteBar from './VoteBar'
 import ShareCard from './ShareCard'
 
-const UNSPLASH_BASE = 'https://source.unsplash.com/800x600/?'
-
 export default function EpisodePlayer() {
   const { activeStory: story, activeEpisode: episode, setActiveStory, setActiveEpisode, chatHistory, addMessage, votes, getNextEpisode } = useStoryStore()
   const [phase, setPhase] = useState('scene') // scene → interact → vote
@@ -17,12 +15,14 @@ export default function EpisodePlayer() {
   const [exchangeCount, setExchangeCount] = useState(0)
   const [shareOpen, setShareOpen] = useState(false)
   const [voiceEnabled, setVoiceEnabled] = useState(voiceService.enabled)
+  const [inputVisible, setInputVisible] = useState(false)
   const revealInterval = useRef(null)
   const inputRef = useRef(null)
   const messagesEndRef = useRef(null)
 
-  const imageUrl = `${UNSPLASH_BASE}${encodeURIComponent(story.cover_image_query)}`
+  const imageUrl = story.cover_image
   const hasVoted = !!votes[episode.id]
+  const firstName = story.character.split(' ')[0]
 
   // Reset on episode change
   useEffect(() => {
@@ -31,6 +31,7 @@ export default function EpisodePlayer() {
     setMessages([])
     setExchangeCount(0)
     setShareOpen(false)
+    setInputVisible(false)
   }, [episode.id])
 
   // Scene text reveal
@@ -308,180 +309,21 @@ export default function EpisodePlayer() {
 
       {/* PHASE 2: INTERACT */}
       {phase === 'interact' && (
-        <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-          {/* Messages */}
-          <div style={{ flex: 1, overflowY: 'auto', padding: 16 }}>
-            {/* Scene as first message */}
-            <div style={{
-              display: 'flex',
-              justifyContent: 'start',
-              marginBottom: 12,
-            }}>
-              <div style={{
-                maxWidth: '85%',
-                borderRadius: 16,
-                padding: '12px 16px',
-                backgroundColor: 'rgba(255,255,255,0.06)',
-                border: '1px solid rgba(255,255,255,0.08)',
-                fontSize: 14,
-                lineHeight: 1.6,
-                color: 'rgba(255,255,255,0.8)',
-                fontStyle: 'italic',
-              }}>
-                {episode.scene}
-              </div>
-            </div>
-
-            {/* Chat messages */}
-            {messages.map((msg, i) => (
-              <div
-                key={i}
-                style={{
-                  display: 'flex',
-                  justifyContent: msg.role === 'user' ? 'flex-end' : 'flex-start',
-                  marginBottom: 12,
-                }}
-              >
-                <div style={{
-                  maxWidth: '85%',
-                  borderRadius: 16,
-                  padding: '12px 16px',
-                  backgroundColor: msg.role === 'user'
-                    ? 'rgba(200,134,10,0.15)'
-                    : 'rgba(255,255,255,0.06)',
-                  border: msg.role === 'user'
-                    ? '1px solid rgba(200,134,10,0.25)'
-                    : '1px solid rgba(255,255,255,0.08)',
-                  fontSize: 14,
-                  lineHeight: 1.6,
-                  color: msg.role === 'user'
-                    ? 'rgba(255,255,255,0.9)'
-                    : 'rgba(255,255,255,0.8)',
-                  fontStyle: msg.role === 'assistant' ? 'italic' : 'normal',
-                }}>
-                  {msg.content}
-                </div>
-              </div>
-            ))}
-
-            {loading && (
-              <div style={{ display: 'flex', justifyContent: 'flex-start', marginBottom: 12 }}>
-                <div style={{
-                  borderRadius: 16,
-                  padding: '12px 16px',
-                  backgroundColor: 'rgba(255,255,255,0.06)',
-                  border: '1px solid rgba(255,255,255,0.08)',
-                  display: 'flex',
-                  gap: 4,
-                }}>
-                  {[0, 1, 2].map(i => (
-                    <motion.div
-                      key={i}
-                      animate={{ opacity: [0.3, 1, 0.3] }}
-                      transition={{ duration: 0.8, repeat: Infinity, delay: i * 0.15 }}
-                      style={{
-                        width: 6,
-                        height: 6,
-                        borderRadius: 3,
-                        backgroundColor: 'rgba(255,255,255,0.4)',
-                      }}
-                    />
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Nudge to vote after 2 exchanges */}
-            <AnimatePresence>
-              {exchangeCount >= 2 && !hasVoted && (
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  style={{ textAlign: 'center', padding: '16px 0' }}
-                >
-                  <button
-                    onClick={() => setPhase('vote')}
-                    style={{
-                      backgroundColor: '#C8860A',
-                      color: '#000',
-                      border: 'none',
-                      borderRadius: 12,
-                      padding: '12px 24px',
-                      fontSize: 14,
-                      fontWeight: 600,
-                      cursor: 'pointer',
-                    }}
-                  >
-                    Ready to decide? &rarr;
-                  </button>
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-            <div ref={messagesEndRef} />
-          </div>
-
-          {/* Input row */}
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 8,
-            padding: '12px 16px',
-            paddingBottom: 'max(12px, env(safe-area-inset-bottom))',
-            backgroundColor: '#111',
-            borderTop: '1px solid rgba(255,255,255,0.08)',
-          }}>
-            <div
-              ref={inputRef}
-              contentEditable
-              suppressContentEditableWarning
-              spellCheck={false}
-              autoCorrect="off"
-              data-gramm="false"
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' && !e.shiftKey) {
-                  e.preventDefault()
-                  handleSend()
-                }
-              }}
-              data-placeholder={`Ask ${story.character.split(' ')[0]} anything...`}
-              style={{
-                flex: 1,
-                minWidth: 0,
-                backgroundColor: 'rgba(255,255,255,0.08)',
-                borderRadius: 24,
-                padding: '10px 16px',
-                color: 'white',
-                fontSize: 15,
-                outline: 'none',
-                minHeight: 20,
-                maxHeight: 80,
-                overflowY: 'auto',
-                wordBreak: 'break-word',
-              }}
-            />
-            <button
-              onMouseDown={(e) => { e.preventDefault(); handleSend() }}
-              style={{
-                flexShrink: 0,
-                width: 44,
-                height: 44,
-                borderRadius: 22,
-                backgroundColor: '#C8860A',
-                border: 'none',
-                color: '#000',
-                fontSize: 18,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                cursor: 'pointer',
-                fontWeight: 700,
-              }}
-            >
-              &rarr;
-            </button>
-          </div>
-        </div>
+        <InteractPhase
+          story={story}
+          episode={episode}
+          firstName={firstName}
+          messages={messages}
+          loading={loading}
+          exchangeCount={exchangeCount}
+          hasVoted={hasVoted}
+          inputVisible={inputVisible}
+          setInputVisible={setInputVisible}
+          inputRef={inputRef}
+          messagesEndRef={messagesEndRef}
+          handleSend={handleSend}
+          setPhase={setPhase}
+        />
       )}
 
       {/* PHASE 3: VOTE */}
@@ -508,10 +350,10 @@ export default function EpisodePlayer() {
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1 }}
+                transition={{ delay: 1.2 }}
                 style={{
                   textAlign: 'center',
-                  padding: '32px 24px',
+                  padding: '40px 24px',
                 }}
               >
                 {nextEpisode ? (
@@ -533,28 +375,30 @@ export default function EpisodePlayer() {
                 ) : (
                   <div>
                     <div style={{
-                      fontSize: 16,
+                      fontSize: 18,
                       fontFamily: "'Playfair Display', serif",
-                      color: 'rgba(255,255,255,0.6)',
+                      color: '#C8860A',
                       fontStyle: 'italic',
-                      marginBottom: 16,
+                      marginBottom: 24,
+                      lineHeight: 1.5,
                     }}>
-                      Come back tomorrow for the next episode.
+                      Come back tomorrow for Episode 2.
                     </div>
                     <button
                       onClick={() => setShareOpen(true)}
                       style={{
                         backgroundColor: 'transparent',
                         color: '#C8860A',
-                        border: '1px solid rgba(200,134,10,0.3)',
+                        border: '1px solid rgba(200,134,10,0.4)',
                         borderRadius: 12,
-                        padding: '12px 24px',
-                        fontSize: 14,
+                        padding: '14px 28px',
+                        fontSize: 15,
                         fontWeight: 500,
                         cursor: 'pointer',
+                        letterSpacing: '0.02em',
                       }}
                     >
-                      Share this moment
+                      Share {firstName}'s story
                     </button>
                   </div>
                 )}
@@ -572,6 +416,246 @@ export default function EpisodePlayer() {
             episode={episode}
             onClose={() => setShareOpen(false)}
           />
+        )}
+      </AnimatePresence>
+    </div>
+  )
+}
+
+function InteractPhase({ story, episode, firstName, messages, loading, exchangeCount, hasVoted, inputVisible, setInputVisible, inputRef, messagesEndRef, handleSend, setPhase }) {
+  // Show "listening" indicator, then reveal input after 3s
+  useEffect(() => {
+    const timer = setTimeout(() => setInputVisible(true), 3000)
+    return () => clearTimeout(timer)
+  }, [])
+
+  return (
+    <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+      {/* Messages */}
+      <div style={{ flex: 1, overflowY: 'auto', padding: 16 }}>
+        {/* Scene as first message */}
+        <div style={{
+          display: 'flex',
+          justifyContent: 'flex-start',
+          marginBottom: 12,
+        }}>
+          <div style={{
+            maxWidth: '85%',
+            borderRadius: 16,
+            padding: '12px 16px',
+            backgroundColor: 'rgba(255,255,255,0.06)',
+            border: '1px solid rgba(255,255,255,0.08)',
+            fontSize: 14,
+            lineHeight: 1.6,
+            color: 'rgba(255,255,255,0.8)',
+            fontStyle: 'italic',
+          }}>
+            {episode.scene}
+          </div>
+        </div>
+
+        {/* Listening indicator */}
+        {!inputVisible && messages.length === 0 && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5, duration: 0.6 }}
+            style={{
+              textAlign: 'center',
+              padding: '20px 0',
+              fontSize: 13,
+              color: 'rgba(255,255,255,0.35)',
+              fontStyle: 'italic',
+            }}
+          >
+            {firstName} is listening...
+          </motion.div>
+        )}
+
+        {/* Chat messages */}
+        {messages.map((msg, i) => (
+          <div
+            key={i}
+            style={{
+              display: 'flex',
+              justifyContent: msg.role === 'user' ? 'flex-end' : 'flex-start',
+              marginBottom: 12,
+            }}
+          >
+            <div style={{
+              maxWidth: '85%',
+              borderRadius: 16,
+              padding: '12px 16px',
+              backgroundColor: msg.role === 'user'
+                ? 'rgba(200,134,10,0.15)'
+                : 'rgba(255,255,255,0.06)',
+              border: msg.role === 'user'
+                ? '1px solid rgba(200,134,10,0.25)'
+                : '1px solid rgba(255,255,255,0.08)',
+              fontSize: 14,
+              lineHeight: 1.6,
+              color: msg.role === 'user'
+                ? 'rgba(255,255,255,0.9)'
+                : 'rgba(255,255,255,0.8)',
+              fontStyle: msg.role === 'assistant' ? 'italic' : 'normal',
+            }}>
+              {msg.content}
+            </div>
+          </div>
+        ))}
+
+        {loading && (
+          <div style={{ display: 'flex', justifyContent: 'flex-start', marginBottom: 12 }}>
+            <div style={{
+              borderRadius: 16,
+              padding: '12px 16px',
+              backgroundColor: 'rgba(255,255,255,0.06)',
+              border: '1px solid rgba(255,255,255,0.08)',
+              display: 'flex',
+              gap: 4,
+            }}>
+              {[0, 1, 2].map(i => (
+                <motion.div
+                  key={i}
+                  animate={{ opacity: [0.3, 1, 0.3] }}
+                  transition={{ duration: 0.8, repeat: Infinity, delay: i * 0.15 }}
+                  style={{
+                    width: 6,
+                    height: 6,
+                    borderRadius: 3,
+                    backgroundColor: 'rgba(255,255,255,0.4)',
+                  }}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Nudge to vote after 2 exchanges */}
+        <AnimatePresence>
+          {exchangeCount >= 2 && !hasVoted && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              style={{ textAlign: 'center', padding: '16px 0' }}
+            >
+              <button
+                onClick={() => setPhase('vote')}
+                style={{
+                  backgroundColor: '#C8860A',
+                  color: '#000',
+                  border: 'none',
+                  borderRadius: 12,
+                  padding: '12px 24px',
+                  fontSize: 14,
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                }}
+              >
+                Ready to decide? &rarr;
+              </button>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        <div ref={messagesEndRef} />
+      </div>
+
+      {/* Input row + skip to vote */}
+      <AnimatePresence>
+        {inputVisible && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4 }}
+          >
+            {/* Skip to vote link */}
+            <div style={{
+              textAlign: 'center',
+              paddingBottom: 8,
+            }}>
+              <button
+                onClick={() => setPhase('vote')}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: 'rgba(200,134,10,0.6)',
+                  fontSize: 13,
+                  cursor: 'pointer',
+                  padding: '4px 8px',
+                }}
+              >
+                Skip to vote &rarr;
+              </button>
+            </div>
+
+            {/* Input row */}
+            <div style={{
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              gap: 8,
+              padding: '12px 16px',
+              paddingRight: 'max(16px, env(safe-area-inset-right, 16px))',
+              paddingBottom: 'max(12px, env(safe-area-inset-bottom))',
+              backgroundColor: '#111',
+              borderTop: '1px solid rgba(255,255,255,0.08)',
+              boxSizing: 'border-box',
+            }}>
+              <div
+                ref={inputRef}
+                contentEditable
+                suppressContentEditableWarning
+                spellCheck={false}
+                autoCorrect="off"
+                autoCapitalize="off"
+                data-gramm="false"
+                data-gramm_editor="false"
+                data-enable-grammarly="false"
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault()
+                    handleSend()
+                  }
+                }}
+                data-placeholder={`Ask ${firstName} anything...`}
+                style={{
+                  flex: 1,
+                  minWidth: 0,
+                  backgroundColor: 'rgba(255,255,255,0.1)',
+                  borderRadius: 24,
+                  padding: '10px 16px',
+                  color: 'white',
+                  fontSize: 15,
+                  outline: 'none',
+                  minHeight: 20,
+                  maxHeight: 80,
+                  overflowY: 'auto',
+                  wordBreak: 'break-word',
+                }}
+              />
+              <button
+                onMouseDown={(e) => { e.preventDefault(); handleSend() }}
+                style={{
+                  flexShrink: 0,
+                  width: 44,
+                  height: 44,
+                  borderRadius: 22,
+                  backgroundColor: '#C8860A',
+                  border: 'none',
+                  color: '#000',
+                  fontSize: 18,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                  fontWeight: 700,
+                }}
+              >
+                &rarr;
+              </button>
+            </div>
+          </motion.div>
         )}
       </AnimatePresence>
     </div>

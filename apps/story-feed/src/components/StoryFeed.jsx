@@ -35,7 +35,7 @@ export default function StoryFeed() {
             marginBottom: 8,
             fontWeight: 600,
           }}>
-            STORY UNIVERSE
+            DISPATCH
           </div>
           <div style={{
             fontSize: 26,
@@ -51,7 +51,7 @@ export default function StoryFeed() {
             color: 'rgba(255,255,255,0.4)',
             fontStyle: 'italic',
           }}>
-            You decide what happens.
+            History speaks. You decide what happens next.
           </div>
         </motion.div>
       </div>
