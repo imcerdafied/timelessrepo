@@ -19,7 +19,7 @@ export async function generateTalkVideo(text, audioBuffer) {
   })
 
   const imageUpload = await fetch(
-    `${HEDRA_API_URL}/v1/assets`,
+    `${HEDRA_API_URL}/v1/assets/upload`,
     {
       method: 'POST',
       headers: { 'X-API-Key': HEDRA_API_KEY, ...imageForm.getHeaders() },
@@ -39,7 +39,7 @@ export async function generateTalkVideo(text, audioBuffer) {
   })
 
   const audioUpload = await fetch(
-    `${HEDRA_API_URL}/v1/assets`,
+    `${HEDRA_API_URL}/v1/assets/upload`,
     {
       method: 'POST',
       headers: { 'X-API-Key': HEDRA_API_KEY, ...audioForm.getHeaders() },
