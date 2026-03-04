@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import Anthropic from '@anthropic-ai/sdk'
 import { createClient } from '@supabase/supabase-js'
-import { generateTalkVideo } from '../services/didService.js'
+import { generateTalkVideo } from '../services/hedraService.js'
 
 const router = Router()
 
@@ -185,7 +185,7 @@ router.post('/vote', async (req, res) => {
   }
 })
 
-// POST /api/story/video/generate — D-ID talking head video
+// POST /api/story/video/generate — Hedra talking head video
 router.post('/video/generate', async (req, res) => {
   const { episodeId, text, voiceId } = req.body
 
@@ -199,11 +199,43 @@ router.post('/video/generate', async (req, res) => {
   }
 
   try {
-    const videoUrl = await generateTalkVideo(text, voiceId || 'EXAVITQu4vr4xnSDxMaL')
+    // Step 1: Generate audio via ElevenLabs
+    const ELEVEN_API_KEY = process.env.ELEVENLABS_API_KEY
+    if (!ELEVEN_API_KEY) throw new Error('ElevenLabs API key not configured')
+
+    const audioResponse = await fetch(
+      `https://api.elevenlabs.io/v1/text-to-speech/${voiceId || 'EXAVITQu4vr4xnSDxMaL'}`,
+      {
+        method: 'POST',
+        headers: {
+          'xi-api-key': ELEVEN_API_KEY,
+          'Content-Type': 'application/json',
+          'Accept': 'audio/mpeg'
+        },
+        body: JSON.stringify({
+          text: text.slice(0, 1000),
+          model_id: 'eleven_turbo_v2',
+          voice_settings: {
+            stability: 0.5,
+            similarity_boost: 0.75,
+            style: 0.3,
+            use_speaker_boost: true
+          }
+        })
+      }
+    )
+    if (!audioResponse.ok) {
+      const err = await audioResponse.text()
+      throw new Error(`ElevenLabs TTS failed: ${err}`)
+    }
+    const audioBuffer = await audioResponse.arrayBuffer()
+
+    // Step 2: Generate video via Hedra
+    const videoUrl = await generateTalkVideo(text, audioBuffer)
     videoCache.set(episodeId, videoUrl)
     res.json({ status: 'done', video_url: videoUrl })
   } catch (err) {
-    console.error('D-ID error:', err.message)
+    console.error('Video generation error:', err.message)
     res.status(500).json({ error: err.message })
   }
 })
