@@ -2,7 +2,14 @@ const HEDRA_API_URL = 'https://api.hedra.com/web-app/public'
 const HEDRA_API_KEY = process.env.HEDRA_API_KEY
 const ZOE_IMAGE_URL = process.env.ZOE_IMAGE_URL
 
+// Verify globals are available (Node 20+)
+if (typeof FormData === 'undefined' || typeof Blob === 'undefined') {
+  throw new Error('FormData/Blob not available — requires Node 20+')
+}
+
 export async function generateTalkVideo(text, audioBuffer) {
+  if (!HEDRA_API_KEY) throw new Error('HEDRA_API_KEY not configured')
+  if (!ZOE_IMAGE_URL) throw new Error('ZOE_IMAGE_URL not configured')
   const headers = { 'X-API-Key': HEDRA_API_KEY }
 
   // Step 1: Upload Zoe's image

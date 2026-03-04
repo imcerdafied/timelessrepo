@@ -142,6 +142,29 @@ if (fs.existsSync(frontendDist)) {
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
-  console.log(`API routes: /api/health, /api/character/chat, /api/story/chat, /api/artifacts`)
+
+  // Log all registered routes dynamically
+  const routes = []
+  app._router.stack.forEach(layer => {
+    if (layer.route) {
+      // Direct routes on app
+      const methods = Object.keys(layer.route.methods).map(m => m.toUpperCase()).join(',')
+      routes.push(`  ${methods} ${layer.route.path}`)
+    } else if (layer.name === 'router' && layer.handle?.stack) {
+      // Mounted sub-routers
+      const prefix = layer.regexp?.source
+        ?.replace('^\\/','/')
+        ?.replace('\\/?(?=\\/|$)','')
+        ?.replace(/\\\//g, '/')
+        || ''
+      layer.handle.stack.forEach(sub => {
+        if (sub.route) {
+          const methods = Object.keys(sub.route.methods).map(m => m.toUpperCase()).join(',')
+          routes.push(`  ${methods} ${prefix}${sub.route.path}`)
+        }
+      })
+    }
+  })
+  console.log(`Registered routes:\n${routes.join('\n')}`)
   console.log(`Frontend dist: ${frontendDist}`)
 })

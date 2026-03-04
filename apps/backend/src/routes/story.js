@@ -1,7 +1,16 @@
 import { Router } from 'express'
 import Anthropic from '@anthropic-ai/sdk'
 import { createClient } from '@supabase/supabase-js'
-import { generateTalkVideo } from '../services/hedraService.js'
+
+// Lazy import — don't let a bad hedraService kill the entire story router
+let generateTalkVideo = null
+try {
+  const hedra = await import('../services/hedraService.js')
+  generateTalkVideo = hedra.generateTalkVideo
+  console.log('Hedra service loaded')
+} catch (err) {
+  console.error('Hedra service failed to load:', err.message)
+}
 
 const router = Router()
 
@@ -196,6 +205,10 @@ router.post('/video/generate', async (req, res) => {
   // Return cached video if available
   if (videoCache.has(episodeId)) {
     return res.json({ status: 'done', video_url: videoCache.get(episodeId) })
+  }
+
+  if (!generateTalkVideo) {
+    return res.status(503).json({ error: 'Video generation service not available' })
   }
 
   try {
