@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import useStoryStore from '../store/useStoryStore'
-import { sendStoryMessage, castVote as submitVote, generateVideo } from '../services/storyService'
+import { sendStoryMessage, castVote as submitVote } from '../services/storyService'
 import { voiceService } from '../services/voiceService'
 import { track } from '../services/analytics'
 import ShareCard from './ShareCard'
@@ -20,9 +20,7 @@ export default function EpisodePlayer() {
     getNextEpisode,
   } = useStoryStore()
 
-  const [phase, setPhase] = useState('idle') // idle → loading → video → interact → vote
-  const [videoUrl, setVideoUrl] = useState(null)
-  const [videoError, setVideoError] = useState(false)
+  const [phase, setPhase] = useState('idle') // idle → scene → interact → vote
   const [messages, setMessages] = useState([])
   const [loading, setLoading] = useState(false)
   const [exchangeCount, setExchangeCount] = useState(0)
@@ -33,15 +31,10 @@ export default function EpisodePlayer() {
   const [shareOpen, setShareOpen] = useState(false)
   const [voiceEnabled, setVoiceEnabled] = useState(voiceService.enabled)
 
-  // Fallback scene text state (used if D-ID fails)
-  const [revealedCount, setRevealedCount] = useState(0)
-  const [sceneComplete, setSceneComplete] = useState(false)
-  const sceneTimers = useRef([])
-
   const inputRef = useRef(null)
   const messagesEndRef = useRef(null)
-  const videoRef = useRef(null)
   const sceneStartTime = useRef(Date.now())
+  const sceneTimer = useRef(null)
 
   const hasVoted = !!votes[episode.id]
   const firstName = story.character_name.split(' ')[0]
@@ -55,15 +48,10 @@ export default function EpisodePlayer() {
     .map(l => l.trim())
     .filter(Boolean)
     .join(' ')
-  const sceneWords = sceneText.split(' ')
 
   // Reset on episode change
   useEffect(() => {
     setPhase('idle')
-    setVideoUrl(null)
-    setVideoError(false)
-    setRevealedCount(0)
-    setSceneComplete(false)
     setMessages([])
     setExchangeCount(0)
     setInputVisible(false)
@@ -72,40 +60,25 @@ export default function EpisodePlayer() {
     setShowPostVote(false)
     setShareOpen(false)
     sceneStartTime.current = Date.now()
+    if (sceneTimer.current) clearTimeout(sceneTimer.current)
   }, [episode.id])
 
-  // Scene text reveal (fallback mode)
+  // Scene phase: after 1s fade-in + 2s pause, advance to interact
   useEffect(() => {
     if (phase !== 'scene') return
 
-    let totalDelay = 500
-    const timers = []
-
-    sceneWords.forEach((word, i) => {
-      timers.push(setTimeout(() => setRevealedCount(i + 1), totalDelay))
-      totalDelay += 180
-      if (/[.!?]$/.test(word)) totalDelay += 400
-      else if (/[,;:]$/.test(word)) totalDelay += 200
-    })
-
-    timers.push(setTimeout(() => {
-      setSceneComplete(true)
+    sceneTimer.current = setTimeout(() => {
       track('dispatch_scene_completed', {
         episode_id: episode.id,
         listened_seconds: Math.round((Date.now() - sceneStartTime.current) / 1000),
       })
-    }, totalDelay + 2000))
-
-    sceneTimers.current = timers
-    return () => timers.forEach(clearTimeout)
-  }, [phase, episode.id])
-
-  // Scene complete → interact (fallback mode)
-  useEffect(() => {
-    if (sceneComplete && phase === 'scene') {
       setPhase('interact')
+    }, 3000) // 1s fade-in + 2s pause
+
+    return () => {
+      if (sceneTimer.current) clearTimeout(sceneTimer.current)
     }
-  }, [sceneComplete, phase])
+  }, [phase, episode.id])
 
   // Show input after entering interact phase
   useEffect(() => {
@@ -135,55 +108,22 @@ export default function EpisodePlayer() {
     }
   }, [exchangeCount])
 
-  async function handleBegin() {
-    setPhase('loading')
+  function handleBegin() {
+    setPhase('scene')
     sceneStartTime.current = Date.now()
     track('dispatch_episode_started', { episode_id: episode.id })
-
-    try {
-      const url = await generateVideo(episode.id, sceneText, story.voice_id)
-      setVideoUrl(url)
-      setPhase('video')
-    } catch (err) {
-      console.error('D-ID failed, falling back to text:', err.message)
-      setVideoError(true)
-      setPhase('scene')
-      // Voice triggered inside user gesture chain
-      voiceService.speak(sceneText, story.voice_id)
-    }
-  }
-
-  function handleVideoEnd() {
-    track('dispatch_scene_completed', {
-      episode_id: episode.id,
-      listened_seconds: Math.round((Date.now() - sceneStartTime.current) / 1000),
-      mode: 'video',
-    })
-    setPhase('interact')
-  }
-
-  function skipVideo() {
-    if (videoRef.current) {
-      videoRef.current.pause()
-    }
-    track('dispatch_scene_skipped', {
-      episode_id: episode.id,
-      at_seconds: Math.round((Date.now() - sceneStartTime.current) / 1000),
-      mode: 'video',
-    })
-    setPhase('interact')
+    // Voice triggered synchronously inside user gesture — required for iOS/Chrome autoplay
+    voiceService.speak(sceneText, story.voice_id)
   }
 
   function skipScene() {
-    sceneTimers.current.forEach(clearTimeout)
-    setRevealedCount(sceneWords.length)
+    if (sceneTimer.current) clearTimeout(sceneTimer.current)
     voiceService.stop()
     track('dispatch_scene_skipped', {
       episode_id: episode.id,
       at_seconds: Math.round((Date.now() - sceneStartTime.current) / 1000),
-      mode: 'text',
     })
-    setTimeout(() => setSceneComplete(true), 500)
+    setPhase('interact')
   }
 
   async function handleSend() {
@@ -222,7 +162,7 @@ export default function EpisodePlayer() {
 
   function handleBack() {
     voiceService.stop()
-    if (videoRef.current) videoRef.current.pause()
+    if (sceneTimer.current) clearTimeout(sceneTimer.current)
     setActiveStory(null)
     setActiveEpisode(null)
   }
@@ -408,129 +348,12 @@ export default function EpisodePlayer() {
         </motion.div>
       )}
 
-      {/* ─── LOADING: GENERATING VIDEO ─── */}
-      {phase === 'loading' && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.4 }}
-          style={{
-            flex: 1,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: '0 32px',
-            position: 'relative',
-          }}
-        >
-          {/* Zoe background at 40% opacity */}
-          <div style={{
-            position: 'absolute',
-            inset: 0,
-            backgroundImage: `url(${ZOE_IMAGE})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center top',
-            opacity: 0.4,
-          }} />
-
-          {/* Gradient overlay for text legibility */}
-          <div style={{
-            position: 'absolute',
-            inset: 0,
-            background: 'radial-gradient(ellipse at center, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.8) 100%)',
-          }} />
-
-          <motion.div
-            animate={{ opacity: [0.4, 1, 0.4] }}
-            transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-            style={{
-              position: 'relative',
-              zIndex: 1,
-              fontSize: 18,
-              fontFamily: "Georgia, 'Times New Roman', serif",
-              fontStyle: 'italic',
-              color: '#f59e0b',
-              textAlign: 'center',
-            }}
-          >
-            Connecting to {firstName}...
-          </motion.div>
-        </motion.div>
-      )}
-
-      {/* ─── VIDEO: D-ID TALKING HEAD ─── */}
-      {phase === 'video' && videoUrl && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6 }}
-          onClick={skipVideo}
-          style={{
-            flex: 1,
-            position: 'relative',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            backgroundColor: '#000',
-            cursor: 'pointer',
-          }}
-        >
-          <video
-            ref={videoRef}
-            src={videoUrl}
-            autoPlay
-            playsInline
-            onEnded={handleVideoEnd}
-            onError={() => {
-              console.error('Video playback error')
-              setPhase('interact')
-            }}
-            style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-            }}
-          />
-
-          {/* Subtle skip indicator */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 3, duration: 0.5 }}
-            style={{
-              position: 'absolute',
-              bottom: 'max(24px, env(safe-area-inset-bottom))',
-              right: 24,
-              fontSize: 12,
-              color: 'rgba(255,255,255,0.3)',
-              letterSpacing: '0.05em',
-            }}
-          >
-            tap to skip
-          </motion.div>
-
-          {/* Character name overlay */}
-          <div style={{
-            position: 'absolute',
-            bottom: 'max(24px, env(safe-area-inset-bottom))',
-            left: 24,
-            fontSize: 11,
-            letterSpacing: '0.15em',
-            textTransform: 'uppercase',
-            color: '#f59e0b',
-            fontWeight: 600,
-          }}>
-            {firstName.toUpperCase()}
-          </div>
-        </motion.div>
-      )}
-
-      {/* ─── SCENE: TEXT FALLBACK ─── */}
+      {/* ─── SCENE ─── */}
       {phase === 'scene' && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
+          transition={{ duration: 1 }}
           onClick={skipScene}
           style={{
             flex: 1,
@@ -539,6 +362,8 @@ export default function EpisodePlayer() {
             flexDirection: 'column',
             justifyContent: 'center',
             padding: '0 28px',
+            overflowY: 'auto',
+            cursor: 'pointer',
           }}
         >
           {/* Background image at 8% opacity */}
@@ -560,46 +385,27 @@ export default function EpisodePlayer() {
             width: '100%',
           }}>
             {/* Character name */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.2, duration: 0.8 }}
-              style={{
-                fontSize: 12,
-                letterSpacing: '0.15em',
-                textTransform: 'uppercase',
-                color: '#f59e0b',
-                marginBottom: 20,
-                fontWeight: 600,
-              }}
-            >
+            <div style={{
+              fontSize: 12,
+              letterSpacing: '0.15em',
+              textTransform: 'uppercase',
+              color: '#f59e0b',
+              marginBottom: 20,
+              fontWeight: 600,
+            }}>
               {firstName.toUpperCase()}
-            </motion.div>
+            </div>
 
-            {/* Scene text word by word */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.3, duration: 0.4 }}
-              style={{
-                fontSize: 17,
-                lineHeight: 1.8,
-                fontStyle: 'italic',
-                fontFamily: "Georgia, 'Times New Roman', serif",
-                color: 'rgba(255,255,255,0.85)',
-              }}
-            >
-              {sceneWords.slice(0, revealedCount).join(' ')}
-              {revealedCount < sceneWords.length && (
-                <motion.span
-                  animate={{ opacity: [1, 0] }}
-                  transition={{ duration: 0.5, repeat: Infinity, repeatType: 'reverse' }}
-                  style={{ color: '#f59e0b' }}
-                >
-                  |
-                </motion.span>
-              )}
-            </motion.div>
+            {/* Full scene text — simple 1s fade-in */}
+            <div style={{
+              fontSize: 17,
+              lineHeight: 1.8,
+              fontStyle: 'italic',
+              fontFamily: "Georgia, 'Times New Roman', serif",
+              color: 'rgba(255,255,255,0.85)',
+            }}>
+              {sceneText}
+            </div>
           </div>
         </motion.div>
       )}
