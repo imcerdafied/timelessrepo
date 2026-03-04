@@ -1,8 +1,12 @@
 import { Router } from 'express'
 import Anthropic from '@anthropic-ai/sdk'
 import { createClient } from '@supabase/supabase-js'
+import { generateTalkVideo } from '../services/didService.js'
 
 const router = Router()
+
+// In-memory video cache (episodeId → video URL)
+const videoCache = new Map()
 
 const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
 
@@ -178,6 +182,29 @@ router.post('/vote', async (req, res) => {
   } catch (err) {
     console.error('Vote error:', err.message)
     res.status(500).json({ error: 'Vote failed', detail: err.message })
+  }
+})
+
+// POST /api/story/video/generate — D-ID talking head video
+router.post('/video/generate', async (req, res) => {
+  const { episodeId, text, voiceId } = req.body
+
+  if (!text) {
+    return res.status(400).json({ error: 'text required' })
+  }
+
+  // Return cached video if available
+  if (videoCache.has(episodeId)) {
+    return res.json({ status: 'done', video_url: videoCache.get(episodeId) })
+  }
+
+  try {
+    const videoUrl = await generateTalkVideo(text, voiceId || 'EXAVITQu4vr4xnSDxMaL')
+    videoCache.set(episodeId, videoUrl)
+    res.json({ status: 'done', video_url: videoUrl })
+  } catch (err) {
+    console.error('D-ID error:', err.message)
+    res.status(500).json({ error: err.message })
   }
 })
 

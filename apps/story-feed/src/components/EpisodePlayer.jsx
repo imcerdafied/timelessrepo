@@ -1,10 +1,12 @@
 import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import useStoryStore from '../store/useStoryStore'
-import { sendStoryMessage, castVote as submitVote } from '../services/storyService'
+import { sendStoryMessage, castVote as submitVote, generateVideo } from '../services/storyService'
 import { voiceService } from '../services/voiceService'
 import { track } from '../services/analytics'
 import ShareCard from './ShareCard'
+
+const ZOE_IMAGE = 'https://xllwzunjvidtszyklhhm.supabase.co/storage/v1/object/public/characters/zoe.png'
 
 export default function EpisodePlayer() {
   const {
@@ -18,9 +20,9 @@ export default function EpisodePlayer() {
     getNextEpisode,
   } = useStoryStore()
 
-  const [phase, setPhase] = useState('begin') // begin → scene → interact → vote
-  const [revealedCount, setRevealedCount] = useState(0)
-  const [sceneComplete, setSceneComplete] = useState(false)
+  const [phase, setPhase] = useState('idle') // idle → loading → video → interact → vote
+  const [videoUrl, setVideoUrl] = useState(null)
+  const [videoError, setVideoError] = useState(false)
   const [messages, setMessages] = useState([])
   const [loading, setLoading] = useState(false)
   const [exchangeCount, setExchangeCount] = useState(0)
@@ -31,9 +33,14 @@ export default function EpisodePlayer() {
   const [shareOpen, setShareOpen] = useState(false)
   const [voiceEnabled, setVoiceEnabled] = useState(voiceService.enabled)
 
+  // Fallback scene text state (used if D-ID fails)
+  const [revealedCount, setRevealedCount] = useState(0)
+  const [sceneComplete, setSceneComplete] = useState(false)
   const sceneTimers = useRef([])
+
   const inputRef = useRef(null)
   const messagesEndRef = useRef(null)
+  const videoRef = useRef(null)
   const sceneStartTime = useRef(Date.now())
 
   const hasVoted = !!votes[episode.id]
@@ -52,7 +59,9 @@ export default function EpisodePlayer() {
 
   // Reset on episode change
   useEffect(() => {
-    setPhase('begin')
+    setPhase('idle')
+    setVideoUrl(null)
+    setVideoError(false)
     setRevealedCount(0)
     setSceneComplete(false)
     setMessages([])
@@ -65,7 +74,7 @@ export default function EpisodePlayer() {
     sceneStartTime.current = Date.now()
   }, [episode.id])
 
-  // Scene text reveal with punctuation pacing
+  // Scene text reveal (fallback mode)
   useEffect(() => {
     if (phase !== 'scene') return
 
@@ -79,7 +88,6 @@ export default function EpisodePlayer() {
       else if (/[,;:]$/.test(word)) totalDelay += 200
     })
 
-    // After all words + 2s pause: complete
     timers.push(setTimeout(() => {
       setSceneComplete(true)
       track('dispatch_scene_completed', {
@@ -89,11 +97,10 @@ export default function EpisodePlayer() {
     }, totalDelay + 2000))
 
     sceneTimers.current = timers
-
     return () => timers.forEach(clearTimeout)
   }, [phase, episode.id])
 
-  // Scene complete → transition to interact
+  // Scene complete → interact (fallback mode)
   useEffect(() => {
     if (sceneComplete && phase === 'scene') {
       setPhase('interact')
@@ -128,11 +135,43 @@ export default function EpisodePlayer() {
     }
   }, [exchangeCount])
 
-  function handleBegin() {
-    setPhase('scene')
+  async function handleBegin() {
+    setPhase('loading')
     sceneStartTime.current = Date.now()
-    // Voice triggered inside user gesture — browser allows it
-    voiceService.speak(sceneText, story.voice_id)
+    track('dispatch_episode_started', { episode_id: episode.id })
+
+    try {
+      const url = await generateVideo(episode.id, sceneText, story.voice_id)
+      setVideoUrl(url)
+      setPhase('video')
+    } catch (err) {
+      console.error('D-ID failed, falling back to text:', err.message)
+      setVideoError(true)
+      setPhase('scene')
+      // Voice triggered inside user gesture chain
+      voiceService.speak(sceneText, story.voice_id)
+    }
+  }
+
+  function handleVideoEnd() {
+    track('dispatch_scene_completed', {
+      episode_id: episode.id,
+      listened_seconds: Math.round((Date.now() - sceneStartTime.current) / 1000),
+      mode: 'video',
+    })
+    setPhase('interact')
+  }
+
+  function skipVideo() {
+    if (videoRef.current) {
+      videoRef.current.pause()
+    }
+    track('dispatch_scene_skipped', {
+      episode_id: episode.id,
+      at_seconds: Math.round((Date.now() - sceneStartTime.current) / 1000),
+      mode: 'video',
+    })
+    setPhase('interact')
   }
 
   function skipScene() {
@@ -142,6 +181,7 @@ export default function EpisodePlayer() {
     track('dispatch_scene_skipped', {
       episode_id: episode.id,
       at_seconds: Math.round((Date.now() - sceneStartTime.current) / 1000),
+      mode: 'text',
     })
     setTimeout(() => setSceneComplete(true), 500)
   }
@@ -182,6 +222,7 @@ export default function EpisodePlayer() {
 
   function handleBack() {
     voiceService.stop()
+    if (videoRef.current) videoRef.current.pause()
     setActiveStory(null)
     setActiveEpisode(null)
   }
@@ -284,8 +325,8 @@ export default function EpisodePlayer() {
         </button>
       </div>
 
-      {/* ─── TAP TO BEGIN ─── */}
-      {phase === 'begin' && (
+      {/* ─── IDLE: TAP TO BEGIN ─── */}
+      {phase === 'idle' && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -297,66 +338,195 @@ export default function EpisodePlayer() {
             alignItems: 'center',
             justifyContent: 'center',
             padding: '0 32px',
+            position: 'relative',
           }}
         >
+          {/* Zoe background at 20% opacity */}
           <div style={{
-            fontSize: 11,
-            letterSpacing: '0.2em',
-            textTransform: 'uppercase',
-            color: '#f59e0b',
-            fontWeight: 600,
-            marginBottom: 24,
-          }}>
-            DISPATCH
-          </div>
+            position: 'absolute',
+            inset: 0,
+            backgroundImage: `url(${ZOE_IMAGE})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center top',
+            opacity: 0.2,
+          }} />
 
-          <div style={{
-            fontSize: 22,
-            fontFamily: "Georgia, 'Times New Roman', serif",
-            color: 'white',
-            textAlign: 'center',
-            marginBottom: 8,
-          }}>
-            {episode.title}
-          </div>
-
-          <div style={{
-            fontSize: 13,
-            color: 'rgba(255,255,255,0.35)',
-            marginBottom: 48,
-          }}>
-            Episode {episode.number}
-          </div>
-
-          <button
-            onClick={handleBegin}
-            style={{
-              backgroundColor: '#f59e0b',
-              color: '#000',
-              border: 'none',
-              borderRadius: 12,
-              padding: '16px 48px',
-              fontSize: 16,
+          <div style={{ position: 'relative', zIndex: 1, textAlign: 'center' }}>
+            <div style={{
+              fontSize: 11,
+              letterSpacing: '0.2em',
+              textTransform: 'uppercase',
+              color: '#f59e0b',
               fontWeight: 600,
-              cursor: 'pointer',
-              marginBottom: 20,
-            }}
-          >
-            Begin &rarr;
-          </button>
+              marginBottom: 24,
+            }}>
+              DISPATCH
+            </div>
 
-          <div style={{
-            fontSize: 12,
-            color: 'rgba(255,255,255,0.25)',
-            textAlign: 'center',
-            lineHeight: 1.5,
-          }}>
-            Turn on sound for the full experience
+            <div style={{
+              fontSize: 22,
+              fontFamily: "Georgia, 'Times New Roman', serif",
+              color: 'white',
+              marginBottom: 8,
+            }}>
+              {episode.title}
+            </div>
+
+            <div style={{
+              fontSize: 13,
+              color: 'rgba(255,255,255,0.35)',
+              marginBottom: 48,
+            }}>
+              Episode {episode.number}
+            </div>
+
+            <button
+              onClick={handleBegin}
+              style={{
+                backgroundColor: '#f59e0b',
+                color: '#000',
+                border: 'none',
+                borderRadius: 12,
+                padding: '16px 48px',
+                fontSize: 16,
+                fontWeight: 600,
+                cursor: 'pointer',
+                marginBottom: 20,
+              }}
+            >
+              Begin &rarr;
+            </button>
+
+            <div style={{
+              fontSize: 12,
+              color: 'rgba(255,255,255,0.25)',
+              lineHeight: 1.5,
+            }}>
+              Turn up your sound
+            </div>
           </div>
         </motion.div>
       )}
 
-      {/* ─── PHASE 1: SCENE ─── */}
+      {/* ─── LOADING: GENERATING VIDEO ─── */}
+      {phase === 'loading' && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.4 }}
+          style={{
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '0 32px',
+            position: 'relative',
+          }}
+        >
+          {/* Zoe background at 40% opacity */}
+          <div style={{
+            position: 'absolute',
+            inset: 0,
+            backgroundImage: `url(${ZOE_IMAGE})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center top',
+            opacity: 0.4,
+          }} />
+
+          {/* Gradient overlay for text legibility */}
+          <div style={{
+            position: 'absolute',
+            inset: 0,
+            background: 'radial-gradient(ellipse at center, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.8) 100%)',
+          }} />
+
+          <motion.div
+            animate={{ opacity: [0.4, 1, 0.4] }}
+            transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+            style={{
+              position: 'relative',
+              zIndex: 1,
+              fontSize: 18,
+              fontFamily: "Georgia, 'Times New Roman', serif",
+              fontStyle: 'italic',
+              color: '#f59e0b',
+              textAlign: 'center',
+            }}
+          >
+            Connecting to {firstName}...
+          </motion.div>
+        </motion.div>
+      )}
+
+      {/* ─── VIDEO: D-ID TALKING HEAD ─── */}
+      {phase === 'video' && videoUrl && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6 }}
+          onClick={skipVideo}
+          style={{
+            flex: 1,
+            position: 'relative',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: '#000',
+            cursor: 'pointer',
+          }}
+        >
+          <video
+            ref={videoRef}
+            src={videoUrl}
+            autoPlay
+            playsInline
+            onEnded={handleVideoEnd}
+            onError={() => {
+              console.error('Video playback error')
+              setPhase('interact')
+            }}
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+            }}
+          />
+
+          {/* Subtle skip indicator */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 3, duration: 0.5 }}
+            style={{
+              position: 'absolute',
+              bottom: 'max(24px, env(safe-area-inset-bottom))',
+              right: 24,
+              fontSize: 12,
+              color: 'rgba(255,255,255,0.3)',
+              letterSpacing: '0.05em',
+            }}
+          >
+            tap to skip
+          </motion.div>
+
+          {/* Character name overlay */}
+          <div style={{
+            position: 'absolute',
+            bottom: 'max(24px, env(safe-area-inset-bottom))',
+            left: 24,
+            fontSize: 11,
+            letterSpacing: '0.15em',
+            textTransform: 'uppercase',
+            color: '#f59e0b',
+            fontWeight: 600,
+          }}>
+            {firstName.toUpperCase()}
+          </div>
+        </motion.div>
+      )}
+
+      {/* ─── SCENE: TEXT FALLBACK ─── */}
       {phase === 'scene' && (
         <motion.div
           initial={{ opacity: 0 }}
@@ -375,7 +545,7 @@ export default function EpisodePlayer() {
           <div style={{
             position: 'absolute',
             inset: 0,
-            backgroundImage: `url(${story.cover_image})`,
+            backgroundImage: `url(${ZOE_IMAGE})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             opacity: 0.08,
@@ -434,20 +604,24 @@ export default function EpisodePlayer() {
         </motion.div>
       )}
 
-      {/* ─── PHASE 2: INTERACT ─── */}
+      {/* ─── INTERACT ─── */}
       {phase === 'interact' && (
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
           <div style={{ flex: 1, overflowY: 'auto', padding: '20px 24px' }}>
-            {/* Scene text (static) */}
+            {/* Scene summary (collapsed) */}
             <div style={{
-              fontSize: 16,
-              lineHeight: 1.7,
+              fontSize: 14,
+              lineHeight: 1.6,
               fontStyle: 'italic',
               fontFamily: "Georgia, 'Times New Roman', serif",
-              color: 'rgba(255,255,255,0.7)',
+              color: 'rgba(255,255,255,0.5)',
               marginBottom: 20,
               paddingBottom: 20,
               borderBottom: '1px solid rgba(255,255,255,0.06)',
+              display: '-webkit-box',
+              WebkitLineClamp: 3,
+              WebkitBoxOrient: 'vertical',
+              overflow: 'hidden',
             }}>
               {sceneText}
             </div>
@@ -651,7 +825,7 @@ export default function EpisodePlayer() {
         </div>
       )}
 
-      {/* ─── PHASE 3: VOTE ─── */}
+      {/* ─── VOTE ─── */}
       {phase === 'vote' && (
         <motion.div
           initial={{ opacity: 0 }}
