@@ -1,26 +1,30 @@
+import FormData from 'form-data'
+
 const HEDRA_API_URL = 'https://api.hedra.com/web-app/public'
 const HEDRA_API_KEY = process.env.HEDRA_API_KEY
 const ZOE_IMAGE_URL = process.env.ZOE_IMAGE_URL
 
-// Verify globals are available (Node 20+)
-if (typeof FormData === 'undefined' || typeof Blob === 'undefined') {
-  throw new Error('FormData/Blob not available — requires Node 20+')
-}
-
 export async function generateTalkVideo(text, audioBuffer) {
   if (!HEDRA_API_KEY) throw new Error('HEDRA_API_KEY not configured')
   if (!ZOE_IMAGE_URL) throw new Error('ZOE_IMAGE_URL not configured')
-  const headers = { 'X-API-Key': HEDRA_API_KEY }
 
   // Step 1: Upload Zoe's image
   const imageResponse = await fetch(ZOE_IMAGE_URL)
-  const imageBuffer = await imageResponse.arrayBuffer()
+  const imageBuffer = Buffer.from(await imageResponse.arrayBuffer())
+
   const imageForm = new FormData()
-  imageForm.append('file', new Blob([imageBuffer], { type: 'image/png' }), 'zoe.png')
+  imageForm.append('file', imageBuffer, {
+    filename: 'zoe.png',
+    contentType: 'image/png',
+  })
 
   const imageUpload = await fetch(
-    `${HEDRA_API_URL}/assets?type=image`,
-    { method: 'POST', headers, body: imageForm }
+    `${HEDRA_API_URL}/v1/assets`,
+    {
+      method: 'POST',
+      headers: { 'X-API-Key': HEDRA_API_KEY, ...imageForm.getHeaders() },
+      body: imageForm,
+    }
   )
   const imageResult = await imageUpload.json()
   console.log('Hedra image upload:', JSON.stringify(imageResult))
@@ -29,11 +33,18 @@ export async function generateTalkVideo(text, audioBuffer) {
 
   // Step 2: Upload audio
   const audioForm = new FormData()
-  audioForm.append('file', new Blob([audioBuffer], { type: 'audio/mpeg' }), 'scene.mp3')
+  audioForm.append('file', Buffer.from(audioBuffer), {
+    filename: 'audio.mp3',
+    contentType: 'audio/mpeg',
+  })
 
   const audioUpload = await fetch(
-    `${HEDRA_API_URL}/assets?type=audio`,
-    { method: 'POST', headers, body: audioForm }
+    `${HEDRA_API_URL}/v1/assets`,
+    {
+      method: 'POST',
+      headers: { 'X-API-Key': HEDRA_API_KEY, ...audioForm.getHeaders() },
+      body: audioForm,
+    }
   )
   const audioResult = await audioUpload.json()
   console.log('Hedra audio upload:', JSON.stringify(audioResult))
@@ -45,7 +56,7 @@ export async function generateTalkVideo(text, audioBuffer) {
     `${HEDRA_API_URL}/characters`,
     {
       method: 'POST',
-      headers: { ...headers, 'Content-Type': 'application/json' },
+      headers: { 'X-API-Key': HEDRA_API_KEY, 'Content-Type': 'application/json' },
       body: JSON.stringify({
         imageId,
         audioId,
@@ -67,7 +78,7 @@ export async function generateTalkVideo(text, audioBuffer) {
 
     const statusResponse = await fetch(
       `${HEDRA_API_URL}/characters/${jobId}`,
-      { headers }
+      { headers: { 'X-API-Key': HEDRA_API_KEY } }
     )
     const job = await statusResponse.json()
     console.log(`Hedra poll ${i}:`, JSON.stringify(job))
