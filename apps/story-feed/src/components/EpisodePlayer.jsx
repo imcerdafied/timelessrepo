@@ -18,7 +18,7 @@ export default function EpisodePlayer() {
     getNextEpisode,
   } = useStoryStore()
 
-  const [phase, setPhase] = useState('scene')
+  const [phase, setPhase] = useState('begin') // begin → scene → interact → vote
   const [revealedCount, setRevealedCount] = useState(0)
   const [sceneComplete, setSceneComplete] = useState(false)
   const [messages, setMessages] = useState([])
@@ -52,7 +52,7 @@ export default function EpisodePlayer() {
 
   // Reset on episode change
   useEffect(() => {
-    setPhase('scene')
+    setPhase('begin')
     setRevealedCount(0)
     setSceneComplete(false)
     setMessages([])
@@ -89,9 +89,6 @@ export default function EpisodePlayer() {
     }, totalDelay + 2000))
 
     sceneTimers.current = timers
-
-    // Speak the scene
-    voiceService.speak(sceneText, story.voice_id)
 
     return () => timers.forEach(clearTimeout)
   }, [phase, episode.id])
@@ -130,6 +127,13 @@ export default function EpisodePlayer() {
       return () => clearTimeout(timer)
     }
   }, [exchangeCount])
+
+  function handleBegin() {
+    setPhase('scene')
+    sceneStartTime.current = Date.now()
+    // Voice triggered inside user gesture — browser allows it
+    voiceService.speak(sceneText, story.voice_id)
+  }
 
   function skipScene() {
     sceneTimers.current.forEach(clearTimeout)
@@ -279,6 +283,78 @@ export default function EpisodePlayer() {
           {voiceEnabled ? '\u{1F50A}' : '\u{1F507}'}
         </button>
       </div>
+
+      {/* ─── TAP TO BEGIN ─── */}
+      {phase === 'begin' && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6 }}
+          style={{
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '0 32px',
+          }}
+        >
+          <div style={{
+            fontSize: 11,
+            letterSpacing: '0.2em',
+            textTransform: 'uppercase',
+            color: '#f59e0b',
+            fontWeight: 600,
+            marginBottom: 24,
+          }}>
+            DISPATCH
+          </div>
+
+          <div style={{
+            fontSize: 22,
+            fontFamily: "Georgia, 'Times New Roman', serif",
+            color: 'white',
+            textAlign: 'center',
+            marginBottom: 8,
+          }}>
+            {episode.title}
+          </div>
+
+          <div style={{
+            fontSize: 13,
+            color: 'rgba(255,255,255,0.35)',
+            marginBottom: 48,
+          }}>
+            Episode {episode.number}
+          </div>
+
+          <button
+            onClick={handleBegin}
+            style={{
+              backgroundColor: '#f59e0b',
+              color: '#000',
+              border: 'none',
+              borderRadius: 12,
+              padding: '16px 48px',
+              fontSize: 16,
+              fontWeight: 600,
+              cursor: 'pointer',
+              marginBottom: 20,
+            }}
+          >
+            Begin &rarr;
+          </button>
+
+          <div style={{
+            fontSize: 12,
+            color: 'rgba(255,255,255,0.25)',
+            textAlign: 'center',
+            lineHeight: 1.5,
+          }}>
+            Turn on sound for the full experience
+          </div>
+        </motion.div>
+      )}
 
       {/* ─── PHASE 1: SCENE ─── */}
       {phase === 'scene' && (
