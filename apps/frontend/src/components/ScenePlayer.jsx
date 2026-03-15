@@ -4,16 +4,10 @@ import { motion, AnimatePresence } from 'framer-motion'
 /**
  * ScenePlayer — plays a two-character dialogue scene
  *
- * Supports two modes:
+ * Supports three modes:
  * 1. VIDEO mode: Two <video> elements layered, toggling based on active speaker
  * 2. AUDIO mode: Character portraits with TTS audio playback + subtitles
- *
- * Takes pre-generated scene data with:
- * - script: array of { speaker, characterId, text }
- * - mode: 'video' or 'audio'
- * - videos: { characterId: { file } } (video mode)
- * - characters: [{ id, name, role, portraitUrl }]
- * - Audio files referenced by convention: {characterId}-fire.mp3
+ * 3. CINEMATIC mode: Ken Burns pan over background image + ambient audio + voice
  */
 
 const API_BASE = import.meta.env.VITE_API_URL || ''
@@ -81,11 +75,9 @@ export default function ScenePlayer({ scene, onClose, onTalkTo }) {
   }
 
   const getAudioUrl = (charId) => {
-    // Convention: {charId}-fire.mp3 for scene 2, etc.
     if (scene.audioFiles?.[charId]) {
       return `${API_BASE}/scenes/1906-earthquake/${scene.audioFiles[charId]}`
     }
-    // Fallback: try pattern
     const sceneId = scene.sceneId || ''
     if (sceneId.includes('fire')) {
       return `${API_BASE}/scenes/1906-earthquake/${charId}-fire.mp3`
@@ -98,38 +90,50 @@ export default function ScenePlayer({ scene, onClose, onTalkTo }) {
     return null
   }
 
-  // Start playback
+  // Start playback — just set state, actual media play happens in useEffect
   const startPlayback = useCallback(() => {
     setPhase('playing')
     setCurrentLineIndex(0)
     setIsPlaying(true)
+  }, [])
 
-    if (mode === 'video') {
-      characterIds.forEach((id) => {
-        const vid = videoRefs.current[id]
-        if (vid) {
-          vid.currentTime = 0
-          vid.play().catch(() => {})
+  // *** KEY FIX: Start media playback AFTER React renders the playing phase elements ***
+  useEffect(() => {
+    if (phase !== 'playing' || !isPlaying) return
+
+    // Small delay to ensure DOM elements are mounted and refs are set
+    const startTimer = setTimeout(() => {
+      if (mode === 'video') {
+        characterIds.forEach((id) => {
+          const vid = videoRefs.current[id]
+          if (vid) {
+            vid.muted = (id !== activeCharId)
+            vid.currentTime = 0
+            vid.play().catch((e) => console.warn('Video play failed:', id, e))
+          }
+        })
+      } else {
+        // Audio/cinematic mode: start all audio tracks
+        characterIds.forEach((id) => {
+          const aud = audioRefs.current[id]
+          if (aud) {
+            aud.muted = (id !== activeCharId)
+            aud.currentTime = 0
+            aud.play().catch((e) => console.warn('Audio play failed:', id, e))
+          }
+        })
+        // Start ambient audio (cinematic mode)
+        if (ambientRef.current) {
+          ambientRef.current.currentTime = 0
+          ambientRef.current.loop = true
+          ambientRef.current.volume = 0.3
+          ambientRef.current.play().catch((e) => console.warn('Ambient play failed:', e))
         }
-      })
-    } else {
-      // Audio/cinematic mode: start all audio tracks
-      characterIds.forEach((id) => {
-        const aud = audioRefs.current[id]
-        if (aud) {
-          aud.currentTime = 0
-          aud.play().catch(() => {})
-        }
-      })
-      // Start ambient audio (cinematic mode)
-      if (ambientRef.current) {
-        ambientRef.current.currentTime = 0
-        ambientRef.current.loop = true
-        ambientRef.current.volume = 0.3
-        ambientRef.current.play().catch(() => {})
       }
-    }
-  }, [characterIds, mode])
+    }, 100)
+
+    return () => clearTimeout(startTimer)
+  }, [phase, isPlaying]) // Only fire when phase/isPlaying change
 
   // Advance through dialogue lines
   useEffect(() => {
@@ -159,16 +163,16 @@ export default function ScenePlayer({ scene, onClose, onTalkTo }) {
     if (mode !== 'video' || phase !== 'playing') return
     characterIds.forEach((id) => {
       const vid = videoRefs.current[id]
-      if (vid) vid.muted = id !== activeCharId
+      if (vid) vid.muted = (id !== activeCharId)
     })
   }, [activeCharId, phase, characterIds, mode])
 
-  // Audio mode: mute/unmute based on active character
+  // Audio/cinematic mode: mute/unmute based on active character
   useEffect(() => {
-    if (mode !== 'audio' || phase !== 'playing') return
+    if (mode === 'video' || phase !== 'playing') return
     characterIds.forEach((id) => {
       const aud = audioRefs.current[id]
-      if (aud) aud.muted = id !== activeCharId
+      if (aud) aud.muted = (id !== activeCharId)
     })
   }, [activeCharId, phase, characterIds, mode])
 
@@ -198,7 +202,37 @@ export default function ScenePlayer({ scene, onClose, onTalkTo }) {
     }
   }, [phase])
 
+  // Pause all media when scene ends
+  useEffect(() => {
+    if (phase === 'done') {
+      characterIds.forEach((id) => {
+        const vid = videoRefs.current[id]
+        if (vid) vid.pause()
+        const aud = audioRefs.current[id]
+        if (aud) aud.pause()
+      })
+    }
+  }, [phase])
+
   const progress = script.length > 0 ? ((currentLineIndex + 1) / script.length) * 100 : 0
+
+  // Helper to render a portrait image
+  const renderPortrait = (charId, size = 64, borderColor = 'rgba(200,134,10,0.3)') => {
+    const char = characters[charId]
+    const url = char?.portraitUrl
+    return (
+      <div
+        className="rounded-full bg-cover bg-center"
+        style={{
+          width: size,
+          height: size,
+          backgroundImage: url ? `url(${url})` : 'none',
+          backgroundColor: url ? 'transparent' : '#222',
+          border: `2px solid ${borderColor}`,
+        }}
+      />
+    )
+  }
 
   // ── INTRO SCREEN ──
   if (phase === 'intro') {
@@ -269,14 +303,9 @@ export default function ScenePlayer({ scene, onClose, onTalkTo }) {
               const char = characters[id]
               return (
                 <div key={id} className="text-center">
-                  <div
-                    className="w-16 h-16 rounded-full mb-2 mx-auto bg-cover bg-center"
-                    style={{
-                      backgroundImage: char?.portraitUrl ? `url(${char.portraitUrl})` : undefined,
-                      background: !char?.portraitUrl ? 'linear-gradient(135deg, #222 0%, #1a1a1a 100%)' : undefined,
-                      border: '2px solid rgba(200,134,10,0.3)',
-                    }}
-                  />
+                  <div className="mb-2 mx-auto">
+                    {renderPortrait(id, 64)}
+                  </div>
                   <p className="text-xs font-medium" style={{ color: '#F5F5F5' }}>
                     {char?.name || id}
                   </p>
@@ -301,20 +330,6 @@ export default function ScenePlayer({ scene, onClose, onTalkTo }) {
             {mode === 'video' ? 'Watch Scene' : mode === 'cinematic' ? 'Experience Scene' : 'Listen to Scene'}
           </motion.button>
         </div>
-
-        {/* Preload audio elements for audio/cinematic mode */}
-        {(mode === 'audio' || mode === 'cinematic') && getAmbientUrl() && (
-          <audio ref={ambientRef} src={getAmbientUrl()} preload="auto" />
-        )}
-        {(mode === 'audio' || mode === 'cinematic') && characterIds.map((id) => (
-          <audio
-            key={id}
-            ref={(el) => (audioRefs.current[id] = el)}
-            src={getAudioUrl(id)}
-            preload="auto"
-            muted
-          />
-        ))}
       </motion.div>
     )
   }
@@ -337,10 +352,11 @@ export default function ScenePlayer({ scene, onClose, onTalkTo }) {
             return (
               <motion.video
                 key={id}
-                ref={(el) => (videoRefs.current[id] = el)}
+                ref={(el) => { videoRefs.current[id] = el }}
                 src={url}
                 playsInline
                 preload="auto"
+                muted
                 animate={{ opacity: isActive ? 1 : 0 }}
                 transition={{ duration: 0.5 }}
                 className="absolute inset-0 w-full h-full object-cover"
@@ -358,7 +374,7 @@ export default function ScenePlayer({ scene, onClose, onTalkTo }) {
           {characterIds.map((id) => (
             <audio
               key={id}
-              ref={(el) => (audioRefs.current[id] = el)}
+              ref={(el) => { audioRefs.current[id] = el }}
               src={getAudioUrl(id)}
               preload="auto"
             />
@@ -372,7 +388,7 @@ export default function ScenePlayer({ scene, onClose, onTalkTo }) {
               return (
                 <motion.div
                   key={id}
-                  className="absolute"
+                  className="absolute flex flex-col items-center"
                   animate={{
                     opacity: isActive ? 1 : 0,
                     scale: isActive ? 1 : 0.95,
@@ -381,21 +397,14 @@ export default function ScenePlayer({ scene, onClose, onTalkTo }) {
                   style={{ zIndex: isActive ? 2 : 1 }}
                 >
                   <div
-                    className="relative"
                     style={{
                       filter: isActive ? 'drop-shadow(0 0 40px rgba(200,134,10,0.2))' : 'none',
                     }}
                   >
-                    <div
-                      className="w-48 h-48 sm:w-56 sm:h-56 rounded-full bg-cover bg-center"
-                      style={{
-                        backgroundImage: char?.portraitUrl ? `url(${char.portraitUrl})` : undefined,
-                        border: '3px solid rgba(200,134,10,0.3)',
-                      }}
-                    />
+                    {renderPortrait(id, 224, isActive ? 'rgba(200,134,10,0.5)' : 'rgba(200,134,10,0.3)')}
                   </div>
                   <motion.p
-                    className="text-center mt-4 text-xs tracking-[0.15em] uppercase"
+                    className="mt-4 text-xs tracking-[0.15em] uppercase"
                     style={{ color: '#C8860A' }}
                     animate={{ opacity: isActive ? 1 : 0 }}
                   >
@@ -422,7 +431,7 @@ export default function ScenePlayer({ scene, onClose, onTalkTo }) {
           {characterIds.map((id) => (
             <audio
               key={id}
-              ref={(el) => (audioRefs.current[id] = el)}
+              ref={(el) => { audioRefs.current[id] = el }}
               src={getAudioUrl(id)}
               preload="auto"
             />
@@ -496,14 +505,7 @@ export default function ScenePlayer({ scene, onClose, onTalkTo }) {
                   }}
                   transition={{ duration: 0.4 }}
                 >
-                  <div
-                    className="w-12 h-12 rounded-full bg-cover bg-center"
-                    style={{
-                      backgroundImage: char?.portraitUrl ? `url(${char.portraitUrl})` : undefined,
-                      border: isActive ? '2px solid rgba(200,134,10,0.6)' : '2px solid rgba(255,255,255,0.15)',
-                      boxShadow: isActive ? '0 0 20px rgba(200,134,10,0.3)' : 'none',
-                    }}
-                  />
+                  {renderPortrait(id, 48, isActive ? 'rgba(200,134,10,0.6)' : 'rgba(255,255,255,0.15)')}
                   <p
                     className="mt-1 text-[9px] tracking-wider uppercase"
                     style={{ color: isActive ? '#C8860A' : 'rgba(255,255,255,0.3)' }}

@@ -71,7 +71,8 @@ export default function ExperienceWindow() {
     era?.id,
     hasCharacter && !charDismissed
   )
-  const showCharacterNotification = dwellMet && hasCharacter && !characterOpen && !charDismissed
+  // Don't show "someone wants to speak" notification when scene episodes are available
+  const showCharacterNotification = dwellMet && hasCharacter && !characterOpen && !charDismissed && !scenes?.length
 
   // Reset state when era changes
   if (era && era.id !== prevEraId) {
