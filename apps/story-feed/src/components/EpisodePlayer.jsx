@@ -82,6 +82,45 @@ function startAmbient() {
     windSource.start()
 
     ambientNodes = [brownSource, windSource, masterGain, windGain]
+
+    // Occasional distant horn honks
+    function scheduleHonk() {
+      if (!ambientCtx) return
+      const delay = 8 + Math.random() * 15 // 8-23 seconds apart
+      setTimeout(() => {
+        if (!ambientCtx) return
+        try {
+          const osc = ambientCtx.createOscillator()
+          const honkGain = ambientCtx.createGain()
+          const honkFilter = ambientCtx.createBiquadFilter()
+
+          // Random pitch for variety (distant car horns)
+          const freq = 280 + Math.random() * 180
+          osc.type = 'sawtooth'
+          osc.frequency.value = freq
+
+          // Band-pass to make it sound distant/muffled
+          honkFilter.type = 'bandpass'
+          honkFilter.frequency.value = freq
+          honkFilter.Q.value = 2
+
+          // Very quiet, quick envelope
+          const now = ambientCtx.currentTime
+          const duration = 0.3 + Math.random() * 0.4
+          honkGain.gain.setValueAtTime(0, now)
+          honkGain.gain.linearRampToValueAtTime(0.015 + Math.random() * 0.01, now + 0.05)
+          honkGain.gain.linearRampToValueAtTime(0, now + duration)
+
+          osc.connect(honkFilter)
+          honkFilter.connect(honkGain)
+          honkGain.connect(ambientCtx.destination)
+          osc.start(now)
+          osc.stop(now + duration + 0.1)
+        } catch {}
+        scheduleHonk()
+      }, delay * 1000)
+    }
+    scheduleHonk()
   } catch (e) {
     // Web Audio not supported, fail silently
   }
@@ -417,7 +456,7 @@ export default function EpisodePlayer() {
                 width: '115%',
                 height: '115%',
                 objectFit: 'cover',
-                objectPosition: 'center 30%',
+                objectPosition: 'center 40%',
                 filter: userTapped ? 'none' : 'brightness(0.6)',
                 transition: 'filter 1s ease',
                 animation: userTapped ? 'kenBurns 25s ease-in-out infinite alternate' : 'none',
