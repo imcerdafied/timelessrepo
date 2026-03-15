@@ -1,0 +1,91 @@
+{
+  "sceneId": "mission-1906-night",
+  "title": "The First Night",
+  "location": "Golden Gate Park, San Francisco",
+  "date": "April 18, 1906 — nightfall",
+  "setting": "Night has fallen on the first day after the earthquake. The sky is bright orange from the fires consuming the city to the east. Golden Gate Park has become a massive refugee camp. Rosa and Genthe sit near a small campfire. The children are asleep. For the first time all day, there is stillness.",
+  "mode": "cinematic",
+  "script": [
+    {
+      "speaker": "Arnold Genthe",
+      "characterId": "genthe",
+      "text": "The children are sleeping well, at least."
+    },
+    {
+      "speaker": "Rosa Castellano",
+      "characterId": "rosa",
+      "text": "They were so tired. Elena cried for an hour and then just, she was gone."
+    },
+    {
+      "speaker": "Arnold Genthe",
+      "characterId": "genthe",
+      "text": "You should try to sleep too. You have been on your feet since before the sun came up."
+    },
+    {
+      "speaker": "Rosa Castellano",
+      "characterId": "rosa",
+      "text": "I keep watching it. I know I should look away but I can't stop watching it."
+    },
+    {
+      "speaker": "Arnold Genthe",
+      "characterId": "genthe",
+      "text": "I know. I have been doing the same thing."
+    },
+    {
+      "speaker": "Rosa Castellano",
+      "characterId": "rosa",
+      "text": "Our street is in there somewhere. All of it, the furniture, the photographs, my mother's dishes. It's all in there."
+    },
+    {
+      "speaker": "Arnold Genthe",
+      "characterId": "genthe",
+      "text": "Yes."
+    },
+    {
+      "speaker": "Rosa Castellano",
+      "characterId": "rosa",
+      "text": "I'm sorry. You lost your studio. Everything in it, I imagine."
+    },
+    {
+      "speaker": "Arnold Genthe",
+      "characterId": "genthe",
+      "text": "My negatives, my equipment. Years of work. But you asked me something this morning and I have been thinking about it all day."
+    },
+    {
+      "speaker": "Rosa Castellano",
+      "characterId": "rosa",
+      "text": "What did I ask you?"
+    },
+    {
+      "speaker": "Arnold Genthe",
+      "characterId": "genthe",
+      "text": "You asked why I was taking pictures instead of helping. I didn't have a good answer then. I'm not sure I have one now."
+    },
+    {
+      "speaker": "Rosa Castellano",
+      "characterId": "rosa",
+      "text": "You found us before dark. That was the answer."
+    }
+  ],
+  "characters": [
+    {
+      "id": "rosa",
+      "name": "Rosa Castellano",
+      "role": "Laundress, Mission District resident",
+      "portraitUrl": "https://i.ibb.co/gZJHjvqS/Rosa-Castellano.jpg"
+    },
+    {
+      "id": "genthe",
+      "name": "Arnold Genthe",
+      "role": "Photographer",
+      "portraitUrl": "https://i.ibb.co/C3s2qPV7/Genthe.jpg"
+    }
+  ],
+  "audioFiles": {
+    "rosa": "rosa-night.mp3",
+    "genthe": "genthe-night.mp3"
+  },
+  "ambientAudio": "ambient-fire.mp3",
+  "backgroundImage": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/San_Francisco_in_ruin_edit2.jpg/1280px-San_Francisco_in_ruin_edit2.jpg",
+  "generatedAt": "2026-03-15T03:19:58.356Z"
+}

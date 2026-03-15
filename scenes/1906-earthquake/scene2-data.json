@@ -1,0 +1,94 @@
+{
+  "sceneId": "mission-1906-fire",
+  "title": "The Fire Comes",
+  "location": "20th & Mission, San Francisco",
+  "date": "April 18, 1906 — late afternoon",
+  "setting": "It is late afternoon. The fires that started downtown after the earthquake have been burning all day and are now approaching the Mission District. Soldiers are dynamiting buildings on Van Ness Avenue to create a firebreak, and the explosions can be heard every few minutes. Refugees are streaming south. Rosa and Genthe, who met that morning in Dolores Park, find each other again on Mission Street as people flee past them carrying belongings.",
+  "script": [
+    {
+      "speaker": "Rosa Castellano",
+      "characterId": "rosa",
+      "text": "Mr. Genthe. You're still here. I thought, I don't know what I thought."
+    },
+    {
+      "speaker": "Arnold Genthe",
+      "characterId": "genthe",
+      "text": "Mrs. Castellano. Yes. I've been, I have walked most of the day. Are these your children? Good, good that they're with you."
+    },
+    {
+      "speaker": "Rosa Castellano",
+      "characterId": "rosa",
+      "text": "A soldier on Valencia told me the fire won't reach the Mission, that the firebreaks will hold. Then another one, not twenty minutes later, told me to go south immediately, that everything west of Third is already gone. Which is true, which one was telling me the truth."
+    },
+    {
+      "speaker": "Arnold Genthe",
+      "characterId": "genthe",
+      "text": "I was on Kearny this morning, then Telegraph Hill, then I came down through the Tenderloin. Mrs. Castellano, the fire crossed Market Street before noon. The Palace is gone, the Grand is gone, I watched the Call building burn from the inside out like a lantern. The soldier who told you to go south, he was right to say it."
+    },
+    {
+      "speaker": "Rosa Castellano",
+      "characterId": "rosa",
+      "text": "The explosions, those are the Army, yes? Because my boy, Tomas, he keeps asking me if it's another earthquake and I tell him no but I don't, I don't entirely believe myself when I say it."
+    },
+    {
+      "speaker": "Arnold Genthe",
+      "characterId": "genthe",
+      "text": "They're dynamiting on Van Ness, trying to knock down the buildings before the fire reaches them, clear a gap wide enough that it won't jump. Whether it works I can't tell you. I photographed one of the crews this afternoon. The men doing it looked like they weren't sure either."
+    },
+    {
+      "speaker": "Rosa Castellano",
+      "characterId": "rosa",
+      "text": "My husband is somewhere near the docks, he went before the earthquake even stopped shaking. I sent word with three different people and nothing has come back. If I take the children south and he comes home to find the house empty."
+    },
+    {
+      "speaker": "Arnold Genthe",
+      "characterId": "genthe",
+      "text": "If he's a sensible man, and I believe he is, he will not expect you to wait in the path of that. He will go south himself and find you. You cannot stay here for a fire that doesn't know your address."
+    },
+    {
+      "speaker": "Rosa Castellano",
+      "characterId": "rosa",
+      "text": "Come with us then. You've been alone all day with that camera, you've seen enough, haven't you. Haven't you seen enough."
+    },
+    {
+      "speaker": "Arnold Genthe",
+      "characterId": "genthe",
+      "text": "I keep thinking, if I don't photograph it, then in twenty years nobody will believe what it was. The city will rebuild and everybody will remember the earthquake and nobody will remember the hours after, the actual end of it. I know how that sounds."
+    },
+    {
+      "speaker": "Rosa Castellano",
+      "characterId": "rosa",
+      "text": "It sounds like something a man says when he doesn't want to feel afraid. I say things like that too."
+    },
+    {
+      "speaker": "Arnold Genthe",
+      "characterId": "genthe",
+      "text": "Go down toward the park, then south on Guerrero, keep the children close and don't stop if people are arguing in the street, there were fights over wagons earlier. I will, I will find you before dark if I can. I mean that, Mrs. Castellano, I'm not just saying it."
+    },
+    {
+      "speaker": "Rosa Castellano",
+      "characterId": "rosa",
+      "text": "I know you mean it. That's almost worse."
+    }
+  ],
+  "mode": "audio",
+  "characters": [
+    {
+      "id": "rosa",
+      "name": "Rosa Castellano",
+      "role": "Laundress, Mission District resident",
+      "portraitUrl": "https://i.ibb.co/gZJHjvqS/Rosa-Castellano.jpg"
+    },
+    {
+      "id": "genthe",
+      "name": "Arnold Genthe",
+      "role": "Photographer",
+      "portraitUrl": "https://i.ibb.co/C3s2qPV7/Genthe.jpg"
+    }
+  ],
+  "audioFiles": {
+    "rosa": "rosa-fire.mp3",
+    "genthe": "genthe-fire.mp3"
+  },
+  "generatedAt": "2026-03-15T01:39:19.149Z"
+}

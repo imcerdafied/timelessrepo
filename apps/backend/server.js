@@ -6,6 +6,7 @@ import { fileURLToPath } from 'url'
 import { createClient } from '@supabase/supabase-js'
 import characterRoutes from './src/routes/character.js'
 import storyRoutes from './src/routes/story.js'
+import sceneRoutes from './src/routes/scene.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const app = express()
@@ -28,6 +29,40 @@ app.use('/api/character', characterRoutes)
 
 // Story Universe — chat, TTS, voting
 app.use('/api/story', storyRoutes)
+
+// Scene generation — AI-generated dialogue videos
+app.use('/api/scene', sceneRoutes)
+
+// Serve pre-baked scene assets (videos, audio) as static files
+const scenesDir = path.join(__dirname, '..', '..', 'scenes')
+if (fs.existsSync(scenesDir)) {
+  console.log('Scenes directory found, serving at /scenes')
+  app.use('/scenes', express.static(scenesDir, {
+    maxAge: '7d',
+    setHeaders: (res, filePath) => {
+      if (filePath.endsWith('.mp4')) res.setHeader('Content-Type', 'video/mp4')
+      if (filePath.endsWith('.mp3')) res.setHeader('Content-Type', 'audio/mpeg')
+    },
+  }))
+}
+
+// Scene manifest — returns pre-baked scene data for the demo
+app.get('/api/scenes/manifest', (_req, res) => {
+  try {
+    const sceneDir = path.join(scenesDir, '1906-earthquake')
+    const scenes = []
+    for (const file of ['scene1-data.json', 'scene2-data.json', 'scene3-data.json']) {
+      const filePath = path.join(sceneDir, file)
+      if (fs.existsSync(filePath)) {
+        scenes.push(JSON.parse(fs.readFileSync(filePath, 'utf-8')))
+      }
+    }
+    res.json({ scenes })
+  } catch (err) {
+    console.error('Scene manifest error:', err)
+    res.status(500).json({ error: 'Failed to load scene manifest' })
+  }
+})
 
 // Health check
 app.get('/api/health', (_req, res) => {

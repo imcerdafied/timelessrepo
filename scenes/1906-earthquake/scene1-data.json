@@ -1,0 +1,33 @@
+{
+  "sceneId": "mission-1906",
+  "title": "After the Shaking",
+  "location": "Dolores Park, San Francisco",
+  "date": "April 18, 1906 — late morning",
+  "setting": "The earthquake struck at 5:12 AM. It is now midmorning. Fires are visible to the north and east. Dolores Park is filling with refugees carrying whatever they could grab. The Mission District survived the quake better than most neighborhoods, but the fires are spreading. Smoke hangs over everything.",
+  "mode": "video",
+  "script": [
+    { "speaker": "Rosa Castellano", "characterId": "rosa", "text": "You want to sit, sit. There is room." },
+    { "speaker": "Arnold Genthe", "characterId": "genthe", "text": "Thank you. I have been walking since before sunrise, I think. The streets downtown, some of them you cannot, there is no way through anymore." },
+    { "speaker": "Rosa Castellano", "characterId": "rosa", "text": "My building on 18th, the front wall came down into the street. We were on the second floor, me and the children. I don't know how the building next to it is still standing and mine is not." },
+    { "speaker": "Arnold Genthe", "characterId": "genthe", "text": "I came from Chinatown this morning. I walked through it. There is, it is very bad there, the buildings came down in a particular way, all of it together." },
+    { "speaker": "Rosa Castellano", "characterId": "rosa", "text": "The smoke from the north, that is Chinatown burning?" },
+    { "speaker": "Arnold Genthe", "characterId": "genthe", "text": "Yes. And the fire is moving. I had a studio on Sutter Street, I had twelve years of photographs there. Portraits, the street life of the quarter. All of it." },
+    { "speaker": "Rosa Castellano", "characterId": "rosa", "text": "I got out with the children and a pot. A cooking pot, I don't know why I grabbed a pot." },
+    { "speaker": "Arnold Genthe", "characterId": "genthe", "text": "A pot is sensible. A pot you can use. I borrowed this camera from a friend on Sacramento Street and I have been, I feel I have to keep looking at it, through the lens, because otherwise I don't know what to do with myself." },
+    { "speaker": "Rosa Castellano", "characterId": "rosa", "text": "Where will everyone sleep tonight. That's what I keep thinking. All of these people, where will we go." },
+    { "speaker": "Arnold Genthe", "characterId": "genthe", "text": "I saw the Army setting up at the Presidio. And the churches, some of them are still standing. I think people will sleep wherever they stop walking." },
+    { "speaker": "Rosa Castellano", "characterId": "rosa", "text": "My husband works the Southern Pacific line, he left Tuesday. He doesn't know about any of this. If the telegraph lines are down he may not know for days." },
+    { "speaker": "Arnold Genthe", "characterId": "genthe", "text": "The ferry building was intact when I passed it. If the ferries are running, word will cross the bay. Someone will carry the news." },
+    { "speaker": "Rosa Castellano", "characterId": "rosa", "text": "I keep thinking maybe I should take the children to the ferry. Go across to Oakland. Wait there for Miguel. But if he comes back here and we're gone." },
+    { "speaker": "Arnold Genthe", "characterId": "genthe", "text": "If I may, keep one of these. I have been writing the streets on the back as I go. If your husband comes looking, leave it where he will find it. A photograph of where you were, the date, which direction you went. It is not much but it is something." }
+  ],
+  "characters": [
+    { "id": "rosa", "name": "Rosa Castellano", "role": "Laundress, Mission District resident", "portraitUrl": "https://i.ibb.co/gZJHjvqS/Rosa-Castellano.jpg" },
+    { "id": "genthe", "name": "Arnold Genthe", "role": "Photographer", "portraitUrl": "https://i.ibb.co/C3s2qPV7/Genthe.jpg" }
+  ],
+  "videos": {
+    "rosa": { "file": "rosa-castellano.mp4" },
+    "genthe": { "file": "arnold-genthe.mp4" }
+  },
+  "generatedAt": "2026-03-15T01:29:43.813Z"
+}

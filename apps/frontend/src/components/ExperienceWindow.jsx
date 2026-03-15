@@ -17,6 +17,8 @@ import FutureVoting from './FutureVoting'
 import ShareCard from './ShareCard'
 import VenueCard from './VenueCard'
 import VenueScene from './VenueScene'
+import ScenePlayer from './ScenePlayer'
+import SceneSelector from './SceneSelector'
 
 function oneSentence(text) {
   const match = text.match(/^(.*?[.!?])/)
@@ -53,6 +55,9 @@ export default function ExperienceWindow() {
   const [activeVenue, setActiveVenue] = useState(null)
   const [isAutoplay, setIsAutoplay] = useState(false)
   const [autoplayTriggered, setAutoplayTriggered] = useState(false)
+  const [scenes, setScenes] = useState(null)
+  const [sceneSelectorOpen, setSceneSelectorOpen] = useState(false)
+  const [activeScene, setActiveScene] = useState(null)
   const dragControls = useDragControls()
   const touchStartY = useRef(null)
 
@@ -81,7 +86,22 @@ export default function ExperienceWindow() {
     setActiveVenue(null)
     setIsAutoplay(false)
     setAutoplayTriggered(false)
+    setScenes(null)
+    setSceneSelectorOpen(false)
+    setActiveScene(null)
   }
+
+  // Load scene manifest for eras with pre-generated content
+  const API_BASE = import.meta.env.VITE_API_URL || ''
+  useEffect(() => {
+    if (!era || era.id !== 'mission-1906') return
+    fetch(`${API_BASE}/api/scenes/manifest`)
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.scenes?.length) setScenes(data.scenes)
+      })
+      .catch((err) => console.warn('Scene manifest load failed:', err))
+  }, [era?.id])
 
   // Auto-trigger scene when era has an autoplay venue
   useEffect(() => {
@@ -452,6 +472,41 @@ export default function ExperienceWindow() {
                 <p className="mt-2 font-ui text-sm leading-relaxed text-present/70 line-clamp-2">
                   {oneSentence(era.description)}
                 </p>
+
+                {/* Watch Scenes CTA — shown for eras with pre-generated scenes */}
+                {era.id === 'mission-1906' && scenes?.length > 0 && (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      setSceneSelectorOpen(true)
+                    }}
+                    className="mt-3 flex items-center gap-3 rounded-2xl px-4 py-3 w-full"
+                    style={{
+                      background: 'rgba(200,134,10,0.12)',
+                      border: '1px solid rgba(200,134,10,0.25)',
+                    }}
+                  >
+                    <span
+                      className="flex items-center justify-center w-8 h-8 rounded-full"
+                      style={{ background: 'rgba(200,134,10,0.2)' }}
+                    >
+                      <svg width="12" height="14" viewBox="0 0 12 14" fill="#C8860A">
+                        <path d="M0 0v14l12-7z" />
+                      </svg>
+                    </span>
+                    <span className="flex flex-col items-start">
+                      <span className="text-sm font-medium" style={{ color: '#C8860A' }}>
+                        Watch the Story
+                      </span>
+                      <span className="text-[10px]" style={{ color: 'rgba(200,134,10,0.6)' }}>
+                        {scenes.length} episodes available
+                      </span>
+                    </span>
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className="ml-auto">
+                      <path d="M5 3l4 4-4 4" stroke="#C8860A" strokeWidth="1.5" strokeLinecap="round" />
+                    </svg>
+                  </button>
+                )}
                 <div className="mt-3 h-4" />
               </motion.div>
             </AnimatePresence>
@@ -506,6 +561,30 @@ export default function ExperienceWindow() {
           autoplay={isAutoplay}
           onClose={() => { setActiveVenue(null); setIsAutoplay(false) }}
         />
+      )}
+
+      {/* Scene selector overlay — shows available episodes */}
+      <SceneSelector
+        scenes={scenes}
+        visible={sceneSelectorOpen}
+        onClose={() => setSceneSelectorOpen(false)}
+        onSelect={(scene) => {
+          setSceneSelectorOpen(false)
+          setActiveScene(scene)
+        }}
+      />
+
+      {/* Scene player overlay — AI-generated dialogue video/audio */}
+      {activeScene && createPortal(
+        <ScenePlayer
+          scene={activeScene}
+          onClose={() => setActiveScene(null)}
+          onTalkTo={(characterId) => {
+            setActiveScene(null)
+            setCharacterOpen(true)
+          }}
+        />,
+        document.body
       )}
     </div>
   )
