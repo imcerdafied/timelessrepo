@@ -129,14 +129,14 @@ router.get('/votes/:episodeId', async (req, res) => {
   try {
     const { data, error } = await supabase
       .from('story_votes')
-      .select('option_chosen')
+      .select('option_id')
       .eq('episode_id', episodeId)
 
     if (error) throw error
 
     const tallies = {}
     for (const row of (data || [])) {
-      tallies[row.option_chosen] = (tallies[row.option_chosen] || 0) + 1
+      tallies[row.option_id] = (tallies[row.option_id] || 0) + 1
     }
     const total = data?.length || 0
 
@@ -165,10 +165,10 @@ router.post('/vote', async (req, res) => {
       .from('story_votes')
       .upsert({
         episode_id: episodeId,
-        option_chosen: optionId,
-        user_id: sessionId || 'anonymous',
+        option_id: optionId,
+        session_id: sessionId || 'anonymous',
       }, {
-        onConflict: 'episode_id,user_id'
+        onConflict: 'episode_id,session_id'
       })
 
     if (upsertError) throw upsertError
@@ -176,14 +176,14 @@ router.post('/vote', async (req, res) => {
     // Fetch updated tallies
     const { data, error } = await supabase
       .from('story_votes')
-      .select('option_chosen')
+      .select('option_id')
       .eq('episode_id', episodeId)
 
     if (error) throw error
 
     const tallies = {}
     for (const row of (data || [])) {
-      tallies[row.option_chosen] = (tallies[row.option_chosen] || 0) + 1
+      tallies[row.option_id] = (tallies[row.option_id] || 0) + 1
     }
     const total = data?.length || 0
 

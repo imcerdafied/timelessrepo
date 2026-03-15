@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import useStoryStore from '../store/useStoryStore'
 import { sendStoryMessage, castVote as submitVote } from '../services/storyService'
@@ -7,6 +7,14 @@ import { track } from '../services/analytics'
 import ShareCard from './ShareCard'
 
 const ZOE_IMAGE = 'https://xllwzunjvidtszyklhhm.supabase.co/storage/v1/object/public/characters/zoe.png'
+
+// Split scene text into sentences for progressive reveal
+function splitSentences(text) {
+  return text
+    .split(/(?<=[.!?])\s+/)
+    .map(s => s.trim())
+    .filter(Boolean)
+}
 
 export default function EpisodePlayer() {
   const {
@@ -20,8 +28,8 @@ export default function EpisodePlayer() {
     getNextEpisode,
   } = useStoryStore()
 
-  const [phase, setPhase] = useState('idle') // idle → generating → video → interact → vote
-  const [videoUrl, setVideoUrl] = useState(null)
+  // Phases: scene → interact → vote
+  const [phase, setPhase] = useState('scene')
   const [messages, setMessages] = useState([])
   const [loading, setLoading] = useState(false)
   const [exchangeCount, setExchangeCount] = useState(0)
@@ -31,11 +39,15 @@ export default function EpisodePlayer() {
   const [showPostVote, setShowPostVote] = useState(false)
   const [shareOpen, setShareOpen] = useState(false)
   const [voiceEnabled, setVoiceEnabled] = useState(voiceService.enabled)
+  const [visibleSentences, setVisibleSentences] = useState(0)
+  const [userTapped, setUserTapped] = useState(false)
 
   const inputRef = useRef(null)
   const messagesEndRef = useRef(null)
-  const videoRef = useRef(null)
+  const audioRef = useRef(null)
   const sceneStartTime = useRef(Date.now())
+  const sentenceTimer = useRef(null)
+  const scrollRef = useRef(null)
 
   const hasVoted = !!votes[episode.id]
   const firstName = story.character_name.split(' ')[0]
@@ -43,17 +55,13 @@ export default function EpisodePlayer() {
   const votedOption = episode.vote_options.find(o => o.id === votedOptionId)
   const nextEpisode = getNextEpisode(story, episode)
 
-  // Parse scene text
-  const sceneText = episode.scene
-    .split('\n')
-    .map(l => l.trim())
-    .filter(Boolean)
-    .join(' ')
+  // Parse scene text into sentences
+  const sceneText = episode.scene.split('\n').map(l => l.trim()).filter(Boolean).join(' ')
+  const sentences = splitSentences(sceneText)
 
   // Reset on episode change
   useEffect(() => {
-    setPhase('idle')
-    setVideoUrl(null)
+    setPhase('scene')
     setMessages([])
     setExchangeCount(0)
     setInputVisible(false)
@@ -61,8 +69,76 @@ export default function EpisodePlayer() {
     setTotalVotes(0)
     setShowPostVote(false)
     setShareOpen(false)
+    setVisibleSentences(0)
+    setUserTapped(false)
     sceneStartTime.current = Date.now()
+    voiceService.stop()
+
+    // Preload audio
+    const audio = new Audio()
+    audio.preload = 'auto'
+    audio.src = 'https://xllwzunjvidtszyklhhm.supabase.co/storage/v1/object/public/episodes/' + episode.id + '.mp3'
+    audioRef.current = audio
+
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause()
+        audioRef.current.src = ''
+      }
+      if (sentenceTimer.current) clearInterval(sentenceTimer.current)
+    }
   }, [episode.id])
+
+  // Start scene when user taps (needed for autoplay policy)
+  const startScene = useCallback(() => {
+    if (phase !== 'scene') return
+    sceneStartTime.current = Date.now()
+    track('scene_started', { session_id: localStorage.getItem('dispatch_session'), episode_id: episode.id })
+
+    const audio = audioRef.current
+    let audioDuration = sentences.length * 4 // fallback
+
+    if (audio && audio.src) {
+      const playPromise = audio.play()
+      if (playPromise) playPromise.catch(() => {})
+
+      // Try to get real duration once metadata loads
+      if (audio.duration && isFinite(audio.duration)) {
+        audioDuration = audio.duration
+      } else {
+        audio.addEventListener('loadedmetadata', () => {
+          if (audio.duration && isFinite(audio.duration)) {
+            // Adjust interval if we get real duration
+          }
+        }, { once: true })
+      }
+    }
+
+    const interval = (audioDuration / sentences.length) * 1000
+
+    let count = 0
+    setVisibleSentences(1)
+    sentenceTimer.current = setInterval(() => {
+      count++
+      if (count >= sentences.length) {
+        clearInterval(sentenceTimer.current)
+        setTimeout(() => {
+          track('scene_completed', {
+            session_id: localStorage.getItem('dispatch_session'),
+            episode_id: episode.id,
+            watch_time_s: Math.round((Date.now() - sceneStartTime.current) / 1000),
+          })
+          setPhase('interact')
+        }, 2000)
+      }
+      setVisibleSentences(c => Math.min(c + 1, sentences.length))
+    }, interval)
+  }, [phase, episode.id, sentences.length])
+
+  function handleTapToStart() {
+    setUserTapped(true)
+    startScene()
+  }
 
   // Show input after entering interact phase
   useEffect(() => {
@@ -75,6 +151,13 @@ export default function EpisodePlayer() {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
+
+  // Auto-scroll scene text
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' })
+    }
+  }, [visibleSentences])
 
   // Inject contenteditable placeholder CSS
   useEffect(() => {
@@ -92,47 +175,14 @@ export default function EpisodePlayer() {
     }
   }, [exchangeCount])
 
-  async function handleBegin() {
-    setPhase('generating')
-    sceneStartTime.current = Date.now()
-    track('dispatch_episode_started', { episode_id: episode.id })
-
-    // Race the fetch against a 25s timeout
-    const timeout = new Promise((_, reject) =>
-      setTimeout(() => reject(new Error('timeout')), 25000)
-    )
-
-    try {
-      const res = await Promise.race([
-        fetch('/api/story/video/generate', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            episodeId: episode.id,
-            text: episode.scene,
-            voiceId: story.voice_id
-          })
-        }),
-        timeout
-      ])
-      const data = await res.json()
-      if (data.video_url) {
-        setVideoUrl(data.video_url)
-        setPhase('video')
-      } else {
-        setPhase('interact')
-      }
-    } catch (err) {
-      console.error('Video generation failed:', err)
-      setPhase('interact')
-    }
-  }
-
-  function skipVideo() {
-    if (videoRef.current) videoRef.current.pause()
-    track('dispatch_scene_skipped', {
+  function skipScene() {
+    if (audioRef.current) audioRef.current.pause()
+    if (sentenceTimer.current) clearInterval(sentenceTimer.current)
+    track('scene_skipped', {
+      session_id: localStorage.getItem('dispatch_session'),
       episode_id: episode.id,
-      at_seconds: Math.round((Date.now() - sceneStartTime.current) / 1000),
+      exit_pct: Math.round((visibleSentences / sentences.length) * 100),
+      watch_time_s: Math.round((Date.now() - sceneStartTime.current) / 1000),
     })
     setPhase('interact')
   }
@@ -149,9 +199,10 @@ export default function EpisodePlayer() {
     setMessages(newMessages)
     addMessage(episode.id, userMsg)
 
-    track('dispatch_message_sent', {
+    track('qa_message_sent', {
+      session_id: localStorage.getItem('dispatch_session'),
       episode_id: episode.id,
-      message_count: newMessages.filter(m => m.role === 'user').length,
+      message_length: text.length,
     })
 
     try {
@@ -164,23 +215,21 @@ export default function EpisodePlayer() {
     } catch (err) {
       setMessages([
         ...newMessages,
-        { role: 'assistant', content: `[Error: ${err.message}]` },
+        { role: 'assistant', content: '[She pauses, looking away for a moment.]' },
       ])
     } finally {
       setLoading(false)
     }
   }
 
-  function handleBack() {
-    voiceService.stop()
-    if (videoRef.current) videoRef.current.pause()
-    setActiveStory(null)
-    setActiveEpisode(null)
-  }
-
   async function handleVote(option) {
     castVote(episode.id, option.id, option.consequence)
-    track('dispatch_vote_cast', { episode_id: episode.id, option_id: option.id })
+    track('vote_cast', {
+      session_id: localStorage.getItem('dispatch_session'),
+      episode_id: episode.id,
+      choice: option.id,
+      time_since_scene_end_s: Math.round((Date.now() - sceneStartTime.current) / 1000),
+    })
 
     try {
       const result = await submitVote(episode.id, option.id)
@@ -219,187 +268,164 @@ export default function EpisodePlayer() {
       display: 'flex',
       flexDirection: 'column',
     }}>
-      {/* Header */}
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        paddingTop: 'max(12px, env(safe-area-inset-top))',
-        paddingLeft: 16,
-        paddingRight: 16,
-        paddingBottom: 10,
-        borderBottom: '1px solid rgba(255,255,255,0.06)',
-        backgroundColor: '#000',
-        zIndex: 10,
-      }}>
-        <button
-          onClick={handleBack}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 6,
-            background: 'none',
-            border: 'none',
-            cursor: 'pointer',
-            color: 'rgba(255,255,255,0.5)',
-            fontSize: 14,
-          }}
-        >
-          <span>&larr;</span>
-          <span style={{
-            fontSize: 11,
-            letterSpacing: '0.1em',
-            textTransform: 'uppercase',
-            color: '#f59e0b',
-          }}>
-            DISPATCH
-          </span>
-        </button>
-        <div style={{
-          fontSize: 12,
-          color: 'rgba(255,255,255,0.35)',
-          textAlign: 'center',
-        }}>
-          Episode {episode.number} &middot; {episode.day_label}
-        </div>
-        <button
-          onClick={() => setVoiceEnabled(voiceService.toggle())}
-          style={{
-            background: 'none',
-            border: 'none',
-            cursor: 'pointer',
-            fontSize: 16,
-            padding: 4,
-          }}
-        >
-          {voiceEnabled ? '\u{1F50A}' : '\u{1F507}'}
-        </button>
-      </div>
 
-      {/* ─── IDLE: TAP TO BEGIN ─── */}
-      {phase === 'idle' && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6 }}
+      {/* ─── SCENE: AUDIO + PORTRAIT + PROGRESSIVE TEXT ─── */}
+      {phase === 'scene' && (
+        <div
           style={{
             flex: 1,
             display: 'flex',
             flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: '0 32px',
             position: 'relative',
+            cursor: !userTapped ? 'pointer' : 'default',
           }}
+          onClick={!userTapped ? handleTapToStart : undefined}
         >
-          {/* Zoe background at 20% opacity */}
+          {/* Zoe portrait — fills upper portion */}
           <div style={{
-            position: 'absolute',
-            inset: 0,
-            backgroundImage: `url(${ZOE_IMAGE})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center top',
-            opacity: 0.2,
-          }} />
-
-          <div style={{ position: 'relative', zIndex: 1, textAlign: 'center' }}>
-            <div style={{
-              fontSize: 11,
-              letterSpacing: '0.2em',
-              textTransform: 'uppercase',
-              color: '#f59e0b',
-              fontWeight: 600,
-              marginBottom: 24,
-            }}>
-              DISPATCH
-            </div>
-
-            <div style={{
-              fontSize: 22,
-              fontFamily: "Georgia, 'Times New Roman', serif",
-              color: 'white',
-              marginBottom: 8,
-            }}>
-              {episode.title}
-            </div>
-
-            <div style={{
-              fontSize: 13,
-              color: 'rgba(255,255,255,0.35)',
-              marginBottom: 48,
-            }}>
-              Episode {episode.number}
-            </div>
-
-            <button
-              onClick={handleBegin}
+            position: 'relative',
+            width: '100%',
+            height: '55%',
+            flexShrink: 0,
+            overflow: 'hidden',
+          }}>
+            <img
+              src={ZOE_IMAGE}
+              alt="Zoe"
               style={{
-                backgroundColor: '#f59e0b',
-                color: '#000',
-                border: 'none',
-                borderRadius: 12,
-                padding: '16px 48px',
-                fontSize: 16,
-                fontWeight: 600,
-                cursor: 'pointer',
-                marginBottom: 20,
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                objectPosition: 'center top',
+                filter: userTapped ? 'none' : 'brightness(0.6)',
+                transition: 'filter 1s ease',
               }}
-            >
-              Begin &rarr;
-            </button>
-
+            />
+            {/* Gradient fade into text area */}
             <div style={{
-              fontSize: 12,
-              color: 'rgba(255,255,255,0.25)',
-              lineHeight: 1.5,
+              position: 'absolute',
+              bottom: 0,
+              left: 0,
+              right: 0,
+              height: 120,
+              background: 'linear-gradient(to top, #000 0%, transparent 100%)',
+            }} />
+
+            {/* Episode info overlay */}
+            <div style={{
+              position: 'absolute',
+              top: 'max(16px, env(safe-area-inset-top))',
+              left: 16,
+              right: 16,
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
             }}>
-              Turn up your sound
+              <div style={{
+                fontSize: 11,
+                letterSpacing: '0.15em',
+                textTransform: 'uppercase',
+                color: '#f59e0b',
+                fontWeight: 600,
+              }}>
+                DISPATCH
+              </div>
+              <div style={{
+                fontSize: 12,
+                color: 'rgba(255,255,255,0.5)',
+              }}>
+                Ep {episode.number} &middot; {episode.day_label}
+              </div>
             </div>
+
+            {/* Tap to start overlay */}
+            {!userTapped && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.5, duration: 0.8 }}
+                style={{
+                  position: 'absolute',
+                  bottom: 40,
+                  left: 0,
+                  right: 0,
+                  textAlign: 'center',
+                }}
+              >
+                <div style={{
+                  fontSize: 22,
+                  fontFamily: "Georgia, 'Times New Roman', serif",
+                  color: 'white',
+                  marginBottom: 6,
+                }}>
+                  {episode.title}
+                </div>
+                <div style={{
+                  fontSize: 14,
+                  color: 'rgba(255,255,255,0.5)',
+                  fontStyle: 'italic',
+                  animation: 'pulse-text 2s ease-in-out infinite',
+                }}>
+                  Tap to listen
+                </div>
+              </motion.div>
+            )}
           </div>
-        </motion.div>
-      )}
 
-      {/* ─── GENERATING: D-ID RENDERING ─── */}
-      {phase === 'generating' && (
-        <div style={{
-          flex: 1,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          position: 'relative',
-        }}>
-          {/* Zoe background at 30% opacity */}
-          <div style={{
-            position: 'absolute',
-            inset: 0,
-            backgroundImage: `url(${ZOE_IMAGE})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center top',
-            opacity: 0.3,
-          }} />
-
-          {/* Dark overlay for legibility */}
-          <div style={{
-            position: 'absolute',
-            inset: 0,
-            background: 'radial-gradient(ellipse at center, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.75) 100%)',
-          }} />
-
+          {/* Scene text — scrolling area */}
           <div
+            ref={scrollRef}
             style={{
-              position: 'relative',
-              zIndex: 1,
-              fontSize: 18,
-              fontFamily: "Georgia, 'Times New Roman', serif",
-              fontStyle: 'italic',
-              color: '#f59e0b',
-              textAlign: 'center',
-              animation: 'pulse-text 2s ease-in-out infinite',
+              flex: 1,
+              overflowY: 'auto',
+              padding: '0 24px 80px 24px',
             }}
           >
-            Connecting to {firstName}...
+            {userTapped && sentences.slice(0, visibleSentences).map((sentence, i) => (
+              <motion.span
+                key={i}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                style={{
+                  fontSize: 16,
+                  lineHeight: 1.7,
+                  fontFamily: "Georgia, 'Times New Roman', serif",
+                  color: i === visibleSentences - 1
+                    ? 'rgba(255,255,255,0.9)'
+                    : 'rgba(255,255,255,0.45)',
+                  transition: 'color 0.8s ease',
+                }}
+              >
+                {sentence}{' '}
+              </motion.span>
+            ))}
           </div>
+
+          {/* Skip button — appears after 5s */}
+          {userTapped && (
+            <motion.button
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 5, duration: 0.5 }}
+              onClick={(e) => { e.stopPropagation(); skipScene() }}
+              style={{
+                position: 'absolute',
+                bottom: 'max(24px, env(safe-area-inset-bottom))',
+                right: 24,
+                background: 'none',
+                border: 'none',
+                color: 'rgba(245,158,11,0.6)',
+                fontSize: 14,
+                fontWeight: 500,
+                cursor: 'pointer',
+                zIndex: 2,
+                letterSpacing: '0.03em',
+              }}
+            >
+              Skip &rarr;
+            </motion.button>
+          )}
 
           <style>{`
             @keyframes pulse-text {
@@ -410,85 +436,77 @@ export default function EpisodePlayer() {
         </div>
       )}
 
-      {/* ─── VIDEO: D-ID TALKING HEAD ─── */}
-      {phase === 'video' && videoUrl && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6 }}
-          style={{
-            flex: 1,
-            position: 'relative',
-            backgroundColor: '#000',
-          }}
-        >
-          <video
-            ref={videoRef}
-            src={videoUrl}
-            autoPlay
-            playsInline
-            onEnded={() => {
-              track('dispatch_scene_completed', {
-                episode_id: episode.id,
-                listened_seconds: Math.round((Date.now() - sceneStartTime.current) / 1000),
-                mode: 'video',
-              })
-              setPhase('interact')
-            }}
-            onError={() => {
-              console.error('Video playback error')
-              setPhase('interact')
-            }}
-            style={{
-              position: 'absolute',
-              inset: 0,
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-            }}
-          />
-
-          {/* Skip button — appears after 3s */}
-          <motion.button
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 3, duration: 0.5 }}
-            onClick={skipVideo}
-            style={{
-              position: 'absolute',
-              bottom: 'max(24px, env(safe-area-inset-bottom))',
-              right: 24,
-              background: 'none',
-              border: 'none',
-              color: '#f59e0b',
-              fontSize: 14,
-              fontWeight: 500,
-              cursor: 'pointer',
-              zIndex: 2,
-              letterSpacing: '0.03em',
-            }}
-          >
-            Skip &rarr;
-          </motion.button>
-        </motion.div>
-      )}
-
-      {/* ─── INTERACT ─── */}
+      {/* ─── INTERACT: Q&A WITH ZOE ─── */}
       {phase === 'interact' && (
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+          {/* Header */}
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            paddingTop: 'max(12px, env(safe-area-inset-top))',
+            paddingLeft: 16,
+            paddingRight: 16,
+            paddingBottom: 10,
+            borderBottom: '1px solid rgba(255,255,255,0.06)',
+            backgroundColor: '#000',
+          }}>
+            <div style={{
+              fontSize: 11,
+              letterSpacing: '0.1em',
+              textTransform: 'uppercase',
+              color: '#f59e0b',
+              fontWeight: 600,
+            }}>
+              DISPATCH
+            </div>
+            <div style={{
+              fontSize: 12,
+              color: 'rgba(255,255,255,0.35)',
+            }}>
+              Ep {episode.number} &middot; {episode.day_label}
+            </div>
+            <button
+              onClick={() => setVoiceEnabled(voiceService.toggle())}
+              style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 16, padding: 4 }}
+            >
+              {voiceEnabled ? '\u{1F50A}' : '\u{1F507}'}
+            </button>
+          </div>
+
           <div style={{ flex: 1, overflowY: 'auto', padding: '20px 24px' }}>
+            {/* Zoe small portrait + name */}
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 12,
+              marginBottom: 16,
+              paddingBottom: 16,
+              borderBottom: '1px solid rgba(255,255,255,0.06)',
+            }}>
+              <img
+                src={ZOE_IMAGE}
+                alt="Zoe"
+                style={{ width: 40, height: 40, borderRadius: 20, objectFit: 'cover' }}
+              />
+              <div>
+                <div style={{ fontSize: 15, color: 'white', fontWeight: 500 }}>{firstName}</div>
+                <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)' }}>{story.character_role}</div>
+              </div>
+            </div>
+
             {/* Scene summary (collapsed) */}
             <div style={{
               fontSize: 14,
               lineHeight: 1.6,
               fontStyle: 'italic',
               fontFamily: "Georgia, 'Times New Roman', serif",
-              color: 'rgba(255,255,255,0.5)',
+              color: 'rgba(255,255,255,0.4)',
               marginBottom: 20,
-              paddingBottom: 20,
+              paddingBottom: 16,
               borderBottom: '1px solid rgba(255,255,255,0.06)',
               display: '-webkit-box',
-              WebkitLineClamp: 3,
+              WebkitLineClamp: 2,
               WebkitBoxOrient: 'vertical',
               overflow: 'hidden',
             }}>
@@ -545,11 +563,7 @@ export default function EpisodePlayer() {
 
             {/* Loading dots */}
             {loading && (
-              <div style={{
-                display: 'flex',
-                justifyContent: 'flex-start',
-                marginBottom: 12,
-              }}>
+              <div style={{ display: 'flex', justifyContent: 'flex-start', marginBottom: 12 }}>
                 <div style={{
                   borderRadius: 16,
                   padding: '12px 16px',
@@ -563,19 +577,14 @@ export default function EpisodePlayer() {
                       key={i}
                       animate={{ opacity: [0.3, 1, 0.3] }}
                       transition={{ duration: 0.8, repeat: Infinity, delay: i * 0.15 }}
-                      style={{
-                        width: 6,
-                        height: 6,
-                        borderRadius: 3,
-                        backgroundColor: 'rgba(255,255,255,0.4)',
-                      }}
+                      style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: 'rgba(255,255,255,0.4)' }}
                     />
                   ))}
                 </div>
               </div>
             )}
 
-            {/* Ready to vote after 2 exchanges */}
+            {/* Ready to vote nudge */}
             {exchangeCount >= 2 && exchangeCount < 3 && (
               <motion.div
                 initial={{ opacity: 0 }}
@@ -584,14 +593,7 @@ export default function EpisodePlayer() {
               >
                 <button
                   onClick={() => setPhase('vote')}
-                  style={{
-                    background: 'none',
-                    border: 'none',
-                    color: '#f59e0b',
-                    fontSize: 14,
-                    cursor: 'pointer',
-                    fontWeight: 500,
-                  }}
+                  style={{ background: 'none', border: 'none', color: '#f59e0b', fontSize: 14, cursor: 'pointer', fontWeight: 500 }}
                 >
                   Ready to vote? &rarr;
                 </button>
@@ -609,23 +611,14 @@ export default function EpisodePlayer() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4 }}
               >
-                {/* Skip to vote */}
                 <div style={{ textAlign: 'center', paddingBottom: 8 }}>
                   <button
                     onClick={() => setPhase('vote')}
-                    style={{
-                      background: 'none',
-                      border: 'none',
-                      color: 'rgba(245,158,11,0.5)',
-                      fontSize: 12,
-                      cursor: 'pointer',
-                    }}
+                    style={{ background: 'none', border: 'none', color: 'rgba(245,158,11,0.5)', fontSize: 12, cursor: 'pointer' }}
                   >
                     Skip to vote &rarr;
                   </button>
                 </div>
-
-                {/* Input row */}
                 <div style={{
                   display: 'flex',
                   alignItems: 'center',
@@ -646,12 +639,9 @@ export default function EpisodePlayer() {
                     data-gramm_editor="false"
                     data-enable-grammarly="false"
                     onKeyDown={(e) => {
-                      if (e.key === 'Enter' && !e.shiftKey) {
-                        e.preventDefault()
-                        handleSend()
-                      }
+                      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSend() }
                     }}
-                    data-placeholder={`Ask ${firstName} anything...`}
+                    data-placeholder={'Ask ' + firstName + ' anything...'}
                     style={{
                       flex: 1,
                       minWidth: 0,
@@ -705,213 +695,222 @@ export default function EpisodePlayer() {
             flexDirection: 'column',
             justifyContent: 'center',
             padding: '0 32px',
+            position: 'relative',
           }}
         >
-          {/* Episode title */}
+          {/* Subtle Zoe background */}
           <div style={{
-            fontSize: 11,
-            letterSpacing: '0.12em',
-            textTransform: 'uppercase',
-            color: 'rgba(255,255,255,0.3)',
-            textAlign: 'center',
-            marginBottom: 32,
-          }}>
-            {episode.title}
-          </div>
+            position: 'absolute',
+            inset: 0,
+            backgroundImage: 'url(' + ZOE_IMAGE + ')',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center top',
+            opacity: 0.08,
+          }} />
 
-          {/* Vote question */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            style={{
-              fontSize: 22,
-              fontFamily: "Georgia, 'Times New Roman', serif",
-              color: 'white',
+          <div style={{ position: 'relative', zIndex: 1 }}>
+            {/* DISPATCH branding */}
+            <div style={{
+              fontSize: 11,
+              letterSpacing: '0.15em',
+              textTransform: 'uppercase',
+              color: '#f59e0b',
+              fontWeight: 600,
               textAlign: 'center',
-              lineHeight: 1.4,
+              marginBottom: 8,
+            }}>
+              DISPATCH
+            </div>
+
+            {/* Episode title */}
+            <div style={{
+              fontSize: 11,
+              letterSpacing: '0.12em',
+              textTransform: 'uppercase',
+              color: 'rgba(255,255,255,0.3)',
+              textAlign: 'center',
               marginBottom: 32,
-            }}
-          >
-            {episode.vote_question}
-          </motion.div>
+            }}>
+              Episode {episode.number} &middot; {episode.title}
+            </div>
 
-          {/* Vote options */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-            {episode.vote_options.map((option, i) => (
-              <motion.button
-                key={option.id}
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 + i * 0.15 }}
-                onClick={() => !hasVoted && handleVote(option)}
-                disabled={hasVoted}
-                style={{
-                  position: 'relative',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'center',
-                  width: '100%',
-                  minHeight: 72,
-                  padding: '14px 24px',
-                  borderRadius: 12,
-                  overflow: 'hidden',
-                  border: hasVoted && votedOptionId === option.id
-                    ? '2px solid #f59e0b'
-                    : '1px solid rgba(245,158,11,0.4)',
-                  backgroundColor: hasVoted && votedOptionId === option.id
-                    ? 'rgba(245,158,11,0.15)'
-                    : 'rgba(255,255,255,0.06)',
-                  color: 'white',
-                  cursor: hasVoted ? 'default' : 'pointer',
-                  textAlign: 'left',
-                  boxSizing: 'border-box',
-                }}
-              >
-                {/* Percentage bar */}
-                {hasVoted && (
-                  <motion.div
-                    initial={{ width: 0 }}
-                    animate={{ width: `${getPercent(option.id)}%` }}
-                    transition={{ duration: 1, ease: 'easeOut', delay: 0.2 }}
-                    style={{
-                      position: 'absolute',
-                      left: 0,
-                      top: 0,
-                      bottom: 0,
-                      backgroundColor: votedOptionId === option.id
-                        ? 'rgba(245,158,11,0.15)'
-                        : 'rgba(255,255,255,0.04)',
-                      borderRadius: 12,
-                    }}
-                  />
-                )}
-
-                <div style={{
-                  position: 'relative',
-                  zIndex: 1,
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                }}>
-                  <div>
-                    <div style={{ fontSize: 16, fontWeight: 500 }}>
-                      {option.label}
-                    </div>
-                    {!hasVoted && (
-                      <div style={{
-                        fontSize: 13,
-                        fontStyle: 'italic',
-                        color: 'rgba(245,158,11,0.6)',
-                        marginTop: 2,
-                      }}>
-                        {option.cost}
-                      </div>
-                    )}
-                  </div>
-                  {hasVoted && (
-                    <motion.span
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 0.8 }}
-                      style={{
-                        fontSize: 15,
-                        fontWeight: 600,
-                        color: votedOptionId === option.id
-                          ? '#f59e0b'
-                          : 'rgba(255,255,255,0.5)',
-                      }}
-                    >
-                      {getPercent(option.id)}%
-                    </motion.span>
-                  )}
-                </div>
-              </motion.button>
-            ))}
-          </div>
-
-          {/* Total votes */}
-          {hasVoted && totalVotes > 0 && (
+            {/* Vote question */}
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1 }}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
               style={{
+                fontSize: 22,
+                fontFamily: "Georgia, 'Times New Roman', serif",
+                color: 'white',
                 textAlign: 'center',
-                fontSize: 13,
-                color: 'rgba(255,255,255,0.3)',
-                marginTop: 16,
+                lineHeight: 1.4,
+                marginBottom: 32,
               }}
             >
-              {totalVotes} {totalVotes === 1 ? 'person' : 'people'} voted
+              {episode.vote_question}
             </motion.div>
-          )}
 
-          {/* Post-vote CTA */}
-          <AnimatePresence>
-            {showPostVote && (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                style={{ textAlign: 'center', padding: '32px 0' }}
-              >
-                {nextEpisode ? (
-                  <button
-                    onClick={handleNextEpisode}
-                    style={{
-                      backgroundColor: '#f59e0b',
-                      color: '#000',
-                      border: 'none',
-                      borderRadius: 12,
-                      padding: '14px 28px',
-                      fontSize: 15,
-                      fontWeight: 600,
-                      cursor: 'pointer',
-                    }}
-                  >
-                    Episode {nextEpisode.number} is ready &rarr;
-                  </button>
-                ) : (
-                  <div>
-                    <div style={{
-                      fontSize: 16,
-                      fontFamily: "Georgia, 'Times New Roman', serif",
-                      color: '#f59e0b',
-                      fontStyle: 'italic',
-                      marginBottom: 8,
-                      lineHeight: 1.5,
-                    }}>
-                      Episode {episode.number + 1} drops tomorrow.
-                    </div>
-                    <div style={{
-                      fontSize: 14,
-                      color: 'rgba(255,255,255,0.4)',
-                      marginBottom: 24,
-                    }}>
-                      We'll tell {firstName} what you decided.
-                    </div>
-                    <button
-                      onClick={() => {
-                        setShareOpen(true)
-                        track('dispatch_share_tapped', { episode_id: episode.id })
-                      }}
+            {/* Vote options */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+              {episode.vote_options.map((option, i) => (
+                <motion.button
+                  key={option.id}
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 + i * 0.15 }}
+                  onClick={() => !hasVoted && handleVote(option)}
+                  disabled={hasVoted}
+                  style={{
+                    position: 'relative',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    width: '100%',
+                    minHeight: 72,
+                    padding: '14px 24px',
+                    borderRadius: 12,
+                    overflow: 'hidden',
+                    border: hasVoted && votedOptionId === option.id
+                      ? '2px solid #f59e0b'
+                      : '1px solid rgba(245,158,11,0.4)',
+                    backgroundColor: hasVoted && votedOptionId === option.id
+                      ? 'rgba(245,158,11,0.15)'
+                      : 'rgba(255,255,255,0.06)',
+                    color: 'white',
+                    cursor: hasVoted ? 'default' : 'pointer',
+                    textAlign: 'left',
+                    boxSizing: 'border-box',
+                  }}
+                >
+                  {hasVoted && (
+                    <motion.div
+                      initial={{ width: 0 }}
+                      animate={{ width: getPercent(option.id) + '%' }}
+                      transition={{ duration: 1, ease: 'easeOut', delay: 0.2 }}
                       style={{
-                        backgroundColor: 'transparent',
-                        color: '#f59e0b',
-                        border: '1px solid rgba(245,158,11,0.4)',
+                        position: 'absolute',
+                        left: 0, top: 0, bottom: 0,
+                        backgroundColor: votedOptionId === option.id
+                          ? 'rgba(245,158,11,0.15)'
+                          : 'rgba(255,255,255,0.04)',
+                        borderRadius: 12,
+                      }}
+                    />
+                  )}
+
+                  <div style={{
+                    position: 'relative',
+                    zIndex: 1,
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                  }}>
+                    <div>
+                      <div style={{ fontSize: 16, fontWeight: 500 }}>{option.label}</div>
+                      {!hasVoted && (
+                        <div style={{ fontSize: 13, fontStyle: 'italic', color: 'rgba(245,158,11,0.6)', marginTop: 2 }}>
+                          {option.cost}
+                        </div>
+                      )}
+                    </div>
+                    {hasVoted && (
+                      <motion.span
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.8 }}
+                        style={{
+                          fontSize: 15,
+                          fontWeight: 600,
+                          color: votedOptionId === option.id ? '#f59e0b' : 'rgba(255,255,255,0.5)',
+                        }}
+                      >
+                        {getPercent(option.id)}%
+                      </motion.span>
+                    )}
+                  </div>
+                </motion.button>
+              ))}
+            </div>
+
+            {/* Total votes */}
+            {hasVoted && totalVotes > 0 && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1 }}
+                style={{ textAlign: 'center', fontSize: 13, color: 'rgba(255,255,255,0.3)', marginTop: 16 }}
+              >
+                {totalVotes} {totalVotes === 1 ? 'person' : 'people'} voted
+              </motion.div>
+            )}
+
+            {/* Post-vote CTA */}
+            <AnimatePresence>
+              {showPostVote && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  style={{ textAlign: 'center', padding: '32px 0' }}
+                >
+                  {nextEpisode ? (
+                    <button
+                      onClick={handleNextEpisode}
+                      style={{
+                        backgroundColor: '#f59e0b',
+                        color: '#000',
+                        border: 'none',
                         borderRadius: 12,
                         padding: '14px 28px',
                         fontSize: 15,
-                        fontWeight: 500,
+                        fontWeight: 600,
                         cursor: 'pointer',
                       }}
                     >
-                      Share {firstName}'s story
+                      Episode {nextEpisode.number} is ready &rarr;
                     </button>
-                  </div>
-                )}
-              </motion.div>
-            )}
-          </AnimatePresence>
+                  ) : (
+                    <div>
+                      <div style={{
+                        fontSize: 16,
+                        fontFamily: "Georgia, 'Times New Roman', serif",
+                        color: '#f59e0b',
+                        fontStyle: 'italic',
+                        marginBottom: 8,
+                        lineHeight: 1.5,
+                      }}>
+                        Episode {episode.number + 1} drops tomorrow.
+                      </div>
+                      <div style={{
+                        fontSize: 14,
+                        color: 'rgba(255,255,255,0.4)',
+                        marginBottom: 24,
+                      }}>
+                        We'll tell {firstName} what you decided.
+                      </div>
+                      <button
+                        onClick={() => {
+                          setShareOpen(true)
+                          track('share_tapped', { session_id: localStorage.getItem('dispatch_session'), episode_id: episode.id })
+                        }}
+                        style={{
+                          backgroundColor: 'transparent',
+                          color: '#f59e0b',
+                          border: '1px solid rgba(245,158,11,0.4)',
+                          borderRadius: 12,
+                          padding: '14px 28px',
+                          fontSize: 15,
+                          fontWeight: 500,
+                          cursor: 'pointer',
+                        }}
+                      >
+                        Share {firstName}'s story
+                      </button>
+                    </div>
+                  )}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         </motion.div>
       )}
 
