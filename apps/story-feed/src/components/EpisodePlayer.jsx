@@ -6,7 +6,7 @@ import { voiceService } from '../services/voiceService'
 import { track } from '../services/analytics'
 import ShareCard from './ShareCard'
 
-const ZOE_IMAGE = 'https://xllwzunjvidtszyklhhm.supabase.co/storage/v1/object/public/characters/zoe.png'
+const DANA_IMAGE = 'https://xllwzunjvidtszyklhhm.supabase.co/storage/v1/object/public/characters/dana.jpg'
 
 // Split scene text into sentences for progressive reveal
 function splitSentences(text) {
@@ -281,7 +281,7 @@ export default function EpisodePlayer() {
           }}
           onClick={!userTapped ? handleTapToStart : undefined}
         >
-          {/* Zoe portrait — fills upper portion */}
+          {/* Dana portrait — cinematic Ken Burns motion */}
           <div style={{
             position: 'relative',
             width: '100%',
@@ -290,15 +290,16 @@ export default function EpisodePlayer() {
             overflow: 'hidden',
           }}>
             <img
-              src={ZOE_IMAGE}
-              alt="Zoe"
+              src={DANA_IMAGE}
+              alt="Dana"
               style={{
-                width: '100%',
-                height: '100%',
+                width: '115%',
+                height: '115%',
                 objectFit: 'cover',
                 objectPosition: 'center top',
                 filter: userTapped ? 'none' : 'brightness(0.6)',
                 transition: 'filter 1s ease',
+                animation: userTapped ? 'kenBurns 25s ease-in-out infinite alternate' : 'none',
               }}
             />
             {/* Gradient fade into text area */}
@@ -432,11 +433,17 @@ export default function EpisodePlayer() {
               0%, 100% { opacity: 0.4; }
               50% { opacity: 1; }
             }
+            @keyframes kenBurns {
+              0% { transform: scale(1) translate(0, 0); }
+              33% { transform: scale(1.08) translate(-2%, -1%); }
+              66% { transform: scale(1.04) translate(1%, -2%); }
+              100% { transform: scale(1.1) translate(-1%, -1.5%); }
+            }
           `}</style>
         </div>
       )}
 
-      {/* ─── INTERACT: Q&A WITH ZOE ─── */}
+      {/* ─── INTERACT: Q&A WITH DANA ─── */}
       {phase === 'interact' && (
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
           {/* Header */}
@@ -475,7 +482,7 @@ export default function EpisodePlayer() {
           </div>
 
           <div style={{ flex: 1, overflowY: 'auto', padding: '20px 24px' }}>
-            {/* Zoe small portrait + name */}
+            {/* Dana small portrait + name */}
             <div style={{
               display: 'flex',
               alignItems: 'center',
@@ -485,8 +492,8 @@ export default function EpisodePlayer() {
               borderBottom: '1px solid rgba(255,255,255,0.06)',
             }}>
               <img
-                src={ZOE_IMAGE}
-                alt="Zoe"
+                src={DANA_IMAGE}
+                alt="Dana"
                 style={{ width: 40, height: 40, borderRadius: 20, objectFit: 'cover' }}
               />
               <div>
@@ -526,7 +533,7 @@ export default function EpisodePlayer() {
                 opacity: 0.7,
               }}
             >
-              She's listening.
+              {firstName}'s listening.
             </motion.div>
 
             {/* Chat messages */}
@@ -702,7 +709,7 @@ export default function EpisodePlayer() {
           <div style={{
             position: 'absolute',
             inset: 0,
-            backgroundImage: 'url(' + ZOE_IMAGE + ')',
+            backgroundImage: 'url(' + DANA_IMAGE + ')',
             backgroundSize: 'cover',
             backgroundPosition: 'center top',
             opacity: 0.08,

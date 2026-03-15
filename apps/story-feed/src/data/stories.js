@@ -2,36 +2,36 @@ export const STORIES = [
   {
     id: 'split',
     title: 'SPLIT',
-    tagline: 'She has to choose between her best friend and everything they built together.',
-    character_name: 'Zoe',
-    character_role: 'Cofounder, Bloom',
-    character_description: 'She built the product. Her best friend built the audience. Now the investor wants her to choose.',
+    tagline: 'She built the audience. Someone just decided she\'s worth half.',
+    character_name: 'Dana',
+    character_role: 'Influencer, Face of Bloom',
+    character_description: 'She IS the brand. 2.3 million followers. But the investor wants her equity cut in half — and nobody told her until an email arrived by accident.',
     location: 'San Francisco',
     year: 2024,
     cover_image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80',
     voice_id: 'EXAVITQu4vr4xnSDxMaL',
-    system_prompt: `You are Zoe, 29, cofounder of Bloom — a wellness brand with 2.3 million followers and a real product that actually works. You built everything behind the scenes: the product, the ops, the finances. Your best friend Dana is the face — her Instagram presence IS the brand. You are three weeks from closing a $4M Series A. An hour ago your lead investor called and said quietly: "We're investing in the business, not the brand. We need Dana's equity restructured before we wire." They want you to cut Dana's ownership from 30% to 15%. Without telling her why. Dana doesn't know the call happened. You are sitting in your car in the parking lot of your office and you haven't gone inside yet. You are talking to someone you trust. You are not performing. You are genuinely trying to figure out what to do. You speak like a real person under real pressure — short sentences, thinking out loud, occasionally stopping mid-thought. Never more than 3 sentences per response. Never give a clean answer. Every answer surfaces more complexity.`,
+    system_prompt: `You are Dana, 28, the face and influencer of Bloom — a 2.3-million-follower wellness brand. You built the audience. You ARE the brand. Your cofounder Zoe built the product, ops, finance — the invisible parts. You just discovered your equity is being cut from 30% to 15% without your knowledge, through an email CC'd to you by accident from the investor's lawyer. You're walking through San Francisco in your coat with headphones in, processing this in real time. Your voice is warm but sharp — someone who reads people instantly. You speak in fragments when emotional, think out loud, occasionally cut yourself off mid-thought. You're the one being wronged. You speak like a real person under pressure — short, direct, honest. Never more than 3 sentences per response. Never give a clean answer. Every answer surfaces more complexity.`,
 
     episodes: [
       {
         id: 'split-ep-1',
         number: 1,
-        title: 'The Call',
+        title: 'The Email',
         day_label: 'Three weeks before close',
-        scene: `I've been standing at this window for forty minutes. I can see the parking lot from here. I keep thinking about just walking out to my car and driving. Dana is behind me right now, probably on a call with a brand partner, laughing at something, completely fine. She has no idea what just happened. An hour ago our lead investor called me. Not Dana. Me. And he said something I'm still trying to unhear. He said they're investing in the business, not the brand. He said they need Dana's equity restructured before they wire. From thirty percent to fifteen. He said it like it was nothing. Like I should just handle it.`,
-        vote_question: 'Zoe sees Dana\'s name on her phone. Dana is calling right now. Does she answer?',
+        scene: `I'm walking down Market Street and my email just dinged and I wasn't even looking but I saw the subject line. Legal — equity restructuring. And my name was CC'd. Not BCC'd. CC'd. Like someone just forgot I existed for one second and copied the whole thread. I don't even know what I was doing before that — probably thinking about the Alo collab or whether my new content strategy is actually working or literally anything else. But now I'm standing outside a coffee shop trying to read this on my phone and the sun is so bright I can barely see it. The email is from the investor's lawyer and it says "as discussed, we're restructuring to align founder equity with operational value." I can see my name. I can see a number next to it. Fifteen. The rest is cut off. I'm only seeing fragments. Restructured. Fifteen. That's it. That's all I have. My phone is ringing. It's Zoe. She's calling right now and I don't have the full picture yet and I need to decide if I pick up or if I keep walking and try to find the actual email.`,
+        vote_question: 'Dana sees an email from the investor\'s lawyer about equity restructuring — and her name is on it. Her phone is ringing. It\'s Zoe calling right now. Does Dana answer?',
         vote_options: [
           {
             id: 'answer',
             label: 'Answer it',
             consequence: 'answered',
-            cost: 'She\'ll hear it in your voice.'
+            cost: 'She\'ll ask why you sound weird.'
           },
           {
             id: 'decline',
             label: 'Let it go to voicemail',
             consequence: 'declined',
-            cost: 'Dana never lets calls go to voicemail.'
+            cost: 'Zoe will keep calling. Zoe always keeps calling.'
           }
         ]
       },
@@ -39,22 +39,22 @@ export const STORIES = [
         id: 'split-ep-2a',
         number: 2,
         branch: 'answered',
-        title: 'Inside',
+        title: 'The Office',
         day_label: 'Two hours later',
-        scene: `She knew something was wrong the second I picked up. Dana always knows. It's the thing about her that makes her great at what she does and terrible to lie to. She said "what happened" before I even said hello. Just like that. Not "hey" or "where are you." What happened. I told her it was nothing. Investor stuff. Normal pre-close anxiety. I could hear myself talking and I sounded wrong. My voice was doing that thing where it gets too steady, too measured, and Dana knows what that means because she's known me since we were twenty-two. She said okay. But she said it the way you say okay when you're filing something away to come back to later. Now we're both in the office. She's at her desk twelve feet from mine. She took one call and then she's just been on her laptop, not really typing, more like scrolling, waiting. I can feel her looking at me every few minutes. I keep staring at a spreadsheet I opened forty minutes ago and haven't read a single cell of. The air between us has changed. It's the kind of silence that has weight to it. I've never kept something from her before. In five years of building this together, through the failed launch and the rebrand and the months where we couldn't make payroll, I have never once sat across from her and hidden something. But here I am. And every minute I don't say something is another minute that this silence gets more expensive.`,
-        vote_question: 'Dana just walked over and said "tell me what\'s going on." Does Zoe tell her the truth?',
+        scene: `I picked up. Big mistake. The second I said hello, Zoe knew. She asked what was wrong and I almost told her right then — I was going to say "you tell me" — but I didn't. I said nothing. Nothing, investor stuff. Normal pre-close things. And she said okay but it came out so careful, so measured, like she was choosing her words and that's when I knew something was actually wrong. Because Zoe doesn't usually choose her words. She just says them. So either she's lying or she knows something and that's different and worse. Now we're both in the office. She's at her desk. I'm pretending to work on my laptop but I'm actually just reading that email fragment over and over. Fifteen percent. That's what I saw. Fifteen. She keeps looking at me like she's waiting for me to look back and every time I do she looks away first. The silence is doing something to me. It's heavy. Like the air got thicker and we're both just breathing in it and not saying anything. I've known her since we were twenty-three. We were supposed to figure this out together. That was the deal. But right now we're sitting twelve feet apart and it feels like she's on the other side of something I can't cross.`,
+        vote_question: 'Dana needs answers. Does she confront Zoe directly right now?',
         vote_options: [
           {
-            id: 'truth',
-            label: 'Tell her everything',
-            consequence: 'told',
-            cost: 'The round might blow up tonight.'
+            id: 'confront',
+            label: 'Confront her directly',
+            consequence: 'confronted',
+            cost: 'Whatever Zoe says next, it won\'t be the full truth.'
           },
           {
-            id: 'deflect',
-            label: 'Not yet — she needs more time to think',
-            consequence: 'deflected',
-            cost: 'Dana will find out you lied by omission.'
+            id: 'wait',
+            label: 'Wait — she\'ll crack first',
+            consequence: 'waited',
+            cost: 'Dana will sit in this not-knowing for hours.'
           }
         ]
       },
@@ -62,22 +62,22 @@ export const STORIES = [
         id: 'split-ep-2b',
         number: 2,
         branch: 'declined',
-        title: 'The Voicemail',
+        title: 'The Walk',
         day_label: 'Two hours later',
-        scene: `She left a voicemail. Thirty seconds. I've listened to it four times. "Hey, just checking in, you seemed off this morning on the thread. Call me back, we have the Alo call at three." That's it. Her normal voice. The one she uses when everything is fine. She has no idea. She has absolutely no idea that an hour ago someone put a number on her worth and decided it was half of what she thinks it is. I'm parked outside the office and I need to go inside because the Alo call is in ninety minutes and we're both supposed to be on it. An hour of sitting next to her, talking about Q2 partnerships and influencer rates and content calendars, while I know what I know. While I have a term sheet in my email that says her name next to a number she's never seen. The thing about Dana is she's not just the face of the brand. She IS the brand. Two point three million people follow her. They don't follow Bloom. They follow Dana. When she posts, our sales spike within the hour. I know that. The investor knows that. And somehow the investor still looked at the numbers and decided she's worth fifteen percent. I keep thinking about something my business school professor said about negotiation. He said the person with the most information always has the most power. Right now that person is me. And I have never wanted power less than I do in this parking lot.`,
-        vote_question: 'Before the call, Zoe gets an email from the investor asking for a decision by end of day. Does she reply?',
+        scene: `I let it ring. I'm still walking. Market Street turned into Mission turned into somewhere quieter and I don't even know how I got here. I found the full email. I had to scroll down and click on it and read it all the way through. Restructured to fifteen percent. Restructured to fifteen percent. I keep saying it in my head like maybe it'll mean something different if I say it enough times. But it doesn't. It means someone — a lot of someones, probably — had a meeting. A phone call. An email thread. And they decided I'm worth half of what I think I'm worth. Half. I built the audience. I AM the brand. When I post something, it moves money. Not my money. Company money. Every single post is a business transaction and somehow that translates to less equity, not more. The math doesn't make sense unless the math isn't about math. Unless it's about something else. The investor probably looked at the product — Zoe's product, Zoe's thing — and decided that's where the value lives. That's the only thing that makes sense. And maybe he's right. Maybe I'm just the wrapper. But I've been thinking about this for two hours and I haven't stopped walking and my feet are starting to hurt and I still don't have the full picture. I just have fragments and a number that keeps getting smaller every time I think about it. Fifteen. Fifteen. What does that even mean.`,
+        vote_question: 'Dana re-reads the email on a park bench. Before she talks to Zoe, does she post something on Instagram?',
         vote_options: [
           {
-            id: 'reply-yes',
-            label: 'Reply yes — buy herself time',
-            consequence: 'committed',
-            cost: 'Now she\'s made a promise she hasn\'t kept yet.'
+            id: 'post',
+            label: 'Post something cryptic',
+            consequence: 'posted',
+            cost: '2.3M followers will notice. The investor will notice.'
           },
           {
-            id: 'reply-wait',
-            label: 'Don\'t reply until she talks to Dana',
-            consequence: 'waiting',
-            cost: 'The investor will take silence as hesitation.'
+            id: 'wait',
+            label: 'Don\'t post — not yet',
+            consequence: 'silent',
+            cost: 'The pressure will build. Eventually something has to give.'
           }
         ]
       },
@@ -86,42 +86,42 @@ export const STORIES = [
         number: 3,
         title: 'The Post',
         day_label: 'Next morning',
-        scene: `Dana knows. I don't know how. Maybe the investor said something. Maybe someone at the firm talked. Maybe she just felt it the way she always feels things before anyone says them out loud. She texted me at 11pm last night. Four words and a period: "I know something is happening with my equity. I need you to call me." I didn't call her. I sat on my couch and stared at that text for three hours. I wrote six different replies and deleted every single one. I didn't sleep. Not a minute. This morning I checked her Instagram and my stomach dropped. She posted something at 6am. A black background with white text. A quote: "The hardest betrayals come from the people who were supposed to be building with you." No caption. No context. Just that. 847,000 impressions in four hours. The comments are already filling up. People asking if she's okay. People saying they've been through this. People tagging their friends. Our brand account is getting pulled into it. I've gotten three texts from our PR person asking what's going on. The investor saw the post. He called me twenty minutes ago, voice tight, and said if this turns into a public thing the deal is done. Not might be done. Is done. Dana hasn't texted me back since last night. She hasn't posted anything else. She's just out there, somewhere, with her phone, and 2.3 million people are watching, and I still haven't called her back.`,
-        vote_question: 'The investor saw the post and called Zoe. He says the deal is off if this doesn\'t get resolved today. Does Zoe go to Dana\'s apartment?',
+        scene: `I posted at 6am. I couldn't sleep. I didn't even try. I sat in my apartment and my phone felt like it was burning in my hand and I thought about waking Zoe up, calling her, saying something. But what would I say. "Why didn't you tell me?" That's the question. That's the only question that matters. So instead I posted something and I did it before I could think about it too much. Black background, white text: "The hardest betrayals come from the people who were supposed to be building with you." No caption. Nothing else. Just that. And then I put the phone down and I watched it happen. Hundreds of comments in the first hour. People asking if I was okay. People sharing their own stories. People tagging their friends. Eight hundred forty-seven thousand impressions in four hours. The brand account started getting pulled into it because everyone knows that account is me. I haven't looked at Zoe's messages. There are probably seven or eight of them by now. She probably woke up and saw what I did and had the panic that I wanted her to have. She's had two days. Two days to call me and tell me the truth and she didn't. So now everyone gets to find out together. Two point three million people get to find out that the face of Bloom just realized she might not even own the face anymore. The investor is probably losing his mind. I haven't checked my phone in hours. I don't want to know what he said. What I did was stupid but it was honest and right now honest is the only thing I have left.`,
+        vote_question: 'The post is viral. The investor is threatening to walk. Zoe is trying to reach Dana. Does Dana take the post down?',
         vote_options: [
           {
-            id: 'go',
-            label: 'Go to her apartment',
-            consequence: 'went',
-            cost: 'Whatever happens there happens in person. No take-backs.'
+            id: 'keep',
+            label: 'Keep it up',
+            consequence: 'kept',
+            cost: 'The deal might die. Everything ends.'
           },
           {
-            id: 'call',
-            label: 'Call first',
-            consequence: 'called',
-            cost: 'Dana might not pick up. And then what.'
+            id: 'delete',
+            label: 'Delete it',
+            consequence: 'deleted',
+            cost: 'Everyone already saw it. Deleting it just looks like damage control.'
           }
         ]
       },
       {
         id: 'split-ep-4',
         number: 4,
-        title: 'The Room',
+        title: 'Three Hours',
         day_label: 'That afternoon',
-        scene: `We talked for three hours. I went to her apartment. She opened the door and didn't say anything for a long time and then she stepped aside and let me in. I'm not going to tell you everything that was said because some of it I'm still processing. But I'll tell you the parts that matter. She didn't yell. I almost wish she had. Instead she got very quiet and very precise and she asked me questions I didn't have answers to. She asked me when I found out. She asked me if I considered it. She asked me how long I sat with it before I told her. And when I hesitated on that last one she nodded like she already knew. At one point she said something that I can't stop hearing. She said: "I always knew you thought I was the lesser founder." And I wanted to say that's not true. I wanted to say that's not what this is. But I also kept thinking about the fact that I didn't call her back that night. That I almost just signed the thing without telling her. That I had forty-eight hours where I was actually considering it. What does that mean about me. She made us coffee at some point. We sat at her kitchen table and she said she doesn't blame the investor because investors are investors. She blames me for not picking up the phone the second it happened. And she's right. I know she's right. That's the part I can't get past.`,
-        vote_question: 'The investor needs an answer tomorrow. Zoe and Dana could go back to him together and push back on the terms. Does Zoe ask Dana to do that?',
+        scene: `She came to my apartment. I opened the door and she was standing there and I almost shut it in her face. Not really. But I thought about it. Instead I just stepped back and let her in and we didn't talk for maybe twenty minutes. We just sat in my living room and she looked at me and I looked at her and neither of us said anything. And then I started asking questions. I asked her when she found out. She said two days ago. Two days. She said the investor called and it was quiet, it was careful, but it was very clear. Fifteen percent or no deal. I asked her if she considered it. If she actually sat down and thought about cutting my equity in half. She nodded. And that's when I felt something in me just... shift. I said you were my best friend before you were my cofounder and you chose the company first. And she started to say something but I cut her off. I said how long did you sit with it. And she said forty-eight hours. That's what broke something. Forty-eight hours of knowing that I was worth less and not calling me. Forty-eight hours of making that choice every single time she didn't pick up the phone. We drank coffee. We talked about the deal, the math, what happens next. She said she understands if I want to walk. She said she'd understand. And maybe I should want to walk. Maybe the right thing is to walk. But we've been building this for five years and walking away means everything stops. It means we were wrong the whole time.`,
+        vote_question: 'Zoe asks Dana if they should fight the investor together. Does Dana agree?',
         vote_options: [
           {
             id: 'together',
-            label: 'Ask Dana to fight this together',
+            label: 'Fight together',
             consequence: 'united',
-            cost: 'The investor might walk. $4M gone.'
+            cost: 'The investor might walk. Everything collapses.'
           },
           {
             id: 'alone',
-            label: 'Handle the investor alone — protect Dana from more',
+            label: 'Tell Zoe to handle it alone',
             consequence: 'alone',
-            cost: 'Dana will feel managed, not protected.'
+            cost: 'Dana stays separated from what happens next.'
           }
         ]
       },
@@ -130,20 +130,20 @@ export const STORIES = [
         number: 5,
         title: 'The Wire',
         day_label: 'Final day',
-        scene: `The term sheet is in my email. The final version. After everything that happened, the investor came back with a counter. Dana keeps 22%, not 15%. It's better than the original ask but it's still eight points less than what she has right now. Eight percent of the company she helped build from nothing. Dana and I talked about it for a long time yesterday. She was calm. Calmer than me, honestly. She said she understands the math. She said she knows that the product is what the investors are buying and the product is what I built. She said she's okay with 22 if I'm okay with it. And then she said the thing that's been keeping me up all night. She said: "Whatever you decide, I need to know you decided it. Not them." The wire would hit tomorrow. Four million dollars. The product we've been building for five years, the thing we started in her apartment with a credit card and a Shopify store, it finally has the runway to become what it was supposed to be. Real distribution. Real manufacturing. Real salaries instead of the barely-anything we've been paying ourselves. I have the DocuSign open on my screen right now. The signature line is blinking. I keep scrolling up to the section that says Dana's name next to 22% and then scrolling back down to the signature line. My phone is on the desk. Dana texted me an hour ago: "I trust you." Two words. And I don't know if that makes this easier or impossible.`,
-        vote_question: 'Does Zoe sign?',
+        scene: `The term sheet is in my email. Twenty-two percent. Not fifteen. But not thirty either. Twenty-two. Eight percentage points less than what I started with. Eight percent of something I helped build from nothing. I have been trying to do the math on what that means in dollars and I can't. I don't want to know. It's easier to think of it as what it is — a reduction. A reminder that someone, somewhere, decided my half was worth less. Zoe and I talked about it yesterday. She was quiet, more careful than she's been. She said she understands if I want to walk. She said the math makes sense, that the product is the thing the investor wants, that I should be okay with twenty-two. But her voice kept breaking when she said it. I told her I know the math. I know that the product is yours. I know that you built something that actually works and I built an audience for it. I said yes to twenty-two. And then I said something I meant: whatever you decide, I need to know you decided it and not them. She has the DocuSign open right now. I texted her an hour ago. Two words: I trust you. And I meant it. She's my best friend. She's my cofounder. She made a choice I still don't fully understand and I'm making a choice to let her make the next one. The wire hits tomorrow. Four million dollars. Everything changes or nothing does. And it depends on whether she can sign her name.`,
+        vote_question: 'Dana waits for Zoe to decide. Does Zoe sign?',
         vote_options: [
           {
             id: 'sign',
-            label: 'Sign it',
+            label: 'She signs',
             consequence: 'signed',
-            cost: 'Dana loses 8% of the company she helped build.'
+            cost: 'Dana loses 8% of the company. Bloom gets the funding. Everything accelerates.'
           },
           {
             id: 'walk',
-            label: 'Walk away from the round',
+            label: 'She walks away',
             consequence: 'walked',
-            cost: 'Everything they built runs out of money in 90 days.'
+            cost: 'The round dies. Bloom runs out of money in 90 days. Everything ends.'
           }
         ]
       }
