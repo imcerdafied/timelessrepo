@@ -16,6 +16,91 @@ function splitSentences(text) {
     .filter(Boolean)
 }
 
+// ─── Ambient city noise generator (Web Audio API) ───
+let ambientCtx = null
+let ambientNodes = []
+
+function startAmbient() {
+  if (ambientCtx) return
+  try {
+    ambientCtx = new (window.AudioContext || window.webkitAudioContext)()
+
+    // Brown noise for low city hum
+    const bufferSize = 2 * ambientCtx.sampleRate
+    const brownBuffer = ambientCtx.createBuffer(1, bufferSize, ambientCtx.sampleRate)
+    const brownData = brownBuffer.getChannelData(0)
+    let lastOut = 0
+    for (let i = 0; i < bufferSize; i++) {
+      const white = Math.random() * 2 - 1
+      brownData[i] = (lastOut + 0.02 * white) / 1.02
+      lastOut = brownData[i]
+      brownData[i] *= 3.5
+    }
+    const brownSource = ambientCtx.createBufferSource()
+    brownSource.buffer = brownBuffer
+    brownSource.loop = true
+
+    // Low-pass filter for deep rumble
+    const lpFilter = ambientCtx.createBiquadFilter()
+    lpFilter.type = 'lowpass'
+    lpFilter.frequency.value = 200
+
+    // Master gain — very subtle
+    const masterGain = ambientCtx.createGain()
+    masterGain.gain.value = 0.06
+
+    // Fade in
+    masterGain.gain.setValueAtTime(0, ambientCtx.currentTime)
+    masterGain.gain.linearRampToValueAtTime(0.06, ambientCtx.currentTime + 3)
+
+    brownSource.connect(lpFilter)
+    lpFilter.connect(masterGain)
+    masterGain.connect(ambientCtx.destination)
+    brownSource.start()
+
+    // Subtle wind / high-frequency air
+    const windBuffer = ambientCtx.createBuffer(1, bufferSize, ambientCtx.sampleRate)
+    const windData = windBuffer.getChannelData(0)
+    for (let i = 0; i < bufferSize; i++) {
+      windData[i] = (Math.random() * 2 - 1) * 0.5
+    }
+    const windSource = ambientCtx.createBufferSource()
+    windSource.buffer = windBuffer
+    windSource.loop = true
+
+    const bpFilter = ambientCtx.createBiquadFilter()
+    bpFilter.type = 'bandpass'
+    bpFilter.frequency.value = 800
+    bpFilter.Q.value = 0.5
+
+    const windGain = ambientCtx.createGain()
+    windGain.gain.value = 0.02
+
+    windSource.connect(bpFilter)
+    bpFilter.connect(windGain)
+    windGain.connect(ambientCtx.destination)
+    windSource.start()
+
+    ambientNodes = [brownSource, windSource, masterGain, windGain]
+  } catch (e) {
+    // Web Audio not supported, fail silently
+  }
+}
+
+function stopAmbient() {
+  if (ambientCtx) {
+    try {
+      ambientNodes.forEach(n => { try { n.stop?.() } catch {} })
+      ambientCtx.close()
+    } catch {}
+    ambientCtx = null
+    ambientNodes = []
+  }
+}
+
+// Track whether user has interacted (for autoplay policy)
+let hasUserInteracted = false
+
 export default function EpisodePlayer() {
   const {
     activeStory: story,
@@ -70,7 +155,6 @@ export default function EpisodePlayer() {
     setShowPostVote(false)
     setShareOpen(false)
     setVisibleSentences(0)
-    setUserTapped(false)
     sceneStartTime.current = Date.now()
     voiceService.stop()
 
@@ -79,6 +163,25 @@ export default function EpisodePlayer() {
     audio.preload = 'auto'
     audio.src = 'https://xllwzunjvidtszyklhhm.supabase.co/storage/v1/object/public/episodes/' + episode.id + '.mp3'
     audioRef.current = audio
+
+    // If user has already interacted, auto-start this episode
+    if (hasUserInteracted) {
+      setUserTapped(true)
+      // Small delay to let audio preload
+      const autoStartTimer = setTimeout(() => {
+        startScenePlayback()
+      }, 800)
+      return () => {
+        clearTimeout(autoStartTimer)
+        if (audioRef.current) {
+          audioRef.current.pause()
+          audioRef.current.src = ''
+        }
+        if (sentenceTimer.current) clearInterval(sentenceTimer.current)
+      }
+    } else {
+      setUserTapped(false)
+    }
 
     return () => {
       if (audioRef.current) {
@@ -89,14 +192,21 @@ export default function EpisodePlayer() {
     }
   }, [episode.id])
 
-  // Start scene when user taps (needed for autoplay policy)
-  const startScene = useCallback(() => {
-    if (phase !== 'scene') return
+  // Clean up ambient on unmount
+  useEffect(() => {
+    return () => stopAmbient()
+  }, [])
+
+  // Core playback logic (separated so it can be called from auto-start or tap)
+  function startScenePlayback() {
     sceneStartTime.current = Date.now()
     track('scene_started', { session_id: localStorage.getItem('dispatch_session'), episode_id: episode.id })
 
+    // Start ambient city noise
+    startAmbient()
+
     const audio = audioRef.current
-    let audioDuration = sentences.length * 4 // fallback
+    let audioDuration = sentences.length * 5.5 // fallback — slower pacing
 
     if (audio && audio.src) {
       const playPromise = audio.play()
@@ -108,12 +218,14 @@ export default function EpisodePlayer() {
       } else {
         audio.addEventListener('loadedmetadata', () => {
           if (audio.duration && isFinite(audio.duration)) {
-            // Adjust interval if we get real duration
+            // Duration is now available but we already started the timer
+            // The slower TTS generation should handle pacing
           }
         }, { once: true })
       }
     }
 
+    // Add padding to let each sentence breathe
     const interval = (audioDuration / sentences.length) * 1000
 
     let count = 0
@@ -129,10 +241,17 @@ export default function EpisodePlayer() {
             watch_time_s: Math.round((Date.now() - sceneStartTime.current) / 1000),
           })
           setPhase('interact')
-        }, 2000)
+        }, 2500)
       }
       setVisibleSentences(c => Math.min(c + 1, sentences.length))
     }, interval)
+  }
+
+  // Start scene — first tap version
+  const startScene = useCallback(() => {
+    if (phase !== 'scene') return
+    hasUserInteracted = true
+    startScenePlayback()
   }, [phase, episode.id, sentences.length])
 
   function handleTapToStart() {
@@ -178,6 +297,7 @@ export default function EpisodePlayer() {
   function skipScene() {
     if (audioRef.current) audioRef.current.pause()
     if (sentenceTimer.current) clearInterval(sentenceTimer.current)
+    stopAmbient()
     track('scene_skipped', {
       session_id: localStorage.getItem('dispatch_session'),
       episode_id: episode.id,
@@ -248,6 +368,7 @@ export default function EpisodePlayer() {
   function handleNextEpisode() {
     if (nextEpisode) {
       track('dispatch_next_episode', { from_episode: episode.id, to_episode: nextEpisode.id })
+      stopAmbient()
       setActiveEpisode(nextEpisode)
     }
   }
@@ -296,7 +417,7 @@ export default function EpisodePlayer() {
                 width: '115%',
                 height: '115%',
                 objectFit: 'cover',
-                objectPosition: 'center top',
+                objectPosition: 'center 30%',
                 filter: userTapped ? 'none' : 'brightness(0.6)',
                 transition: 'filter 1s ease',
                 animation: userTapped ? 'kenBurns 25s ease-in-out infinite alternate' : 'none',
@@ -339,7 +460,7 @@ export default function EpisodePlayer() {
               </div>
             </div>
 
-            {/* Tap to start overlay */}
+            {/* Tap to start overlay — only on first episode */}
             {!userTapped && (
               <motion.div
                 initial={{ opacity: 0 }}
@@ -387,10 +508,10 @@ export default function EpisodePlayer() {
                 key={i}
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
+                transition={{ duration: 0.6 }}
                 style={{
                   fontSize: 16,
-                  lineHeight: 1.7,
+                  lineHeight: 1.8,
                   fontFamily: "Georgia, 'Times New Roman', serif",
                   color: i === visibleSentences - 1
                     ? 'rgba(255,255,255,0.9)'
@@ -705,7 +826,7 @@ export default function EpisodePlayer() {
             position: 'relative',
           }}
         >
-          {/* Subtle Zoe background */}
+          {/* Subtle Dana background */}
           <div style={{
             position: 'absolute',
             inset: 0,
@@ -873,7 +994,7 @@ export default function EpisodePlayer() {
                         cursor: 'pointer',
                       }}
                     >
-                      Episode {nextEpisode.number} is ready &rarr;
+                      Continue &rarr;
                     </button>
                   ) : (
                     <div>
