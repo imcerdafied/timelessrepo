@@ -195,7 +195,9 @@ function splitIntoLines(text) {
 
 /**
  * Build a monologue for any era from its character + description data.
- * Returns { lines, narrator } or null if no character exists.
+ * Works with OR without a character — eras without characters use
+ * the era headline + description as a narrator-less monologue.
+ * Returns { lines, narrator, audioUrl } or null if truly nothing is available.
  */
 export function buildMonologue(eraId, character, era) {
   // Check for hand-written hero monologue
@@ -208,14 +210,16 @@ export function buildMonologue(eraId, character, era) {
     }
   }
 
-  if (!character || !era) return null
+  if (!era) return null
 
-  // Build auto-generated monologue from character opening + era description
   const lines = []
 
-  // Start with the character's opening line (first-person, in-character)
-  if (character.opening_line) {
+  // If we have a character, lead with their opening line
+  if (character?.opening_line) {
     lines.push(character.opening_line)
+  } else if (era.headline) {
+    // No character — use the era headline as the opening
+    lines.push(era.headline)
   }
 
   // Add era description split into dramatic lines
@@ -224,10 +228,17 @@ export function buildMonologue(eraId, character, era) {
     lines.push(...descLines)
   }
 
+  // Add key events as dramatic beats if available and we need more lines
+  if (era.key_events && lines.length < 5) {
+    const events = Array.isArray(era.key_events) ? era.key_events : []
+    for (const evt of events.slice(0, 3)) {
+      if (typeof evt === 'string' && evt.length > 10) lines.push(evt)
+    }
+  }
+
   // Add landscape description as a coda if available
   if (era.landscape) {
     const landscapeLines = splitIntoLines(era.landscape)
-    // Take just the first 2 landscape lines to keep it tight
     lines.push(...landscapeLines.slice(0, 2))
   }
 
@@ -238,8 +249,8 @@ export function buildMonologue(eraId, character, era) {
 
   return {
     lines: finalLines,
-    narrator: { name: character.name, role: character.role },
-    audioUrl: null, // no pre-generated audio for auto monologues
+    narrator: character ? { name: character.name, role: character.role } : null,
+    audioUrl: null,
   }
 }
 

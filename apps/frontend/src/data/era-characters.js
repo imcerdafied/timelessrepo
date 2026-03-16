@@ -786,3 +786,58 @@ Speak as the young Picasso — not the famous one, but the struggling, brilliant
 export const DWELL_TIME_SECONDS = import.meta.env.VITE_DWELL_TIME_SECONDS
   ? parseInt(import.meta.env.VITE_DWELL_TIME_SECONDS)
   : 90
+
+// ═══════════════════════════════════════════════════════════════
+// ALIAS MAP — bridges orphaned character keys to actual era IDs
+// ═══════════════════════════════════════════════════════════════
+// Some characters were written with old location prefixes (e.g.
+// "chinatown-1906") but locations.json uses short IDs ("ct-1906").
+// This reverse map lets us find the character for any era ID.
+
+const ALIAS_TO_ERA = {
+  'chinatown-1882':       null,           // no matching era
+  'chinatown-1906':       'ct-1906',
+  'embarcadero-1934':     null,           // no matching era
+  'sf-castro-harvey':     null,           // no matching era (custom slug)
+  'sf-castro-aids':       null,           // no matching era (custom slug)
+  'sf-haight-summer':     'haight-1967',
+  'nyc-1500':             'lm-1500',
+  'nyc-1880':             null,           // no matching era
+  'nyc-1977':             'lm-1977',
+  'nyc-2001':             'lm-2001',
+  'bk-1776':              'bb-1789',      // closest Brooklyn Bridge era
+  'bk-1883':              null,           // no matching era
+  'london-50':            'sb-43',        // Roman London → South Bank 43 AD
+  'london-1666':          'city-1666',
+  'london-1940':          'sb-1940',
+  'london-2025':          'sb-2025',
+  'chi-1871':             'loop-1871',
+  'chi-1919':             null,           // no matching era
+  'chi-2008':             null,           // no matching era
+  'riyadh-1744':          'dir-1744',
+  'riyadh-1938':          'dir-1938',
+  'riyadh-2025':          'dir-2025',
+  'lagos-1960':           'li-1960',
+  'lagos-2025':           'li-2025',
+}
+
+// Build reverse lookup: era ID → character key
+const _eraToCharKey = {}
+for (const [charKey, eraId] of Object.entries(ALIAS_TO_ERA)) {
+  if (eraId) _eraToCharKey[eraId] = charKey
+}
+
+/**
+ * Get the character for a given era ID.
+ * Checks direct key first, then alias map.
+ * Returns the character object or null.
+ */
+export function getCharacterForEra(eraId) {
+  if (!eraId) return null
+  // Direct match (e.g. "alamo-1500", "mission-1906")
+  if (ERA_CHARACTERS[eraId]) return ERA_CHARACTERS[eraId]
+  // Reverse alias match (e.g. era "ct-1906" → character key "chinatown-1906")
+  const aliasKey = _eraToCharKey[eraId]
+  if (aliasKey && ERA_CHARACTERS[aliasKey]) return ERA_CHARACTERS[aliasKey]
+  return null
+}
