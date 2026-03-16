@@ -445,7 +445,7 @@ export default function EpisodePlayer() {
           <div style={{
             position: 'relative',
             width: '100%',
-            height: '55%',
+            height: '40%',
             flexShrink: 0,
             overflow: 'hidden',
           }}>
@@ -453,8 +453,8 @@ export default function EpisodePlayer() {
               src={DANA_IMAGE}
               alt="Dana"
               style={{
-                width: '115%',
-                height: '115%',
+                width: '110%',
+                height: '110%',
                 objectFit: 'cover',
                 objectPosition: 'center 40%',
                 filter: userTapped ? 'none' : 'brightness(0.6)',
