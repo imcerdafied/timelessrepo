@@ -19,6 +19,7 @@ import VenueCard from './VenueCard'
 import VenueScene from './VenueScene'
 import ScenePlayer from './ScenePlayer'
 import SceneSelector from './SceneSelector'
+import TimelessScene from './TimelessScene'
 
 function oneSentence(text) {
   const match = text.match(/^(.*?[.!?])/)
@@ -58,6 +59,7 @@ export default function ExperienceWindow() {
   const [scenes, setScenes] = useState(null)
   const [sceneSelectorOpen, setSceneSelectorOpen] = useState(false)
   const [activeScene, setActiveScene] = useState(null)
+  const [timelessSceneOpen, setTimelessSceneOpen] = useState(false)
   const dragControls = useDragControls()
   const touchStartY = useRef(null)
 
@@ -90,6 +92,7 @@ export default function ExperienceWindow() {
     setScenes(null)
     setSceneSelectorOpen(false)
     setActiveScene(null)
+    setTimelessSceneOpen(false)
   }
 
   // Load scene manifest for eras with pre-generated content
@@ -474,12 +477,12 @@ export default function ExperienceWindow() {
                   {oneSentence(era.description)}
                 </p>
 
-                {/* Watch Scenes CTA — shown for eras with pre-generated scenes */}
-                {era.id === 'mission-1906' && scenes?.length > 0 && (
+                {/* Experience This Moment — Timeless Scene for 1906 era */}
+                {era.id === 'mission-1906' && (
                   <button
                     onClick={(e) => {
                       e.stopPropagation()
-                      setSceneSelectorOpen(true)
+                      setTimelessSceneOpen(true)
                     }}
                     className="mt-3 flex items-center gap-3 rounded-2xl px-4 py-3 w-full"
                     style={{
@@ -491,20 +494,56 @@ export default function ExperienceWindow() {
                       className="flex items-center justify-center w-8 h-8 rounded-full"
                       style={{ background: 'rgba(200,134,10,0.2)' }}
                     >
-                      <svg width="12" height="14" viewBox="0 0 12 14" fill="#C8860A">
-                        <path d="M0 0v14l12-7z" />
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C8860A" strokeWidth="2">
+                        <circle cx="12" cy="12" r="10" />
+                        <path d="M12 6v6l4 2" />
                       </svg>
                     </span>
                     <span className="flex flex-col items-start">
                       <span className="text-sm font-medium" style={{ color: '#C8860A' }}>
-                        Watch the Story
+                        Experience This Moment
                       </span>
                       <span className="text-[10px]" style={{ color: 'rgba(200,134,10,0.6)' }}>
-                        {scenes.length} episodes available
+                        Narrated scene with ambient audio
                       </span>
                     </span>
                     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className="ml-auto">
                       <path d="M5 3l4 4-4 4" stroke="#C8860A" strokeWidth="1.5" strokeLinecap="round" />
+                    </svg>
+                  </button>
+                )}
+
+                {/* Watch Scenes CTA — shown for eras with pre-generated scenes */}
+                {era.id === 'mission-1906' && scenes?.length > 0 && (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      setSceneSelectorOpen(true)
+                    }}
+                    className="mt-3 flex items-center gap-3 rounded-2xl px-4 py-3 w-full"
+                    style={{
+                      background: 'rgba(255,255,255,0.04)',
+                      border: '1px solid rgba(255,255,255,0.08)',
+                    }}
+                  >
+                    <span
+                      className="flex items-center justify-center w-8 h-8 rounded-full"
+                      style={{ background: 'rgba(255,255,255,0.06)' }}
+                    >
+                      <svg width="12" height="14" viewBox="0 0 12 14" fill="rgba(255,255,255,0.5)">
+                        <path d="M0 0v14l12-7z" />
+                      </svg>
+                    </span>
+                    <span className="flex flex-col items-start">
+                      <span className="text-sm font-medium" style={{ color: 'rgba(255,255,255,0.6)' }}>
+                        Watch AI Scenes
+                      </span>
+                      <span className="text-[10px]" style={{ color: 'rgba(255,255,255,0.3)' }}>
+                        {scenes.length} episodes available
+                      </span>
+                    </span>
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className="ml-auto">
+                      <path d="M5 3l4 4-4 4" stroke="rgba(255,255,255,0.3)" strokeWidth="1.5" strokeLinecap="round" />
                     </svg>
                   </button>
                 )}
@@ -582,6 +621,18 @@ export default function ExperienceWindow() {
           onClose={() => setActiveScene(null)}
           onTalkTo={(characterId) => {
             setActiveScene(null)
+            setCharacterOpen(true)
+          }}
+        />,
+        document.body
+      )}
+
+      {/* Timeless Scene — immersive narrated experience */}
+      {timelessSceneOpen && createPortal(
+        <TimelessScene
+          onClose={() => setTimelessSceneOpen(false)}
+          onTalkTo={() => {
+            setTimelessSceneOpen(false)
             setCharacterOpen(true)
           }}
         />,
