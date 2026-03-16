@@ -1,241 +1,111 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { buildMonologue, getSceneImages, getEraVisualStyle } from '../data/scene-data'
+import { getAmbientProfile, startAmbient } from '../data/ambient-profiles'
 
 /**
  * TimelessScene — the core Timeless Moment experience
  *
- * Format: Go anywhere, any time. See imagery with Ken Burns treatment,
- * hear ambient sound of that era, listen to a character narrate,
- * then converse with them.
+ * Generic: works for ANY era at ANY location.
+ * Ken Burns imagery + era-appropriate ambient soundscape + character monologue + conversation.
  *
- * This is the 1906 SF earthquake proof of concept.
+ * Props:
+ *   era        — era object from locations.json
+ *   character  — character from ERA_CHARACTERS
+ *   imageUrl   — main era image URL
+ *   locationName — display name of the location
+ *   onClose    — close callback
+ *   onTalkTo   — open character chat callback
  */
 
-const SUPABASE_PUBLIC = 'https://xllwzunjvidtszyklhhm.supabase.co/storage/v1/object/public'
-
-// Scene data for 1906 SF Earthquake
-const SCENE = {
-  title: 'The Great Earthquake',
-  subtitle: 'San Francisco, April 18, 1906',
-  location: 'Mission District',
-  year: '1906',
-  images: [
-    `${SUPABASE_PUBLIC}/characters/sf-1906-ruins.jpg`,
-    `${SUPABASE_PUBLIC}/characters/sf-1906-aerial.jpg`,
-  ],
-  audioUrl: `${SUPABASE_PUBLIC}/episodes/sf-1906-scene.mp3`,
-  narrator: {
-    name: 'Thomas Wakefield',
-    role: 'Reporter, San Francisco Examiner',
-    voiceId: 'TX3LPaxmHKxFdv7VOQHJ',
-  },
-  // The monologue text — matches the generated audio
-  monologue: [
-    "I woke to the sound of the world ending.",
-    "It was quarter past five in the morning. April eighteenth. The bed moved... sideways. Not shaking — sliding. Like the floor had become water.",
-    "I got to the window and looked out at Market Street... and the facades were peeling off the buildings like skin.",
-    "Three-story walls just... folding forward into the street. Brick and glass and timber. The noise — I can't describe the noise. It wasn't a roar. It was deeper than that. It was the sound of the earth disagreeing with itself.",
-    "I got dressed. I don't remember deciding to. Shoes, coat, notebook. The reporter in me took over before the man could panic.",
-    "South of Market was already burning. You could see the smoke columns — three, four, five of them — rising like pillars holding up some terrible sky.",
-    "People were moving north. Everyone was moving north. Families carrying what they could. A woman with a birdcage. A man dragging a trunk with one broken wheel, scraping a line into the cobblestones.",
-    "The fire department was already out but the hydrants... the hydrants were dry. The earthquake had broken the water mains beneath the streets. Every last one.",
-    "I stood on the corner of Mission and Third and I wrote this in my notebook: The city is on fire and there is no water. God help San Francisco.",
-  ],
-  // Character for post-scene conversation
-  character: {
-    name: 'Rosa Castellano',
-    role: 'Laundress, Mission District resident',
-    opening: 'The ground shook like God himself was angry. My building is gone. Everything I own is gone. But we are alive, mija, and the Mission still stands.',
-  },
-}
-
-// ─── Web Audio API: 1906 Fire Ambient ───────────────────────────────
-function createFireAmbient(audioCtx) {
-  const master = audioCtx.createGain()
-  master.gain.value = 0
-  master.connect(audioCtx.destination)
-
-  // 1. Base rumble — very low brown noise for earthquake aftermath
-  const rumbleSize = audioCtx.sampleRate * 4
-  const rumbleBuffer = audioCtx.createBuffer(1, rumbleSize, audioCtx.sampleRate)
-  const rumbleData = rumbleBuffer.getChannelData(0)
-  let lastRumble = 0
-  for (let i = 0; i < rumbleSize; i++) {
-    const white = Math.random() * 2 - 1
-    lastRumble = (lastRumble + 0.02 * white) / 1.02
-    rumbleData[i] = lastRumble * 3.5
-  }
-  const rumble = audioCtx.createBufferSource()
-  rumble.buffer = rumbleBuffer
-  rumble.loop = true
-  const rumbleFilter = audioCtx.createBiquadFilter()
-  rumbleFilter.type = 'lowpass'
-  rumbleFilter.frequency.value = 120
-  const rumbleGain = audioCtx.createGain()
-  rumbleGain.gain.value = 0.6
-  rumble.connect(rumbleFilter)
-  rumbleFilter.connect(rumbleGain)
-  rumbleGain.connect(master)
-  rumble.start()
-
-  // 2. Fire crackle — bandpass-filtered noise with randomized volume
-  const crackleSize = audioCtx.sampleRate * 3
-  const crackleBuffer = audioCtx.createBuffer(1, crackleSize, audioCtx.sampleRate)
-  const crackleData = crackleBuffer.getChannelData(0)
-  for (let i = 0; i < crackleSize; i++) {
-    crackleData[i] = (Math.random() * 2 - 1) * (Math.random() > 0.7 ? 1.0 : 0.2)
-  }
-  const crackle = audioCtx.createBufferSource()
-  crackle.buffer = crackleBuffer
-  crackle.loop = true
-  const crackleFilter = audioCtx.createBiquadFilter()
-  crackleFilter.type = 'bandpass'
-  crackleFilter.frequency.value = 3000
-  crackleFilter.Q.value = 0.8
-  const crackleGain = audioCtx.createGain()
-  crackleGain.gain.value = 0.15
-  crackle.connect(crackleFilter)
-  crackleFilter.connect(crackleGain)
-  crackleGain.connect(master)
-  crackle.start()
-
-  // 3. Wind / smoke drift — filtered noise, slow modulation
-  const windSize = audioCtx.sampleRate * 5
-  const windBuffer = audioCtx.createBuffer(1, windSize, audioCtx.sampleRate)
-  const windData = windBuffer.getChannelData(0)
-  let lastWind = 0
-  for (let i = 0; i < windSize; i++) {
-    const w = Math.random() * 2 - 1
-    lastWind = (lastWind + 0.04 * w) / 1.04
-    windData[i] = lastWind * 2.5
-  }
-  const wind = audioCtx.createBufferSource()
-  wind.buffer = windBuffer
-  wind.loop = true
-  const windFilter = audioCtx.createBiquadFilter()
-  windFilter.type = 'bandpass'
-  windFilter.frequency.value = 400
-  windFilter.Q.value = 0.5
-  const windGain = audioCtx.createGain()
-  windGain.gain.value = 0.25
-  wind.connect(windFilter)
-  windFilter.connect(windGain)
-  windGain.connect(master)
-  wind.start()
-
-  // 4. Random wood creak / collapse sounds — scheduled at intervals
-  let creakInterval = null
-  function scheduleCreak() {
-    const delay = 6000 + Math.random() * 18000 // every 6-24 seconds
-    creakInterval = setTimeout(() => {
-      if (audioCtx.state === 'closed') return
-      const osc = audioCtx.createOscillator()
-      osc.type = 'sawtooth'
-      const startFreq = 60 + Math.random() * 80
-      osc.frequency.setValueAtTime(startFreq, audioCtx.currentTime)
-      osc.frequency.exponentialRampToValueAtTime(startFreq * 0.3, audioCtx.currentTime + 0.8)
-      const creakGain = audioCtx.createGain()
-      creakGain.gain.setValueAtTime(0, audioCtx.currentTime)
-      creakGain.gain.linearRampToValueAtTime(0.06, audioCtx.currentTime + 0.1)
-      creakGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1.2)
-      const creakFilter = audioCtx.createBiquadFilter()
-      creakFilter.type = 'bandpass'
-      creakFilter.frequency.value = 200
-      creakFilter.Q.value = 2
-      osc.connect(creakFilter)
-      creakFilter.connect(creakGain)
-      creakGain.connect(master)
-      osc.start()
-      osc.stop(audioCtx.currentTime + 1.5)
-      scheduleCreak()
-    }, delay)
-  }
-  scheduleCreak()
-
-  // 5. Distant shouts — very faint, occasional bursts of filtered noise
-  let shoutInterval = null
-  function scheduleShout() {
-    const delay = 10000 + Math.random() * 20000 // every 10-30 seconds
-    shoutInterval = setTimeout(() => {
-      if (audioCtx.state === 'closed') return
-      const shoutLen = 0.3 + Math.random() * 0.5
-      const shoutBuf = audioCtx.createBuffer(1, audioCtx.sampleRate * shoutLen, audioCtx.sampleRate)
-      const shoutData = shoutBuf.getChannelData(0)
-      for (let i = 0; i < shoutData.length; i++) {
-        shoutData[i] = (Math.random() * 2 - 1) * Math.sin(Math.PI * i / shoutData.length)
-      }
-      const src = audioCtx.createBufferSource()
-      src.buffer = shoutBuf
-      const shoutFilter = audioCtx.createBiquadFilter()
-      shoutFilter.type = 'bandpass'
-      shoutFilter.frequency.value = 800 + Math.random() * 600
-      shoutFilter.Q.value = 3
-      const shoutGain = audioCtx.createGain()
-      shoutGain.gain.value = 0.03 + Math.random() * 0.02
-      src.connect(shoutFilter)
-      shoutFilter.connect(shoutGain)
-      shoutGain.connect(master)
-      src.start()
-      scheduleShout()
-    }, delay)
-  }
-  scheduleShout()
-
-  // Fade in
-  master.gain.setValueAtTime(0, audioCtx.currentTime)
-  master.gain.linearRampToValueAtTime(0.7, audioCtx.currentTime + 3)
-
-  return {
-    master,
-    stop: () => {
-      clearTimeout(creakInterval)
-      clearTimeout(shoutInterval)
-      master.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 2)
-      setTimeout(() => {
-        try { rumble.stop() } catch {}
-        try { crackle.stop() } catch {}
-        try { wind.stop() } catch {}
-      }, 2500)
-    },
-  }
-}
-
-// ─── Ken Burns keyframes for two images ─────────────────────────────
+// Ken Burns motion variants — cycle through these
 const kenBurnsVariants = [
-  {
-    initial: { scale: 1.0, x: '0%', y: '0%' },
-    animate: { scale: 1.15, x: '3%', y: '-2%' },
-  },
-  {
-    initial: { scale: 1.1, x: '-2%', y: '1%' },
-    animate: { scale: 1.0, x: '2%', y: '-1%' },
-  },
+  { initial: { scale: 1.0, x: '0%', y: '0%' }, animate: { scale: 1.15, x: '3%', y: '-2%' } },
+  { initial: { scale: 1.1, x: '-2%', y: '1%' }, animate: { scale: 1.0, x: '2%', y: '-1%' } },
+  { initial: { scale: 1.05, x: '1%', y: '-1%' }, animate: { scale: 1.12, x: '-3%', y: '2%' } },
 ]
 
-// ─── Component ──────────────────────────────────────────────────────
-export default function TimelessScene({ onClose, onTalkTo }) {
+export default function TimelessScene({ era, character, imageUrl, locationName, onClose, onTalkTo }) {
   const [phase, setPhase] = useState('intro') // intro | playing | conversation
   const [currentImageIdx, setCurrentImageIdx] = useState(0)
   const [visibleLines, setVisibleLines] = useState(0)
   const [audioReady, setAudioReady] = useState(false)
 
   const audioRef = useRef(null)
-  const audioCtxRef = useRef(null)
   const ambientRef = useRef(null)
   const lineTimerRef = useRef(null)
   const imageTimerRef = useRef(null)
 
-  // Preload audio
+  // Build monologue + scene data from era info
+  const monologueData = buildMonologue(era?.id, character, era)
+  const lines = monologueData?.lines || []
+  const narrator = monologueData?.narrator || (character ? { name: character.name, role: character.role } : null)
+  const narratorAudioUrl = monologueData?.audioUrl || null
+  const hasAudio = !!narratorAudioUrl
+
+  // Get images for Ken Burns cycling
+  const images = getSceneImages(era?.id, imageUrl)
+
+  // Get visual style (filter, overlay) for this era
+  const visualStyle = getEraVisualStyle(era?.id, era?.era_type)
+
+  // Get ambient profile name
+  const ambientProfile = getAmbientProfile(era?.id, era?.era_type)
+
+  // Preload narrator audio if available
   useEffect(() => {
-    const audio = new Audio(SCENE.audioUrl)
+    if (!narratorAudioUrl) {
+      setAudioReady(true) // no audio to wait for
+      return
+    }
+    const audio = new Audio(narratorAudioUrl)
     audio.preload = 'auto'
     audio.addEventListener('canplaythrough', () => setAudioReady(true), { once: true })
+    // Fallback: mark ready after 5s even if audio isn't loaded
+    const fallbackTimer = setTimeout(() => setAudioReady(true), 5000)
     audioRef.current = audio
     return () => {
+      clearTimeout(fallbackTimer)
       audio.pause()
       audio.src = ''
     }
-  }, [])
+  }, [narratorAudioUrl])
+
+  // Calculate line timing
+  const getLineDurations = useCallback(() => {
+    return lines.map(line => {
+      const words = line.split(' ').length
+      // If we have narrator audio, time to the audio (~130 wpm with pauses)
+      // If no audio, go a bit faster (~150 wpm reading pace)
+      const wpm = hasAudio ? 2.2 : 2.8
+      return Math.max(2.5, (words / wpm) + 1.2)
+    })
+  }, [lines, hasAudio])
+
+  // Start text reveal
+  const startTextReveal = useCallback(() => {
+    const durations = getLineDurations()
+    let lineIdx = 0
+    function revealNext() {
+      if (lineIdx >= lines.length) return
+      lineTimerRef.current = setTimeout(() => {
+        lineIdx++
+        setVisibleLines(lineIdx)
+        if (lineIdx < lines.length) {
+          revealNext()
+        } else if (!hasAudio) {
+          // No narrator audio — auto-transition to conversation after text ends
+          setTimeout(() => setPhase('conversation'), 3000)
+        }
+      }, durations[lineIdx] * 1000)
+    }
+    // First line after a beat
+    lineTimerRef.current = setTimeout(() => {
+      setVisibleLines(1)
+      lineIdx = 1
+      revealNext()
+    }, 1500)
+  }, [lines, hasAudio, getLineDurations])
 
   // Start experience
   const startExperience = useCallback(() => {
@@ -243,71 +113,41 @@ export default function TimelessScene({ onClose, onTalkTo }) {
     setVisibleLines(0)
     setCurrentImageIdx(0)
 
-    // Start ambient audio
-    const ctx = new (window.AudioContext || window.webkitAudioContext)()
-    audioCtxRef.current = ctx
-    ambientRef.current = createFireAmbient(ctx)
+    // Start ambient soundscape
+    ambientRef.current = startAmbient(ambientProfile)
 
-    // Start narrator audio
-    if (audioRef.current) {
+    // Start narrator audio if available
+    if (audioRef.current && hasAudio) {
       audioRef.current.currentTime = 0
       audioRef.current.volume = 0.85
       audioRef.current.play().catch(e => console.warn('Audio play failed:', e))
     }
 
-    // Progressive text reveal — roughly timed to the monologue
-    const lineDurations = SCENE.monologue.map(line => {
-      // Estimate ~130 words per minute for the slow narration with pauses
-      const words = line.split(' ').length
-      return Math.max(3, (words / 2.2) + 1.5) // seconds per line
-    })
-
-    let lineIdx = 0
-    let elapsed = 0
-    function revealNext() {
-      if (lineIdx >= SCENE.monologue.length) return
-      lineTimerRef.current = setTimeout(() => {
-        lineIdx++
-        setVisibleLines(lineIdx)
-        if (lineIdx < SCENE.monologue.length) {
-          elapsed += lineDurations[lineIdx]
-          revealNext()
-        }
-      }, lineDurations[lineIdx] * 1000)
-    }
-    // First line after 1.5s
-    lineTimerRef.current = setTimeout(() => {
-      setVisibleLines(1)
-      lineIdx = 1
-      revealNext()
-    }, 1500)
+    // Start progressive text reveal
+    startTextReveal()
 
     // Cycle images every 15 seconds
-    imageTimerRef.current = setInterval(() => {
-      setCurrentImageIdx(prev => (prev + 1) % SCENE.images.length)
-    }, 15000)
-  }, [])
+    if (images.length > 1) {
+      imageTimerRef.current = setInterval(() => {
+        setCurrentImageIdx(prev => (prev + 1) % images.length)
+      }, 15000)
+    }
+  }, [ambientProfile, hasAudio, startTextReveal, images.length])
 
   // Detect when narrator audio ends → transition to conversation
   useEffect(() => {
-    if (phase !== 'playing' || !audioRef.current) return
+    if (phase !== 'playing' || !audioRef.current || !hasAudio) return
     const audio = audioRef.current
     const onEnded = () => {
-      // Show all remaining lines
-      setVisibleLines(SCENE.monologue.length)
-      // Fade ambient down slightly
+      setVisibleLines(lines.length)
       if (ambientRef.current) {
-        ambientRef.current.master.gain.linearRampToValueAtTime(
-          0.3,
-          audioCtxRef.current.currentTime + 3
-        )
+        ambientRef.current.setVolume(0.3, 3)
       }
-      // Transition to conversation after a beat
       setTimeout(() => setPhase('conversation'), 3000)
     }
     audio.addEventListener('ended', onEnded)
     return () => audio.removeEventListener('ended', onEnded)
-  }, [phase])
+  }, [phase, hasAudio, lines.length])
 
   // Cleanup on unmount
   useEffect(() => {
@@ -315,20 +155,12 @@ export default function TimelessScene({ onClose, onTalkTo }) {
       clearTimeout(lineTimerRef.current)
       clearInterval(imageTimerRef.current)
       if (ambientRef.current) ambientRef.current.stop()
-      if (audioCtxRef.current && audioCtxRef.current.state !== 'closed') {
-        audioCtxRef.current.close()
-      }
-      if (audioRef.current) {
-        audioRef.current.pause()
-      }
+      if (audioRef.current) audioRef.current.pause()
     }
   }, [])
 
   const handleClose = () => {
     if (ambientRef.current) ambientRef.current.stop()
-    if (audioCtxRef.current && audioCtxRef.current.state !== 'closed') {
-      setTimeout(() => audioCtxRef.current.close(), 2500)
-    }
     if (audioRef.current) audioRef.current.pause()
     clearTimeout(lineTimerRef.current)
     clearInterval(imageTimerRef.current)
@@ -336,16 +168,27 @@ export default function TimelessScene({ onClose, onTalkTo }) {
   }
 
   const handleTalkTo = () => {
-    // Stop narrator audio, keep ambient at low volume
     if (audioRef.current) audioRef.current.pause()
-    if (ambientRef.current) {
-      ambientRef.current.master.gain.linearRampToValueAtTime(
-        0.15,
-        audioCtxRef.current.currentTime + 1
-      )
-    }
-    onTalkTo?.('mission-1906')
+    if (ambientRef.current) ambientRef.current.setVolume(0.15, 1)
+    onTalkTo?.(era?.id)
   }
+
+  const handleReplay = () => {
+    setPhase('playing')
+    setVisibleLines(0)
+    if (audioRef.current && hasAudio) {
+      audioRef.current.currentTime = 0
+      audioRef.current.play().catch(() => {})
+    }
+    if (ambientRef.current) ambientRef.current.setVolume(0.7, 2)
+    startTextReveal()
+  }
+
+  // Era color accent
+  const eraColors = { past: '#C8860A', present: '#F5F5F5', future: '#5B9BD5' }
+  const accent = eraColors[era?.era_type] || '#C8860A'
+
+  if (!era || !lines.length) return null
 
   // ── INTRO SCREEN ──────────────────────────────────────────────────
   if (phase === 'intro') {
@@ -356,14 +199,16 @@ export default function TimelessScene({ onClose, onTalkTo }) {
         className="fixed inset-0 z-50 flex flex-col items-center justify-center"
         style={{ background: '#0A0A0A' }}
       >
-        {/* Background preview — dimmed */}
+        {/* Background preview */}
         <div className="absolute inset-0 overflow-hidden">
-          <img
-            src={SCENE.images[0]}
-            alt="1906 San Francisco"
-            className="w-full h-full object-cover"
-            style={{ filter: 'brightness(0.15) saturate(0.5) sepia(0.4)' }}
-          />
+          {images[0] && (
+            <img
+              src={images[0]}
+              alt={era.label}
+              className="w-full h-full object-cover"
+              style={{ filter: 'brightness(0.15) saturate(0.5) sepia(0.3)' }}
+            />
+          )}
         </div>
 
         <button
@@ -380,7 +225,7 @@ export default function TimelessScene({ onClose, onTalkTo }) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
             className="text-[10px] tracking-[0.25em] uppercase mb-2"
-            style={{ color: 'rgba(220,140,40,0.8)' }}
+            style={{ color: `${accent}cc` }}
           >
             Timeless Moment
           </motion.div>
@@ -392,7 +237,7 @@ export default function TimelessScene({ onClose, onTalkTo }) {
             className="text-[11px] tracking-[0.15em] uppercase mb-6"
             style={{ color: 'rgba(255,255,255,0.35)' }}
           >
-            {SCENE.subtitle}
+            {locationName} &middot; {era.year_display}
           </motion.div>
 
           <motion.h1
@@ -402,7 +247,7 @@ export default function TimelessScene({ onClose, onTalkTo }) {
             className="text-3xl mb-4 font-semibold"
             style={{ fontFamily: 'Playfair Display, serif', color: '#F5F5F5' }}
           >
-            {SCENE.title}
+            {era.headline || era.label}
           </motion.h1>
 
           <motion.p
@@ -412,18 +257,20 @@ export default function TimelessScene({ onClose, onTalkTo }) {
             className="text-sm leading-relaxed mb-3"
             style={{ color: 'rgba(255,255,255,0.5)' }}
           >
-            A 7.9 magnitude earthquake strikes at 5:12 AM. Fires rage across the city for three days. 80% of San Francisco is destroyed.
+            {era.description?.substring(0, 180)}...
           </motion.p>
 
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.1 }}
-            className="text-xs leading-relaxed mb-8"
-            style={{ color: 'rgba(255,255,255,0.3)', fontStyle: 'italic' }}
-          >
-            Narrated by {SCENE.narrator.name}, {SCENE.narrator.role}
-          </motion.p>
+          {narrator && (
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1.1 }}
+              className="text-xs leading-relaxed mb-8"
+              style={{ color: 'rgba(255,255,255,0.3)', fontStyle: 'italic' }}
+            >
+              {narrator.name}, {narrator.role}
+            </motion.p>
+          )}
 
           <motion.button
             initial={{ opacity: 0, y: 10 }}
@@ -433,8 +280,8 @@ export default function TimelessScene({ onClose, onTalkTo }) {
             className="px-8 py-3.5 rounded-full text-sm font-medium tracking-wide"
             style={{
               background: audioReady
-                ? 'linear-gradient(135deg, #C8860A, #a06d08)'
-                : 'rgba(200,134,10,0.3)',
+                ? `linear-gradient(135deg, ${accent}, ${accent}cc)`
+                : `${accent}44`,
               color: audioReady ? '#0A0A0A' : 'rgba(255,255,255,0.4)',
               pointerEvents: audioReady ? 'auto' : 'none',
             }}
@@ -447,6 +294,8 @@ export default function TimelessScene({ onClose, onTalkTo }) {
   }
 
   // ── PLAYING / CONVERSATION ────────────────────────────────────────
+  const kbVariant = kenBurnsVariants[currentImageIdx % kenBurnsVariants.length]
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -454,18 +303,15 @@ export default function TimelessScene({ onClose, onTalkTo }) {
       className="fixed inset-0 z-50"
       style={{ background: '#0A0A0A' }}
     >
-      {/* Ken Burns background — cycling images */}
+      {/* Ken Burns background */}
       <div className="absolute inset-0 overflow-hidden">
         <AnimatePresence mode="wait">
           <motion.div
             key={currentImageIdx}
             className="absolute"
             style={{ inset: '-12%' }}
-            initial={{ opacity: 0, ...kenBurnsVariants[currentImageIdx].initial }}
-            animate={{
-              opacity: 1,
-              ...kenBurnsVariants[currentImageIdx].animate,
-            }}
+            initial={{ opacity: 0, ...kbVariant.initial }}
+            animate={{ opacity: 1, ...kbVariant.animate }}
             exit={{ opacity: 0 }}
             transition={{
               opacity: { duration: 2 },
@@ -475,52 +321,30 @@ export default function TimelessScene({ onClose, onTalkTo }) {
             }}
           >
             <img
-              src={SCENE.images[currentImageIdx]}
-              alt="1906 San Francisco"
+              src={images[currentImageIdx % images.length] || imageUrl}
+              alt={era.label}
               className="w-full h-full object-cover"
-              style={{
-                filter: 'brightness(0.35) saturate(0.6) sepia(0.35)',
-              }}
+              style={{ filter: visualStyle.filter }}
             />
           </motion.div>
         </AnimatePresence>
       </div>
 
-      {/* Firelight overlay — warm flicker */}
-      <motion.div
-        className="absolute inset-0 pointer-events-none"
-        animate={{
-          opacity: [0.12, 0.22, 0.15, 0.20, 0.12],
-        }}
-        transition={{
-          duration: 4,
-          ease: 'easeInOut',
-          repeat: Infinity,
-        }}
-        style={{
-          background:
-            'radial-gradient(ellipse at 30% 70%, rgba(220,100,20,0.35) 0%, transparent 50%), ' +
-            'radial-gradient(ellipse at 70% 30%, rgba(180,70,15,0.25) 0%, transparent 55%)',
-        }}
-      />
-
-      {/* Smoke drift overlay */}
-      <motion.div
-        className="absolute inset-0 pointer-events-none"
-        animate={{
-          opacity: [0.05, 0.12, 0.07, 0.10],
-          x: ['0%', '2%', '-1%', '1%'],
-        }}
-        transition={{
-          duration: 12,
-          ease: 'easeInOut',
-          repeat: Infinity,
-        }}
-        style={{
-          background:
-            'linear-gradient(180deg, rgba(80,60,40,0.3) 0%, transparent 40%, transparent 70%, rgba(40,30,20,0.4) 100%)',
-        }}
-      />
+      {/* Era-appropriate overlay */}
+      {visualStyle.overlay !== 'none' && (
+        <motion.div
+          className="absolute inset-0 pointer-events-none"
+          animate={visualStyle.overlayAnim ? {
+            opacity: [0.12, 0.22, 0.15, 0.20, 0.12],
+          } : {}}
+          transition={visualStyle.overlayAnim ? {
+            duration: 4,
+            ease: 'easeInOut',
+            repeat: Infinity,
+          } : {}}
+          style={{ background: visualStyle.overlay }}
+        />
+      )}
 
       {/* Top gradient */}
       <div
@@ -528,7 +352,7 @@ export default function TimelessScene({ onClose, onTalkTo }) {
         style={{ background: 'linear-gradient(to bottom, rgba(0,0,0,0.7), transparent)' }}
       />
 
-      {/* Bottom gradient — heavy for text legibility */}
+      {/* Bottom gradient */}
       <div
         className="absolute bottom-0 left-0 right-0 z-10 pointer-events-none"
         style={{
@@ -560,17 +384,17 @@ export default function TimelessScene({ onClose, onTalkTo }) {
             gap: 8,
           }}
         >
-          <span style={{ color: '#dc8c28', fontSize: 10, fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase' }}>
-            {SCENE.location}
+          <span style={{ color: accent, fontSize: 10, fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase' }}>
+            {locationName || era.label}
           </span>
-          <span style={{ color: 'rgba(220,140,40,0.5)', fontSize: 10, fontFamily: 'monospace' }}>
-            {SCENE.year}
+          <span style={{ color: `${accent}88`, fontSize: 10, fontFamily: 'monospace' }}>
+            {era.year_display}
           </span>
         </div>
       </div>
 
-      {/* Narrator name — small, top center */}
-      {phase === 'playing' && (
+      {/* Narrator name */}
+      {phase === 'playing' && narrator && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -578,24 +402,24 @@ export default function TimelessScene({ onClose, onTalkTo }) {
           className="absolute top-5 left-0 right-0 z-20 flex justify-center"
         >
           <span style={{
-            color: 'rgba(220,140,40,0.6)',
+            color: `${accent}99`,
             fontSize: 9,
             letterSpacing: '0.2em',
             textTransform: 'uppercase',
           }}>
-            {SCENE.narrator.name}
+            {narrator.name}
           </span>
         </motion.div>
       )}
 
-      {/* Progressive text — monologue lines appearing one by one */}
+      {/* Progressive text */}
       {phase === 'playing' && (
         <div
           className="absolute bottom-8 left-0 right-0 z-20 px-6"
           style={{ maxHeight: '55%', overflow: 'hidden' }}
         >
           <div className="flex flex-col justify-end" style={{ minHeight: '100%' }}>
-            {SCENE.monologue.slice(0, visibleLines).map((line, i) => {
+            {lines.slice(0, visibleLines).map((line, i) => {
               const isLatest = i === visibleLines - 1
               const isFaded = i < visibleLines - 3
               return (
@@ -624,9 +448,9 @@ export default function TimelessScene({ onClose, onTalkTo }) {
         </div>
       )}
 
-      {/* CONVERSATION PHASE — after narration ends */}
+      {/* CONVERSATION PHASE */}
       <AnimatePresence>
-        {phase === 'conversation' && (
+        {phase === 'conversation' && character && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -643,7 +467,7 @@ export default function TimelessScene({ onClose, onTalkTo }) {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
                 className="text-[10px] tracking-[0.2em] uppercase mb-4"
-                style={{ color: 'rgba(220,140,40,0.7)' }}
+                style={{ color: `${accent}bb` }}
               >
                 Someone is here
               </motion.div>
@@ -655,7 +479,7 @@ export default function TimelessScene({ onClose, onTalkTo }) {
                 className="text-2xl mb-1 font-semibold"
                 style={{ fontFamily: 'Playfair Display, serif', color: '#F5F5F5' }}
               >
-                {SCENE.character.name}
+                {character.name}
               </motion.h2>
 
               <motion.p
@@ -665,18 +489,20 @@ export default function TimelessScene({ onClose, onTalkTo }) {
                 className="text-xs mb-6"
                 style={{ color: 'rgba(255,255,255,0.4)' }}
               >
-                {SCENE.character.role}
+                {character.role}
               </motion.p>
 
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.9 }}
-                className="text-sm leading-relaxed mb-8"
-                style={{ color: 'rgba(255,255,255,0.6)', fontStyle: 'italic' }}
-              >
-                "{SCENE.character.opening}"
-              </motion.p>
+              {character.opening_line && (
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.9 }}
+                  className="text-sm leading-relaxed mb-8"
+                  style={{ color: 'rgba(255,255,255,0.6)', fontStyle: 'italic' }}
+                >
+                  &ldquo;{character.opening_line}&rdquo;
+                </motion.p>
+              )}
 
               <div className="flex flex-col gap-3">
                 <motion.button
@@ -685,48 +511,16 @@ export default function TimelessScene({ onClose, onTalkTo }) {
                   transition={{ delay: 1.1 }}
                   onClick={handleTalkTo}
                   className="w-full px-6 py-3.5 rounded-full text-sm font-medium tracking-wide"
-                  style={{ background: 'linear-gradient(135deg, #C8860A, #a06d08)', color: '#0A0A0A' }}
+                  style={{ background: `linear-gradient(135deg, ${accent}, ${accent}cc)`, color: '#0A0A0A' }}
                 >
-                  Talk to {SCENE.character.name}
+                  Talk to {character.name}
                 </motion.button>
 
                 <motion.button
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 1.2 }}
-                  onClick={() => {
-                    setPhase('playing')
-                    setVisibleLines(0)
-                    if (audioRef.current) {
-                      audioRef.current.currentTime = 0
-                      audioRef.current.play().catch(() => {})
-                    }
-                    if (ambientRef.current) {
-                      ambientRef.current.master.gain.linearRampToValueAtTime(
-                        0.7,
-                        audioCtxRef.current.currentTime + 2
-                      )
-                    }
-                    // Restart text reveal
-                    let lineIdx = 0
-                    const lineDurations = SCENE.monologue.map(line => {
-                      const words = line.split(' ').length
-                      return Math.max(3, (words / 2.2) + 1.5)
-                    })
-                    function revealNext() {
-                      if (lineIdx >= SCENE.monologue.length) return
-                      lineTimerRef.current = setTimeout(() => {
-                        lineIdx++
-                        setVisibleLines(lineIdx)
-                        if (lineIdx < SCENE.monologue.length) revealNext()
-                      }, lineDurations[lineIdx] * 1000)
-                    }
-                    lineTimerRef.current = setTimeout(() => {
-                      setVisibleLines(1)
-                      lineIdx = 1
-                      revealNext()
-                    }, 1500)
-                  }}
+                  onClick={handleReplay}
                   className="w-full px-6 py-3 rounded-full text-sm"
                   style={{
                     background: 'rgba(255,255,255,0.06)',
@@ -734,13 +528,64 @@ export default function TimelessScene({ onClose, onTalkTo }) {
                     border: '1px solid rgba(255,255,255,0.1)',
                   }}
                 >
-                  Listen Again
+                  {hasAudio ? 'Listen Again' : 'Experience Again'}
                 </motion.button>
 
                 <motion.button
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 1.3 }}
+                  onClick={handleClose}
+                  className="w-full px-6 py-3 text-sm"
+                  style={{ color: 'rgba(255,255,255,0.3)' }}
+                >
+                  Back to Era
+                </motion.button>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* No character — end with just replay/close */}
+      <AnimatePresence>
+        {phase === 'conversation' && !character && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1.5 }}
+            className="absolute inset-0 z-30 flex flex-col items-center justify-center"
+          >
+            <div
+              className="absolute inset-0"
+              style={{ background: 'rgba(10,10,10,0.75)', backdropFilter: 'blur(4px)' }}
+            />
+            <div className="relative z-10 max-w-sm px-6 text-center">
+              <motion.h2
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="text-xl mb-6 font-semibold"
+                style={{ fontFamily: 'Playfair Display, serif', color: '#F5F5F5' }}
+              >
+                {era.headline || era.label}
+              </motion.h2>
+
+              <div className="flex flex-col gap-3">
+                <motion.button
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 }}
+                  onClick={handleReplay}
+                  className="w-full px-6 py-3.5 rounded-full text-sm font-medium"
+                  style={{ background: `linear-gradient(135deg, ${accent}, ${accent}cc)`, color: '#0A0A0A' }}
+                >
+                  Experience Again
+                </motion.button>
+
+                <motion.button
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.4 }}
                   onClick={handleClose}
                   className="w-full px-6 py-3 text-sm"
                   style={{ color: 'rgba(255,255,255,0.3)' }}

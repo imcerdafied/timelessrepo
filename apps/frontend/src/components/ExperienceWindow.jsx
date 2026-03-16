@@ -477,8 +477,8 @@ export default function ExperienceWindow() {
                   {oneSentence(era.description)}
                 </p>
 
-                {/* Experience This Moment — Timeless Scene for 1906 era */}
-                {era.id === 'mission-1906' && (
+                {/* Experience This Moment — available for every era with a character */}
+                {hasCharacter && (
                   <button
                     onClick={(e) => {
                       e.stopPropagation()
@@ -486,29 +486,29 @@ export default function ExperienceWindow() {
                     }}
                     className="mt-3 flex items-center gap-3 rounded-2xl px-4 py-3 w-full"
                     style={{
-                      background: 'rgba(200,134,10,0.12)',
-                      border: '1px solid rgba(200,134,10,0.25)',
+                      background: `${color}1f`,
+                      border: `1px solid ${color}40`,
                     }}
                   >
                     <span
                       className="flex items-center justify-center w-8 h-8 rounded-full"
-                      style={{ background: 'rgba(200,134,10,0.2)' }}
+                      style={{ background: `${color}33` }}
                     >
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C8860A" strokeWidth="2">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2">
                         <circle cx="12" cy="12" r="10" />
                         <path d="M12 6v6l4 2" />
                       </svg>
                     </span>
                     <span className="flex flex-col items-start">
-                      <span className="text-sm font-medium" style={{ color: '#C8860A' }}>
+                      <span className="text-sm font-medium" style={{ color }}>
                         Experience This Moment
                       </span>
-                      <span className="text-[10px]" style={{ color: 'rgba(200,134,10,0.6)' }}>
-                        Narrated scene with ambient audio
+                      <span className="text-[10px]" style={{ color: `${color}99` }}>
+                        {ERA_CHARACTERS[era.id]?.name} narrates
                       </span>
                     </span>
                     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className="ml-auto">
-                      <path d="M5 3l4 4-4 4" stroke="#C8860A" strokeWidth="1.5" strokeLinecap="round" />
+                      <path d="M5 3l4 4-4 4" stroke={color} strokeWidth="1.5" strokeLinecap="round" />
                     </svg>
                   </button>
                 )}
@@ -630,6 +630,10 @@ export default function ExperienceWindow() {
       {/* Timeless Scene — immersive narrated experience */}
       {timelessSceneOpen && createPortal(
         <TimelessScene
+          era={era}
+          character={ERA_CHARACTERS[era.id]}
+          imageUrl={imageUrl}
+          locationName={locations.find((l) => l.id === selectedLocation)?.name}
           onClose={() => setTimelessSceneOpen(false)}
           onTalkTo={() => {
             setTimelessSceneOpen(false)
