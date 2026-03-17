@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import { createPortal } from 'react-dom'
 import { AnimatePresence, motion, useDragControls } from 'framer-motion'
 import useStore from '../store/useStore'
@@ -8,6 +8,7 @@ import { useEraAudio } from '../hooks/useEraAudio'
 import { audioService } from '../services/audioService'
 import { useDwellTime } from '../hooks/useDwellTime'
 import { ERA_CHARACTERS, getCharacterForEra } from '../data/era-characters'
+import { getAmbientProfile, startAmbient } from '../data/ambient-profiles'
 import { getVenuesForEra, getAutoplayVenue } from '../data/venues'
 import ArtifactLayer from './ArtifactLayer'
 import CameraOverlay from './CameraOverlay'
@@ -60,6 +61,8 @@ export default function ExperienceWindow() {
   const [sceneSelectorOpen, setSceneSelectorOpen] = useState(false)
   const [activeScene, setActiveScene] = useState(null)
   const [timelessSceneOpen, setTimelessSceneOpen] = useState(false)
+  const [ambientStarted, setAmbientStarted] = useState(false)
+  const ambientRef = useRef(null)
   const dragControls = useDragControls()
   const touchStartY = useRef(null)
 
@@ -94,7 +97,44 @@ export default function ExperienceWindow() {
     setSceneSelectorOpen(false)
     setActiveScene(null)
     setTimelessSceneOpen(false)
+    // Restart ambient audio for new era
+    if (ambientRef.current) {
+      ambientRef.current.stop()
+      ambientRef.current = null
+    }
+    if (ambientStarted) {
+      const profile = getAmbientProfile(era.id, era.era_type)
+      ambientRef.current = startAmbient(profile)
+    }
   }
+
+  // Start ambient on first user tap (browser autoplay policy)
+  const startAmbientOnInteraction = useCallback(() => {
+    if (ambientStarted || !era) return
+    setAmbientStarted(true)
+    const profile = getAmbientProfile(era.id, era.era_type)
+    ambientRef.current = startAmbient(profile)
+  }, [ambientStarted, era])
+
+  useEffect(() => {
+    const handler = () => startAmbientOnInteraction()
+    document.addEventListener('touchstart', handler, { once: true })
+    document.addEventListener('click', handler, { once: true })
+    return () => {
+      document.removeEventListener('touchstart', handler)
+      document.removeEventListener('click', handler)
+    }
+  }, [startAmbientOnInteraction])
+
+  // Cleanup ambient on unmount
+  useEffect(() => {
+    return () => {
+      if (ambientRef.current) {
+        ambientRef.current.stop()
+        ambientRef.current = null
+      }
+    }
+  }, [])
 
   // Load scene manifest for eras with pre-generated content
   const API_BASE = import.meta.env.VITE_API_URL || ''
@@ -482,6 +522,11 @@ export default function ExperienceWindow() {
                 <button
                   onClick={(e) => {
                     e.stopPropagation()
+                    // Pause ExperienceWindow ambient — TimelessScene has its own
+                    if (ambientRef.current) {
+                      ambientRef.current.stop()
+                      ambientRef.current = null
+                    }
                     setTimelessSceneOpen(true)
                   }}
                   className="mt-3 flex items-center gap-3 rounded-2xl px-4 py-3 w-full"
@@ -633,7 +678,14 @@ export default function ExperienceWindow() {
           character={character}
           imageUrl={imageUrl}
           locationName={locations.find((l) => l.id === selectedLocation)?.name}
-          onClose={() => setTimelessSceneOpen(false)}
+          onClose={() => {
+            setTimelessSceneOpen(false)
+            // Resume ambient din
+            if (ambientStarted && !ambientRef.current && era) {
+              const profile = getAmbientProfile(era.id, era.era_type)
+              ambientRef.current = startAmbient(profile)
+            }
+          }}
           onTalkTo={() => {
             setTimelessSceneOpen(false)
             setCharacterOpen(true)

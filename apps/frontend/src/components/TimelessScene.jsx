@@ -18,6 +18,43 @@ import { getAmbientProfile, startAmbient } from '../data/ambient-profiles'
  *   onTalkTo   — open character chat callback
  */
 
+// Auto-launches character chat after a brief reveal of who's speaking
+function ConversationAutoStart({ character, onTalkTo, accent }) {
+  useEffect(() => {
+    // Brief pause to let user see who they'll be talking to, then auto-open chat
+    const timer = setTimeout(() => onTalkTo(), 1800)
+    return () => clearTimeout(timer)
+  }, [onTalkTo])
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 1 }}
+      className="absolute bottom-12 left-0 right-0 z-30 flex flex-col items-center px-6"
+    >
+      <motion.p
+        initial={{ opacity: 0, y: 6 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="text-xs mb-1"
+        style={{ color: `${accent}bb`, letterSpacing: '0.15em', textTransform: 'uppercase' }}
+      >
+        {character.name}
+      </motion.p>
+      <motion.p
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 0.5 }}
+        transition={{ delay: 0.3 }}
+        className="text-[10px] text-center"
+        style={{ color: 'rgba(255,255,255,0.35)', maxWidth: 280 }}
+      >
+        {character.role}
+      </motion.p>
+    </motion.div>
+  )
+}
+
 // Ken Burns motion variants — cycle through these
 const kenBurnsVariants = [
   { initial: { scale: 1.0, x: '0%', y: '0%' }, animate: { scale: 1.15, x: '3%', y: '-2%' } },
@@ -26,10 +63,11 @@ const kenBurnsVariants = [
 ]
 
 export default function TimelessScene({ era, character, imageUrl, locationName, onClose, onTalkTo }) {
-  const [phase, setPhase] = useState('intro') // intro | playing | conversation
+  const [phase, setPhase] = useState('starting') // starting | playing | conversation
   const [currentImageIdx, setCurrentImageIdx] = useState(0)
   const [visibleLines, setVisibleLines] = useState(0)
   const [audioReady, setAudioReady] = useState(false)
+  const autoStarted = useRef(false)
 
   const audioRef = useRef(null)
   const ambientRef = useRef(null)
@@ -70,6 +108,14 @@ export default function TimelessScene({ era, character, imageUrl, locationName, 
       audio.src = ''
     }
   }, [narratorAudioUrl])
+
+  // Auto-start experience immediately (skip intro screen)
+  useEffect(() => {
+    if (phase === 'starting' && audioReady && !autoStarted.current) {
+      autoStarted.current = true
+      startExperience()
+    }
+  }, [phase, audioReady, startExperience])
 
   // Calculate line timing
   const getLineDurations = useCallback(() => {
@@ -190,8 +236,8 @@ export default function TimelessScene({ era, character, imageUrl, locationName, 
 
   if (!era || !lines.length) return null
 
-  // ── INTRO SCREEN ──────────────────────────────────────────────────
-  if (phase === 'intro') {
+  // ── LOADING STATE (brief, while audio preloads) ──────────────────
+  if (phase === 'starting') {
     return (
       <motion.div
         initial={{ opacity: 0 }}
@@ -199,18 +245,16 @@ export default function TimelessScene({ era, character, imageUrl, locationName, 
         className="fixed inset-0 z-50 flex flex-col items-center justify-center"
         style={{ background: '#0A0A0A' }}
       >
-        {/* Background preview */}
         <div className="absolute inset-0 overflow-hidden">
           {images[0] && (
             <img
               src={images[0]}
               alt={era.label}
               className="w-full h-full object-cover"
-              style={{ filter: 'brightness(0.15) saturate(0.5) sepia(0.3)' }}
+              style={{ filter: 'brightness(0.1) saturate(0.4)' }}
             />
           )}
         </div>
-
         <button
           onClick={handleClose}
           className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full flex items-center justify-center"
@@ -218,77 +262,6 @@ export default function TimelessScene({ era, character, imageUrl, locationName, 
         >
           <span className="text-white/60 text-lg">&times;</span>
         </button>
-
-        <div className="relative z-10 max-w-sm px-6 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="text-[10px] tracking-[0.25em] uppercase mb-2"
-            style={{ color: `${accent}cc` }}
-          >
-            Timeless Moment
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-            className="text-[11px] tracking-[0.15em] uppercase mb-6"
-            style={{ color: 'rgba(255,255,255,0.35)' }}
-          >
-            {locationName} &middot; {era.year_display}
-          </motion.div>
-
-          <motion.h1
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.7 }}
-            className="text-3xl mb-4 font-semibold"
-            style={{ fontFamily: 'Playfair Display, serif', color: '#F5F5F5' }}
-          >
-            {era.headline || era.label}
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.9 }}
-            className="text-sm leading-relaxed mb-3"
-            style={{ color: 'rgba(255,255,255,0.5)' }}
-          >
-            {era.description?.substring(0, 180)}...
-          </motion.p>
-
-          {narrator && (
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1.1 }}
-              className="text-xs leading-relaxed mb-8"
-              style={{ color: 'rgba(255,255,255,0.3)', fontStyle: 'italic' }}
-            >
-              {narrator.name}, {narrator.role}
-            </motion.p>
-          )}
-
-          <motion.button
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.3 }}
-            onClick={startExperience}
-            className="px-8 py-3.5 rounded-full text-sm font-medium tracking-wide"
-            style={{
-              background: audioReady
-                ? `linear-gradient(135deg, ${accent}, ${accent}cc)`
-                : `${accent}44`,
-              color: audioReady ? '#0A0A0A' : 'rgba(255,255,255,0.4)',
-              pointerEvents: audioReady ? 'auto' : 'none',
-            }}
-          >
-            {audioReady ? 'Experience This Moment' : 'Loading...'}
-          </motion.button>
-        </div>
       </motion.div>
     )
   }
@@ -448,152 +421,36 @@ export default function TimelessScene({ era, character, imageUrl, locationName, 
         </div>
       )}
 
-      {/* CONVERSATION PHASE */}
+      {/* CONVERSATION PHASE — auto-launch character chat or show minimal end screen */}
       <AnimatePresence>
         {phase === 'conversation' && character && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1.5 }}
-            className="absolute inset-0 z-30 flex flex-col items-center justify-center"
-          >
-            <div
-              className="absolute inset-0"
-              style={{ background: 'rgba(10,10,10,0.75)', backdropFilter: 'blur(4px)' }}
-            />
-            <div className="relative z-10 max-w-sm px-6 text-center">
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
-                className="text-[10px] tracking-[0.2em] uppercase mb-4"
-                style={{ color: `${accent}bb` }}
-              >
-                Someone is here
-              </motion.div>
-
-              <motion.h2
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5 }}
-                className="text-2xl mb-1 font-semibold"
-                style={{ fontFamily: 'Playfair Display, serif', color: '#F5F5F5' }}
-              >
-                {character.name}
-              </motion.h2>
-
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.7 }}
-                className="text-xs mb-6"
-                style={{ color: 'rgba(255,255,255,0.4)' }}
-              >
-                {character.role}
-              </motion.p>
-
-              {character.opening_line && (
-                <motion.p
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.9 }}
-                  className="text-sm leading-relaxed mb-8"
-                  style={{ color: 'rgba(255,255,255,0.6)', fontStyle: 'italic' }}
-                >
-                  &ldquo;{character.opening_line}&rdquo;
-                </motion.p>
-              )}
-
-              <div className="flex flex-col gap-3">
-                <motion.button
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 1.1 }}
-                  onClick={handleTalkTo}
-                  className="w-full px-6 py-3.5 rounded-full text-sm font-medium tracking-wide"
-                  style={{ background: `linear-gradient(135deg, ${accent}, ${accent}cc)`, color: '#0A0A0A' }}
-                >
-                  Talk to {character.name}
-                </motion.button>
-
-                <motion.button
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 1.2 }}
-                  onClick={handleReplay}
-                  className="w-full px-6 py-3 rounded-full text-sm"
-                  style={{
-                    background: 'rgba(255,255,255,0.06)',
-                    color: '#F5F5F5',
-                    border: '1px solid rgba(255,255,255,0.1)',
-                  }}
-                >
-                  {hasAudio ? 'Listen Again' : 'Experience Again'}
-                </motion.button>
-
-                <motion.button
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 1.3 }}
-                  onClick={handleClose}
-                  className="w-full px-6 py-3 text-sm"
-                  style={{ color: 'rgba(255,255,255,0.3)' }}
-                >
-                  Back to Era
-                </motion.button>
-              </div>
-            </div>
-          </motion.div>
+          <ConversationAutoStart character={character} onTalkTo={handleTalkTo} accent={accent} />
         )}
       </AnimatePresence>
 
-      {/* No character — end with just replay/close */}
+      {/* No character — minimal end controls */}
       <AnimatePresence>
         {phase === 'conversation' && !character && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 1.5 }}
-            className="absolute inset-0 z-30 flex flex-col items-center justify-center"
+            transition={{ duration: 1 }}
+            className="absolute bottom-8 left-0 right-0 z-30 flex justify-center gap-3 px-6"
           >
-            <div
-              className="absolute inset-0"
-              style={{ background: 'rgba(10,10,10,0.75)', backdropFilter: 'blur(4px)' }}
-            />
-            <div className="relative z-10 max-w-sm px-6 text-center">
-              <motion.h2
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="text-xl mb-6 font-semibold"
-                style={{ fontFamily: 'Playfair Display, serif', color: '#F5F5F5' }}
-              >
-                {era.headline || era.label}
-              </motion.h2>
-
-              <div className="flex flex-col gap-3">
-                <motion.button
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.3 }}
-                  onClick={handleReplay}
-                  className="w-full px-6 py-3.5 rounded-full text-sm font-medium"
-                  style={{ background: `linear-gradient(135deg, ${accent}, ${accent}cc)`, color: '#0A0A0A' }}
-                >
-                  Experience Again
-                </motion.button>
-
-                <motion.button
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.4 }}
-                  onClick={handleClose}
-                  className="w-full px-6 py-3 text-sm"
-                  style={{ color: 'rgba(255,255,255,0.3)' }}
-                >
-                  Back to Era
-                </motion.button>
-              </div>
-            </div>
+            <button
+              onClick={handleReplay}
+              className="px-5 py-2.5 rounded-full text-xs font-medium"
+              style={{ background: `${accent}33`, color: accent, border: `1px solid ${accent}44` }}
+            >
+              {hasAudio ? 'Listen Again' : 'Experience Again'}
+            </button>
+            <button
+              onClick={handleClose}
+              className="px-5 py-2.5 rounded-full text-xs"
+              style={{ background: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.4)', border: '1px solid rgba(255,255,255,0.1)' }}
+            >
+              Back
+            </button>
           </motion.div>
         )}
       </AnimatePresence>

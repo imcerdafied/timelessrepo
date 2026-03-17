@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 const screens = [
   {
     title: 'Every place exists across time.',
-    body: 'Stand anywhere in the world and see what was here. What came before you and before anyone you know. And what might come after you and anyone you know.',
+    body: 'Go anywhere in time and space and find what\u2019s there, what was there, and what might be there in the future.',
   },
   {
     title: 'Move through time.',
