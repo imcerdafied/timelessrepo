@@ -98,14 +98,18 @@ const kenBurnsVariants = [
   { initial: { scale: 1.05, x: '1%', y: '-1%' }, animate: { scale: 1.12, x: '-3%', y: '2%' } },
 ]
 
+const API_BASE = import.meta.env.VITE_API_URL || ''
+
 export default function TimelessScene({ era, character, imageUrl, locationName, onClose, onTalkTo }) {
   const [phase, setPhase] = useState('starting') // starting | playing | conversation
   const [currentImageIdx, setCurrentImageIdx] = useState(0)
   const [visibleLines, setVisibleLines] = useState(0)
   const [audioReady, setAudioReady] = useState(false)
+  const [narrationLoading, setNarrationLoading] = useState(false)
   const autoStarted = useRef(false)
 
   const audioRef = useRef(null)
+  const narrationRef = useRef(null)
   const ambientRef = useRef(null)
   const lineTimerRef = useRef(null)
   const imageTimerRef = useRef(null)
@@ -194,11 +198,48 @@ export default function TimelessScene({ era, character, imageUrl, locationName, 
       console.warn('Ambient audio failed:', e)
     }
 
-    // Start narrator audio if available
+    // Start narrator audio if available (pre-recorded hero monologues)
     if (audioRef.current && hasAudio) {
       audioRef.current.currentTime = 0
       audioRef.current.volume = 0.85
       audioRef.current.play().catch(e => console.warn('Audio play failed:', e))
+    }
+
+    // Request TTS narration for auto-generated monologues (non-blocking)
+    if (!hasAudio && lines.length > 0) {
+      const narrationText = lines.join('\n\n')
+      setNarrationLoading(true)
+      fetch(`${API_BASE}/api/character/narrate`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          text: narrationText,
+          eraId: era?.id,
+          eraType: era?.era_type,
+          city: locationName || '',
+        }),
+      })
+        .then(r => {
+          if (!r.ok) throw new Error('TTS failed')
+          return r.blob()
+        })
+        .then(blob => {
+          const url = URL.createObjectURL(blob)
+          const audio = new Audio(url)
+          audio.volume = 0.9
+          narrationRef.current = audio
+          // Dim ambient when narration starts
+          if (ambientRef.current) ambientRef.current.setVolume(0.15, 1)
+          audio.play().catch(() => {})
+          // Transition to conversation when narration ends
+          audio.addEventListener('ended', () => {
+            setVisibleLines(lines.length)
+            if (ambientRef.current) ambientRef.current.setVolume(0.3, 3)
+            setTimeout(() => setPhase('conversation'), 2000)
+          })
+        })
+        .catch(e => console.warn('TTS narration unavailable:', e.message))
+        .finally(() => setNarrationLoading(false))
     }
 
     // Start progressive text reveal
@@ -255,12 +296,14 @@ export default function TimelessScene({ era, character, imageUrl, locationName, 
       clearInterval(imageTimerRef.current)
       if (ambientRef.current) ambientRef.current.stop()
       if (audioRef.current) audioRef.current.pause()
+      if (narrationRef.current) narrationRef.current.pause()
     }
   }, [])
 
   const handleClose = () => {
     if (ambientRef.current) ambientRef.current.stop()
     if (audioRef.current) audioRef.current.pause()
+    if (narrationRef.current) narrationRef.current.pause()
     clearTimeout(lineTimerRef.current)
     clearInterval(imageTimerRef.current)
     onClose()
@@ -268,6 +311,7 @@ export default function TimelessScene({ era, character, imageUrl, locationName, 
 
   const handleTalkTo = () => {
     if (audioRef.current) audioRef.current.pause()
+    if (narrationRef.current) narrationRef.current.pause()
     if (ambientRef.current) ambientRef.current.setVolume(0.15, 1)
     onTalkTo?.(era?.id)
   }
@@ -279,7 +323,13 @@ export default function TimelessScene({ era, character, imageUrl, locationName, 
       audioRef.current.currentTime = 0
       audioRef.current.play().catch(() => {})
     }
-    if (ambientRef.current) ambientRef.current.setVolume(0.7, 2)
+    if (narrationRef.current) {
+      narrationRef.current.currentTime = 0
+      narrationRef.current.play().catch(() => {})
+      if (ambientRef.current) ambientRef.current.setVolume(0.15, 1)
+    } else if (ambientRef.current) {
+      ambientRef.current.setVolume(0.7, 2)
+    }
     startTextReveal()
   }
 

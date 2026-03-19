@@ -168,6 +168,112 @@ router.get('/speak-stream', async (req, res) => {
   }
 })
 
+// POST /api/character/narrate — generate TTS narration for a TimelessScene monologue
+// Returns audio/mpeg stream. Body: { text, eraId, eraType, city }
+router.post('/narrate', async (req, res) => {
+  const { text, eraId, eraType, city } = req.body
+
+  if (!text) {
+    return res.status(400).json({ error: 'text required' })
+  }
+
+  const ELEVEN_API_KEY = process.env.ELEVENLABS_API_KEY
+  if (!ELEVEN_API_KEY) {
+    return res.status(500).json({ error: 'ElevenLabs API key not configured' })
+  }
+
+  // Comprehensive voice map — accent-appropriate for each location/era
+  // ElevenLabs voices: pick by gender, accent, and era feel
+  const voicesByRegion = {
+    // British voices
+    'london': 'onwK4e9ZLuTAKqWW03F9',      // Daniel — British male, warm
+    'southwark': 'onwK4e9ZLuTAKqWW03F9',
+    'whitechapel': 'onwK4e9ZLuTAKqWW03F9',
+    'soho': 'onwK4e9ZLuTAKqWW03F9',
+    'tower': 'onwK4e9ZLuTAKqWW03F9',
+    // American voices
+    'san francisco': 'EXAVITQu4vr4xnSDxMaL', // Sarah — American female, confident
+    'new york': 'cjVigY5qzO86Huf0OWal',      // Eric — American male, smooth
+    'manhattan': 'cjVigY5qzO86Huf0OWal',
+    'brooklyn': 'cjVigY5qzO86Huf0OWal',
+    'harlem': 'cjVigY5qzO86Huf0OWal',
+    'chicago': 'nPczCjzI2devNBz1zQrb',       // Brian — deep, resonant
+    'los angeles': 'EXAVITQu4vr4xnSDxMaL',
+    // French voices
+    'paris': 'onwK4e9ZLuTAKqWW03F9',         // Daniel — can handle formal European
+    'montmartre': 'onwK4e9ZLuTAKqWW03F9',
+    'marais': 'onwK4e9ZLuTAKqWW03F9',
+    // Japanese — use a clear, measured voice
+    'tokyo': 'JBFqnCBsd6RMkjVDRZzb',         // George — warm, measured
+    'shinjuku': 'JBFqnCBsd6RMkjVDRZzb',
+    'asakusa': 'JBFqnCBsd6RMkjVDRZzb',
+    // Default
+    'default': 'JBFqnCBsd6RMkjVDRZzb',       // George — warm storyteller
+  }
+
+  // Era-specific overrides
+  const eraVoiceOverrides = {
+    'mission-1906': 'EXAVITQu4vr4xnSDxMaL',
+    'sb-1940': 'onwK4e9ZLuTAKqWW03F9',
+    'haight-1967': 'cjVigY5qzO86Huf0OWal',
+    'har-1925': 'cjVigY5qzO86Huf0OWal',
+    'lm-2001': 'nPczCjzI2devNBz1zQrb',
+  }
+
+  // Pick voice: era override > city match > default
+  let voiceId = eraVoiceOverrides[eraId]
+  if (!voiceId && city) {
+    const cityLower = city.toLowerCase()
+    for (const [key, id] of Object.entries(voicesByRegion)) {
+      if (cityLower.includes(key) || key.includes(cityLower)) {
+        voiceId = id
+        break
+      }
+    }
+  }
+  if (!voiceId) voiceId = voicesByRegion['default']
+
+  // Adjust voice settings based on era type for mood
+  const voiceSettings = {
+    stability: eraType === 'past' ? 0.6 : 0.5,
+    similarity_boost: 0.75,
+    style: eraType === 'past' ? 0.3 : 0.1,
+  }
+
+  try {
+    const response = await fetch(
+      `https://api.elevenlabs.io/v1/text-to-speech/${voiceId}/stream`,
+      {
+        method: 'POST',
+        headers: {
+          'xi-api-key': ELEVEN_API_KEY,
+          'Content-Type': 'application/json',
+          'Accept': 'audio/mpeg',
+        },
+        body: JSON.stringify({
+          text: text.slice(0, 3000),
+          model_id: 'eleven_turbo_v2',
+          voice_settings: voiceSettings,
+        }),
+      }
+    )
+
+    if (!response.ok) {
+      const err = await response.text()
+      console.error('Narration TTS error:', err)
+      return res.status(500).json({ error: 'TTS generation failed' })
+    }
+
+    res.setHeader('Content-Type', 'audio/mpeg')
+    res.setHeader('Cache-Control', 'public, max-age=86400')
+    const { Readable } = await import('stream')
+    Readable.fromWeb(response.body).pipe(res)
+  } catch (err) {
+    console.error('Narration error:', err)
+    res.status(500).json({ error: err.message })
+  }
+})
+
 router.get('/test', async (req, res) => {
   try {
     const response = await client.messages.create({
