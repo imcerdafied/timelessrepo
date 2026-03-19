@@ -76,7 +76,7 @@ export default function EraDetail({ era, open, onClose, color, locationName }) {
             </button>
 
             {/* Scrollable content */}
-            <div className="overflow-y-auto overscroll-contain px-5" style={{ maxHeight: 'calc(85vh - 24px)', paddingBottom: 'calc(96px + env(safe-area-inset-bottom, 0px))' }}>
+            <div className="overflow-y-auto overscroll-contain px-5" style={{ maxHeight: 'calc(85vh - 24px)', paddingBottom: 'calc(96px + env(safe-area-inset-bottom, 0px))', maxWidth: 600, margin: '0 auto', width: '100%' }}>
               {/* Header */}
               <div className="flex items-start justify-between">
                 <div>

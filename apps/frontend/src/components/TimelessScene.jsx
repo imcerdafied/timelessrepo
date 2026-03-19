@@ -109,14 +109,6 @@ export default function TimelessScene({ era, character, imageUrl, locationName, 
     }
   }, [narratorAudioUrl])
 
-  // Auto-start experience immediately (skip intro screen)
-  useEffect(() => {
-    if (phase === 'starting' && audioReady && !autoStarted.current) {
-      autoStarted.current = true
-      startExperience()
-    }
-  }, [phase, audioReady, startExperience])
-
   // Calculate line timing
   const getLineDurations = useCallback(() => {
     return lines.map(line => {
@@ -159,8 +151,12 @@ export default function TimelessScene({ era, character, imageUrl, locationName, 
     setVisibleLines(0)
     setCurrentImageIdx(0)
 
-    // Start ambient soundscape
-    ambientRef.current = startAmbient(ambientProfile)
+    // Start ambient soundscape (wrapped in try-catch — AudioContext can fail on mobile)
+    try {
+      ambientRef.current = startAmbient(ambientProfile)
+    } catch (e) {
+      console.warn('Ambient audio failed:', e)
+    }
 
     // Start narrator audio if available
     if (audioRef.current && hasAudio) {
@@ -179,6 +175,27 @@ export default function TimelessScene({ era, character, imageUrl, locationName, 
       }, 15000)
     }
   }, [ambientProfile, hasAudio, startTextReveal, images.length])
+
+  // Auto-start: fires once when audio is ready (or immediately for non-audio eras)
+  useEffect(() => {
+    if (phase === 'starting' && audioReady && !autoStarted.current) {
+      autoStarted.current = true
+      startExperience()
+    }
+  }, [phase, audioReady, startExperience])
+
+  // Safety fallback: if stuck in 'starting' for 2 seconds, force start
+  useEffect(() => {
+    if (phase !== 'starting') return
+    const fallback = setTimeout(() => {
+      if (!autoStarted.current) {
+        console.warn('TimelessScene: fallback auto-start triggered')
+        autoStarted.current = true
+        startExperience()
+      }
+    }, 2000)
+    return () => clearTimeout(fallback)
+  }, [phase, startExperience])
 
   // Detect when narrator audio ends → transition to conversation
   useEffect(() => {
@@ -251,14 +268,30 @@ export default function TimelessScene({ era, character, imageUrl, locationName, 
               src={images[0]}
               alt={era.label}
               className="w-full h-full object-cover"
-              style={{ filter: 'brightness(0.1) saturate(0.4)' }}
+              style={{ filter: 'brightness(0.25) saturate(0.5)' }}
             />
           )}
         </div>
+        {/* Bottom gradient for loading text legibility */}
+        <div
+          className="absolute bottom-0 left-0 right-0 pointer-events-none"
+          style={{ height: '40%', background: 'linear-gradient(to top, rgba(0,0,0,0.8), transparent)' }}
+        />
+        {/* Loading indicator */}
+        <motion.div
+          className="absolute bottom-12 left-0 right-0 flex justify-center"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3 }}
+        >
+          <span style={{ color: `${accent}88`, fontSize: 10, letterSpacing: '0.15em', textTransform: 'uppercase' }}>
+            {hasAudio ? 'Loading narration…' : 'Entering moment…'}
+          </span>
+        </motion.div>
         <button
           onClick={handleClose}
           className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full flex items-center justify-center"
-          style={{ background: 'rgba(255,255,255,0.08)' }}
+          style={{ background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(8px)' }}
         >
           <span className="text-white/60 text-lg">&times;</span>
         </button>

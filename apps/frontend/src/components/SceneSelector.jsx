@@ -35,7 +35,7 @@ export default function SceneSelector({ scenes, onSelect, onClose, visible }) {
           </button>
 
           {/* Content */}
-          <div className="h-full flex flex-col px-5 pt-16 pb-8 overflow-y-auto">
+          <div className="h-full flex flex-col px-5 pt-16 pb-8 overflow-y-auto" style={{ maxWidth: 600, margin: '0 auto', width: '100%' }}>
             {/* Header */}
             <motion.div
               initial={{ opacity: 0, y: 12 }}

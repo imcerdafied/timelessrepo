@@ -77,8 +77,8 @@ export default function ExperienceWindow() {
     era?.id,
     hasCharacter && !charDismissed
   )
-  // Don't show "someone wants to speak" notification when scene episodes are available
-  const showCharacterNotification = dwellMet && hasCharacter && !characterOpen && !charDismissed && !scenes?.length
+  // Character notification suppressed — users enter conversations via "Experience This Moment" instead
+  const showCharacterNotification = false
 
   // Reset state when era changes
   if (era && era.id !== prevEraId) {
@@ -136,17 +136,8 @@ export default function ExperienceWindow() {
     }
   }, [])
 
-  // Load scene manifest for eras with pre-generated content
-  const API_BASE = import.meta.env.VITE_API_URL || ''
-  useEffect(() => {
-    if (!era || era.id !== 'mission-1906') return
-    fetch(`${API_BASE}/api/scenes/manifest`)
-      .then((r) => r.json())
-      .then((data) => {
-        if (data.scenes?.length) setScenes(data.scenes)
-      })
-      .catch((err) => console.warn('Scene manifest load failed:', err))
-  }, [era?.id])
+  // Scene loading disabled — video feature paused for now
+  // const API_BASE = import.meta.env.VITE_API_URL || ''
 
   // Auto-trigger scene when era has an autoplay venue
   useEffect(() => {
@@ -413,7 +404,7 @@ export default function ExperienceWindow() {
           </div>
 
           {/* Scrollable content — full description + key events + landscape */}
-          <div style={{ flex: 1, overflowY: 'auto', padding: '0 24px 20px 20px' }}>
+          <div style={{ flex: 1, overflowY: 'auto', padding: '0 24px 20px 20px', maxWidth: 600, margin: '0 auto', width: '100%' }}>
             <h2 className="font-heading text-xl font-semibold leading-tight text-present">
               {era.headline}
             </h2>
@@ -557,40 +548,7 @@ export default function ExperienceWindow() {
                   </svg>
                 </button>
 
-                {/* Watch Scenes CTA — shown for eras with pre-generated scenes */}
-                {era.id === 'mission-1906' && scenes?.length > 0 && (
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      setSceneSelectorOpen(true)
-                    }}
-                    className="mt-3 flex items-center gap-3 rounded-2xl px-4 py-3 w-full"
-                    style={{
-                      background: 'rgba(255,255,255,0.04)',
-                      border: '1px solid rgba(255,255,255,0.08)',
-                    }}
-                  >
-                    <span
-                      className="flex items-center justify-center w-8 h-8 rounded-full"
-                      style={{ background: 'rgba(255,255,255,0.06)' }}
-                    >
-                      <svg width="12" height="14" viewBox="0 0 12 14" fill="rgba(255,255,255,0.5)">
-                        <path d="M0 0v14l12-7z" />
-                      </svg>
-                    </span>
-                    <span className="flex flex-col items-start">
-                      <span className="text-sm font-medium" style={{ color: 'rgba(255,255,255,0.6)' }}>
-                        Watch AI Scenes
-                      </span>
-                      <span className="text-[10px]" style={{ color: 'rgba(255,255,255,0.3)' }}>
-                        {scenes.length} episodes available
-                      </span>
-                    </span>
-                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className="ml-auto">
-                      <path d="M5 3l4 4-4 4" stroke="rgba(255,255,255,0.3)" strokeWidth="1.5" strokeLinecap="round" />
-                    </svg>
-                  </button>
-                )}
+                {/* Watch Scenes CTA — disabled while video feature is paused */}
                 <div className="mt-3 h-4" />
               </motion.div>
             </AnimatePresence>
