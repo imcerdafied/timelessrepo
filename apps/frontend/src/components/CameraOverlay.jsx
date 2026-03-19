@@ -89,7 +89,7 @@ export default function CameraOverlay({ onClose }) {
 
   return (
     <motion.div
-      className="fixed inset-0 z-50 bg-black"
+      className="fixed inset-0 z-50 bg-black mobile-frame"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}

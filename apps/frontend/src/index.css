@@ -43,3 +43,13 @@ body {
   -moz-osx-font-smoothing: grayscale;
   overflow: hidden;
 }
+
+/* Mobile-width constraint for fixed/portaled overlays that escape the app shell.
+   Works with position:fixed + inset:0 — margin:auto centers when left+right are both 0. */
+.mobile-frame {
+  max-width: 390px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  left: 0 !important;
+  right: 0 !important;
+}

@@ -67,11 +67,10 @@ export default function VenueScene({ venue, era, onClose, autoplay }) {
       {phase === 'intro' && (
         <motion.div
           key="venue-intro"
+          className="mobile-frame"
           style={{
             position: 'fixed',
             top: 0,
-            left: 0,
-            right: 0,
             bottom: 0,
             zIndex: 9999,
             backgroundColor: '#000',
@@ -118,11 +117,10 @@ export default function VenueScene({ venue, era, onClose, autoplay }) {
       {phase === 'scene' && character && (
         <motion.div
           key="venue-scene"
+          className="mobile-frame"
           style={{
             position: 'fixed',
             top: 0,
-            left: 0,
-            right: 0,
             bottom: 0,
             zIndex: 9999,
             backgroundColor: '#000',

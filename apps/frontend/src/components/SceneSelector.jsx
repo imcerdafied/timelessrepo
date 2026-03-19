@@ -22,7 +22,7 @@ export default function SceneSelector({ scenes, onSelect, onClose, visible }) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-40"
+          className="fixed inset-0 z-40 mobile-frame"
           style={{ background: 'rgba(10,10,10,0.92)', backdropFilter: 'blur(12px)' }}
         >
           {/* Close button */}

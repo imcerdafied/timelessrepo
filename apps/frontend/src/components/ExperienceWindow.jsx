@@ -375,11 +375,10 @@ export default function ExperienceWindow() {
       {/* Bottom sheet — collapsed peek or expanded fixed overlay */}
       {expanded ? (
         <div
+          className="mobile-frame"
           style={{
             position: 'fixed',
             bottom: 0,
-            left: 0,
-            right: 0,
             height: '85vh',
             zIndex: 10,
             backgroundColor: 'rgba(10,10,10,0.97)',

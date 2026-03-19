@@ -259,7 +259,7 @@ export default function TimelessScene({ era, character, imageUrl, locationName, 
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="fixed inset-0 z-50 flex flex-col items-center justify-center"
+        className="fixed inset-0 z-50 flex flex-col items-center justify-center mobile-frame"
         style={{ background: '#0A0A0A' }}
       >
         <div className="absolute inset-0 overflow-hidden">
@@ -306,7 +306,7 @@ export default function TimelessScene({ era, character, imageUrl, locationName, 
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="fixed inset-0 z-50"
+      className="fixed inset-0 z-50 mobile-frame"
       style={{ background: '#0A0A0A' }}
     >
       {/* Ken Burns background */}

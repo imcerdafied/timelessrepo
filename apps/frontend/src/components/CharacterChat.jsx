@@ -85,7 +85,7 @@ export function CharacterChat({ era, onDismiss, character: characterProp, venueC
   if (phase === 'notification') {
     return (
       <motion.div
-        className="absolute inset-x-0 z-30 flex justify-center"
+        className="absolute inset-x-0 z-30 flex justify-center mobile-frame"
         style={{ bottom: 180 }}
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
@@ -106,7 +106,7 @@ export function CharacterChat({ era, onDismiss, character: characterProp, venueC
   if (phase === 'introduction') {
     return (
       <motion.div
-        className="absolute inset-0 z-40 flex flex-col justify-end"
+        className="absolute inset-0 z-40 flex flex-col justify-end mobile-frame"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
@@ -159,11 +159,10 @@ export function CharacterChat({ era, onDismiss, character: characterProp, venueC
   // Phase 3: Chat interface
   return (
     <motion.div
+      className="mobile-frame"
       style={{
         position: 'fixed',
         top: 0,
-        left: 0,
-        right: 0,
         bottom: 0,
         zIndex: 9999,
         display: 'flex',
