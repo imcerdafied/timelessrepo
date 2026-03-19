@@ -214,8 +214,13 @@ export function buildMonologue(eraId, character, era) {
 
   const lines = []
 
-  // If we have a character, lead with their opening line
-  if (character?.opening_line) {
+  // If we have a character, start with a self-introduction then their opening line
+  if (character?.name && character?.role) {
+    lines.push(`My name is ${character.name}. ${character.role.charAt(0).toUpperCase() + character.role.slice(1)}.`)
+    if (character.opening_line) {
+      lines.push(character.opening_line)
+    }
+  } else if (character?.opening_line) {
     lines.push(character.opening_line)
   } else if (era.headline) {
     // No character — use the era headline as the opening

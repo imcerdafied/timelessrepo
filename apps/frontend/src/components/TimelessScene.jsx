@@ -18,39 +18,75 @@ import { getAmbientProfile, startAmbient } from '../data/ambient-profiles'
  *   onTalkTo   — open character chat callback
  */
 
-// Auto-launches character chat after a brief reveal of who's speaking
-function ConversationAutoStart({ character, onTalkTo, accent }) {
-  useEffect(() => {
-    // Brief pause to let user see who they'll be talking to, then auto-open chat
-    const timer = setTimeout(() => onTalkTo(), 1800)
-    return () => clearTimeout(timer)
-  }, [onTalkTo])
-
+// End-of-narration CTA — shows character identity + "Ask a question" button
+function ConversationCTA({ character, onTalkTo, onReplay, onClose, accent, hasAudio }) {
   return (
     <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 1 }}
-      className="absolute bottom-12 left-0 right-0 z-30 flex flex-col items-center px-6"
+      transition={{ duration: 0.8 }}
+      className="absolute bottom-0 left-0 right-0 z-30 px-5 pb-8"
     >
-      <motion.p
-        initial={{ opacity: 0, y: 6 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="text-xs mb-1"
-        style={{ color: `${accent}bb`, letterSpacing: '0.15em', textTransform: 'uppercase' }}
-      >
-        {character.name}
-      </motion.p>
-      <motion.p
+      {/* Character identity */}
+      <motion.div
         initial={{ opacity: 0 }}
-        animate={{ opacity: 0.5 }}
-        transition={{ delay: 0.3 }}
-        className="text-[10px] text-center"
-        style={{ color: 'rgba(255,255,255,0.35)', maxWidth: 280 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.2 }}
+        className="mb-4"
       >
-        {character.role}
-      </motion.p>
+        <p
+          className="text-[10px] mb-1"
+          style={{ color: `${accent}88`, letterSpacing: '0.15em', textTransform: 'uppercase' }}
+        >
+          You've been listening to
+        </p>
+        <p className="text-lg font-semibold" style={{ fontFamily: 'Playfair Display, serif', color: '#F5F5F5' }}>
+          {character.name}
+        </p>
+        <p className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>
+          {character.role}
+        </p>
+      </motion.div>
+
+      {/* CTA: Ask a question */}
+      <motion.button
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.5 }}
+        onClick={onTalkTo}
+        className="w-full py-3.5 rounded-2xl text-sm font-medium mb-2.5"
+        style={{
+          background: `${accent}22`,
+          color: accent,
+          border: `1px solid ${accent}44`,
+        }}
+      >
+        Ask {character.name.split(' ')[0]} a question
+      </motion.button>
+
+      {/* Secondary actions */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.7 }}
+        className="flex gap-2"
+      >
+        <button
+          onClick={onReplay}
+          className="flex-1 py-2.5 rounded-full text-xs"
+          style={{ background: 'rgba(255,255,255,0.05)', color: 'rgba(255,255,255,0.35)', border: '1px solid rgba(255,255,255,0.08)' }}
+        >
+          {hasAudio ? 'Listen again' : 'Replay'}
+        </button>
+        <button
+          onClick={onClose}
+          className="flex-1 py-2.5 rounded-full text-xs"
+          style={{ background: 'rgba(255,255,255,0.05)', color: 'rgba(255,255,255,0.35)', border: '1px solid rgba(255,255,255,0.08)' }}
+        >
+          Back
+        </button>
+      </motion.div>
     </motion.div>
   )
 }
@@ -399,51 +435,54 @@ export default function TimelessScene({ era, character, imageUrl, locationName, 
         </div>
       </div>
 
-      {/* Narrator name */}
-      {phase === 'playing' && narrator && (
+      {/* Narrator name + role — visible during playing phase */}
+      {phase === 'playing' && narrator && visibleLines === 0 && (
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1 }}
-          className="absolute top-5 left-0 right-0 z-20 flex justify-center"
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.8 }}
+          className="absolute bottom-16 left-0 right-0 z-20 px-6"
         >
-          <span style={{
-            color: `${accent}99`,
-            fontSize: 9,
-            letterSpacing: '0.2em',
-            textTransform: 'uppercase',
-          }}>
+          <p style={{ color: `${accent}aa`, fontSize: 10, letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 4 }}>
+            Narrated by
+          </p>
+          <p style={{ color: '#F5F5F5', fontSize: 20, fontFamily: 'Playfair Display, serif', fontWeight: 600 }}>
             {narrator.name}
-          </span>
+          </p>
+          <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: 12, marginTop: 2 }}>
+            {narrator.role}
+          </p>
         </motion.div>
       )}
 
-      {/* Progressive text */}
-      {phase === 'playing' && (
+      {/* Progressive text — larger, more viewport coverage */}
+      {phase === 'playing' && visibleLines > 0 && (
         <div
-          className="absolute bottom-8 left-0 right-0 z-20 px-6"
-          style={{ maxHeight: '55%', overflow: 'hidden' }}
+          className="absolute bottom-6 left-0 right-0 z-20 px-5"
+          style={{ maxHeight: '65%', overflow: 'hidden' }}
         >
           <div className="flex flex-col justify-end" style={{ minHeight: '100%' }}>
             {lines.slice(0, visibleLines).map((line, i) => {
               const isLatest = i === visibleLines - 1
-              const isFaded = i < visibleLines - 3
+              const isFaded = i < visibleLines - 2
               return (
                 <motion.p
                   key={i}
-                  initial={{ opacity: 0, y: 12 }}
+                  initial={{ opacity: 0, y: 14 }}
                   animate={{
-                    opacity: isFaded ? 0.2 : isLatest ? 1 : 0.5,
+                    opacity: isFaded ? 0.15 : isLatest ? 1 : 0.45,
                     y: 0,
                   }}
                   transition={{ duration: 0.8, ease: 'easeOut' }}
-                  className="mb-3"
+                  className="mb-4"
                   style={{
                     color: '#F5F5F5',
-                    fontSize: isLatest ? 16 : 14,
-                    lineHeight: 1.7,
-                    textShadow: '0 2px 12px rgba(0,0,0,0.95)',
+                    fontSize: isLatest ? 19 : 16,
+                    lineHeight: 1.65,
+                    textShadow: '0 2px 16px rgba(0,0,0,0.95), 0 0 40px rgba(0,0,0,0.7)',
                     fontStyle: i === 0 ? 'italic' : 'normal',
+                    fontFamily: i === 0 ? 'Playfair Display, serif' : 'inherit',
                   }}
                 >
                   {line}
@@ -454,10 +493,17 @@ export default function TimelessScene({ era, character, imageUrl, locationName, 
         </div>
       )}
 
-      {/* CONVERSATION PHASE — auto-launch character chat or show minimal end screen */}
+      {/* CONVERSATION PHASE — show CTA to talk to the character */}
       <AnimatePresence>
         {phase === 'conversation' && character && (
-          <ConversationAutoStart character={character} onTalkTo={handleTalkTo} accent={accent} />
+          <ConversationCTA
+            character={character}
+            onTalkTo={handleTalkTo}
+            onReplay={handleReplay}
+            onClose={handleClose}
+            accent={accent}
+            hasAudio={hasAudio}
+          />
         )}
       </AnimatePresence>
 
@@ -465,25 +511,27 @@ export default function TimelessScene({ era, character, imageUrl, locationName, 
       <AnimatePresence>
         {phase === 'conversation' && !character && (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1 }}
-            className="absolute bottom-8 left-0 right-0 z-30 flex justify-center gap-3 px-6"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="absolute bottom-0 left-0 right-0 z-30 px-5 pb-8"
           >
-            <button
-              onClick={handleReplay}
-              className="px-5 py-2.5 rounded-full text-xs font-medium"
-              style={{ background: `${accent}33`, color: accent, border: `1px solid ${accent}44` }}
-            >
-              {hasAudio ? 'Listen Again' : 'Experience Again'}
-            </button>
-            <button
-              onClick={handleClose}
-              className="px-5 py-2.5 rounded-full text-xs"
-              style={{ background: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.4)', border: '1px solid rgba(255,255,255,0.1)' }}
-            >
-              Back
-            </button>
+            <div className="flex gap-2">
+              <button
+                onClick={handleReplay}
+                className="flex-1 py-3 rounded-full text-xs font-medium"
+                style={{ background: `${accent}22`, color: accent, border: `1px solid ${accent}44` }}
+              >
+                {hasAudio ? 'Listen again' : 'Experience again'}
+              </button>
+              <button
+                onClick={handleClose}
+                className="flex-1 py-3 rounded-full text-xs"
+                style={{ background: 'rgba(255,255,255,0.05)', color: 'rgba(255,255,255,0.35)', border: '1px solid rgba(255,255,255,0.08)' }}
+              >
+                Back
+              </button>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
