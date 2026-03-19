@@ -53,6 +53,7 @@ export default function ExperienceWindow() {
   const [cameraOpen, setCameraOpen] = useState(false)
   const [shareOpen, setShareOpen] = useState(false)
   const [characterOpen, setCharacterOpen] = useState(false)
+  const [chatKey, setChatKey] = useState(0)
   const [charDismissed, setCharDismissed] = useState(false)
   const [activeVenue, setActiveVenue] = useState(null)
   const [isAutoplay, setIsAutoplay] = useState(false)
@@ -559,18 +560,17 @@ export default function ExperienceWindow() {
       )}
 
       {/* Character chat — portal to body to avoid overflow:hidden clipping */}
-      {(showCharacterNotification || characterOpen) && createPortal(
-        <AnimatePresence>
-          <CharacterChat
-            era={era}
-            sceneIntro={characterOpen ? `I am here. Ask me anything about ${era?.label || 'this time'}.` : undefined}
-            onDismiss={() => {
-              setCharacterOpen(false)
-              setCharDismissed(true)
-              dismissCharacter()
-            }}
-          />
-        </AnimatePresence>,
+      {characterOpen && createPortal(
+        <CharacterChat
+          key={`chat-${era?.id}-${chatKey}`}
+          era={era}
+          sceneIntro={`I am here. Ask me anything about ${era?.label || 'this time'}.`}
+          onDismiss={() => {
+            setCharacterOpen(false)
+            setCharDismissed(true)
+            dismissCharacter()
+          }}
+        />,
         document.body
       )}
 
@@ -625,6 +625,7 @@ export default function ExperienceWindow() {
           }}
           onTalkTo={() => {
             setTimelessSceneOpen(false)
+            setChatKey(k => k + 1)
             setCharacterOpen(true)
           }}
         />,

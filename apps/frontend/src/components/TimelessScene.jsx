@@ -2,6 +2,7 @@ import { useState, useRef, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { buildMonologue, getSceneImages, getEraVisualStyle } from '../data/scene-data'
 import { getAmbientProfile, startAmbient } from '../data/ambient-profiles'
+import { useGyroscope } from '../hooks/useGyroscope'
 
 /**
  * TimelessScene — the core Timeless Moment experience
@@ -108,6 +109,7 @@ export default function TimelessScene({ era, character, imageUrl, locationName, 
   const [narrationLoading, setNarrationLoading] = useState(false)
   const autoStarted = useRef(false)
 
+  const { tilt } = useGyroscope()
   const audioRef = useRef(null)
   const narrationRef = useRef(null)
   const ambientRef = useRef(null)
@@ -177,12 +179,12 @@ export default function TimelessScene({ era, character, imageUrl, locationName, 
         }
       }, durations[lineIdx] * 1000)
     }
-    // First line after a beat
+    // First line after narrator intro lingers (3.5s to let user read name/role)
     lineTimerRef.current = setTimeout(() => {
       setVisibleLines(1)
       lineIdx = 1
       revealNext()
-    }, 1500)
+    }, 3500)
   }, [lines, hasAudio, getLineDurations])
 
   // Start experience
@@ -416,7 +418,11 @@ export default function TimelessScene({ era, character, imageUrl, locationName, 
               src={images[currentImageIdx % images.length] || imageUrl}
               alt={era.label}
               className="w-full h-full object-cover"
-              style={{ filter: visualStyle.filter }}
+              style={{
+                filter: visualStyle.filter,
+                transform: `translate(${tilt.x * 0.5}px, ${tilt.y * 0.5}px)`,
+                transition: 'transform 0.1s ease-out',
+              }}
             />
           </motion.div>
         </AnimatePresence>
