@@ -13,7 +13,8 @@ export function CharacterChat({ era, onDismiss, character: characterProp, venueC
     sceneIntro ? [{ role: 'assistant', content: sceneIntro }] : []
   )
   const [loading, setLoading] = useState(false)
-  const [voiceEnabled, setVoiceEnabled] = useState(voiceService.enabled)
+  // Voice disabled — default TTS voices don't match character demographics
+  const [voiceEnabled, setVoiceEnabled] = useState(false)
   const messagesEndRef = useRef(null)
   const inputRef = useRef(null)
 
@@ -66,7 +67,7 @@ export function CharacterChat({ era, onDismiss, character: characterProp, venueC
         ...newMessages,
         { role: 'assistant', content: response }
       ])
-      voiceService.speak(response, era?.id)
+      // Voice disabled for now — voiceService.speak(response, era?.id)
     } catch (err) {
       const errorMsg = err.message || 'Unknown error'
       setMessages([
@@ -196,12 +197,6 @@ export function CharacterChat({ era, onDismiss, character: characterProp, venueC
         </button>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)' }}>{character.name}, {era.year_display}</span>
-          <button
-            onClick={() => setVoiceEnabled(voiceService.toggle())}
-            style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 16, padding: 4 }}
-          >
-            {voiceEnabled ? '\u{1F50A}' : '\u{1F507}'}
-          </button>
         </div>
       </div>
 

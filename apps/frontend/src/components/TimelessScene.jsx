@@ -207,45 +207,8 @@ export default function TimelessScene({ era, character, imageUrl, locationName, 
       audioRef.current.play().catch(e => console.warn('Audio play failed:', e))
     }
 
-    // Request TTS narration for auto-generated monologues (non-blocking)
-    if (!hasAudio && lines.length > 0) {
-      const narrationText = lines.join('\n\n')
-      setNarrationLoading(true)
-      fetch(`${API_BASE}/api/character/narrate`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          text: narrationText,
-          eraId: era?.id,
-          eraType: era?.era_type,
-          city: locationName || '',
-          characterName: character?.name || narrator?.name || '',
-          characterRole: character?.role || narrator?.role || '',
-          characterAccent: character?.accent || '',
-        }),
-      })
-        .then(r => {
-          if (!r.ok) throw new Error('TTS failed')
-          return r.blob()
-        })
-        .then(blob => {
-          const url = URL.createObjectURL(blob)
-          const audio = new Audio(url)
-          audio.volume = 0.9
-          narrationRef.current = audio
-          // Dim ambient when narration starts
-          if (ambientRef.current) ambientRef.current.setVolume(0.15, 1)
-          audio.play().catch(() => {})
-          // Transition to conversation when narration ends
-          audio.addEventListener('ended', () => {
-            setVisibleLines(lines.length)
-            if (ambientRef.current) ambientRef.current.setVolume(0.3, 3)
-            setTimeout(() => setPhase('conversation'), 2000)
-          })
-        })
-        .catch(e => console.warn('TTS narration unavailable:', e.message))
-        .finally(() => setNarrationLoading(false))
-    }
+    // TTS narration disabled — default voices don't match character demographics.
+    // Will re-enable when custom Voice Design voices are available.
 
     // Start progressive text reveal
     startTextReveal()
