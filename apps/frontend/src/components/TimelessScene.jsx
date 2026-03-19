@@ -516,6 +516,8 @@ export default function TimelessScene({ era, character, imageUrl, locationName, 
             {lines.slice(0, visibleLines).map((line, i) => {
               const isLatest = i === visibleLines - 1
               const isFaded = i < visibleLines - 2
+              // Strip em dashes and clean up double spaces
+              const cleanLine = line.replace(/\s*[—–]\s*/g, ', ').replace(/\s{2,}/g, ' ')
               return (
                 <motion.p
                   key={i}
@@ -528,14 +530,14 @@ export default function TimelessScene({ era, character, imageUrl, locationName, 
                   className="mb-4"
                   style={{
                     color: '#F5F5F5',
-                    fontSize: isLatest ? 19 : 16,
+                    fontSize: isLatest ? 18 : 16,
                     lineHeight: 1.65,
+                    fontFamily: 'Inter, sans-serif',
+                    fontWeight: 400,
                     textShadow: '0 2px 16px rgba(0,0,0,0.95), 0 0 40px rgba(0,0,0,0.7)',
-                    fontStyle: i === 0 ? 'italic' : 'normal',
-                    fontFamily: i === 0 ? 'Playfair Display, serif' : 'inherit',
                   }}
                 >
-                  {line}
+                  {cleanLine}
                 </motion.p>
               )
             })}

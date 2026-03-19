@@ -351,27 +351,6 @@ export default function ExperienceWindow() {
         </motion.div>
       </AnimatePresence>
 
-      {/* Artifact count pill — floats above the bottom sheet */}
-      <AnimatePresence>
-        {!expanded && !detailOpen && (
-          <motion.div
-            className="absolute inset-x-0 z-10 flex justify-center"
-            style={{ bottom: 160 }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-          >
-            <ArtifactLayer
-              era={era}
-              locationId={selectedLocation}
-              locationName={locations.find((l) => l.id === selectedLocation)?.name}
-              city={locations.find((l) => l.id === selectedLocation)?.city}
-            />
-          </motion.div>
-        )}
-      </AnimatePresence>
-
       {/* Bottom sheet — collapsed peek or expanded fixed overlay */}
       {expanded ? (
         <div
@@ -584,6 +563,7 @@ export default function ExperienceWindow() {
         <AnimatePresence>
           <CharacterChat
             era={era}
+            sceneIntro={characterOpen ? `I am here. Ask me anything about ${era?.label || 'this time'}.` : undefined}
             onDismiss={() => {
               setCharacterOpen(false)
               setCharDismissed(true)
