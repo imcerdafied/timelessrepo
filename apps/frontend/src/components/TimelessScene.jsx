@@ -268,7 +268,7 @@ export default function TimelessScene({ era, character, imageUrl, locationName, 
               src={images[0]}
               alt={era.label}
               className="w-full h-full object-cover"
-              style={{ filter: 'brightness(0.25) saturate(0.5)' }}
+              style={{ filter: 'brightness(0.4) saturate(0.6)' }}
             />
           )}
         </div>

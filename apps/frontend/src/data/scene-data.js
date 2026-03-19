@@ -283,8 +283,8 @@ export function getEraVisualStyle(eraId, eraType) {
     'haight-1906','city-1666','loop-1871','ss-1871','tokyo-shinjuku-1923','tokyo-asakusa-1923']
   if (fireEras.includes(eraId)) {
     return {
-      filter: 'brightness(0.35) saturate(0.6) sepia(0.35)',
-      overlay: 'radial-gradient(ellipse at 30% 70%, rgba(220,100,20,0.35) 0%, transparent 50%), radial-gradient(ellipse at 70% 30%, rgba(180,70,15,0.25) 0%, transparent 55%)',
+      filter: 'brightness(0.55) saturate(0.6) sepia(0.35)',
+      overlay: 'radial-gradient(ellipse at 30% 70%, rgba(220,100,20,0.25) 0%, transparent 50%), radial-gradient(ellipse at 70% 30%, rgba(180,70,15,0.18) 0%, transparent 55%)',
       overlayAnim: true,
     }
   }
@@ -295,8 +295,8 @@ export function getEraVisualStyle(eraId, eraType) {
     'tokyo-shinjuku-1945','tokyo-asakusa-1945','paris-marais-1942','paris-montmartre-1942','dir-1818']
   if (warEras.includes(eraId)) {
     return {
-      filter: 'brightness(0.3) saturate(0.4) contrast(1.1)',
-      overlay: 'radial-gradient(ellipse at 50% 50%, rgba(100,120,150,0.15) 0%, transparent 60%)',
+      filter: 'brightness(0.5) saturate(0.5) contrast(1.1)',
+      overlay: 'radial-gradient(ellipse at 50% 50%, rgba(100,120,150,0.12) 0%, transparent 60%)',
       overlayAnim: false,
     }
   }
@@ -304,8 +304,8 @@ export function getEraVisualStyle(eraId, eraType) {
   // Future eras — cool blue tint
   if (eraType === 'future') {
     return {
-      filter: 'brightness(0.35) saturate(0.7) hue-rotate(10deg)',
-      overlay: 'radial-gradient(ellipse at 50% 50%, rgba(30,77,140,0.2) 0%, transparent 60%)',
+      filter: 'brightness(0.55) saturate(0.7) hue-rotate(10deg)',
+      overlay: 'radial-gradient(ellipse at 50% 50%, rgba(30,77,140,0.15) 0%, transparent 60%)',
       overlayAnim: false,
     }
   }
@@ -313,7 +313,7 @@ export function getEraVisualStyle(eraId, eraType) {
   // Present day — natural, slightly dimmed
   if (eraType === 'present') {
     return {
-      filter: 'brightness(0.4) saturate(0.8)',
+      filter: 'brightness(0.6) saturate(0.85)',
       overlay: 'none',
       overlayAnim: false,
     }
@@ -326,16 +326,16 @@ export function getEraVisualStyle(eraId, eraType) {
     'paris-montmartre-1500','tokyo-shinjuku-1698','tokyo-asakusa-1700','dir-1446','dir-1744']
   if (medievalEras.includes(eraId)) {
     return {
-      filter: 'brightness(0.35) saturate(0.5) sepia(0.5)',
-      overlay: 'radial-gradient(ellipse at 50% 50%, rgba(180,150,100,0.1) 0%, transparent 60%)',
+      filter: 'brightness(0.5) saturate(0.5) sepia(0.4)',
+      overlay: 'radial-gradient(ellipse at 50% 50%, rgba(180,150,100,0.08) 0%, transparent 60%)',
       overlayAnim: false,
     }
   }
 
   // Default — warm vintage
   return {
-    filter: 'brightness(0.35) saturate(0.65) sepia(0.2)',
-    overlay: 'radial-gradient(ellipse at 50% 50%, rgba(200,134,10,0.08) 0%, transparent 60%)',
+    filter: 'brightness(0.55) saturate(0.7) sepia(0.15)',
+    overlay: 'radial-gradient(ellipse at 50% 50%, rgba(200,134,10,0.06) 0%, transparent 60%)',
     overlayAnim: false,
   }
 }
