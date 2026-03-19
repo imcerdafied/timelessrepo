@@ -19,8 +19,114 @@ import { useGyroscope } from '../hooks/useGyroscope'
  *   onTalkTo   — open character chat callback
  */
 
-// End-of-narration CTA — shows character identity + "Ask a question" button
-function ConversationCTA({ character, onTalkTo, onReplay, onClose, accent, hasAudio }) {
+// End-of-narration CTA — shows character identity + actions + extended reading
+function ConversationCTA({ character, era, onTalkTo, onReplay, onClose, accent, hasAudio }) {
+  const [expanded, setExpanded] = useState(false)
+  const hasKeyEvents = era?.key_events?.length > 0
+  const hasLandscape = era?.landscape?.length > 20
+  const hasSources = era?.sources?.length > 0
+  const hasExtended = hasKeyEvents || hasLandscape
+
+  if (expanded) {
+    return (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="absolute inset-0 z-30 overflow-y-auto"
+        style={{ background: 'rgba(10,10,10,0.97)' }}
+      >
+        <div className="px-5 pt-6 pb-10" style={{ maxWidth: 390 }}>
+          {/* Header */}
+          <div className="flex items-center justify-between mb-5">
+            <button
+              onClick={() => setExpanded(false)}
+              className="text-xs"
+              style={{ color: 'rgba(255,255,255,0.4)' }}
+            >
+              &larr; Back
+            </button>
+            <span className="text-[10px] tracking-widest uppercase" style={{ color: `${accent}88` }}>
+              {era?.year_display}
+            </span>
+          </div>
+
+          <h2 className="text-xl font-semibold mb-3" style={{ fontFamily: 'Playfair Display, serif', color: '#F5F5F5' }}>
+            {era?.headline}
+          </h2>
+
+          <p className="text-sm leading-relaxed mb-6" style={{ color: 'rgba(255,255,255,0.6)' }}>
+            {era?.description}
+          </p>
+
+          {/* Key Events Timeline */}
+          {hasKeyEvents && (
+            <div className="mb-6">
+              <p className="text-[10px] tracking-widest uppercase mb-3" style={{ color: `${accent}66` }}>
+                Key Events
+              </p>
+              {era.key_events.map((evt, i) => (
+                <div key={i} className="flex gap-3 mb-3">
+                  <span className="text-[10px] font-mono shrink-0 pt-0.5" style={{ color: `${accent}88` }}>
+                    {evt.year}
+                  </span>
+                  <span className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.45)' }}>
+                    {evt.event}
+                  </span>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Landscape */}
+          {hasLandscape && (
+            <div className="mb-6">
+              <p className="text-[10px] tracking-widest uppercase mb-3" style={{ color: `${accent}66` }}>
+                The Scene
+              </p>
+              <p className="text-sm leading-relaxed italic" style={{ color: 'rgba(255,255,255,0.45)' }}>
+                {era.landscape}
+              </p>
+            </div>
+          )}
+
+          {/* Sources */}
+          {hasSources && (
+            <div className="mb-6">
+              <p className="text-[10px] tracking-widest uppercase mb-3" style={{ color: 'rgba(255,255,255,0.2)' }}>
+                Sources
+              </p>
+              {era.sources.map((src, i) => (
+                <p key={i} className="text-[10px] leading-relaxed mb-1" style={{ color: 'rgba(255,255,255,0.25)' }}>
+                  {src}
+                </p>
+              ))}
+            </div>
+          )}
+
+          {/* Actions at bottom */}
+          <div className="mt-4 flex flex-col gap-2">
+            {character && (
+              <button
+                onClick={onTalkTo}
+                className="w-full py-3 rounded-2xl text-sm font-medium"
+                style={{ background: `${accent}22`, color: accent, border: `1px solid ${accent}44` }}
+              >
+                Ask {character.name.split(' ')[0]} a question
+              </button>
+            )}
+            <button
+              onClick={onClose}
+              className="w-full py-2.5 rounded-full text-xs"
+              style={{ background: 'rgba(255,255,255,0.05)', color: 'rgba(255,255,255,0.35)', border: '1px solid rgba(255,255,255,0.08)' }}
+            >
+              Back to {era?.label || 'era'}
+            </button>
+          </div>
+        </div>
+      </motion.div>
+    )
+  }
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -73,12 +179,21 @@ function ConversationCTA({ character, onTalkTo, onReplay, onClose, accent, hasAu
         transition={{ delay: 0.7 }}
         className="flex gap-2"
       >
+        {hasExtended && (
+          <button
+            onClick={() => setExpanded(true)}
+            className="flex-1 py-2.5 rounded-full text-xs"
+            style={{ background: 'rgba(255,255,255,0.05)', color: 'rgba(255,255,255,0.45)', border: '1px solid rgba(255,255,255,0.08)' }}
+          >
+            Read more
+          </button>
+        )}
         <button
           onClick={onReplay}
           className="flex-1 py-2.5 rounded-full text-xs"
           style={{ background: 'rgba(255,255,255,0.05)', color: 'rgba(255,255,255,0.35)', border: '1px solid rgba(255,255,255,0.08)' }}
         >
-          {hasAudio ? 'Listen again' : 'Replay'}
+          Replay
         </button>
         <button
           onClick={onClose}
@@ -522,6 +637,7 @@ export default function TimelessScene({ era, character, imageUrl, locationName, 
         {phase === 'conversation' && character && (
           <ConversationCTA
             character={character}
+            era={era}
             onTalkTo={handleTalkTo}
             onReplay={handleReplay}
             onClose={handleClose}

@@ -164,11 +164,11 @@ Available cities in our app: ${locationList}
 Always return valid JSON. No markdown formatting.`,
       messages: [{
         role: 'user',
-        content: `What are 3 notable historical events that happened on ${dateStr} (any year)?
+        content: `What are 5 notable historical events that happened on ${dateStr} (any year)?
 
 For each event, it MUST be connected to one of these cities: San Francisco, New York, London, Paris, Tokyo, Chicago, Los Angeles, Lagos, Riyadh.
 
-Return a JSON array of exactly 3 objects with these fields:
+Return a JSON array of exactly 5 objects with these fields:
 - "year": number (the year it happened)
 - "city": string (which city from the list above)
 - "headline": string (5-10 words, dramatic, present tense — like a newspaper headline)
@@ -194,9 +194,25 @@ Only return the JSON array, nothing else.`
       return res.status(500).json({ error: 'Failed to parse event data' })
     }
 
-    // Map each event to our location/era system
+    // Map each event to our location/era system with P0 quality validation
     const mappedEvents = events.map((event, i) => {
       const match = findBestEra(event.city, event.year)
+      if (!match) return null
+
+      // P0 Quality gate: only promote events we can deliver well
+      const qualityChecks = {
+        hasLocation: !!match.locationId,
+        hasEra: !!match.eraId,
+        highConfidence: match.confidence >= 0.6,
+        hasHeadline: !!(match.headline),
+      }
+      const passesQuality = Object.values(qualityChecks).every(Boolean)
+
+      if (!passesQuality) {
+        console.log(`On This Day: REJECTED "${event.headline}" — quality checks:`, qualityChecks)
+        return null
+      }
+
       return {
         id: `otd-${mmdd}-${i}`,
         year: event.year,
@@ -204,14 +220,18 @@ Only return the JSON array, nothing else.`
         headline: event.headline,
         description: event.description,
         shareText: event.shareText || event.headline,
-        locationId: match?.locationId || null,
-        eraId: match?.eraId || null,
-        matchedLocation: match?.locationName || null,
-        matchedEra: match?.label || null,
-        matchedHeadline: match?.headline || null,
-        confidence: match?.confidence || 0,
+        locationId: match.locationId,
+        eraId: match.eraId,
+        matchedLocation: match.locationName,
+        matchedEra: match.label,
+        matchedHeadline: match.headline,
+        confidence: match.confidence,
       }
-    }).filter(e => e.locationId) // Only return events we can map
+    }).filter(Boolean)
+      .sort((a, b) => b.confidence - a.confidence)  // Best matches first
+      .slice(0, 3)  // Top 3 quality events
+
+    console.log(`On This Day ${mmdd}: ${events.length} generated → ${mappedEvents.length} passed quality gate`)
 
     // Cache the result
     cache.set(mmdd, { events: mappedEvents, generatedAt: Date.now() })
