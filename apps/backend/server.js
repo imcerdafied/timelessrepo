@@ -7,6 +7,7 @@ import { createClient } from '@supabase/supabase-js'
 import characterRoutes from './src/routes/character.js'
 import storyRoutes from './src/routes/story.js'
 import sceneRoutes from './src/routes/scene.js'
+import onThisDayRoutes from './src/routes/on-this-day.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const app = express()
@@ -32,6 +33,9 @@ app.use('/api/story', storyRoutes)
 
 // Scene generation — AI-generated dialogue videos
 app.use('/api/scene', sceneRoutes)
+
+// On This Day — daily historical events
+app.use('/api/on-this-day', onThisDayRoutes)
 
 // Serve pre-baked scene assets (videos, audio) as static files
 const scenesDir = path.join(__dirname, '..', '..', 'scenes')
