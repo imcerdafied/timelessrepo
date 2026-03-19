@@ -219,6 +219,9 @@ export default function TimelessScene({ era, character, imageUrl, locationName, 
           eraId: era?.id,
           eraType: era?.era_type,
           city: locationName || '',
+          characterName: character?.name || narrator?.name || '',
+          characterRole: character?.role || narrator?.role || '',
+          characterAccent: character?.accent || '',
         }),
       })
         .then(r => {

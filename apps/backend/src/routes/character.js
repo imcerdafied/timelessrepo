@@ -169,9 +169,9 @@ router.get('/speak-stream', async (req, res) => {
 })
 
 // POST /api/character/narrate — generate TTS narration for a TimelessScene monologue
-// Returns audio/mpeg stream. Body: { text, eraId, eraType, city }
+// Returns audio/mpeg stream. Body: { text, eraId, eraType, city, characterName, characterRole, characterAccent }
 router.post('/narrate', async (req, res) => {
-  const { text, eraId, eraType, city } = req.body
+  const { text, eraId, eraType, city, characterName, characterRole, characterAccent } = req.body
 
   if (!text) {
     return res.status(400).json({ error: 'text required' })
@@ -182,56 +182,150 @@ router.post('/narrate', async (req, res) => {
     return res.status(500).json({ error: 'ElevenLabs API key not configured' })
   }
 
-  // Comprehensive voice map — accent-appropriate for each location/era
-  // ElevenLabs voices: pick by gender, accent, and era feel
-  const voicesByRegion = {
-    // British voices
-    'london': 'onwK4e9ZLuTAKqWW03F9',      // Daniel — British male, warm
-    'southwark': 'onwK4e9ZLuTAKqWW03F9',
-    'whitechapel': 'onwK4e9ZLuTAKqWW03F9',
-    'soho': 'onwK4e9ZLuTAKqWW03F9',
-    'tower': 'onwK4e9ZLuTAKqWW03F9',
-    // American voices
-    'san francisco': 'EXAVITQu4vr4xnSDxMaL', // Sarah — American female, confident
-    'new york': 'cjVigY5qzO86Huf0OWal',      // Eric — American male, smooth
-    'manhattan': 'cjVigY5qzO86Huf0OWal',
-    'brooklyn': 'cjVigY5qzO86Huf0OWal',
-    'harlem': 'cjVigY5qzO86Huf0OWal',
-    'chicago': 'nPczCjzI2devNBz1zQrb',       // Brian — deep, resonant
-    'los angeles': 'EXAVITQu4vr4xnSDxMaL',
-    // French voices
-    'paris': 'onwK4e9ZLuTAKqWW03F9',         // Daniel — can handle formal European
-    'montmartre': 'onwK4e9ZLuTAKqWW03F9',
-    'marais': 'onwK4e9ZLuTAKqWW03F9',
-    // Japanese — use a clear, measured voice
-    'tokyo': 'JBFqnCBsd6RMkjVDRZzb',         // George — warm, measured
-    'shinjuku': 'JBFqnCBsd6RMkjVDRZzb',
-    'asakusa': 'JBFqnCBsd6RMkjVDRZzb',
-    // Default
-    'default': 'JBFqnCBsd6RMkjVDRZzb',       // George — warm storyteller
+  // ── VOICE SELECTION ──────────────────────────────────────────────
+  // ElevenLabs default voices categorized by demographics
+  const VOICES = {
+    // Young American male
+    youngAmericanMale:   { id: 'ErXwobaYiN019PkySvjV', name: 'Antoni' },     // Young, well-rounded
+    youngAmericanMale2:  { id: 'TxGEqnHWrfWFTfGW9XjX', name: 'Josh' },       // Young, deep
+    youngAmericanMale3:  { id: 'yoZ06aMxZJJ28mfd3POQ', name: 'Sam' },        // Young, raspy
+    youngAmericanMale4:  { id: 'g5CIjZEefAph4nQFvHAz', name: 'Ethan' },      // Young
+    // Middle-aged American male
+    midAmericanMale:     { id: 'pNInz6obpgDQGcFmaJgB', name: 'Adam' },       // Deep
+    midAmericanMale2:    { id: 'nPczCjzI2devNBz1zQrb', name: 'Brian' },      // Deep
+    midAmericanMale3:    { id: 'pqHfZKP75CvOlQylNhV4', name: 'Bill' },       // Strong
+    // Old American male
+    oldAmericanMale:     { id: 't0jbNlBVZ17f02VDIeMI', name: 'Jessie' },     // Old, raspy
+    oldAmericanMale2:    { id: 'flq6f7yk4E4fJM5XTYuZ', name: 'Michael' },    // Old
+    // Young American female
+    youngAmericanFemale: { id: '21m00Tcm4TlvDq8ikWAM', name: 'Rachel' },     // Calm
+    youngAmericanFemale2:{ id: 'EXAVITQu4vr4xnSDxMaL', name: 'Sarah' },     // Soft
+    youngAmericanFemale3:{ id: 'XrExE9yKIg1WjnnlVkGX', name: 'Matilda' },    // Warm
+    youngAmericanFemale4:{ id: 'AZnzlk1XvdvUeBnXmlld', name: 'Domi' },       // Strong
+    // Southern American female
+    southernFemale:      { id: 'oWAxZDx7w5VEj9dCyTzz', name: 'Grace' },      // Southern
+    // Middle-aged American female
+    midAmericanFemale:   { id: 'pMsXgVXv3BLzUgSXRplE', name: 'Serena' },     // Pleasant
+    // British male
+    britishMale:         { id: 'onwK4e9ZLuTAKqWW03F9', name: 'Daniel' },     // Deep
+    britishMale2:        { id: 'JBFqnCBsd6RMkjVDRZzb', name: 'George' },     // Raspy
+    britishMale3:        { id: 'Zlb1dXrM653N07WRdFW3', name: 'Joseph' },     // Middle-aged
+    // British female
+    britishFemale:       { id: 'ThT5KcBeYPX3keUQqHPh', name: 'Dorothy' },    // Pleasant
+    britishFemale2:      { id: 'Xb7hH8MSUJpSbSDYk0k2', name: 'Alice' },     // Confident
+    britishFemale3:      { id: 'pFZP5JQG7iQjIQuC4Bku', name: 'Lily' },       // Raspy
+    // Young British male
+    youngBritishMale:    { id: 'CYw3kZ02Hs0563khs1Fj', name: 'Dave' },       // Conversational
+    // Irish male
+    irishMale:           { id: 'D38z5RcWu1voky8WS1ja', name: 'Fin' },        // Old, sailor
+    // Italian-accented male
+    italianMale:         { id: 'zcAOhNBS3c14rBihAFp1', name: 'Giovanni' },   // Young, Italian
+    // Child/teen female
+    childFemale:         { id: 'jBpfuIE2acCO8z3wKNLl', name: 'Gigi' },       // Childish
   }
 
-  // Era-specific overrides
-  const eraVoiceOverrides = {
-    'mission-1906': 'EXAVITQu4vr4xnSDxMaL',
-    'sb-1940': 'onwK4e9ZLuTAKqWW03F9',
-    'haight-1967': 'cjVigY5qzO86Huf0OWal',
-    'har-1925': 'cjVigY5qzO86Huf0OWal',
-    'lm-2001': 'nPczCjzI2devNBz1zQrb',
+  // Infer gender from character name/role/accent
+  function inferGender(name, role, accent) {
+    const firstName = (name || '').split(' ')[0].toLowerCase()
+    const combined = `${name} ${role} ${accent}`.toLowerCase()
+
+    // Comprehensive female first name list
+    const femaleNames = new Set([
+      'ada', 'adele', 'adeola', 'alejandra', 'alice', 'amanda', 'amara', 'amira', 'amy',
+      'ana', 'andrea', 'angela', 'anna', 'annie', 'beatrice', 'bessie', 'bridget',
+      'catherine', 'cecilia', 'charlotte', 'chioma', 'clara', 'claudette', 'connie',
+      'dana', 'denise', 'dorothy', 'elena', 'elizabeth', 'ella', 'emily', 'emma',
+      'esther', 'fatima', 'florence', 'grace', 'harriet', 'helen', 'ida', 'irene',
+      'isabella', 'jane', 'jenny', 'jessica', 'joan', 'josephine', 'julia', 'karen',
+      'kate', 'katherine', 'kaya', 'kura', 'lakshmi', 'laura', 'lily', 'linda', 'lisa',
+      'liwayway', 'lucia', 'luna', 'margaret', 'maria', 'martha', 'mary', 'maya',
+      'mildred', 'nancy', 'ngozi', 'nia', 'noura', 'osha', 'patricia', 'piya', 'preethi',
+      'priya', 'rebecca', 'rivka', 'rosa', 'ruth', 'sakura', 'sarah', 'sofia', 'susan',
+      'sylvia', 'tanya', 'temi', 'toypurina', 'tsipni', 'vanessa', 'vera', 'victoria',
+      'yinka', 'yuki', 'yumi', 'zara', 'donaldina', 'manahatta', 'amara',
+    ])
+
+    // Check first name against known female names
+    if (femaleNames.has(firstName)) return 'female'
+
+    // Check role/accent for gender signals
+    const femaleRoleSignals = ['woman', 'female', 'girl', 'she ', 'her ', 'mother', 'wife',
+      'daughter', 'sister', 'nun', 'mrs', 'miss', 'ms ', 'lady', 'queen', 'princess',
+      'nurse', 'midwife', 'seamstress', 'washerwoman', 'laundress', 'actress', 'maid',
+      'governess', 'countess', 'duchess', 'priestess', 'widow']
+    const maleRoleSignals = ['man ', 'male', 'boy ', 'father', 'husband', 'son ', 'brother',
+      'monk', 'mr ', 'sir ', 'king ', 'prince', 'soldier', 'captain', 'reporter',
+      'photographer', 'priest', 'padre', 'rabbi', 'imam', 'dock worker', 'longshoreman',
+      'firefighter', 'officer', 'jr.', 'senior']
+
+    const fScore = femaleRoleSignals.filter(s => combined.includes(s)).length
+    const mScore = maleRoleSignals.filter(s => combined.includes(s)).length
+    if (fScore > mScore) return 'female'
+    if (mScore > fScore) return 'male'
+    return 'male' // default fallback
   }
 
-  // Pick voice: era override > city match > default
-  let voiceId = eraVoiceOverrides[eraId]
-  if (!voiceId && city) {
-    const cityLower = city.toLowerCase()
-    for (const [key, id] of Object.entries(voicesByRegion)) {
-      if (cityLower.includes(key) || key.includes(cityLower)) {
-        voiceId = id
-        break
-      }
+  // Infer age category from role/accent description
+  function inferAge(role, accent) {
+    const combined = `${role} ${accent}`.toLowerCase()
+    if (/\b(child|kid|boy |girl |teenage|teen |youth|young boy|young girl|student|12|13|14|15|16|17)\b/.test(combined)) return 'young'
+    if (/\b(elderly|old |aged|retired|ancient|grandmother|grandfather|80|70|veteran)\b/.test(combined)) return 'old'
+    if (/\b(young|20s|twenties|25|23|22)\b/.test(combined)) return 'young'
+    if (/\b(middle.aged|40s|50s|mature|experienced)\b/.test(combined)) return 'middle'
+    return 'middle' // default
+  }
+
+  // Infer accent/region
+  function inferAccent(accent, city, role) {
+    const combined = `${accent} ${city} ${role}`.toLowerCase()
+    if (/british|london|english|cockney|east end|working.class.*london|received pronunciation/i.test(combined)) return 'british'
+    if (/irish/i.test(combined)) return 'irish'
+    if (/italian/i.test(combined)) return 'italian'
+    if (/southern|dixie|georgia|alabama|texas|mississippi|carolina/i.test(combined)) return 'southern'
+    if (/french|paris|parisian/i.test(combined)) return 'french'
+    if (/japanese|tokyo|japan/i.test(combined)) return 'japanese'
+    if (/african|nigerian|lagos|yoruba/i.test(combined)) return 'african'
+    if (/arabic|arab|saudi|riyadh/i.test(combined)) return 'arabic'
+    return 'american'
+  }
+
+  const gender = inferGender(characterName || '', characterRole || '', characterAccent || '')
+  const age = inferAge(characterRole || '', characterAccent || '')
+  const accent = inferAccent(characterAccent || '', city || '', characterRole || '')
+
+  // Select best matching voice
+  let voice
+  if (gender === 'female') {
+    if (accent === 'british') {
+      voice = age === 'young' ? VOICES.britishFemale : VOICES.britishFemale2
+    } else if (accent === 'southern') {
+      voice = VOICES.southernFemale
+    } else {
+      // American female
+      if (age === 'young') voice = VOICES.youngAmericanFemale3  // Matilda — warm
+      else if (age === 'old') voice = VOICES.midAmericanFemale
+      else voice = VOICES.youngAmericanFemale4  // Domi — strong
+    }
+  } else {
+    // Male
+    if (accent === 'british') {
+      if (age === 'young') voice = VOICES.youngBritishMale
+      else if (age === 'old') voice = VOICES.britishMale2  // George — raspy
+      else voice = VOICES.britishMale  // Daniel — deep
+    } else if (accent === 'irish') {
+      voice = VOICES.irishMale
+    } else if (accent === 'italian') {
+      voice = VOICES.italianMale
+    } else {
+      // American male (including default for non-European accents)
+      if (age === 'young') voice = VOICES.youngAmericanMale  // Antoni — young, well-rounded
+      else if (age === 'old') voice = VOICES.oldAmericanMale  // Jessie — old, raspy
+      else voice = VOICES.midAmericanMale  // Adam — deep
     }
   }
-  if (!voiceId) voiceId = voicesByRegion['default']
+
+  const voiceId = voice?.id || VOICES.midAmericanMale.id
+  console.log(`Narrate: ${characterName} (${gender}/${age}/${accent}) → ${voice?.name || 'fallback'} [${voiceId}]`)
 
   // Adjust voice settings based on era type for mood
   const voiceSettings = {
