@@ -384,6 +384,33 @@ export default function ExperienceWindow() {
 
           {/* Scrollable content — full description + key events + landscape */}
           <div style={{ flex: 1, overflowY: 'auto', padding: '0 24px 20px 20px', maxWidth: 600, margin: '0 auto', width: '100%' }}>
+            {/* Experience CTA — prominent at top of expanded sheet */}
+            <button
+              onClick={() => {
+                if (ambientRef.current) { ambientRef.current.stop(); ambientRef.current = null }
+                setExpanded(false)
+                setTimelessSceneOpen(true)
+              }}
+              className="flex items-center gap-3 rounded-2xl px-4 py-3 w-full mb-4"
+              style={{ background: `${color}1f`, border: `1px solid ${color}40` }}
+            >
+              <span className="flex items-center justify-center w-8 h-8 rounded-full" style={{ background: `${color}33` }}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2">
+                  <circle cx="12" cy="12" r="10" />
+                  <path d="M12 6v6l4 2" />
+                </svg>
+              </span>
+              <span className="flex flex-col items-start">
+                <span className="text-sm font-medium" style={{ color }}>Experience This Moment</span>
+                <span className="text-[10px]" style={{ color: `${color}99` }}>
+                  {character ? `${character.name} narrates` : `${era.year_display || era.label}`}
+                </span>
+              </span>
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className="ml-auto">
+                <path d="M5 3l4 4-4 4" stroke={color} strokeWidth="1.5" strokeLinecap="round" />
+              </svg>
+            </button>
+
             <h2 className="font-heading text-xl font-semibold leading-tight text-present">
               {era.headline}
             </h2>
