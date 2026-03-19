@@ -1,11 +1,11 @@
 import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ERA_CHARACTERS } from '../data/era-characters'
+import { ERA_CHARACTERS, getCharacterForEra } from '../data/era-characters'
 import { sendCharacterMessage } from '../services/characterService'
 import { voiceService } from '../services/voiceService'
 
 export function CharacterChat({ era, onDismiss, character: characterProp, venueContext, backLabel, sceneIntro }) {
-  const character = characterProp || ERA_CHARACTERS[era?.id]
+  const character = characterProp || getCharacterForEra(era?.id)
   // If sceneIntro provided, skip straight to chat with the intro as first message
   const [phase, setPhase] = useState(sceneIntro ? 'chat' : 'notification')
   // phases: notification → introduction → chat

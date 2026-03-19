@@ -198,14 +198,14 @@ export default function ExperienceWindow() {
               loading={isFirstEra ? 'eager' : 'lazy'}
               className="h-full w-full object-cover"
               style={{
-                transform: `translate(${tilt.x * 0.4}px, ${tilt.y * 0.4}px)`,
-                transition: 'transform 0.1s ease-out',
+                translate: `${tilt.x * 0.5}px ${tilt.y * 0.5}px`,
+                transition: 'translate 0.15s ease-out',
                 willChange: 'transform',
               }}
-              initial={{ scale: 1.0 }}
-              animate={{ scale: 1.08 }}
+              initial={{ scale: 1.0, x: '0%' }}
+              animate={{ scale: 1.1, x: '2%' }}
               transition={{
-                duration: 20,
+                duration: 25,
                 ease: 'linear',
                 repeat: Infinity,
                 repeatType: 'reverse',
@@ -221,7 +221,7 @@ export default function ExperienceWindow() {
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          background: 'linear-gradient(to top, rgba(10,10,10,0.85) 0%, rgba(10,10,10,0.4) 30%, transparent 55%)',
+          background: 'linear-gradient(to top, rgba(10,10,10,0.95) 0%, rgba(10,10,10,0.85) 20%, rgba(10,10,10,0.5) 40%, transparent 60%)',
         }}
       />
 
