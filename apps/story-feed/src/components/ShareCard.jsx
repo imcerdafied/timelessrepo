@@ -30,6 +30,7 @@ export default function ShareCard({ story, episode, votedOption, percent, onClos
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
+      className="mobile-frame"
       style={{
         position: 'fixed',
         inset: 0,

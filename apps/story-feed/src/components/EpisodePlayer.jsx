@@ -420,7 +420,7 @@ export default function EpisodePlayer() {
   }
 
   return (
-    <div style={{
+    <div className="mobile-frame" style={{
       position: 'fixed',
       inset: 0,
       zIndex: 100,

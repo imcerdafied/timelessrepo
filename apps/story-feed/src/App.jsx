@@ -25,13 +25,23 @@ export default function App() {
   return (
     <div style={{
       backgroundColor: '#000',
-      minHeight: '100vh',
-      maxWidth: '480px',
-      margin: '0 auto',
-      position: 'relative',
+      minHeight: '100dvh',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
       fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif"
     }}>
-      <EpisodePlayer />
+      <div style={{
+        width: '100%',
+        maxWidth: '390px',
+        height: '100dvh',
+        position: 'relative',
+        overflow: 'hidden',
+        borderLeft: '1px solid #222',
+        borderRight: '1px solid #222',
+      }}>
+        <EpisodePlayer />
+      </div>
     </div>
   )
 }

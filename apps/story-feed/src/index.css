@@ -17,6 +17,15 @@ body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
+/* Mobile-width constraint for fixed overlays */
+.mobile-frame {
+  max-width: 390px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  left: 0 !important;
+  right: 0 !important;
+}
+
 @theme {
   --color-background: #000000;
   --color-surface: #141414;
