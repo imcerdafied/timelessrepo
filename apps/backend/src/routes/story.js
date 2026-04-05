@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import Anthropic from '@anthropic-ai/sdk'
-import { createClient } from '@supabase/supabase-js'
+import { supabase } from '../lib/supabase.js'
 
 // Lazy import — don't let a bad hedraService kill the entire story router
 let generateTalkVideo = null
@@ -19,11 +19,7 @@ const videoCache = new Map()
 
 const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
 
-// Supabase for vote storage
-let supabase = null
-if (process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_KEY) {
-  supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY)
-}
+// Supabase imported from shared lib
 
 // POST /api/story/chat — character conversation within a story episode
 router.post('/chat', async (req, res) => {

@@ -1,9 +1,10 @@
 import express from 'express'
 import cors from 'cors'
+import rateLimit from 'express-rate-limit'
 import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
-import { createClient } from '@supabase/supabase-js'
+import { supabase } from './src/lib/supabase.js'
 import characterRoutes from './src/routes/character.js'
 import storyRoutes from './src/routes/story.js'
 import sceneRoutes from './src/routes/scene.js'
@@ -14,29 +15,43 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const app = express()
 const PORT = process.env.PORT || 3001
 
-app.use(cors())
+// CORS — restrict to known origins in production
+const ALLOWED_ORIGINS = process.env.CORS_ORIGINS
+  ? process.env.CORS_ORIGINS.split(',')
+  : ['http://localhost:5173', 'http://localhost:4173']
+app.use(cors({
+  origin: (origin, cb) => {
+    // Allow requests with no origin (mobile apps, curl, server-to-server)
+    if (!origin || ALLOWED_ORIGINS.includes(origin)) return cb(null, true)
+    // In development, allow all origins
+    if (process.env.NODE_ENV !== 'production') return cb(null, true)
+    cb(new Error('Not allowed by CORS'))
+  }
+}))
 app.use(express.json())
 
-// Supabase client — requires env vars
-const supabaseUrl = process.env.SUPABASE_URL
-const supabaseKey = process.env.SUPABASE_SERVICE_KEY
+// Supabase client imported from shared lib (src/lib/supabase.js)
 
-let supabase = null
-if (supabaseUrl && supabaseKey) {
-  supabase = createClient(supabaseUrl, supabaseKey)
-}
+// Rate limiting for routes that proxy to paid APIs (Anthropic, ElevenLabs)
+const apiLimiter = rateLimit({
+  windowMs: 60 * 1000, // 1 minute
+  max: 20,             // 20 requests per minute per IP
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Too many requests, please try again later' },
+})
 
 // Character chat — Claude API proxy
-app.use('/api/character', characterRoutes)
+app.use('/api/character', apiLimiter, characterRoutes)
 
 // Story Universe — chat, TTS, voting
-app.use('/api/story', storyRoutes)
+app.use('/api/story', apiLimiter, storyRoutes)
 
 // Scene generation — AI-generated dialogue videos
-app.use('/api/scene', sceneRoutes)
+app.use('/api/scene', apiLimiter, sceneRoutes)
 
 // On This Day — daily historical events
-app.use('/api/on-this-day', onThisDayRoutes)
+app.use('/api/on-this-day', apiLimiter, onThisDayRoutes)
 
 // Today at Property — daily content feed
 app.use('/api/today-at-property', todayAtPropertyRoutes)
