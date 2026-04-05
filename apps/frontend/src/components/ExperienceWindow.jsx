@@ -21,6 +21,7 @@ import VenueScene from './VenueScene'
 import ScenePlayer from './ScenePlayer'
 import SceneSelector from './SceneSelector'
 import TimelessScene from './TimelessScene'
+import ConciergeFAB from './ConciergeFAB'
 
 function oneSentence(text) {
   const match = text.match(/^(.*?[.!?])/)
@@ -31,12 +32,16 @@ const eraColor = {
   past: '#C8860A',
   present: '#F5F5F5',
   future: '#1E4D8C',
+  cultural: '#2D8F4E',
+  operational: '#4A90A4',
 }
 
 const eraGradient = {
   past: 'linear-gradient(135deg, #1a1206 0%, #0A0A0A 50%, #141210 100%)',
   present: 'linear-gradient(135deg, #111111 0%, #0A0A0A 50%, #0f0f0f 100%)',
   future: 'linear-gradient(135deg, #0a0f1a 0%, #0A0A0A 50%, #0d1018 100%)',
+  cultural: 'linear-gradient(135deg, #0a1a0f 0%, #0A0A0A 50%, #0d180f 100%)',
+  operational: 'linear-gradient(135deg, #0a1318 0%, #0A0A0A 50%, #0d1518 100%)',
 }
 
 export default function ExperienceWindow() {
@@ -62,6 +67,7 @@ export default function ExperienceWindow() {
   const [sceneSelectorOpen, setSceneSelectorOpen] = useState(false)
   const [activeScene, setActiveScene] = useState(null)
   const [timelessSceneOpen, setTimelessSceneOpen] = useState(false)
+  const [conciergeOpen, setConciergeOpen] = useState(false)
   const [ambientStarted, setAmbientStarted] = useState(false)
   const ambientRef = useRef(null)
   const dragControls = useDragControls()
@@ -73,6 +79,8 @@ export default function ExperienceWindow() {
   const { tilt, needsPermission, requestPermission } = useGyroscope()
   const { audioEnabled, hasAudio, toggle: toggleAudio } = useEraAudio(era)
   const character = getCharacterForEra(era?.id)
+  const conciergeEraId = `${selectedLocation}-present`
+  const conciergeCharacter = getCharacterForEra(conciergeEraId)
   const hasCharacter = !!character
   const { dwellMet, dismiss: dismissCharacter } = useDwellTime(
     era?.id,
@@ -351,6 +359,19 @@ export default function ExperienceWindow() {
           </div>
         </motion.div>
       </AnimatePresence>
+
+      {/* BLE Nearby pill */}
+      {useStore.getState().bleSimEnabled && useStore.getState().bleSimZone === selectedLocation && (
+        <div className="absolute top-12 left-3 z-20 flex items-center gap-1.5 rounded-full border border-accent/30 bg-black/60 px-2.5 py-1 backdrop-blur-sm">
+          <span className="relative flex h-1.5 w-1.5">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75" />
+            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-accent" />
+          </span>
+          <span className="font-ui text-[10px] text-accent">
+            You're at {locations.find(l => l.id === selectedLocation)?.name}
+          </span>
+        </div>
+      )}
 
       {/* Bottom sheet — collapsed peek or expanded fixed overlay */}
       {expanded ? (
@@ -657,6 +678,25 @@ export default function ExperienceWindow() {
           }}
         />,
         document.body
+      )}
+
+      {/* Concierge FAB */}
+      {!conciergeOpen && !characterOpen && !timelessSceneOpen && (
+        <ConciergeFAB onClick={() => {
+          if (conciergeCharacter) {
+            setConciergeOpen(true)
+          }
+        }} />
+      )}
+
+      {/* Concierge Chat overlay */}
+      {conciergeOpen && conciergeCharacter && (
+        <CharacterChat
+          era={eras.find(e => e.id === conciergeEraId)}
+          character={conciergeCharacter}
+          onDismiss={() => setConciergeOpen(false)}
+          backLabel="Back to Experience"
+        />
       )}
     </div>
   )
