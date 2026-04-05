@@ -1,31 +1,10 @@
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL
 
-// Layer 1: Ambient soundscapes (nature, city sounds)
-const ERA_AMBIENT = {
-  // Alamo
-  'alamo-1500': `${SUPABASE_URL}/storage/v1/object/public/era-audio/alamo-1500.mp3`,
-  'alamo-1834': `${SUPABASE_URL}/storage/v1/object/public/era-audio/alamo-1834.mp3`,
-  'alamo-1856': `${SUPABASE_URL}/storage/v1/object/public/era-audio/alamo-1856.mp3`,
-  'alamo-1900': `${SUPABASE_URL}/storage/v1/object/public/era-audio/alamo-1900.mp3`,
-  'alamo-1950': `${SUPABASE_URL}/storage/v1/object/public/era-audio/alamo-1950.mp3`,
-  'alamo-1980': `${SUPABASE_URL}/storage/v1/object/public/era-audio/alamo-1980.mp3`,
-  'alamo-2001': `${SUPABASE_URL}/storage/v1/object/public/era-audio/alamo-2001.mp3`,
-  'alamo-2025': `${SUPABASE_URL}/storage/v1/object/public/era-audio/alamo-2025.mp3`,
-  'alamo-2075': `${SUPABASE_URL}/storage/v1/object/public/era-audio/alamo-2075.mp3`,
-}
+// Layer 1: Ambient soundscapes — add entries as audio files are uploaded
+const ERA_AMBIENT = {}
 
-// Layer 2: Era music (public domain from Internet Archive)
-const SUPABASE_AUDIO_BASE = 'https://rqhmegnxtdlvytpxamjn.supabase.co/storage/v1/object/public/era-audio'
-
-const ERA_MUSIC = {
-  'alamo-1834': { type: 'file', url: `${SUPABASE_AUDIO_BASE}/alamo-1834-music.mp3` },
-  'alamo-1856': { type: 'file', url: `${SUPABASE_AUDIO_BASE}/alamo-1856-music.mp3` },
-  'alamo-1900': { type: 'file', url: `${SUPABASE_AUDIO_BASE}/alamo-1900-music.mp3` },
-  'alamo-1950': { type: 'file', url: `${SUPABASE_AUDIO_BASE}/alamo-1950-music.mp3` },
-  'alamo-1969': { type: 'file', url: `${SUPABASE_AUDIO_BASE}/alamo-1969-music.mp3` },
-  'nyc-wall-street-1929': { type: 'file', url: `${SUPABASE_AUDIO_BASE}/nyc-wall-street-1929-music.mp3` },
-  'london-whitechapel-1940': { type: 'file', url: `${SUPABASE_AUDIO_BASE}/london-whitechapel-1940-music.mp3` },
-}
+// Layer 2: Era music — add entries as music files are uploaded
+const ERA_MUSIC = {}
 
 class AudioService {
   constructor() {
