@@ -311,7 +311,7 @@ export function CharacterChat({ era, onDismiss, character: characterProp, venueC
       </div>
 
       <div className="py-2 text-center">
-        <span className="font-ui text-[9px] tracking-[0.15em] text-present/15 uppercase">
+        <span className="font-ui text-[9px] tracking-[0.15em] text-white/20 uppercase">
           Powered by Phunware AI
         </span>
       </div>

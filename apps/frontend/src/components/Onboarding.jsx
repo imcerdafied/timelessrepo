@@ -156,7 +156,7 @@ export default function Onboarding({ onComplete }) {
               <div
                 key={i}
                 className="h-1.5 w-1.5 rounded-full transition-colors"
-                style={{ backgroundColor: i === step ? '#C8860A' : '#333333' }}
+                style={{ backgroundColor: i === step ? '#C8860A' : '#D1D5DB' }}
               />
             ))}
           </div>
@@ -173,7 +173,7 @@ export default function Onboarding({ onComplete }) {
               Begin
             </button>
           ) : (
-            <p className="font-ui text-[11px] tracking-wide text-present/25">
+            <p className="font-ui text-[11px] tracking-wide text-present/40">
               Swipe or tap to continue
             </p>
           )}
