@@ -1,3 +1,6 @@
+// Character notification dwell time (seconds before notification appears)
+export const DWELL_TIME_SECONDS = 90
+
 // ATLANTIS BAHAMAS — Resort Character Roster
 // 45 characters across 5 zones × 9 layers
 // Each character is the Claude system prompt source for that zone/layer
