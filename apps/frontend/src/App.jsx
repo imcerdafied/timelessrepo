@@ -4,7 +4,7 @@ import ExperienceWindow from './components/ExperienceWindow'
 import GPSTrigger from './components/GPSTrigger'
 import LocationSelector from './components/LocationSelector'
 import Onboarding from './components/Onboarding'
-import OnThisDayScreen from './components/OnThisDayScreen'
+import TodayAtAtlantis from './components/TodayAtAtlantis'
 import TemporalRibbon from './components/TemporalRibbon'
 import useStore from './store/useStore'
 
@@ -12,13 +12,13 @@ function App() {
   const selectedLocation = useStore((s) => s.selectedLocation)
   const setSelectedLocation = useStore((s) => s.setSelectedLocation)
   const setSelectedEra = useStore((s) => s.setSelectedEra)
-  const [showOnThisDay, setShowOnThisDay] = useState(true)
+  const [showTodayScreen, setShowTodayScreen] = useState(true)
   const [showOnboarding, setShowOnboarding] = useState(
     () => !localStorage.getItem('onboarding_complete')
   )
   const [gpsDismissed, setGpsDismissed] = useState(false)
 
-  // Check for deep-link from shared On This Day event
+  // Check for deep-link from shared event
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
     const otdEra = params.get('otd')
@@ -30,7 +30,7 @@ function App() {
         if (era) {
           setSelectedLocation(loc.id)
           setSelectedEra(era.id)
-          setShowOnThisDay(false)
+          setShowTodayScreen(false)
           // Clean URL
           window.history.replaceState({}, '', window.location.pathname)
           break
@@ -41,28 +41,28 @@ function App() {
 
   const handleGpsDismiss = useCallback(() => setGpsDismissed(true), [])
 
-  // When user taps an "On This Day" event card
-  const handleOnThisDayTap = useCallback((locationId, eraId) => {
-    setSelectedLocation(locationId)
-    // setSelectedLocation auto-selects the first era, so override to the matched era
-    setTimeout(() => setSelectedEra(eraId), 0)
-    setShowOnThisDay(false)
+  // When user taps an event card on the Today screen
+  const handleTodayEventTap = useCallback((zoneId, layerId) => {
+    setSelectedLocation(zoneId)
+    setTimeout(() => setSelectedEra(layerId), 0)
+    setShowTodayScreen(false)
   }, [setSelectedLocation, setSelectedEra])
 
   return (
     <div className="flex h-dvh items-center justify-center bg-black">
       <div className="relative flex h-full w-full max-w-[390px] flex-col border-x border-border bg-background">
         <AnimatePresence mode="wait">
-          {showOnThisDay && !selectedLocation ? (
+          {showTodayScreen && !selectedLocation ? (
             <motion.div
-              key="on-this-day"
+              key="today-at-atlantis"
               className="flex-1"
               exit={{ opacity: 0 }}
               transition={{ duration: 0.4 }}
             >
-              <OnThisDayScreen
-                onEventTap={handleOnThisDayTap}
-                onSkip={() => setShowOnThisDay(false)}
+              <TodayAtAtlantis
+                onEventTap={handleTodayEventTap}
+                onSkip={() => setShowTodayScreen(false)}
+                onLogoTap={() => {}}
               />
             </motion.div>
           ) : !selectedLocation ? (
@@ -95,7 +95,7 @@ function App() {
 
         {/* Onboarding overlay — shows once, above everything */}
         <AnimatePresence>
-          {showOnboarding && !showOnThisDay && (
+          {showOnboarding && !showTodayScreen && (
             <Onboarding onComplete={() => setShowOnboarding(false)} />
           )}
         </AnimatePresence>
