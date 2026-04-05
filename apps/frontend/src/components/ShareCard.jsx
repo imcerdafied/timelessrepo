@@ -2,6 +2,8 @@ import { useRef, useState, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import html2canvas from 'html2canvas'
 
+const PROPERTY_NAME = import.meta.env.VITE_PROPERTY_NAME || 'Atlantis Experience'
+
 function truncate(text, max) {
   if (!text || text.length <= max) return text
   return text.slice(0, max).replace(/\s+\S*$/, '') + '...'
@@ -29,7 +31,7 @@ export default function ShareCard({ era, locationName, imageUrl, onClose }) {
       )
 
       if (navigator.share && blob) {
-        const file = new File([blob], `timeless-${era.id}.png`, { type: 'image/png' })
+        const file = new File([blob], `${PROPERTY_NAME.toLowerCase().replace(/\s+/g, '-')}-${era.id}.png`, { type: 'image/png' })
         await navigator.share({
           title: era.headline,
           text: `${locationName}, ${era.year_display}`,
@@ -53,7 +55,7 @@ export default function ShareCard({ era, locationName, imageUrl, onClose }) {
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
     a.href = url
-    a.download = `timeless-${era.id}.png`
+    a.download = `${PROPERTY_NAME.toLowerCase().replace(/\s+/g, '-')}-${era.id}.png`
     a.click()
     URL.revokeObjectURL(url)
   }
@@ -113,10 +115,10 @@ export default function ShareCard({ era, locationName, imageUrl, onClose }) {
             {/* Top branding */}
             <div style={{ position: 'absolute', top: 24, left: 24, right: 24 }}>
               <div style={{ fontFamily: 'Inter, sans-serif', fontSize: 10, letterSpacing: '0.2em', color: '#C8860A', textTransform: 'uppercase' }}>
-                Timeless Moment
+                {PROPERTY_NAME}
               </div>
               <div style={{ fontFamily: 'Inter, sans-serif', fontSize: 9, color: 'rgba(245,245,245,0.3)', marginTop: 2 }}>
-                timelessmoment.app
+                {PROPERTY_NAME.toLowerCase().replace(/\s+/g, '') + '.app'}
               </div>
             </div>
 
@@ -142,7 +144,7 @@ export default function ShareCard({ era, locationName, imageUrl, onClose }) {
               {/* Bottom rule + tagline */}
               <div style={{ borderTop: '1px solid #C8860A', marginTop: 16, paddingTop: 12 }}>
                 <div style={{ fontFamily: 'Inter, sans-serif', fontSize: 11, color: 'rgba(245,245,245,0.4)', letterSpacing: '0.1em' }}>
-                  A place in time.
+                  Where every place tells a story.
                 </div>
               </div>
             </div>
