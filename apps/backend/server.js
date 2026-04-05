@@ -10,6 +10,7 @@ import storyRoutes from './src/routes/story.js'
 import sceneRoutes from './src/routes/scene.js'
 import onThisDayRoutes from './src/routes/on-this-day.js'
 import todayAtPropertyRoutes from './src/routes/today-at-property.js'
+import cameraRoutes from './src/routes/camera.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const app = express()
@@ -28,7 +29,7 @@ app.use(cors({
     cb(new Error('Not allowed by CORS'))
   }
 }))
-app.use(express.json())
+app.use(express.json({ limit: '10mb' }))
 
 // Supabase client imported from shared lib (src/lib/supabase.js)
 
@@ -55,6 +56,16 @@ app.use('/api/on-this-day', apiLimiter, onThisDayRoutes)
 
 // Today at Property — daily content feed
 app.use('/api/today-at-property', todayAtPropertyRoutes)
+
+// Camera AI — image generation (expensive, tighter limit)
+const cameraLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 5,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Too many image requests, please wait a moment' },
+})
+app.use('/api/camera', cameraLimiter, cameraRoutes)
 
 // Serve pre-baked scene assets (videos, audio) as static files
 const scenesDir = path.join(__dirname, '..', '..', 'scenes')
