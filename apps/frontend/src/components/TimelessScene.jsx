@@ -142,17 +142,8 @@ function ConversationCTA({ character, era, onTalkTo, onReplay, onClose, accent, 
         transition={{ delay: 0.2 }}
         className="mb-4"
       >
-        <p
-          className="text-[10px] mb-1"
-          style={{ color: `${accent}88`, letterSpacing: '0.15em', textTransform: 'uppercase' }}
-        >
-          You've been listening to
-        </p>
         <p className="text-lg font-semibold" style={{ fontFamily: 'Playfair Display, serif', color: '#F5F5F5' }}>
-          {character.name}
-        </p>
-        <p className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>
-          {character.role}
+          Meet {character.name} &mdash; {character.role}
         </p>
       </motion.div>
 
@@ -416,9 +407,8 @@ export default function TimelessScene({ era, character, imageUrl, locationName, 
     startTextReveal()
   }
 
-  // Era color accent
-  const eraColors = { past: '#C8860A', present: '#F5F5F5', future: '#5B9BD5' }
-  const accent = eraColors[era?.era_type] || '#C8860A'
+  // Era color accent — derived from visual style per era type
+  const accent = visualStyle.accent || '#C8860A'
 
   if (!era || !lines.length) return null
 
@@ -581,14 +571,8 @@ export default function TimelessScene({ era, character, imageUrl, locationName, 
           transition={{ duration: 0.8 }}
           className="absolute bottom-16 left-0 right-0 z-20 px-6"
         >
-          <p style={{ color: `${accent}aa`, fontSize: 10, letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 4 }}>
-            Narrated by
-          </p>
           <p style={{ color: '#F5F5F5', fontSize: 20, fontFamily: 'Playfair Display, serif', fontWeight: 600 }}>
-            {narrator.name}
-          </p>
-          <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: 12, marginTop: 2 }}>
-            {narrator.role}
+            Meet {narrator.name} &mdash; {narrator.role}
           </p>
         </motion.div>
       )}
