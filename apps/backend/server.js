@@ -8,6 +8,7 @@ import characterRoutes from './src/routes/character.js'
 import storyRoutes from './src/routes/story.js'
 import sceneRoutes from './src/routes/scene.js'
 import onThisDayRoutes from './src/routes/on-this-day.js'
+import todayAtPropertyRoutes from './src/routes/today-at-property.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const app = express()
@@ -36,6 +37,9 @@ app.use('/api/scene', sceneRoutes)
 
 // On This Day — daily historical events
 app.use('/api/on-this-day', onThisDayRoutes)
+
+// Today at Property — daily content feed
+app.use('/api/today-at-property', todayAtPropertyRoutes)
 
 // Serve pre-baked scene assets (videos, audio) as static files
 const scenesDir = path.join(__dirname, '..', '..', 'scenes')
@@ -145,6 +149,36 @@ app.post('/api/artifacts', async (req, res) => {
   }
 
   res.json({ success: true, artifact: data })
+})
+
+// Property configuration — makes the app white-label-ready
+app.get('/api/property', (_req, res) => {
+  res.json({
+    name: process.env.PROPERTY_NAME || 'Atlantis Experience',
+    id: process.env.PROPERTY_ID || 'atlantis-demo',
+    zones: ['marina-beach', 'lobby-royal-towers', 'waterpark-pools', 'casino-nightlife', 'marine-habitat'],
+    branding: {
+      primary: '#0B3D5C',
+      accent: '#E8A87C',
+      logo_url: null,
+    },
+  })
+})
+
+// BLE beacon simulation — returns simulated proximity data
+app.get('/api/ble/simulate/:zoneId', (req, res) => {
+  const { zoneId } = req.params
+  const validZones = ['marina-beach', 'lobby-royal-towers', 'waterpark-pools', 'casino-nightlife', 'marine-habitat']
+  if (!validZones.includes(zoneId)) {
+    return res.status(404).json({ error: 'Unknown zone' })
+  }
+  res.json({
+    zone_id: zoneId,
+    rssi: -45 - Math.floor(Math.random() * 20),
+    distance_m: 1 + Math.random() * 10,
+    timestamp: new Date().toISOString(),
+    simulated: true,
+  })
 })
 
 // Catch-all for unmatched /api routes (must come after all API registrations)

@@ -10,7 +10,7 @@ if (!process.env.ANTHROPIC_API_KEY) {
 const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
 
 router.post('/chat', async (req, res) => {
-  const { system_prompt, accent, messages, venue_context } = req.body
+  const { system_prompt, accent, messages, venue_context, visit_context } = req.body
 
   if (!process.env.ANTHROPIC_API_KEY) {
     return res.status(503).json({ error: 'ANTHROPIC_API_KEY not configured' })
@@ -25,8 +25,13 @@ router.post('/chat', async (req, res) => {
     ? `${venue_context}\n\n${system_prompt}`
     : system_prompt
 
+  let contextPrefix = ''
+  if (visit_context?.zones_visited?.length) {
+    contextPrefix = `GUEST CONTEXT: This guest has explored the following zones: ${visit_context.zones_visited.join(', ')}. They have visited ${visit_context.layers_visited?.length || 0} total layers. You can reference their journey if relevant to the conversation.\n\n`
+  }
+
   // Enforce era constraint in system prompt
-  const fullSystemPrompt = `${basePrompt}
+  const fullSystemPrompt = `${contextPrefix}${basePrompt}
 
 CRITICAL INSTRUCTIONS:
 - Stay in character completely. You are this person, in this time.
