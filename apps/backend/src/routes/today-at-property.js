@@ -18,12 +18,22 @@ function todayKey() {
 
 function staticFallback() {
   return {
-    greeting: `Today at ${PROPERTY_NAME}`,
-    weather: { temp: 82, condition: 'Sunny', water_temp: 79, sunset: '7:42 PM' },
+    greeting: 'On This Day',
     events: [
-      { time: '2:00 PM', title: 'Shark Feeding — Marine Habitat', zone_id: 'marine-habitat', layer_id: 'marine-habitat-present' },
-      { time: '5:30 PM', title: 'Sunset Cruise — Marina', zone_id: 'marina-beach', layer_id: 'marina-beach-present' },
-      { time: '7:00 PM', title: "Chef's Table — Royal Towers", zone_id: 'lobby-royal-towers', layer_id: 'lobby-royal-towers-present' },
+      {
+        year: '1718',
+        headline: 'The End of the Pirate Republic',
+        snippet: 'Woodes Rogers arrived in Nassau with Royal authority and a pardon for any pirate willing to surrender.',
+        zone_id: 'marina-beach',
+        layer_id: 'marina-beach-colonial',
+      },
+      {
+        year: '1973',
+        headline: 'Bahamian Independence',
+        snippet: 'The Bahamas gained independence from the United Kingdom after 256 years of British colonial rule.',
+        zone_id: 'lobby-royal-towers',
+        layer_id: 'lobby-royal-towers-colonial',
+      },
     ],
     featured: {
       headline: 'The Republic of Pirates',
@@ -55,26 +65,25 @@ router.get('/', async (_req, res) => {
     const response = await client.messages.create({
       model: 'claude-sonnet-4-6',
       max_tokens: 1024,
-      system: `You are a creative concierge for ${PROPERTY_NAME}, a luxury resort in Nassau, Bahamas. Generate engaging daily content for resort guests. The property has these zones: marina-beach, lobby-royal-towers, waterpark-pools, casino-nightlife, marine-habitat. Each zone has historical layers with IDs like zone-id-present, zone-id-colonial, zone-id-ancient. Respond ONLY with valid JSON, no markdown.`,
+      system: `You are a historical researcher for ${PROPERTY_NAME}, a luxury resort in Nassau, Bahamas. Generate "On This Day" historical content related to the Bahamas, Caribbean, ocean history, or tropical ecology. The property has these zones: marina-beach, lobby-royal-towers, waterpark-pools, casino-nightlife, marine-habitat. Each zone has layers with IDs like zone-id-colonial, zone-id-deep-past, zone-id-modern, etc. Respond ONLY with valid JSON, no markdown.`,
       messages: [
         {
           role: 'user',
-          content: `Generate today's content for ${key}. Return JSON with this exact structure:
+          content: `Generate "On This Day" content for ${key}. Find 2-3 real historical events that happened on or near this date related to the Bahamas, Caribbean, piracy, ocean exploration, marine biology, or tropical ecology. Return JSON:
 {
-  "greeting": "A warm, creative greeting for today",
-  "weather": { "temp": number, "condition": "string", "water_temp": number, "sunset": "time string" },
+  "greeting": "On This Day",
   "events": [
-    { "time": "time string", "title": "Event name — Location", "zone_id": "zone-id", "layer_id": "zone-id-era" }
+    { "year": "1718", "headline": "Short headline", "snippet": "1-2 sentence description", "zone_id": "relevant-zone-id", "layer_id": "relevant-zone-id-layer" }
   ],
   "featured": {
-    "headline": "Interesting historical headline",
-    "snippet": "A 1-2 sentence fascinating historical fact about Nassau or the Bahamas",
+    "headline": "Most interesting event headline",
+    "snippet": "1-2 sentence fascinating detail",
     "zone_id": "relevant-zone-id",
-    "layer_id": "relevant-zone-id-era"
+    "layer_id": "relevant-zone-id-layer"
   },
-  "did_you_know": "A single fascinating fact about Atlantis resort or Nassau"
+  "did_you_know": "A single fascinating fact about the Bahamas, marine life, or Caribbean history"
 }
-Include exactly 3 events. Make content feel fresh and seasonal for the date.`,
+Include 2-3 events. Use real historical dates and facts. Link each to the most relevant zone and layer.`,
         },
       ],
     })

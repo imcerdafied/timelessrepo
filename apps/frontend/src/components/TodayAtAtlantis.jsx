@@ -11,19 +11,23 @@ function todayKey() {
 }
 
 const FALLBACK = {
-  greeting: `Today at ${PROPERTY_NAME}`,
-  weather: { temp: 82, condition: 'Sunny', water_temp: 79, sunset: '7:42 PM' },
+  greeting: 'On This Day',
   events: [
-    { time: '2:00 PM', title: 'Shark Feeding — Marine Habitat', zone_id: 'marine-habitat', layer_id: 'marine-habitat-present' },
-    { time: '5:30 PM', title: 'Sunset Cruise — Marina', zone_id: 'marina-beach', layer_id: 'marina-beach-present' },
-    { time: '7:00 PM', title: "Chef's Table — Royal Towers", zone_id: 'lobby-royal-towers', layer_id: 'lobby-royal-towers-present' },
+    {
+      year: '1718',
+      headline: 'The End of the Pirate Republic',
+      snippet: 'Woodes Rogers arrived in Nassau with Royal authority and a pardon for any pirate willing to surrender, ending the most famous pirate haven in history.',
+      zone_id: 'marina-beach',
+      layer_id: 'marina-beach-colonial',
+    },
+    {
+      year: '1973',
+      headline: 'Bahamian Independence',
+      snippet: 'The Bahamas gained independence from the United Kingdom, ending 256 years of British colonial rule and beginning a new chapter for the island nation.',
+      zone_id: 'lobby-royal-towers',
+      layer_id: 'lobby-royal-towers-colonial',
+    },
   ],
-  featured: {
-    headline: 'The Republic of Pirates',
-    snippet: 'In 1718, Nassau harbor held more pirate ships than any port in the world.',
-    zone_id: 'marina-beach',
-    layer_id: 'marina-beach-colonial',
-  },
   did_you_know: 'The Atlantis marine habitat holds 11 million gallons of saltwater — enough to fill 17 Olympic swimming pools.',
 }
 
@@ -85,8 +89,6 @@ export default function TodayAtAtlantis({ onEventTap, onSkip, onLogoTap }) {
       <div className="flex h-full flex-col bg-background px-5 pt-8">
         {/* Header shimmer */}
         <div className="shimmer mb-4 h-6 w-48 rounded" />
-        {/* Weather shimmer */}
-        <div className="shimmer mb-6 h-12 w-full rounded-xl" />
         {/* Event card shimmers */}
         <div className="shimmer mb-3 h-16 w-full rounded-xl" />
         <div className="shimmer mb-3 h-16 w-full rounded-xl" />
@@ -99,7 +101,7 @@ export default function TodayAtAtlantis({ onEventTap, onSkip, onLogoTap }) {
     )
   }
 
-  const { greeting, weather, events, featured, did_you_know } = data
+  const { greeting, events, featured, did_you_know } = data
 
   // ── MAIN CONTENT ───────────────────────────────────────────────────
   return (
@@ -142,27 +144,7 @@ export default function TodayAtAtlantis({ onEventTap, onSkip, onLogoTap }) {
         </motion.button>
       </div>
 
-      {/* ── Weather Bar ────────────────────────────────────────────── */}
-      {weather && (
-        <motion.div
-          className="mx-5 mt-3 flex items-center justify-between rounded-xl border border-border px-4 py-3"
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.15, duration: 0.5 }}
-        >
-          <div className="flex items-center gap-2">
-            <span className="font-heading text-lg font-semibold text-present">{weather.temp}°</span>
-            <span className="font-ui text-xs text-present/50">{weather.condition}</span>
-          </div>
-          <div className="flex items-center gap-3 font-mono text-[10px] text-present/40">
-            <span>Water {weather.water_temp}°</span>
-            <span className="text-present/20">|</span>
-            <span>Sunset {weather.sunset}</span>
-          </div>
-        </motion.div>
-      )}
-
-      {/* ── Today's Events ─────────────────────────────────────────── */}
+      {/* On This Day */}
       <div className="px-5 pt-5">
         <motion.p
           className="font-ui text-[10px] tracking-[0.15em] uppercase text-present/40 mb-3"
@@ -170,7 +152,7 @@ export default function TodayAtAtlantis({ onEventTap, onSkip, onLogoTap }) {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
         >
-          Today&rsquo;s Events
+          On This Day
         </motion.p>
 
         <div className="flex flex-col gap-2.5">
@@ -179,21 +161,21 @@ export default function TodayAtAtlantis({ onEventTap, onSkip, onLogoTap }) {
               key={`${event.zone_id}-${i}`}
               onClick={() => onEventTap(event.zone_id, event.layer_id)}
               className="w-full text-left rounded-xl border border-border px-4 py-3 active:scale-[0.98] transition-transform"
-              style={{ background: 'rgba(255,255,255,0.02)' }}
+              style={{ background: 'rgba(0,0,0,0.02)' }}
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.25 + i * 0.08, duration: 0.45 }}
             >
-              <div className="flex items-center justify-between">
+              <div className="flex items-start gap-3">
+                <span className="font-mono text-xs text-accent font-semibold shrink-0 pt-0.5">{event.year}</span>
                 <div>
-                  <span className="font-mono text-[10px] text-accent">{event.time}</span>
-                  <h3 className="font-heading text-sm font-medium text-present mt-0.5 leading-snug">
-                    {event.title}
+                  <h3 className="font-heading text-sm font-medium text-present leading-snug">
+                    {event.headline}
                   </h3>
+                  <p className="font-ui text-xs text-present/50 mt-1 leading-relaxed">
+                    {event.snippet}
+                  </p>
                 </div>
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className="text-accent flex-shrink-0 ml-2">
-                  <path d="M5 3l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                </svg>
               </div>
             </motion.button>
           ))}
