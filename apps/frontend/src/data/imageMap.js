@@ -1,109 +1,97 @@
-// Era image system: curated URLs → Picsum fallback.
-// All URLs verified via Wikimedia Commons API. Public domain or CC-licensed.
+// Resort image map: curated Unsplash placeholders for all 45 zone × layer combos.
+// Atlantis Bahamas hospitality demo.
+
+const ZONES = ['marina-beach', 'lobby-royal-towers', 'waterpark-pools', 'casino-nightlife', 'marine-habitat']
+const LAYERS = ['deep-past', 'colonial', 'early-tourism', 'resort-era', 'modern', 'present', 'culture', 'behind-scenes', 'future']
 
 const CURATED = {
-  // === San Francisco ===
+  // ═══════════════════════════════════════════════════════════════════
+  // MARINA-BEACH
+  // ═══════════════════════════════════════════════════════════════════
+  'marina-beach-deep-past':      'https://images.unsplash.com/photo-1546026423-cc4642628d2b?w=800&q=80', // Caribbean coral reef
+  'marina-beach-colonial':       'https://images.unsplash.com/photo-1534423861386-85a16f5d13fd?w=800&q=80', // pirate ship on sea
+  'marina-beach-early-tourism':  'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80', // vintage tropical beach
+  'marina-beach-resort-era':     'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800&q=80', // resort construction
+  'marina-beach-modern':         'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800&q=80', // luxury resort aerial
+  'marina-beach-present':        'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&q=80', // marina beach day
+  'marina-beach-culture':        'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=800&q=80', // Caribbean festival
+  'marina-beach-behind-scenes':  'https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=800&q=80', // marine engineering
+  'marina-beach-future':         'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80', // futuristic ocean city
 
-  // Mission Dolores
-  'mission-1776': 'https://upload.wikimedia.org/wikipedia/commons/9/9d/Mission_San_Francisco_de_Asis_%28Dolores%29%2C_showing_close-up_view_of_mission%2C_ca.1900_%28CHS-1648%29.jpg',
-  'mission-1849': 'https://upload.wikimedia.org/wikipedia/commons/4/46/SanFranciscoharbor1851c_sharp.jpg',
-  'mission-1906': 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/San_Francisco_in_ruin_edit2.jpg/1280px-San_Francisco_in_ruin_edit2.jpg',
+  // ═══════════════════════════════════════════════════════════════════
+  // LOBBY-ROYAL-TOWERS
+  // ═══════════════════════════════════════════════════════════════════
+  'lobby-royal-towers-deep-past':      'https://images.unsplash.com/photo-1583212292454-1fe6229603b7?w=800&q=80', // underwater reef
+  'lobby-royal-towers-colonial':       'https://images.unsplash.com/photo-1569161031678-f49b4b9ddd7b?w=800&q=80', // old colonial building
+  'lobby-royal-towers-early-tourism':  'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&q=80', // grand hotel vintage
+  'lobby-royal-towers-resort-era':     'https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=800&q=80', // resort under construction
+  'lobby-royal-towers-modern':         'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800&q=80', // luxury hotel modern
+  'lobby-royal-towers-present':        'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800&q=80', // grand hotel lobby
+  'lobby-royal-towers-culture':        'https://images.unsplash.com/photo-1504699439244-b4ef9433a3d4?w=800&q=80', // Caribbean music
+  'lobby-royal-towers-behind-scenes':  'https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=800&q=80', // engineering room
+  'lobby-royal-towers-future':         'https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?w=800&q=80', // futuristic architecture
 
-  // Embarcadero
-  'emb-1849': 'https://upload.wikimedia.org/wikipedia/commons/9/92/Ships-abandoned-in-Yerba-Buena-Cove-San-Francisco-during-the-California-gold-rush.-1849.jpg',
-  'emb-1906': 'https://upload.wikimedia.org/wikipedia/commons/5/52/San_Francisco_Earthquake_of_1906%2C_The_waterfront%2C_north_of_the_Ferry_Building%2C_showing_piers_3%2C_5%2C_7%2C_9%2C_11%2C_and_15...._-_NARA_-_531030.jpg',
+  // ═══════════════════════════════════════════════════════════════════
+  // WATERPARK-POOLS
+  // ═══════════════════════════════════════════════════════════════════
+  'waterpark-pools-deep-past':      'https://images.unsplash.com/photo-1682687220742-aba13b6e50ba?w=800&q=80', // deep ocean
+  'waterpark-pools-colonial':       'https://images.unsplash.com/photo-1590523741831-ab7e8b8f9c7f?w=800&q=80', // old Caribbean harbor
+  'waterpark-pools-early-tourism':  'https://images.unsplash.com/photo-1504681869696-d977211a5f4c?w=800&q=80', // vintage swimming pool
+  'waterpark-pools-resort-era':     'https://images.unsplash.com/photo-1540541338287-41700207dee6?w=800&q=80', // waterpark construction
+  'waterpark-pools-modern':         'https://images.unsplash.com/photo-1572331165267-854da2b021b1?w=800&q=80', // modern waterpark slide
+  'waterpark-pools-present':        'https://images.unsplash.com/photo-1576610616656-d3aa5d1f4534?w=800&q=80', // resort pool day
+  'waterpark-pools-culture':        'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=80', // Caribbean food spread
+  'waterpark-pools-behind-scenes':  'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=800&q=80', // water filtration system
+  'waterpark-pools-future':         'https://images.unsplash.com/photo-1486325212027-8081e485255e?w=800&q=80', // futuristic water city
 
-  // Montgomery / Financial District
-  'fin-1849': 'https://upload.wikimedia.org/wikipedia/commons/4/46/SanFranciscoharbor1851c_sharp.jpg',
-  'fin-1906': 'https://upload.wikimedia.org/wikipedia/commons/8/85/Aftermath_of_San_Francisco_earthquake%2C_1906.jpg',
+  // ═══════════════════════════════════════════════════════════════════
+  // CASINO-NIGHTLIFE
+  // ═══════════════════════════════════════════════════════════════════
+  'casino-nightlife-deep-past':      'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&q=80', // Caribbean reef fish
+  'casino-nightlife-colonial':       'https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?w=800&q=80', // old tavern
+  'casino-nightlife-early-tourism':  'https://images.unsplash.com/photo-1515169067868-5387ec356754?w=800&q=80', // vintage bar
+  'casino-nightlife-resort-era':     'https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?w=800&q=80', // resort nightclub build
+  'casino-nightlife-modern':         'https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?w=800&q=80', // modern casino floor
+  'casino-nightlife-present':        'https://images.unsplash.com/photo-1517457373958-b7bdd4587205?w=800&q=80', // casino floor active
+  'casino-nightlife-culture':        'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=800&q=80', // nightlife music
+  'casino-nightlife-behind-scenes':  'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80', // surveillance / security
+  'casino-nightlife-future':         'https://images.unsplash.com/photo-1535223289827-42f1e9919769?w=800&q=80', // futuristic neon city
 
-  // Chinatown
-  'ct-1849': 'https://upload.wikimedia.org/wikipedia/commons/b/b9/Arnold_Genthe_-_Merchant_and_Body_Guard%2C_Old_Chinatown%2C_San_Francisco_-_Google_Art_Project.jpg',
-  'ct-1906': 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/San_Francisco_in_ruin_edit2.jpg/1280px-San_Francisco_in_ruin_edit2.jpg',
-  'ct-1945': 'https://upload.wikimedia.org/wikipedia/commons/b/b9/Arnold_Genthe_-_Merchant_and_Body_Guard%2C_Old_Chinatown%2C_San_Francisco_-_Google_Art_Project.jpg',
-
-  // Haight-Ashbury
-  'haight-1967': 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Hippies_on_Haight-Ashbury_-_The_Greenville_News_%281967%29.jpg/1280px-Hippies_on_Haight-Ashbury_-_The_Greenville_News_%281967%29.jpg',
-
-  // === New York ===
-
-  // Lower Manhattan
-  'lm-1664': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Castelloplan.jpg/1280px-Castelloplan.jpg',
-  'lm-1789': 'https://upload.wikimedia.org/wikipedia/commons/8/87/Manhattan_skyline_from_New_Jersey%2C_with_ferry_Maryland_and_side-wheeler_Magenta_in_foreground_LCCN92517655.jpg',
-  'lm-1929': 'https://upload.wikimedia.org/wikipedia/commons/3/3f/Crowds_gathering_outside_New_York_Stock_Exchange.jpg',
-  'lm-2001': 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/September_14_2001.jpg/1280px-September_14_2001.jpg',
-
-  // Brooklyn Bridge
-  'bb-1863': 'https://upload.wikimedia.org/wikipedia/commons/0/0c/Brooklyn_Bridge_Under_Construction_1878.jpg',
-  'bb-1929': 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Currier_and_Ives_Brooklyn_Bridge2.jpg/1280px-Currier_and_Ives_Brooklyn_Bridge2.jpg',
-
-  // Harlem
-  'har-1925': 'https://upload.wikimedia.org/wikipedia/commons/7/70/UNIA_parade_in_Harlem%2C_1920.jpg',
-  'har-1968': 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Black_children_playing_leap_frog_in_a_Harlem_street%2C_ca._1930_-_NARA_-_541880.jpg/1280px-Black_children_playing_leap_frog_in_a_Harlem_street%2C_ca._1930_-_NARA_-_541880.jpg',
-
-  // === London ===
-
-  // South Bank
-  'sb-1600': 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Panorama_of_London_by_Claes_Van_Visscher%2C_1616_no_angels.jpg/1280px-Panorama_of_London_by_Claes_Van_Visscher%2C_1616_no_angels.jpg',
-  'sb-1940': 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/London_Blitz_9_September_1940.jpg/1280px-London_Blitz_9_September_1940.jpg',
-  'sb-1951': 'https://upload.wikimedia.org/wikipedia/commons/0/02/1951_South_Bank_Exhibition.jpg',
-
-  // City of London
-  'city-43': 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Panorama_of_London_by_Claes_Van_Visscher%2C_1616_no_angels.jpg/1280px-Panorama_of_London_by_Claes_Van_Visscher%2C_1616_no_angels.jpg',
-  'city-1066': 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Panorama_of_London_by_Claes_Van_Visscher%2C_1616_no_angels.jpg/1280px-Panorama_of_London_by_Claes_Van_Visscher%2C_1616_no_angels.jpg',
-  'city-1666': 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Great_Fire_London.jpg/1280px-Great_Fire_London.jpg',
-  'city-1940': 'https://upload.wikimedia.org/wikipedia/commons/5/5e/The_London_Blitz_1940_HU86166.jpg',
-
-  // Globe Theatre (for South Bank Shakespeare era)
-  'sb-43': 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/The_Globe_Theatre_from_the_Long_Antwerp_View_of_London.jpg/1280px-The_Globe_Theatre_from_the_Long_Antwerp_View_of_London.jpg',
-
-  // === Chicago ===
-
-  // The Loop
-  'loop-1871': 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Chicago_in_Flames_by_Currier_%26_Ives%2C_1871_%28cropped%29.jpg/1280px-Chicago_in_Flames_by_Currier_%26_Ives%2C_1871_%28cropped%29.jpg',
-  'loop-1893': 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Court_of_Honor%2C_Looking_West%2C_William_Henry_Jackson%2C_1893.jpg/1280px-Court_of_Honor%2C_Looking_West%2C_William_Henry_Jackson%2C_1893.jpg',
-
-  // South Side
-  'ss-1871': 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/Chicago_in_flames-_Scene_at_Randolph_Street_Bridge_LCCN90715935.jpg/1280px-Chicago_in_flames-_Scene_at_Randolph_Street_Bridge_LCCN90715935.jpg',
-  'ss-1893': 'https://upload.wikimedia.org/wikipedia/commons/4/4b/Court_of_Honor_and_Grand_Basin.jpg',
-  'ss-1920': 'https://upload.wikimedia.org/wikipedia/commons/b/be/Great_migration.jpg',
-
-  // === Los Angeles ===
-
-  // Downtown LA
-  'dtla-1910': 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Panorama_of_downtown_Los_Angeles%2C_8th_and_Olive-1%2C_ca.1910-13.jpg/1280px-Panorama_of_downtown_Los_Angeles%2C_8th_and_Olive-1%2C_ca.1910-13.jpg',
-
-  // Venice
-  'ven-1905': 'https://upload.wikimedia.org/wikipedia/commons/c/c8/Building-Venice-1905.jpg',
-  'ven-1947': 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Venice_diving_tower%2C_showing_swimmers_in_the_water%2C_ca.1905_%28CHS-2774%29.jpg/1280px-Venice_diving_tower%2C_showing_swimmers_in_the_water%2C_ca.1905_%28CHS-2774%29.jpg',
-  'ven-2000': 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Houses_on_Grand_Canal%2C_Venice_Canal_Historic_District%2C_Venice%2C_California.JPG/1280px-Houses_on_Grand_Canal%2C_Venice_Canal_Historic_District%2C_Venice%2C_California.JPG',
-
-  // === Riyadh ===
-
-  // Diriyah
-  'dir-2010': 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/At-Turaif_District.jpg/1280px-At-Turaif_District.jpg',
-  'dir-1446': 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Rub_al_Khali_002.JPG/1280px-Rub_al_Khali_002.JPG',
-
-  // Empty Quarter
-  'eq-1446': 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Rub_al_Khali_002.JPG/1280px-Rub_al_Khali_002.JPG',
-  'eq-1744': 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Rub_al_Khali_002.JPG/1280px-Rub_al_Khali_002.JPG',
-  'eq-1824': 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Rub_al_Khali_002.JPG/1280px-Rub_al_Khali_002.JPG',
-  'eq-1931': 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Rub_al_Khali_002.JPG/1280px-Rub_al_Khali_002.JPG',
-
-  // === Lagos ===
-
-  // Lagos Island
-  'li-1861': 'https://upload.wikimedia.org/wikipedia/commons/3/3e/The_Lagos_City_Hall%2C_Established_in_1900%2C_in_Lagos_State._Nigeria._%281%29.jpg',
-  'li-1960': 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Tafawa_Balewa_Square_Lagos.jpg/1280px-Tafawa_Balewa_Square_Lagos.jpg',
+  // ═══════════════════════════════════════════════════════════════════
+  // MARINE-HABITAT
+  // ═══════════════════════════════════════════════════════════════════
+  'marine-habitat-deep-past':      'https://images.unsplash.com/photo-1544551763-77ef2d0cfc6c?w=800&q=80', // ancient reef
+  'marine-habitat-colonial':       'https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=800&q=80', // old sailing ship
+  'marine-habitat-early-tourism':  'https://images.unsplash.com/photo-1596436889106-be35e843f974?w=800&q=80', // early aquarium
+  'marine-habitat-resort-era':     'https://images.unsplash.com/photo-1519750157634-b6d493a0f77c?w=800&q=80', // aquarium tank build
+  'marine-habitat-modern':         'https://images.unsplash.com/photo-1583212292454-1fe6229603b7?w=800&q=80', // modern aquarium
+  'marine-habitat-present':        'https://images.unsplash.com/photo-1546026423-cc4642628d2b?w=800&q=80', // aquarium visitors
+  'marine-habitat-culture':        'https://images.unsplash.com/photo-1559827291-baf1a9d7e8b4?w=800&q=80', // ocean conservation
+  'marine-habitat-behind-scenes':  'https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=800&q=80', // marine laboratory
+  'marine-habitat-future':         'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80', // futuristic underwater city
 }
 
-export function getImageUrl(era) {
-  if (CURATED[era.id]) {
-    return CURATED[era.id]
-  }
-  return `https://picsum.photos/seed/${era.id}/1080/1920`
+// All present-layer era IDs are BLE-triggered (proximity-aware)
+export const BLE_TRIGGERED = new Set([
+  'marina-beach-present',
+  'lobby-royal-towers-present',
+  'waterpark-pools-present',
+  'casino-nightlife-present',
+  'marine-habitat-present',
+])
+
+/**
+ * Get curated image URL for an era ID, or null if not found.
+ */
+export function getCuratedImage(eraId) {
+  return CURATED[eraId] || null
 }
 
-export function isCurated(eraId) {
-  return eraId in CURATED
+/**
+ * Check whether an era ID is BLE-triggered (present-day proximity layer).
+ */
+export function isBleTriggered(eraId) {
+  return BLE_TRIGGERED.has(eraId)
 }
+
+export default CURATED
