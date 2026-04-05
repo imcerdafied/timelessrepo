@@ -3,36 +3,37 @@ import { motion, AnimatePresence } from 'framer-motion'
 
 const screens = [
   {
-    title: 'Every place exists across time.',
-    body: 'Go anywhere in time and space and find what\u2019s there, what was there, and what might be there in the future.',
+    title: 'Every place tells a story.',
+    body: 'Explore the resort across time, culture, and behind the scenes. From ancient reef to future vision.',
   },
   {
-    title: 'Move through time.',
-    body: 'Swipe the timeline to shift between eras. Watch the world change beneath your feet.',
+    title: 'Explore the layers.',
+    body: 'Swipe the ribbon to shift between historical eras, present day, local culture, and what comes next.',
     showRibbon: true,
   },
   {
-    title: 'The future is unwritten.',
-    body: 'Vote on what comes next. Drop a marker that you were here. The more people participate, the more the story shifts.',
+    title: 'The future is yours to shape.',
+    body: 'Vote on what comes next. Chat with characters from every era. Discover the stories hidden in every corner.',
     isFinal: true,
   },
 ]
 
 const ribbonEras = [
-  { label: 'c. 1500', type: 'past' },
-  { label: '1834', type: 'past' },
-  { label: '1906', type: 'past' },
-  { label: '1945', type: 'past' },
-  { label: '1967', type: 'past' },
-  { label: '2001', type: 'past' },
-  { label: '2025', type: 'present' },
-  { label: '2075', type: 'future' },
+  { label: 'Deep Past', type: 'past' },
+  { label: 'Colonial', type: 'past' },
+  { label: 'Tourism', type: 'past' },
+  { label: 'Today', type: 'present' },
+  { label: 'Culture', type: 'cultural' },
+  { label: 'Behind', type: 'operational' },
+  { label: 'Future', type: 'future' },
 ]
 
 const eraColor = {
   past: '#C8860A',
   present: '#F5F5F5',
   future: '#1E4D8C',
+  cultural: '#2D8F4E',
+  operational: '#4A90A4',
 }
 
 export default function Onboarding({ onComplete }) {
