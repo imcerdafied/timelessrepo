@@ -2,6 +2,9 @@ import { useEffect } from 'react'
 import { motion } from 'framer-motion'
 import posthog from 'posthog-js'
 
+const PROPERTY_NAME = import.meta.env.VITE_PROPERTY_NAME || 'Atlantis Experience'
+const PROPERTY_TAGLINE = import.meta.env.VITE_PROPERTY_TAGLINE || 'Where every place tells a story.'
+
 export default function SplashScreen({ onComplete }) {
   useEffect(() => {
     posthog.capture('session_started')
@@ -15,7 +18,6 @@ export default function SplashScreen({ onComplete }) {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.6, ease: 'easeInOut' }}
       onAnimationComplete={(def) => {
-        // Only fire on exit animation
         if (def.opacity === 0) onComplete?.()
       }}
     >
@@ -25,15 +27,15 @@ export default function SplashScreen({ onComplete }) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
       >
-        Timeless Moment
+        {PROPERTY_NAME}
       </motion.h1>
       <motion.p
-        className="mt-3 font-ui text-sm tracking-widest text-past"
+        className="mt-3 font-ui text-sm tracking-widest text-accent"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6, delay: 0.6 }}
       >
-        A place in time.
+        {PROPERTY_TAGLINE}
       </motion.p>
     </motion.div>
   )

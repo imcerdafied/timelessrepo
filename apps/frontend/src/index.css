@@ -7,6 +7,10 @@
   --color-past: #C8860A;
   --color-future: #1E4D8C;
   --color-present: #F5F5F5;
+  --color-cultural: #2D8F4E;
+  --color-operational: #4A90A4;
+  --color-primary: #0B3D5C;
+  --color-accent: #E8A87C;
 
   --font-heading: "Playfair Display", serif;
   --font-ui: "Inter", sans-serif;
