@@ -1,3 +1,4 @@
+import posthog from 'posthog-js'
 import { useState, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { supabase } from '../lib/supabase'
@@ -123,6 +124,7 @@ export default function FutureVoting({ era }) {
 
       if (!error) {
         setMyVote(scenarioId)
+        posthog.capture('future_vote_cast', { zone_id: era?.id?.split('-').slice(0, -1).join('-'), option_id: scenarioId })
         await fetchData()
       }
     } catch {

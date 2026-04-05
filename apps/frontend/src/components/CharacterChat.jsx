@@ -1,3 +1,4 @@
+import posthog from 'posthog-js'
 import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ERA_CHARACTERS, getCharacterForEra } from '../data/era-characters'
@@ -55,6 +56,7 @@ export function CharacterChat({ era, onDismiss, character: characterProp, venueC
       { role: 'user', content: userMessage }
     ]
     setMessages(newMessages)
+    posthog.capture('character_message', { zone_id: era?.id?.split('-').slice(0, -1).join('-'), character_id: character?.name, message_length: userMessage.length })
 
     try {
       const response = await sendCharacterMessage(

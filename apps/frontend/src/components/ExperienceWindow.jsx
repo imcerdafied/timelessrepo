@@ -1,3 +1,4 @@
+import posthog from 'posthog-js'
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { createPortal } from 'react-dom'
 import { AnimatePresence, motion, useDragControls } from 'framer-motion'
@@ -286,7 +287,7 @@ export default function ExperienceWindow() {
         )}
         {/* Share button */}
         <button
-          onClick={() => setShareOpen(true)}
+          onClick={() => { setShareOpen(true); posthog.capture('share_card_generated', { zone_id: selectedLocation, layer_id: selectedEra }) }}
           className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-present/20 bg-surface/60 text-present/70 backdrop-blur-md transition-colors hover:bg-surface/80"
         >
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -411,6 +412,7 @@ export default function ExperienceWindow() {
                 if (ambientRef.current) { ambientRef.current.stop(); ambientRef.current = null }
                 setExpanded(false)
                 setTimelessSceneOpen(true)
+                posthog.capture('scene_launched', { zone_id: selectedLocation, layer_id: selectedEra })
               }}
               className="flex items-center gap-3 rounded-2xl px-4 py-3 w-full mb-4"
               style={{ background: `${color}1f`, border: `1px solid ${color}40` }}
@@ -546,6 +548,7 @@ export default function ExperienceWindow() {
                       ambientRef.current = null
                     }
                     setTimelessSceneOpen(true)
+                    posthog.capture('scene_launched', { zone_id: selectedLocation, layer_id: selectedEra })
                   }}
                   className="mt-3 flex items-center gap-3 rounded-2xl px-4 py-3 w-full"
                   style={{
@@ -651,6 +654,7 @@ export default function ExperienceWindow() {
           onTalkTo={(characterId) => {
             setActiveScene(null)
             setCharacterOpen(true)
+            posthog.capture('character_chat_opened', { zone_id: selectedLocation, layer_id: selectedEra, character_id: character?.name })
           }}
         />,
         document.body
@@ -675,6 +679,7 @@ export default function ExperienceWindow() {
             setTimelessSceneOpen(false)
             setChatKey(k => k + 1)
             setCharacterOpen(true)
+            posthog.capture('character_chat_opened', { zone_id: selectedLocation, layer_id: selectedEra, character_id: character?.name })
           }}
         />,
         document.body
@@ -685,6 +690,7 @@ export default function ExperienceWindow() {
         <ConciergeFAB onClick={() => {
           if (conciergeCharacter) {
             setConciergeOpen(true)
+            posthog.capture('concierge_opened', { zone_id: selectedLocation, context: 'fab' })
           }
         }} />
       )}
