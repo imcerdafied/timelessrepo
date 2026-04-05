@@ -55,7 +55,7 @@ function App() {
   }
 
   return (
-    <div className="flex h-dvh items-center justify-center bg-black">
+    <div className="flex h-dvh items-center justify-center bg-white">
       <div className="relative flex h-full w-full max-w-[390px] flex-col border-x border-border bg-background">
         <AnimatePresence mode="wait">
           {showToday && !selectedLocation ? (
