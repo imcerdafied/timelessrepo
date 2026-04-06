@@ -70,6 +70,7 @@ export default function TodayAtAtlantis({ onEventTap, onSkip, onLogoTap, onCamer
 
   useEffect(() => {
     posthog.capture('session_started')
+    posthog.capture('otd_screen_viewed', { mode: 'on_property' })
     const dateKey = todayKey()
     const cacheKey = `otd_${dateKey}`
 
@@ -216,7 +217,10 @@ export default function TodayAtAtlantis({ onEventTap, onSkip, onLogoTap, onCamer
           transition={{ delay: 0.5 }}
         >
           <p className="font-ui text-xs text-present/60 leading-relaxed">{commerceBridge.text}</p>
-          <button className="mt-2 font-ui text-xs font-medium text-accent">
+          <button
+            onClick={() => posthog.capture('otd_commerce_bridge_tapped', { offer_type: commerceBridge.type })}
+            className="mt-2 font-ui text-xs font-medium text-accent"
+          >
             {commerceBridge.cta} &rarr;
           </button>
         </motion.div>

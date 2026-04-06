@@ -55,6 +55,11 @@ export default function CameraTimeTravel({ eras, initialEra, zoneName, onClose }
   const [periodStyling, setPeriodStyling] = useState(false)
 
   const selectedLocation = useStore((s) => s.selectedLocation)
+
+  useEffect(() => {
+    posthog.capture('timelens_opened', { zone_id: selectedLocation })
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
   const era = eras?.find(e => e.id === selectedEra) || initialEra
   const accent = eraColor[era?.era_type] || '#D4845A'
 
