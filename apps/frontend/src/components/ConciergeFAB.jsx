@@ -4,7 +4,7 @@ export default function ConciergeFAB({ onClick }) {
   return (
     <motion.button
       onClick={onClick}
-      className="fixed bottom-24 right-4 z-40 flex h-14 w-14 items-center justify-center rounded-full border border-accent/30 bg-primary shadow-lg cursor-pointer mobile-frame"
+      className="fixed bottom-40 right-4 z-40 flex h-14 w-14 items-center justify-center rounded-full border border-accent/30 bg-primary shadow-lg cursor-pointer mobile-frame"
       style={{ position: 'fixed', right: 16, left: 'auto', margin: 0, maxWidth: 56 }}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
