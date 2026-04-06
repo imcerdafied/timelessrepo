@@ -26,8 +26,15 @@ router.post('/chat', async (req, res) => {
     : system_prompt
 
   let contextPrefix = ''
-  if (visit_context?.zones_visited?.length) {
-    contextPrefix = `GUEST CONTEXT: This guest has explored the following zones: ${visit_context.zones_visited.join(', ')}. They have visited ${visit_context.layers_visited?.length || 0} total layers. You can reference their journey if relevant to the conversation.\n\n`
+  if (visit_context?.zones_visited?.length || visit_context?.today_events?.length) {
+    const parts = []
+    if (visit_context.zones_visited?.length) {
+      parts.push(`This guest has explored: ${visit_context.zones_visited.join(', ')}. They have visited ${visit_context.layers_visited?.length || 0} layers.`)
+    }
+    if (visit_context.today_events?.length) {
+      parts.push(`Today's historical events at the property: ${visit_context.today_events.join('; ')}. You can reference these if the guest asks what's interesting today.`)
+    }
+    contextPrefix = `GUEST CONTEXT: ${parts.join(' ')}\n\n`
   }
 
   // Enforce era constraint in system prompt
