@@ -194,6 +194,18 @@ function ConversationCTA({ character, era, onTalkTo, onReplay, onClose, accent, 
           Back
         </button>
       </motion.div>
+
+      {/* TimeLens CTA */}
+      <button
+        onClick={() => {
+          onClose()
+          setTimeout(() => window.dispatchEvent(new CustomEvent('open-timelens', { detail: { eraId: era?.id } })), 300)
+        }}
+        className="w-full mt-2 py-2.5 rounded-full border text-xs font-medium transition-colors"
+        style={{ borderColor: `${accent}33`, color: accent }}
+      >
+        See this era through your camera
+      </button>
     </motion.div>
   )
 }
