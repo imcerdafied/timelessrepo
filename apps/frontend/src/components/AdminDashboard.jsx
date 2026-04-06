@@ -42,7 +42,7 @@ const LAYER_TYPE_MAP = {
 const AFFINITY_TYPES = ['Historical', 'Present Day', 'Future', 'Local Culture', 'Behind the Scenes']
 
 // Affinity label thresholds — label is applied when the matching type percentage exceeds the threshold
-function computeAffinityLabels(typeBreakdown) {
+function computeAffinityLabels(typeBreakdown, events = []) {
   const labels = []
   const hist = typeBreakdown['Historical'] || 0
   const culture = typeBreakdown['Local Culture'] || 0
@@ -55,6 +55,13 @@ function computeAffinityLabels(typeBreakdown) {
   if (bts >= 10) labels.push('Behind-the-Scenes Fan')
   if (future >= 15) labels.push('Futurist')
   if (present >= 20) labels.push('Live Experience Seeker')
+
+  const shareCount = events.filter(e => e.type?.includes('shared') || e.type?.includes('share')).length
+  if (shareCount >= 2) labels.push('Social Sharer')
+
+  const timelensCount = events.filter(e => e.type?.includes('timelens') || e.type?.includes('time_travel')).length
+  if (timelensCount >= 2) labels.push('Time Traveler')
+
   if (labels.length === 0) labels.push('General Explorer')
 
   return labels
@@ -186,7 +193,7 @@ export default function AdminDashboard({ onClose }) {
   }, [visitedLayers])
 
   // Guest profile labels
-  const affinityLabels = useMemo(() => computeAffinityLabels(typeBreakdown), [typeBreakdown])
+  const affinityLabels = useMemo(() => computeAffinityLabels(typeBreakdown, events), [typeBreakdown, events])
 
   // Next best action
   const nextAction = useMemo(
@@ -279,6 +286,39 @@ export default function AdminDashboard({ onClose }) {
                 </motion.span>
               )
             })}
+          </div>
+        </section>
+
+        {/* ── Content Engagement — TimeLens + OTD ─────────────── */}
+        <section>
+          <h2 className="font-heading text-sm font-semibold text-present/80 uppercase tracking-widest mb-3">
+            Content Engagement
+          </h2>
+          <div className="grid grid-cols-2 gap-2">
+            <div className="rounded-xl border border-border bg-surface p-3 text-center">
+              <p className="font-mono text-lg font-bold text-accent">
+                {events.filter(e => e.type === 'timelens_captured' || e.type === 'time_travel_captured').length}
+              </p>
+              <p className="font-ui text-[9px] text-present/40 uppercase mt-0.5">TimeLens Captures</p>
+            </div>
+            <div className="rounded-xl border border-border bg-surface p-3 text-center">
+              <p className="font-mono text-lg font-bold text-accent">
+                {events.filter(e => e.type === 'timelens_shared' || e.type === 'time_travel_generated').length}
+              </p>
+              <p className="font-ui text-[9px] text-present/40 uppercase mt-0.5">TimeLens Shares</p>
+            </div>
+            <div className="rounded-xl border border-border bg-surface p-3 text-center">
+              <p className="font-mono text-lg font-bold text-accent">
+                {events.filter(e => e.type === 'otd_card_tapped').length}
+              </p>
+              <p className="font-ui text-[9px] text-present/40 uppercase mt-0.5">OTD Taps</p>
+            </div>
+            <div className="rounded-xl border border-border bg-surface p-3 text-center">
+              <p className="font-mono text-lg font-bold text-accent">
+                {events.filter(e => e.type === 'otd_commerce_bridge_tapped').length}
+              </p>
+              <p className="font-ui text-[9px] text-present/40 uppercase mt-0.5">Commerce Bridges</p>
+            </div>
           </div>
         </section>
 
