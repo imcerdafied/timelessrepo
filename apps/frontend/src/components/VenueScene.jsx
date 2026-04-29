@@ -30,7 +30,7 @@ export default function VenueScene({ venue, era, onClose, autoplay }) {
       }
     }, delay)
     return () => clearTimeout(timer)
-  }, [])
+  }, [autoplay, character, venue.scene_intro])
 
   // Text reveal effect for scene phase
   useEffect(() => {
@@ -54,7 +54,7 @@ export default function VenueScene({ venue, era, onClose, autoplay }) {
     return () => {
       if (revealInterval.current) clearInterval(revealInterval.current)
     }
-  }, [phase])
+  }, [era?.id, phase, venue.scene_intro])
 
   function enterChat() {
     if (revealInterval.current) clearInterval(revealInterval.current)

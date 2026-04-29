@@ -106,12 +106,10 @@ export default function ExperienceWindow({ initialTool = null, initialTrail = nu
   const conciergeEraId = `${selectedLocation}-present`
   const conciergeCharacter = getCharacterForEra(conciergeEraId)
   const hasCharacter = !!character
-  const { dwellMet, dismiss: dismissCharacter } = useDwellTime(
+  const { dismiss: dismissCharacter } = useDwellTime(
     era?.id,
     hasCharacter && !charDismissed
   )
-  // Character notification suppressed, users enter conversations via "Experience This Moment" instead
-  const showCharacterNotification = false
 
   // Reset state when era changes
   if (era && era.id !== prevEraId) {
@@ -205,7 +203,7 @@ export default function ExperienceWindow({ initialTool = null, initialTrail = nu
       }
     }, 3000)
     return () => clearTimeout(timer)
-  }, [era?.id, autoplayTriggered, activeVenue])
+  }, [era, autoplayTriggered, activeVenue])
 
   if (!era) return null
 
@@ -781,7 +779,7 @@ export default function ExperienceWindow({ initialTool = null, initialTrail = nu
         <ScenePlayer
           scene={activeScene}
           onClose={() => setActiveScene(null)}
-          onTalkTo={(characterId) => {
+          onTalkTo={(_characterId) => {
             setActiveScene(null)
             setCharacterOpen(true)
             posthog.capture('character_chat_opened', { zone_id: selectedLocation, layer_id: selectedEra, character_id: character?.name })

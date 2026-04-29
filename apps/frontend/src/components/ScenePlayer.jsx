@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback } from 'react'
+import { useState, useRef, useEffect, useCallback, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 /**
@@ -51,19 +51,22 @@ export default function ScenePlayer({ scene, onClose, onTalkTo }) {
   }, [script])
 
   // Get unique character IDs
-  const characterIds = [...new Set(script.map((l) => l.characterId))]
+  const characterIds = useMemo(() => [...new Set(script.map((l) => l.characterId))], [script])
 
   // Build character lookup from scene data
-  const characters = {}
-  if (scene.characters) {
-    scene.characters.forEach((c) => { characters[c.id] = c })
-  }
-  if (scene.videos) {
-    Object.entries(scene.videos).forEach(([id, v]) => {
-      if (!characters[id]) characters[id] = {}
-      characters[id] = { ...characters[id], ...v }
-    })
-  }
+  const characters = useMemo(() => {
+    const lookup = {}
+    if (scene.characters) {
+      scene.characters.forEach((c) => { lookup[c.id] = c })
+    }
+    if (scene.videos) {
+      Object.entries(scene.videos).forEach(([id, v]) => {
+        if (!lookup[id]) lookup[id] = {}
+        lookup[id] = { ...lookup[id], ...v }
+      })
+    }
+    return lookup
+  }, [scene.characters, scene.videos])
 
   // Get video/audio URLs
   const getVideoUrl = (charId) => {
@@ -133,7 +136,7 @@ export default function ScenePlayer({ scene, onClose, onTalkTo }) {
     }, 100)
 
     return () => clearTimeout(startTimer)
-  }, [phase, isPlaying]) // Only fire when phase/isPlaying change
+  }, [activeCharId, characterIds, isPlaying, mode, phase])
 
   // Advance through dialogue lines
   useEffect(() => {
@@ -176,16 +179,17 @@ export default function ScenePlayer({ scene, onClose, onTalkTo }) {
     })
   }, [activeCharId, phase, characterIds, mode])
 
-  // Cleanup
-  useEffect(() => {
-    return () => {
-      clearTimeout(timerRef.current)
-      if (ambientRef.current) {
-        ambientRef.current.pause()
-        ambientRef.current.currentTime = 0
-      }
+  const cleanupMedia = useCallback(() => {
+    clearTimeout(timerRef.current)
+    const ambient = ambientRef.current
+    if (ambient) {
+      ambient.pause()
+      ambient.currentTime = 0
     }
   }, [])
+
+  // Cleanup
+  useEffect(() => cleanupMedia, [cleanupMedia])
 
   // Fade out ambient when scene ends
   useEffect(() => {
@@ -200,7 +204,7 @@ export default function ScenePlayer({ scene, onClose, onTalkTo }) {
       }, 100)
       return () => clearInterval(fadeOut)
     }
-  }, [phase])
+  }, [characterIds, phase])
 
   // Pause all media when scene ends
   useEffect(() => {
@@ -212,7 +216,7 @@ export default function ScenePlayer({ scene, onClose, onTalkTo }) {
         if (aud) aud.pause()
       })
     }
-  }, [phase])
+  }, [characterIds, phase])
 
   const progress = script.length > 0 ? ((currentLineIndex + 1) / script.length) * 100 : 0
 

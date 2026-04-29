@@ -3,7 +3,6 @@ import { motion, AnimatePresence } from 'framer-motion'
 import posthog from 'posthog-js'
 import useStore from '../store/useStore'
 import { ACTIVE_PROPERTY } from '../config/properties'
-import { useEraImage } from '../hooks/useEraImage'
 import { getCuratedImage } from '../data/imageMap'
 
 const API_BASE = import.meta.env.VITE_API_URL || ''

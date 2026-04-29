@@ -39,6 +39,15 @@ export default function ShareCard({ era, locationName, imageUrl, onClose }) {
     return () => { cancelled = true }
   }, [deepLink])
 
+  const downloadBlob = useCallback((blob) => {
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `${PROPERTY_NAME.toLowerCase().replace(/\s+/g, '-')}-${era.id}.png`
+    a.click()
+    URL.revokeObjectURL(url)
+  }, [era.id])
+
   const handleShare = useCallback(async () => {
     if (sharing || !cardRef.current) return
     setSharing(true)
@@ -81,16 +90,7 @@ export default function ShareCard({ era, locationName, imageUrl, onClose }) {
     } finally {
       setSharing(false)
     }
-  }, [sharing, era, locationName, deepLink, awardStamp])
-
-  function downloadBlob(blob) {
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement('a')
-    a.href = url
-    a.download = `${PROPERTY_NAME.toLowerCase().replace(/\s+/g, '-')}-${era.id}.png`
-    a.click()
-    URL.revokeObjectURL(url)
-  }
+  }, [sharing, era, locationName, deepLink, awardStamp, downloadBlob])
 
   const firstSentence = truncate(
     era.description?.match(/^(.*?[.!?])/)?.[1] || era.description,

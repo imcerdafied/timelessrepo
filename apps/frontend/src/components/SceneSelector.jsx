@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 
@@ -209,4 +208,3 @@ function SceneCard({ scene, index, onSelect }) {
     </motion.button>
   )
 }
-

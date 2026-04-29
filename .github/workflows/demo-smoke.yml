@@ -1,0 +1,72 @@
+name: Demo Smoke
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  demo-smoke:
+    name: Build and smoke demo
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: |
+            apps/frontend/package-lock.json
+            apps/backend/package-lock.json
+
+      - name: Install frontend
+        run: npm ci --legacy-peer-deps
+        working-directory: apps/frontend
+
+      - name: Lint frontend
+        run: npm run lint
+        working-directory: apps/frontend
+
+      - name: Build frontend
+        run: npm run build
+        working-directory: apps/frontend
+
+      - name: Install backend
+        run: npm ci
+        working-directory: apps/backend
+
+      - name: Start demo server
+        run: |
+          npm start > /tmp/timeless-server.log 2>&1 &
+          echo $! > /tmp/timeless-server.pid
+          for i in {1..30}; do
+            if curl -fsS http://localhost:3001/api/health; then
+              exit 0
+            fi
+            sleep 2
+          done
+          cat /tmp/timeless-server.log
+          exit 1
+
+      - name: Smoke demo routes
+        run: npm run smoke:demo
+
+      - name: Smoke character fallback route
+        run: CHECK_CHAT=1 npm run smoke:demo
+
+      - name: Print server log
+        if: always()
+        run: cat /tmp/timeless-server.log || true
+
+      - name: Stop demo server
+        if: always()
+        run: |
+          if [ -f /tmp/timeless-server.pid ]; then
+            kill "$(cat /tmp/timeless-server.pid)" || true
+          fi

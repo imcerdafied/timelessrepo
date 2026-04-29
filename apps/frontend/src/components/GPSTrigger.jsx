@@ -4,6 +4,3 @@
 export default function GPSTrigger() {
   return null
 }
-export function useGPS() {
-  return null
-}

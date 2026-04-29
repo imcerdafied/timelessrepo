@@ -26,8 +26,6 @@ export function CharacterChat({ era, onDismiss, character: characterProp, venueC
     sceneIntro ? [{ role: 'assistant', content: sceneIntro }] : []
   )
   const [loading, setLoading] = useState(false)
-  // Voice disabled, default TTS voices don't match character demographics
-  const [voiceEnabled, setVoiceEnabled] = useState(false)
   const messagesEndRef = useRef(null)
   const inputRef = useRef(null)
   const awardStamp = useStore((s) => s.awardStamp)

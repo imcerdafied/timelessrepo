@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence, useDragControls } from 'framer-motion'
-import useStore from '../store/useStore'
-import { useGPS } from './GPSTrigger'
+import { useGPS } from '../hooks/useGPS'
 import { supabase } from '../lib/supabase'
 import { ACTIVE_PROPERTY } from '../config/properties'
 

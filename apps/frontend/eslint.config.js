@@ -26,7 +26,7 @@ export default defineConfig([
       'no-empty': ['warn', { allowEmptyCatch: true }],
       'no-unused-vars': ['warn', {
         argsIgnorePattern: '^_',
-        varsIgnorePattern: '^[A-Z_]',
+        varsIgnorePattern: '^(motion|[A-Z_])',
       }],
       'react-hooks/set-state-in-effect': 'off',
       'react-hooks/set-state-in-render': 'off',

@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback } from 'react'
+import { useState, useRef, useEffect, useCallback, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { buildMonologue, getSceneImages, getEraVisualStyle } from '../data/scene-data'
 import { getAmbientProfile, startAmbient } from '../data/ambient-profiles'
@@ -20,7 +20,7 @@ import { useGyroscope } from '../hooks/useGyroscope'
  */
 
 // End-of-narration CTA, shows character identity + actions + extended reading
-function ConversationCTA({ character, era, onTalkTo, onReplay, onClose, accent, hasAudio }) {
+function ConversationCTA({ character, era, onTalkTo, onReplay, onClose, accent }) {
   const [expanded, setExpanded] = useState(false)
   const hasKeyEvents = era?.key_events?.length > 0
   const hasLandscape = era?.landscape?.length > 20
@@ -224,7 +224,6 @@ export default function TimelessScene({ era, character, imageUrl, locationName, 
   const [currentImageIdx, setCurrentImageIdx] = useState(0)
   const [visibleLines, setVisibleLines] = useState(0)
   const [audioReady, setAudioReady] = useState(false)
-  const [narrationLoading, setNarrationLoading] = useState(false)
   const autoStarted = useRef(false)
 
   const { tilt } = useGyroscope()
@@ -235,8 +234,11 @@ export default function TimelessScene({ era, character, imageUrl, locationName, 
   const imageTimerRef = useRef(null)
 
   // Build monologue + scene data from era info
-  const monologueData = buildMonologue(era?.id, character, era)
-  const lines = monologueData?.lines || []
+  const monologueData = useMemo(
+    () => buildMonologue(era?.id, character, era),
+    [era, character]
+  )
+  const lines = useMemo(() => monologueData?.lines || [], [monologueData])
   const narrator = monologueData?.narrator || (character ? { name: character.name, role: character.role } : null)
   const narratorAudioUrl = monologueData?.audioUrl || null
   const hasAudio = !!narratorAudioUrl
@@ -375,16 +377,19 @@ export default function TimelessScene({ era, character, imageUrl, locationName, 
     return () => audio.removeEventListener('ended', onEnded)
   }, [phase, hasAudio, lines.length])
 
-  // Cleanup on unmount
-  useEffect(() => {
-    return () => {
-      clearTimeout(lineTimerRef.current)
-      clearInterval(imageTimerRef.current)
-      if (ambientRef.current) ambientRef.current.stop()
-      if (audioRef.current) audioRef.current.pause()
-      if (narrationRef.current) narrationRef.current.pause()
-    }
+  const cleanupScene = useCallback(() => {
+    clearTimeout(lineTimerRef.current)
+    clearInterval(imageTimerRef.current)
+    const ambient = ambientRef.current
+    const audio = audioRef.current
+    const narration = narrationRef.current
+    if (ambient) ambient.stop()
+    if (audio) audio.pause()
+    if (narration) narration.pause()
   }, [])
+
+  // Cleanup on unmount
+  useEffect(() => cleanupScene, [cleanupScene])
 
   const handleClose = () => {
     if (ambientRef.current) ambientRef.current.stop()
@@ -638,7 +643,6 @@ export default function TimelessScene({ era, character, imageUrl, locationName, 
             onReplay={handleReplay}
             onClose={handleClose}
             accent={accent}
-            hasAudio={hasAudio}
           />
         )}
       </AnimatePresence>

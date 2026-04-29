@@ -11,7 +11,6 @@ export default function CameraOverlay({ onClose }) {
   const videoRef = useRef(null)
   const streamRef = useRef(null)
   const containerRef = useRef(null)
-  const [cameraReady, setCameraReady] = useState(false)
   const [cameraError, setCameraError] = useState(false)
   const [dividerX, setDividerX] = useState(0.5)
   const [dragging, setDragging] = useState(false)
@@ -38,7 +37,6 @@ export default function CameraOverlay({ onClose }) {
         if (videoRef.current) {
           videoRef.current.srcObject = stream
           await videoRef.current.play()
-          setCameraReady(true)
         }
       } catch {
         if (!cancelled) setCameraError(true)

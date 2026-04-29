@@ -118,7 +118,7 @@ export default function AdminDashboard({ onClose }) {
 
   // Subscribe to store changes for event stream
   useEffect(() => {
-    const unsub = useStore.subscribe((state, prevState) => {
+    const unsub = useStore.subscribe((state) => {
       const now = new Date()
 
       // Detect new zones

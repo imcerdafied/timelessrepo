@@ -53,7 +53,7 @@ function App() {
       }
       setShowToday(false)
     }
-  }, [])
+  }, [setSelectedEra, setSelectedLocation])
 
   // Triple-tap logo to open admin
   const [tapCount, setTapCount] = useState(0)

@@ -65,7 +65,7 @@ const FALLBACK = {
   did_you_know: 'The Atlantis marine habitat holds 11 million gallons of saltwater, enough to fill 17 Olympic swimming pools.',
 }
 
-export default function TodayAtProperty({ onEventTap, onSkip, onLogoTap, onCameraTap }) {
+export default function TodayAtProperty({ onEventTap, onSkip, onLogoTap }) {
   const [data, setData] = useState(null)
   const [loading, setLoading] = useState(true)
 
