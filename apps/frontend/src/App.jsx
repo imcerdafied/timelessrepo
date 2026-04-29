@@ -14,6 +14,12 @@ import useStore from './store/useStore'
 
 const ADMIN_ENABLED = import.meta.env.VITE_ADMIN_ENABLED !== 'false'
 const INITIAL_ROUTE = getDemoRoute()
+const IS_DEMO_ROUTE = (
+  window.location.pathname === '/' ||
+  window.location.pathname === '/demo' ||
+  window.location.pathname === '/demos' ||
+  window.location.pathname.startsWith('/demo/')
+)
 
 function App() {
   const selectedLocation = useStore((s) => s.selectedLocation)
@@ -24,7 +30,7 @@ function App() {
 
   const [showToday, setShowToday] = useState(INITIAL_ROUTE.view === 'today')
   const [showOnboarding, setShowOnboarding] = useState(
-    () => !localStorage.getItem('onboarding_complete')
+    () => !IS_DEMO_ROUTE && !localStorage.getItem('onboarding_complete')
   )
   const [showAdmin, setShowAdmin] = useState(INITIAL_ROUTE.view === 'signals')
   const [showBlePanel, setShowBlePanel] = useState(false)
