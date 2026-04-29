@@ -10,6 +10,7 @@ if (!process.env.ANTHROPIC_API_KEY) {
 const client = process.env.ANTHROPIC_API_KEY
   ? new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
   : null
+const CHARACTER_CHAT_TIMEOUT_MS = Number.parseInt(process.env.CHARACTER_CHAT_TIMEOUT_MS || '9000', 10)
 
 function cleanCopy(text = '') {
   return String(text).replace(/\u2014/g, ',').replace(/\s+/g, ' ').trim()
@@ -65,6 +66,18 @@ function buildFallbackResponse({ system_prompt, messages, visit_context }) {
   return cleanCopy(`I am ${name}, and I can only answer from ${era}. Ask me what I have seen here, what I fear, or what this place is becoming, and I will tell you plainly.`)
 }
 
+function withTimeout(promise, ms, label = 'Timed out') {
+  let timeoutId
+  const timeout = new Promise((_, reject) => {
+    timeoutId = setTimeout(() => reject(new Error(label)), ms)
+  })
+
+  return Promise.race([
+    promise,
+    timeout,
+  ]).finally(() => clearTimeout(timeoutId))
+}
+
 router.post('/chat', async (req, res) => {
   const { system_prompt, accent, messages, venue_context, visit_context } = req.body
 
@@ -112,15 +125,19 @@ CRITICAL INSTRUCTIONS:
 CRITICAL: Keep every response to 2-3 sentences maximum. You are speaking aloud in conversation, not writing an essay. Short, vivid, historically grounded. Leave the visitor wanting more.`
 
   try {
-    const response = await client.messages.create({
-      model: 'claude-sonnet-4-6',
-      max_tokens: 150,
-      system: fullSystemPrompt,
-      messages: messages.map(m => ({
-        role: m.role,
-        content: m.content
-      }))
-    })
+    const response = await withTimeout(
+      client.messages.create({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 150,
+        system: fullSystemPrompt,
+        messages: messages.map(m => ({
+          role: m.role,
+          content: m.content
+        }))
+      }),
+      CHARACTER_CHAT_TIMEOUT_MS,
+      'Character chat timed out'
+    )
 
     const text = cleanCopy(response.content[0]?.text || '')
     res.json({ response: text })

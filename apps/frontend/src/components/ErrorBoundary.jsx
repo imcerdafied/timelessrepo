@@ -33,20 +33,37 @@ export default class ErrorBoundary extends Component {
           <p style={{ fontSize: 14, color: 'rgba(245,245,245,0.5)', marginBottom: 24 }}>
             {this.state.error?.message || 'An unexpected error occurred'}
           </p>
-          <button
-            onClick={() => window.location.reload()}
-            style={{
-              padding: '10px 24px',
-              border: '1px solid #222',
-              backgroundColor: '#141414',
-              color: '#F5F5F5',
-              borderRadius: 4,
-              cursor: 'pointer',
-              fontSize: 14,
-            }}
-          >
-            Reload
-          </button>
+          <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', justifyContent: 'center' }}>
+            <button
+              onClick={() => window.location.reload()}
+              style={{
+                padding: '10px 24px',
+                border: '1px solid #222',
+                backgroundColor: '#141414',
+                color: '#F5F5F5',
+                borderRadius: 4,
+                cursor: 'pointer',
+                fontSize: 14,
+              }}
+            >
+              Reload
+            </button>
+            <a
+              href="/demos"
+              style={{
+                padding: '10px 24px',
+                border: '1px solid #2a2a2a',
+                backgroundColor: '#0F0F0F',
+                color: '#F5F5F5',
+                borderRadius: 4,
+                cursor: 'pointer',
+                fontSize: 14,
+                textDecoration: 'none',
+              }}
+            >
+              Back to Demos
+            </a>
+          </div>
         </div>
       )
     }

@@ -111,13 +111,13 @@ function findBestEra(city, year) {
   }
 }
 
-// GET /api/on-this-day — uses today's date
+// GET /api/on-this-day uses today's date
 router.get('/', async (req, res) => {
   req.params.mmdd = null
   return handleOnThisDay(req, res)
 })
 
-// GET /api/on-this-day/:mmdd — specific date
+// GET /api/on-this-day/:mmdd specific date
 router.get('/:mmdd', async (req, res) => {
   return handleOnThisDay(req, res)
 })
@@ -157,7 +157,7 @@ async function handleOnThisDay(req, res) {
     const response = await client.messages.create({
       model: 'claude-sonnet-4-6',
       max_tokens: 1000,
-      system: `You are a historical event curator for the Timeless Moment app. You find fascinating, dramatic historical events that happened on specific dates. Focus on events that are vivid, human, and emotionally resonant — not just "important." Prefer events tied to specific places where someone could imagine standing.
+      system: `You are a historical event curator for the Timeless Moment app. You find fascinating, dramatic historical events that happened on specific dates. Focus on events that are vivid, human, and emotionally resonant, not just "important." Prefer events tied to specific places where someone could imagine standing.
 
 Available cities in our app: ${locationList}
 
@@ -171,7 +171,7 @@ For each event, it MUST be connected to one of these cities: San Francisco, New 
 Return a JSON array of exactly 5 objects with these fields:
 - "year": number (the year it happened)
 - "city": string (which city from the list above)
-- "headline": string (5-10 words, dramatic, present tense — like a newspaper headline)
+- "headline": string (5-10 words, dramatic, present tense, like a newspaper headline)
 - "description": string (2-3 sentences describing what happened, written vividly as if you were there)
 - "shareText": string (a compelling 1-line social media post about this event, under 200 chars, include the year)
 
@@ -209,7 +209,7 @@ Only return the JSON array, nothing else.`
       const passesQuality = Object.values(qualityChecks).every(Boolean)
 
       if (!passesQuality) {
-        console.log(`On This Day: REJECTED "${event.headline}" — quality checks:`, qualityChecks)
+        console.log(`On This Day: REJECTED "${event.headline}", quality checks:`, qualityChecks)
         return null
       }
 

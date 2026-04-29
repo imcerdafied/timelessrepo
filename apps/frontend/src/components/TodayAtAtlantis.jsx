@@ -61,7 +61,7 @@ const FALLBACK = {
     layer_id: 'marina-beach-colonial',
     category: 'maritime',
   },
-  did_you_know: 'The Atlantis marine habitat holds 11 million gallons of saltwater — enough to fill 17 Olympic swimming pools.',
+  did_you_know: 'The Atlantis marine habitat holds 11 million gallons of saltwater, enough to fill 17 Olympic swimming pools.',
 }
 
 export default function TodayAtAtlantis({ onEventTap, onSkip, onLogoTap, onCameraTap }) {
@@ -97,7 +97,7 @@ export default function TodayAtAtlantis({ onEventTap, onSkip, onLogoTap, onCamer
   const handleShare = useCallback(async (event) => {
     const text = `On this day in ${event.year}: ${event.headline}. ${event.snippet}`
     if (navigator.share) {
-      try { await navigator.share({ text, title: `On This Day — ${PROPERTY_NAME}` }) } catch {}
+      try { await navigator.share({ text, title: `On This Day, ${PROPERTY_NAME}` }) } catch {}
     } else {
       navigator.clipboard?.writeText(text)
     }
@@ -151,7 +151,7 @@ export default function TodayAtAtlantis({ onEventTap, onSkip, onLogoTap, onCamer
         </motion.button>
       </div>
 
-      {/* On This Day — horizontal carousel */}
+      {/* On This Day horizontal carousel */}
       <div className="pt-4">
         <p className="px-5 font-ui text-[10px] tracking-[0.15em] uppercase text-present/40 mb-3">On This Day</p>
         <div className="flex gap-3 overflow-x-auto px-5 pb-2" style={{ scrollbarWidth: 'none' }}>

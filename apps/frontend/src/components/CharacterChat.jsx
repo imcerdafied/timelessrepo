@@ -333,6 +333,9 @@ export function CharacterChat({ era, onDismiss, character: characterProp, venueC
         <div
           ref={inputRef}
           contentEditable
+          role="textbox"
+          aria-label={`Ask ${character.name.split(' ')[0]} anything`}
+          tabIndex={0}
           suppressContentEditableWarning
           spellCheck={false}
           autoCorrect="off"

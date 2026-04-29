@@ -2,6 +2,7 @@
   "name": "timeless",
   "scripts": {
     "build": "cd apps/frontend && npm install --legacy-peer-deps && npm run build && cd ../backend && npm install",
-    "start": "node apps/backend/server.js"
+    "start": "node apps/backend/server.js",
+    "smoke:demo": "node scripts/smoke-demo.mjs"
   }
 }
