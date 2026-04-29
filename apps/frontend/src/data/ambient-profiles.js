@@ -1,8 +1,8 @@
 /**
- * Ambient Audio Profiles — Web Audio API soundscape recipes
+ * Ambient Audio Profiles, Web Audio API soundscape recipes
  *
  * Each profile creates a procedural soundscape appropriate for a resort zone.
- * No external audio files needed — everything is generated from noise + oscillators.
+ * No external audio files needed, everything is generated from noise + oscillators.
  */
 
 // -- Helper: create colored noise buffer ------------------------------------
@@ -64,7 +64,7 @@ const profiles = {
   ocean(ctx, master) {
     const cleanups = []
 
-    // Ocean waves — brown noise through lowpass with slow LFO for wave rhythm
+    // Ocean waves, brown noise through lowpass with slow LFO for wave rhythm
     const waves = ctx.createBufferSource()
     waves.buffer = brownNoise(ctx, 6)
     waves.loop = true
@@ -86,7 +86,7 @@ const profiles = {
     wavesGain.connect(master)
     waves.start()
 
-    // Distant seabirds — random high sine chirps
+    // Distant seabirds, random high sine chirps
     cleanups.push(scheduleRandom(ctx, master, 6000, 18000, (c, m) => {
       const osc = c.createOscillator()
       osc.type = 'sine'
@@ -104,7 +104,7 @@ const profiles = {
       osc.stop(c.currentTime + 0.8)
     }))
 
-    // Light wind — bandpass brown noise
+    // Light wind, bandpass brown noise
     const wind = ctx.createBufferSource()
     wind.buffer = brownNoise(ctx, 5)
     wind.loop = true
@@ -131,7 +131,7 @@ const profiles = {
   lobby(ctx, master) {
     const cleanups = []
 
-    // Reverberant room tone — very low brown noise
+    // Reverberant room tone, very low brown noise
     const room = ctx.createBufferSource()
     room.buffer = brownNoise(ctx, 5)
     room.loop = true
@@ -145,7 +145,7 @@ const profiles = {
     roomGain.connect(master)
     room.start()
 
-    // Fountain water — high-freq white noise bandpass
+    // Fountain water, high-freq white noise bandpass
     const fountain = ctx.createBufferSource()
     fountain.buffer = whiteNoise(ctx, 4)
     fountain.loop = true
@@ -160,7 +160,7 @@ const profiles = {
     fountainGain.connect(master)
     fountain.start()
 
-    // Occasional soft piano notes — random from C-B scale, sine with decay
+    // Occasional soft piano notes, random from C-B scale, sine with decay
     const pianoNotes = [261.6, 293.7, 329.6, 349.2, 392.0, 440.0, 493.9] // C4-B4
     cleanups.push(scheduleRandom(ctx, master, 3000, 8000, (c, m) => {
       const freq = pianoNotes[Math.floor(Math.random() * pianoNotes.length)]
@@ -198,7 +198,7 @@ const profiles = {
   waterpark(ctx, master) {
     const cleanups = []
 
-    // Splashing water — bandpass white noise
+    // Splashing water, bandpass white noise
     const splash = ctx.createBufferSource()
     splash.buffer = whiteNoise(ctx, 4)
     splash.loop = true
@@ -213,7 +213,7 @@ const profiles = {
     splashGain.connect(master)
     splash.start()
 
-    // Waterfall rush — lowpass brown noise
+    // Waterfall rush, lowpass brown noise
     const waterfall = ctx.createBufferSource()
     waterfall.buffer = brownNoise(ctx, 6)
     waterfall.loop = true
@@ -227,7 +227,7 @@ const profiles = {
     waterfallGain.connect(master)
     waterfall.start()
 
-    // Distant laughter — random short bright triangle wave bursts
+    // Distant laughter, random short bright triangle wave bursts
     cleanups.push(scheduleRandom(ctx, master, 4000, 12000, (c, m) => {
       const numBursts = 2 + Math.floor(Math.random() * 3)
       for (let i = 0; i < numBursts; i++) {
@@ -259,7 +259,7 @@ const profiles = {
   casino(ctx, master) {
     const cleanups = []
 
-    // Room murmur — bandpass brown noise
+    // Room murmur, bandpass brown noise
     const murmur = ctx.createBufferSource()
     murmur.buffer = brownNoise(ctx, 5)
     murmur.loop = true
@@ -274,7 +274,7 @@ const profiles = {
     murmurGain.connect(master)
     murmur.start()
 
-    // Slot machine chimes — random bright sine tones from high-C scale
+    // Slot machine chimes, random bright sine tones from high-C scale
     const chimeNotes = [1046.5, 1174.7, 1318.5, 1396.9, 1568.0, 1760.0, 1975.5] // C6-B6
     cleanups.push(scheduleRandom(ctx, master, 1500, 5000, (c, m) => {
       const numChimes = 1 + Math.floor(Math.random() * 3)
@@ -294,7 +294,7 @@ const profiles = {
       }
     }))
 
-    // Ice in glass — short crackle bursts
+    // Ice in glass, short crackle bursts
     cleanups.push(scheduleRandom(ctx, master, 6000, 16000, (c, m) => {
       const buf = crackleNoise(c, 0.12)
       const src = c.createBufferSource()
@@ -321,7 +321,7 @@ const profiles = {
   underwater(ctx, master) {
     const cleanups = []
 
-    // Deep underwater drone — 55Hz sine
+    // Deep underwater drone, 55Hz sine
     const drone = ctx.createOscillator()
     drone.type = 'sine'
     drone.frequency.value = 55
@@ -331,7 +331,7 @@ const profiles = {
     droneGain.connect(master)
     drone.start()
 
-    // Bubble sounds — rising frequency sine chirps
+    // Bubble sounds, rising frequency sine chirps
     cleanups.push(scheduleRandom(ctx, master, 2000, 7000, (c, m) => {
       const numBubbles = 2 + Math.floor(Math.random() * 4)
       for (let i = 0; i < numBubbles; i++) {
@@ -351,7 +351,7 @@ const profiles = {
       }
     }))
 
-    // Filtered ocean rumble — very low brown noise
+    // Filtered ocean rumble, very low brown noise
     const rumble = ctx.createBufferSource()
     rumble.buffer = brownNoise(ctx, 6)
     rumble.loop = true
@@ -365,7 +365,7 @@ const profiles = {
     rumbleGain.connect(master)
     rumble.start()
 
-    // Occasional whale-like tones — slow descending sine with fade
+    // Occasional whale-like tones, slow descending sine with fade
     cleanups.push(scheduleRandom(ctx, master, 12000, 30000, (c, m) => {
       const osc = c.createOscillator()
       osc.type = 'sine'
@@ -417,7 +417,7 @@ export function getAmbientProfile(eraId) {
 
 /**
  * Start an ambient soundscape for a given profile name.
- * Returns { master, stop } — call stop() to clean up.
+ * Returns { master, stop }, call stop() to clean up.
  */
 export function startAmbient(profileName) {
   const ctx = new (window.AudioContext || window.webkitAudioContext)()

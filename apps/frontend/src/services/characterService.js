@@ -6,6 +6,10 @@ import useStore from '../store/useStore'
 // Cache today's OTD events in memory
 let otdCache = { date: null, events: null }
 
+function cleanCopy(text = '') {
+  return String(text).replace(/\u2014/g, ',').trim()
+}
+
 async function getTodayEvents() {
   const today = new Date().toISOString().slice(0, 10)
   if (otdCache.date === today && otdCache.events) return otdCache.events
@@ -57,5 +61,5 @@ export async function sendCharacterMessage(
 
   const data = await response.json()
   if (!response.ok) throw new Error(data.detail || data.error || 'Character response failed')
-  return data.response
+  return cleanCopy(data.response)
 }

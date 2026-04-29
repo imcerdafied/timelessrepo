@@ -4,20 +4,79 @@ import Anthropic from '@anthropic-ai/sdk'
 const router = Router()
 
 if (!process.env.ANTHROPIC_API_KEY) {
-  console.warn('WARNING: ANTHROPIC_API_KEY is not set. Character chat will not work.')
+  console.warn('WARNING: ANTHROPIC_API_KEY is not set. Character chat will use local fallback responses.')
 }
 
-const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
+const client = process.env.ANTHROPIC_API_KEY
+  ? new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
+  : null
+
+function cleanCopy(text = '') {
+  return String(text).replace(/\u2014/g, ',').replace(/\s+/g, ' ').trim()
+}
+
+function characterNameFromPrompt(prompt = '') {
+  const match = prompt.match(/You are ([^,.]+)/i)
+  return cleanCopy(match?.[1] || 'your guide')
+}
+
+function characterEraFromPrompt(prompt = '') {
+  const yearMatch = prompt.match(/\b(1[0-9]{3}|20[0-9]{2}|203[0-9]|204[0-9]|900 CE|1000 CE|1100 CE)\b/i)
+  return yearMatch?.[0] || 'this moment'
+}
+
+function buildFallbackResponse({ system_prompt, messages, visit_context }) {
+  const prompt = system_prompt || ''
+  const name = characterNameFromPrompt(prompt)
+  const era = characterEraFromPrompt(prompt)
+  const latest = cleanCopy(messages?.at(-1)?.content || '').toLowerCase()
+  const explored = visit_context?.zones_visited?.length
+    ? `I can tell you have already crossed ${visit_context.zones_visited.length} part${visit_context.zones_visited.length === 1 ? '' : 's'} of this place.`
+    : ''
+
+  if (name.includes('Anne Bonny')) {
+    if (latest.includes('controlled') || latest.includes('nassau') || latest.includes('harbor')) {
+      return cleanCopy('No king controlled Nassau when I knew it. The harbor belonged to whoever had cannon, nerve, and friends enough to survive the night.')
+    }
+    if (latest.includes('trouble') || latest.includes('where')) {
+      return cleanCopy('Trouble starts near the taverns, where stolen silver changes hands and every smiling man is counting your purse. Keep one eye on the door and the other on your knife.')
+    }
+    if (latest.includes('trust') || latest.includes('ship')) {
+      return cleanCopy('I would trust you after you proved useful in a storm, not before. A ship has no room for soft hands or loose tongues.')
+    }
+    return cleanCopy('Ask plain, and do not waste my tide. I know Nassau, the shoals, the taverns, and the men who pretend they own them.')
+  }
+
+  if (name.includes('Woodes Rogers')) {
+    if (latest.includes('pirate') || latest.includes('nassau')) {
+      return cleanCopy('Nassau was ruled by rogues when I came ashore, and rogues understand force better than sermons. I offered the King\'s Pardon to the wise and the gallows to the stubborn.')
+    }
+    return cleanCopy('Order is not a gentle thing when a colony has forgotten the Crown. Ask plainly, and I shall answer as a governor must.')
+  }
+
+  if (prompt.includes('Atlas')) {
+    return cleanCopy(`${explored} I can help you choose the next layer, find a quieter route, or turn this moment into something worth sharing.`)
+  }
+
+  if (latest.includes('where') || latest.includes('what should') || latest.includes('recommend')) {
+    return cleanCopy(`From where I stand in ${era}, I would begin with the water, the people, and the work happening just out of sight. Those three will tell you the truth of this place.`)
+  }
+
+  return cleanCopy(`I am ${name}, and I can only answer from ${era}. Ask me what I have seen here, what I fear, or what this place is becoming, and I will tell you plainly.`)
+}
 
 router.post('/chat', async (req, res) => {
   const { system_prompt, accent, messages, venue_context, visit_context } = req.body
 
-  if (!process.env.ANTHROPIC_API_KEY) {
-    return res.status(503).json({ error: 'ANTHROPIC_API_KEY not configured' })
-  }
-
   if (!system_prompt || !messages?.length) {
     return res.status(400).json({ error: 'Missing required fields' })
+  }
+
+  if (!client) {
+    return res.json({
+      response: buildFallbackResponse({ system_prompt, messages, visit_context }),
+      fallback: true,
+    })
   }
 
   // Build system prompt with optional venue context
@@ -63,7 +122,7 @@ CRITICAL: Keep every response to 2-3 sentences maximum. You are speaking aloud i
       }))
     })
 
-    const text = response.content[0]?.text || ''
+    const text = cleanCopy(response.content[0]?.text || '')
     res.json({ response: text })
   } catch (err) {
     console.error('Character chat error:', JSON.stringify({
@@ -72,9 +131,9 @@ CRITICAL: Keep every response to 2-3 sentences maximum. You are speaking aloud i
       error: err.error,
       stack: err.stack
     }))
-    res.status(500).json({
-      error: 'Character unavailable',
-      detail: err.message
+    res.json({
+      response: buildFallbackResponse({ system_prompt, messages, visit_context }),
+      fallback: true,
     })
   }
 })
@@ -133,12 +192,12 @@ router.get('/speak-stream', async (req, res) => {
   const { text, eraId } = req.query
 
   const voiceMap = {
-    'alamo-1834': 'JBFqnCBsd6RMkjVDRZzb',       // Jose — George (Warm Storyteller)
-    'mission-1776': 'onwK4e9ZLuTAKqWW03F9',     // Padre Palou — Daniel (Formal)
-    'mission-1906': 'EXAVITQu4vr4xnSDxMaL',    // Rosa — Sarah (Mature, Confident)
-    'mission-1969': 'cjVigY5qzO86Huf0OWal',     // Chavez — Eric (Smooth, Trustworthy)
-    'embarcadero-1934': 'nPczCjzI2devNBz1zQrb', // Bridges — Brian (Deep, Resonant)
-    'chinatown-1882': 'pqHfZKP75CvOlQylNhV4',   // Lee Wong — Bill (Wise, Old)
+    'alamo-1834': 'JBFqnCBsd6RMkjVDRZzb',       // Jose, George (Warm Storyteller)
+    'mission-1776': 'onwK4e9ZLuTAKqWW03F9',     // Padre Palou, Daniel (Formal)
+    'mission-1906': 'EXAVITQu4vr4xnSDxMaL',    // Rosa, Sarah (Mature, Confident)
+    'mission-1969': 'cjVigY5qzO86Huf0OWal',     // Chavez, Eric (Smooth, Trustworthy)
+    'embarcadero-1934': 'nPczCjzI2devNBz1zQrb', // Bridges, Brian (Deep, Resonant)
+    'chinatown-1882': 'pqHfZKP75CvOlQylNhV4',   // Lee Wong, Bill (Wise, Old)
   }
 
   const voiceId = voiceMap[eraId] || 'JBFqnCBsd6RMkjVDRZzb'
@@ -180,7 +239,7 @@ router.get('/speak-stream', async (req, res) => {
   }
 })
 
-// POST /api/character/narrate — generate TTS narration for a TimelessScene monologue
+// POST /api/character/narrate, generate TTS narration for a TimelessScene monologue
 // Returns audio/mpeg stream. Body: { text, eraId, eraType, city, characterName, characterRole, characterAccent }
 router.post('/narrate', async (req, res) => {
   const { text, eraId, eraType, city, characterName, characterRole, characterAccent } = req.body
@@ -314,25 +373,25 @@ router.post('/narrate', async (req, res) => {
       voice = VOICES.southernFemale
     } else {
       // American female
-      if (age === 'young') voice = VOICES.youngAmericanFemale3  // Matilda — warm
+      if (age === 'young') voice = VOICES.youngAmericanFemale3  // Matilda, warm
       else if (age === 'old') voice = VOICES.midAmericanFemale
-      else voice = VOICES.youngAmericanFemale4  // Domi — strong
+      else voice = VOICES.youngAmericanFemale4  // Domi, strong
     }
   } else {
     // Male
     if (accent === 'british') {
       if (age === 'young') voice = VOICES.youngBritishMale
-      else if (age === 'old') voice = VOICES.britishMale2  // George — raspy
-      else voice = VOICES.britishMale  // Daniel — deep
+      else if (age === 'old') voice = VOICES.britishMale2  // George, raspy
+      else voice = VOICES.britishMale  // Daniel, deep
     } else if (accent === 'irish') {
       voice = VOICES.irishMale
     } else if (accent === 'italian') {
       voice = VOICES.italianMale
     } else {
       // American male (including default for non-European accents)
-      if (age === 'young') voice = VOICES.youngAmericanMale  // Antoni — young, well-rounded
-      else if (age === 'old') voice = VOICES.oldAmericanMale  // Jessie — old, raspy
-      else voice = VOICES.midAmericanMale  // Adam — deep
+      if (age === 'young') voice = VOICES.youngAmericanMale  // Antoni, young, well-rounded
+      else if (age === 'old') voice = VOICES.oldAmericanMale  // Jessie, old, raspy
+      else voice = VOICES.midAmericanMale  // Adam, deep
     }
   }
 

@@ -1,8 +1,12 @@
-import { useRef, useState, useCallback } from 'react'
+import { useEffect, useRef, useState, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import html2canvas from 'html2canvas'
+import QRCode from 'qrcode'
+import { ACTIVE_PROPERTY } from '../config/properties'
+import useStore from '../store/useStore'
 
-const PROPERTY_NAME = import.meta.env.VITE_PROPERTY_NAME || 'Atlantis Experience'
+const PROPERTY_NAME = import.meta.env.VITE_PROPERTY_NAME || ACTIVE_PROPERTY.name
+const PROPERTY_TAGLINE = import.meta.env.VITE_PROPERTY_TAGLINE || ACTIVE_PROPERTY.tagline
 
 function truncate(text, max) {
   if (!text || text.length <= max) return text
@@ -12,6 +16,28 @@ function truncate(text, max) {
 export default function ShareCard({ era, locationName, imageUrl, onClose }) {
   const cardRef = useRef(null)
   const [sharing, setSharing] = useState(false)
+  const [qrDataUrl, setQrDataUrl] = useState(null)
+  const awardStamp = useStore((s) => s.awardStamp)
+  const deepLink = typeof window === 'undefined'
+    ? `/demo/${ACTIVE_PROPERTY.slug}/layer/${era.id}`
+    : `${window.location.origin}/demo/${ACTIVE_PROPERTY.slug}/layer/${era.id}`
+
+  useEffect(() => {
+    let cancelled = false
+    QRCode.toDataURL(deepLink, {
+      margin: 1,
+      width: 136,
+      color: {
+        dark: '#0A0A0A',
+        light: '#F5F5F5',
+      },
+    }).then((url) => {
+      if (!cancelled) setQrDataUrl(url)
+    }).catch(() => {
+      if (!cancelled) setQrDataUrl(null)
+    })
+    return () => { cancelled = true }
+  }, [deepLink])
 
   const handleShare = useCallback(async () => {
     if (sharing || !cardRef.current) return
@@ -35,21 +61,27 @@ export default function ShareCard({ era, locationName, imageUrl, onClose }) {
         await navigator.share({
           title: era.headline,
           text: `${locationName}, ${era.year_display}`,
-          url: window.location.href,
+          url: deepLink,
           files: [file],
         }).catch(() => {
-          // User cancelled share — fall through to download
+          // User cancelled share, fall through to download
           downloadBlob(blob)
         })
       } else if (blob) {
         downloadBlob(blob)
       }
+      awardStamp({
+        id: `share:${era.id}`,
+        type: 'share',
+        label: `Shared ${era.label}`,
+        detail: locationName,
+      })
     } catch {
       // Silent fail
     } finally {
       setSharing(false)
     }
-  }, [sharing, era, locationName])
+  }, [sharing, era, locationName, deepLink, awardStamp])
 
   function downloadBlob(blob) {
     const url = URL.createObjectURL(blob)
@@ -103,7 +135,7 @@ export default function ShareCard({ era, locationName, imageUrl, onClose }) {
               />
             )}
 
-            {/* Dark gradient overlay — bottom 60% */}
+            {/* Dark gradient overlay, bottom 60% */}
             <div
               style={{
                 position: 'absolute',
@@ -118,11 +150,11 @@ export default function ShareCard({ era, locationName, imageUrl, onClose }) {
                 {PROPERTY_NAME}
               </div>
               <div style={{ fontFamily: 'Inter, sans-serif', fontSize: 9, color: 'rgba(245,245,245,0.3)', marginTop: 2 }}>
-                {PROPERTY_NAME.toLowerCase().replace(/\s+/g, '') + '.app'}
+                  {`${ACTIVE_PROPERTY.slug}.timeless.app`}
               </div>
             </div>
 
-            {/* Middle — year */}
+            {/* Middle, year */}
             <div style={{ position: 'absolute', top: '42%', left: 24, right: 24, textAlign: 'center' }}>
               <div style={{ fontFamily: 'Playfair Display, serif', fontSize: 64, fontWeight: 700, color: '#F5F5F5', lineHeight: 1 }}>
                 {era.year_display}
@@ -143,8 +175,22 @@ export default function ShareCard({ era, locationName, imageUrl, onClose }) {
 
               {/* Bottom rule + tagline */}
               <div style={{ borderTop: '1px solid #C8860A', marginTop: 16, paddingTop: 12 }}>
-                <div style={{ fontFamily: 'Inter, sans-serif', fontSize: 11, color: 'rgba(245,245,245,0.4)', letterSpacing: '0.1em' }}>
-                  Where every place tells a story.
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                  {qrDataUrl && (
+                    <img
+                      src={qrDataUrl}
+                      alt="Open this Timeless layer"
+                      style={{ width: 56, height: 56, borderRadius: 6, background: '#F5F5F5' }}
+                    />
+                  )}
+                  <div>
+                    <div style={{ fontFamily: 'Inter, sans-serif', fontSize: 11, color: 'rgba(245,245,245,0.4)', letterSpacing: '0.1em' }}>
+                      {PROPERTY_TAGLINE}
+                    </div>
+                    <div style={{ fontFamily: 'Inter, sans-serif', fontSize: 9, color: 'rgba(245,245,245,0.32)', marginTop: 5 }}>
+                      Scan to open this layer
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

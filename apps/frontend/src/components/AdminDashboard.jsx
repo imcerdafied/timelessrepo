@@ -41,7 +41,7 @@ const LAYER_TYPE_MAP = {
 
 const AFFINITY_TYPES = ['Historical', 'Present Day', 'Future', 'Local Culture', 'Behind the Scenes']
 
-// Affinity label thresholds — label is applied when the matching type percentage exceeds the threshold
+// Affinity label thresholds, label is applied when the matching type percentage exceeds the threshold
 function computeAffinityLabels(typeBreakdown, events = []) {
   const labels = []
   const hist = typeBreakdown['Historical'] || 0
@@ -289,7 +289,7 @@ export default function AdminDashboard({ onClose }) {
           </div>
         </section>
 
-        {/* ── Content Engagement — TimeLens + OTD ─────────────── */}
+        {/* ── Content Engagement, TimeLens + OTD ─────────────── */}
         <section>
           <h2 className="font-heading text-sm font-semibold text-present/80 uppercase tracking-widest mb-3">
             Content Engagement

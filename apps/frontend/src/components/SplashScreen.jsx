@@ -1,9 +1,10 @@
 import { useEffect } from 'react'
 import { motion } from 'framer-motion'
 import posthog from 'posthog-js'
+import { ACTIVE_PROPERTY } from '../config/properties'
 
-const PROPERTY_NAME = import.meta.env.VITE_PROPERTY_NAME || 'Atlantis Experience'
-const PROPERTY_TAGLINE = import.meta.env.VITE_PROPERTY_TAGLINE || 'Where every place tells a story.'
+const PROPERTY_NAME = import.meta.env.VITE_PROPERTY_NAME || ACTIVE_PROPERTY.name
+const PROPERTY_TAGLINE = import.meta.env.VITE_PROPERTY_TAGLINE || ACTIVE_PROPERTY.tagline
 
 export default function SplashScreen({ onComplete }) {
   useEffect(() => {

@@ -1,12 +1,12 @@
-# Timeless Moment — From App to Time Machine
+# Timeless Moment, From App to Time Machine
 
 ## The Thesis
 
-Today's entertainment surface is a menu (Netflix) or a feed (YouTube/TikTok). Tomorrow's is a *place*. You go somewhere in time and space, and the entertainment finds you. Characters perform. Scenes unfold. You watch, or you step in. There are no episodes, no seasons, no browse-and-pick. There's a continuum — and your presence is the play button.
+Today's entertainment surface is a menu (Netflix) or a feed (YouTube/TikTok). Tomorrow's is a *place*. You go somewhere in time and space, and the entertainment finds you. Characters perform. Scenes unfold. You watch, or you step in. There are no episodes, no seasons, no browse-and-pick. There's a continuum, and your presence is the play button.
 
 ## Where We Are Now
 
-What's built is a **historical encyclopedia with a chat layer**. It's good — 189 eras, 65 characters, working Claude-powered conversations, ambient audio, GPS triggers, a story feed prototype. But it's fundamentally *active*. The user has to initiate everything: pick a location, tap a character, type a message.
+What's built is a **historical encyclopedia with a chat layer**. It's good, 189 eras, 65 characters, working Claude-powered conversations, ambient audio, GPS triggers, a story feed prototype. But it's fundamentally *active*. The user has to initiate everything: pick a location, tap a character, type a message.
 
 The vision requires a flip: **the default mode is passive**. Content plays. You arrived, so something is happening. You can lean in (interact, talk, redirect) or lean back (watch). That's the gap.
 
@@ -32,27 +32,27 @@ Right now, arriving at an era shows you a static image with text. The character 
 
 When you land on an era, a performance begins automatically:
 
-1. **Claude generates a monologue** — not a chat response, but a 30-60 second scripted performance. The character talks about what's happening *right now* in their world. Giuseppe Rossi doesn't wait for your question — he's already telling you about the frost that killed half his orchard, and whether the new irrigation ditch will save the rest.
+1. **Claude generates a monologue**, not a chat response, but a 30-60 second scripted performance. The character talks about what's happening *right now* in their world. Giuseppe Rossi doesn't wait for your question, he's already telling you about the frost that killed half his orchard, and whether the new irrigation ditch will save the rest.
 
-2. **ElevenLabs voices it** — using the voice assignments already documented. Accent, cadence, emotion all dialed per character.
+2. **ElevenLabs voices it**, using the voice assignments already documented. Accent, cadence, emotion all dialed per character.
 
-3. **Hedra animates it** — a talking-head video of the character speaking directly to you. Portrait orientation. The era image stays behind them or shifts to become their environment.
+3. **Hedra animates it**, a talking-head video of the character speaking directly to you. Portrait orientation. The era image stays behind them or shifts to become their environment.
 
-4. **The user watches** — no tap required. The performance plays. Below the video, the era content (description, key events) is still accessible, but it's secondary now.
+4. **The user watches**, no tap required. The performance plays. Below the video, the era content (description, key events) is still accessible, but it's secondary now.
 
 ### What this means for the UX
 
 - The ExperienceWindow becomes a **stage**, not a poster.
-- The TemporalRibbon becomes a **channel dial** — scrub and something new plays.
+- The TemporalRibbon becomes a **channel dial**, scrub and something new plays.
 - The 90-second dwell timer goes away. The character is immediate.
 - Chat still exists, but it's the "lean forward" mode you enter *after* the performance hooks you.
 
 ### Technical work
 
-- New backend route: `/api/character/perform` — takes era + character, returns a scripted monologue (Claude, different system prompt than chat: write a 100-200 word first-person monologue, no questions to the user, pure storytelling)
+- New backend route: `/api/character/perform`, takes era + character, returns a scripted monologue (Claude, different system prompt than chat: write a 100-200 word first-person monologue, no questions to the user, pure storytelling)
 - Wire ElevenLabs TTS to the monologue text (routes already stubbed)
 - Wire Hedra to the audio + character portrait (service already written)
-- New frontend component: `Performance.jsx` — video player that auto-plays on era entry, with a "Talk to [Name]" button to transition into existing CharacterChat
+- New frontend component: `Performance.jsx`, video player that auto-plays on era entry, with a "Talk to [Name]" button to transition into existing CharacterChat
 - Character portraits needed: one image per character for Hedra input (can be AI-generated, e.g., Midjourney/DALL-E, consistent style)
 
 ### What you prove
@@ -66,7 +66,7 @@ That the core loop works: **go somewhere → content plays → it's compelling**
 
 ### What changes
 
-Phase 1 is a character talking to camera. Phase 2 puts them *somewhere*. Instead of "Alamo, 1900" having one character, it has a **venue** — a place within the place that implies an activity.
+Phase 1 is a character talking to camera. Phase 2 puts them *somewhere*. Instead of "Alamo, 1900" having one character, it has a **venue**, a place within the place that implies an activity.
 
 Examples:
 - **NYC, 1964** → *The Bitter End, Greenwich Village* → a comedian doing a 2-minute set about the subway
@@ -101,11 +101,11 @@ era {
 
 Phase 1 is always a monologue (one person, talking to camera). Phase 2 introduces formats:
 
-- **Comedy set** — a character doing bits, Claude writes jokes appropriate to the era
-- **Dialogue** — two characters talking, camera cuts between them (two Hedra videos interleaved)
-- **Narration** — character walks you through a scene (voiceover on era imagery, no face)
-- **Broadcast** — a radio or TV segment (era-appropriate framing)
-- **Testimony** — someone recounting what happened (retrospective, emotional)
+- **Comedy set**, a character doing bits, Claude writes jokes appropriate to the era
+- **Dialogue**, two characters talking, camera cuts between them (two Hedra videos interleaved)
+- **Narration**, character walks you through a scene (voiceover on era imagery, no face)
+- **Broadcast**, a radio or TV segment (era-appropriate framing)
+- **Testimony**, someone recounting what happened (retrospective, emotional)
 
 ### Technical work
 
@@ -113,7 +113,7 @@ Phase 1 is always a monologue (one person, talking to camera). Phase 2 introduce
 - Scene generator: Claude writes multi-character scripts with stage directions
 - Multi-voice pipeline: multiple ElevenLabs voices per scene
 - Video compositor: stitch multiple Hedra outputs or alternate with era imagery
-- Frontend: `Scene.jsx` replaces `Performance.jsx` — handles multiple formats
+- Frontend: `Scene.jsx` replaces `Performance.jsx`, handles multiple formats
 
 ### What you prove
 
@@ -126,15 +126,15 @@ That AI-generated "shows" are watchable and varied. That changing the venue and 
 
 ### What changes
 
-Right now every location has exactly 9 eras — fixed years, fixed content. The ribbon is a set of dots. Phase 3 makes the ribbon a **continuous slider**. Stop anywhere and something generates.
+Right now every location has exactly 9 eras, fixed years, fixed content. The ribbon is a set of dots. Phase 3 makes the ribbon a **continuous slider**. Stop anywhere and something generates.
 
-The user drags to "1847" — there's no pre-written content for 1847, but Claude knows what was happening in Alamo in 1847 (Mexican-American War aftermath, land grants shifting). It generates a character, a venue, and a scene on the fly.
+The user drags to "1847", there's no pre-written content for 1847, but Claude knows what was happening in Alamo in 1847 (Mexican-American War aftermath, land grants shifting). It generates a character, a venue, and a scene on the fly.
 
 ### How it works
 
-- **Anchor eras** (the existing 9) are pre-generated and cached — they load instantly.
+- **Anchor eras** (the existing 9) are pre-generated and cached, they load instantly.
 - **Generated eras** are produced on-demand when the user stops on a year. Loading state: ambient audio plays, a "tuning in..." animation, then content appears.
-- Claude generates: a character profile, a venue, a scene script, key historical context — all in one structured call.
+- Claude generates: a character profile, a venue, a scene script, key historical context, all in one structured call.
 - The first experience is a shorter "vignette" (15-20 seconds). If the user stays, it deepens.
 
 ### The ribbon redesign
@@ -160,7 +160,7 @@ That the content is genuinely *infinite*. That stopping at any point in time pro
 
 ### What changes
 
-Phases 1-3 are all passive. Phase 4 adds the other half: you can **enter** the scene. Not just chat with a character in a blank interface — actually participate in the venue's activity.
+Phases 1-3 are all passive. Phase 4 adds the other half: you can **enter** the scene. Not just chat with a character in a blank interface, actually participate in the venue's activity.
 
 - At the comedy club, you can heckle (or try your own material and the AI crowd reacts)
 - At Pepys' fire, you can ask him where to go, and he redirects the narration
@@ -194,16 +194,16 @@ That the boundary between watching and participating can dissolve. That "lean ba
 
 ### What changes
 
-The LocationSelector list becomes a **map**. Not a Google Map with pins — a stylized, atmospheric map that feels like part of the experience. Zoom into a city, see neighborhoods glow with activity. The density of glow = the richness of content there.
+The LocationSelector list becomes a **map**. Not a Google Map with pins, a stylized, atmospheric map that feels like part of the experience. Zoom into a city, see neighborhoods glow with activity. The density of glow = the richness of content there.
 
-Users don't pick from a list. They *wander*. They zoom into Tokyo and see Shinjuku pulsing. They drag to 1945 on the ribbon and the glow shifts — now Asakusa is brighter (that's where the story is in '45). Geography and time become two axes of exploration.
+Users don't pick from a list. They *wander*. They zoom into Tokyo and see Shinjuku pulsing. They drag to 1945 on the ribbon and the glow shifts, now Asakusa is brighter (that's where the story is in '45). Geography and time become two axes of exploration.
 
 ### What this enables
 
-- **Serendipity** — you stumble onto a place and time you didn't know was interesting
-- **Social heat** — show where other users are watching right now (real-time presence)
-- **Curated paths** — "Walk the Great Fire of London" = a guided sequence of locations + eras
-- **Infinite canvas** — new locations can be added without UI changes
+- **Serendipity**, you stumble onto a place and time you didn't know was interesting
+- **Social heat**, show where other users are watching right now (real-time presence)
+- **Curated paths**, "Walk the Great Fire of London" = a guided sequence of locations + eras
+- **Infinite canvas**, new locations can be added without UI changes
 
 ### Technical work
 
@@ -223,7 +223,7 @@ If yes, everything else is iteration. If no, nothing else matters.
 
 So Phase 1 is the only thing that matters right now. And within Phase 1, the minimum experiment is:
 
-1. Pick one character (Giuseppe Rossi, Alamo 1900 — he's expressive, his story is vivid)
+1. Pick one character (Giuseppe Rossi, Alamo 1900, he's expressive, his story is vivid)
 2. Have Claude write a monologue
 3. Voice it with ElevenLabs
 4. Animate it with Hedra
@@ -245,7 +245,7 @@ At current API pricing (approximate):
 | Hedra (45s video) | ~$0.10-0.50 | Depends on plan/resolution |
 | **Total per scene** | **~$0.15-0.55** | |
 
-At 1,000 daily users watching 3 scenes each: $450-$1,650/month. Manageable for an MVP. Caching anchor era scenes (pre-generate the 189 existing eras) reduces this dramatically — most users see cached content, generation only happens for continuum stops (Phase 3) or re-rolls.
+At 1,000 daily users watching 3 scenes each: $450-$1,650/month. Manageable for an MVP. Caching anchor era scenes (pre-generate the 189 existing eras) reduces this dramatically, most users see cached content, generation only happens for continuum stops (Phase 3) or re-rolls.
 
 ---
 
@@ -253,10 +253,10 @@ At 1,000 daily users watching 3 scenes each: $450-$1,650/month. Manageable for a
 
 This isn't a chatbot with a history skin. The moat is:
 
-1. **Content depth** — 189 hand-researched eras with real sources, not hallucinated context
-2. **Character craft** — 65 characters with specific accents, worldviews, and knowledge boundaries
-3. **The continuum concept** — no other product treats time as a browsable, continuous entertainment surface
-4. **Location-awareness** — GPS triggers mean the content finds you when you're physically there
-5. **Passive + active** — the lean-back/lean-forward spectrum doesn't exist in any current AI product
+1. **Content depth**, 189 hand-researched eras with real sources, not hallucinated context
+2. **Character craft**, 65 characters with specific accents, worldviews, and knowledge boundaries
+3. **The continuum concept**, no other product treats time as a browsable, continuous entertainment surface
+4. **Location-awareness**, GPS triggers mean the content finds you when you're physically there
+5. **Passive + active**, the lean-back/lean-forward spectrum doesn't exist in any current AI product
 
 Netflix asks "what do you want to watch?" YouTube asks "what do you want to watch next?" This asks "where and when do you want to *be*?"

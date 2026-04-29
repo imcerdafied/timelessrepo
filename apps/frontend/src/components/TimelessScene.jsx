@@ -5,21 +5,21 @@ import { getAmbientProfile, startAmbient } from '../data/ambient-profiles'
 import { useGyroscope } from '../hooks/useGyroscope'
 
 /**
- * TimelessScene — the core Timeless Moment experience
+ * TimelessScene, the core Timeless Moment experience
  *
  * Generic: works for ANY era at ANY location.
  * Ken Burns imagery + era-appropriate ambient soundscape + character monologue + conversation.
  *
  * Props:
- *   era        — era object from locations.json
- *   character  — character from ERA_CHARACTERS
- *   imageUrl   — main era image URL
- *   locationName — display name of the location
- *   onClose    — close callback
- *   onTalkTo   — open character chat callback
+ *   era, era object from locations.json
+ *   character, character from ERA_CHARACTERS
+ *   imageUrl, main era image URL
+ *   locationName, display name of the location
+ *   onClose, close callback
+ *   onTalkTo, open character chat callback
  */
 
-// End-of-narration CTA — shows character identity + actions + extended reading
+// End-of-narration CTA, shows character identity + actions + extended reading
 function ConversationCTA({ character, era, onTalkTo, onReplay, onClose, accent, hasAudio }) {
   const [expanded, setExpanded] = useState(false)
   const hasKeyEvents = era?.key_events?.length > 0
@@ -143,7 +143,7 @@ function ConversationCTA({ character, era, onTalkTo, onReplay, onClose, accent, 
         className="mb-4"
       >
         <p className="text-lg font-semibold" style={{ fontFamily: 'Playfair Display, serif', color: '#F5F5F5' }}>
-          Meet {character.name} &mdash; {character.role}
+          Meet {character.name}: {character.role}
         </p>
       </motion.div>
 
@@ -210,7 +210,7 @@ function ConversationCTA({ character, era, onTalkTo, onReplay, onClose, accent, 
   )
 }
 
-// Ken Burns motion variants — cycle through these
+// Ken Burns motion variants, cycle through these
 const kenBurnsVariants = [
   { initial: { scale: 1.0, x: '0%', y: '0%' }, animate: { scale: 1.15, x: '3%', y: '-2%' } },
   { initial: { scale: 1.1, x: '-2%', y: '1%' }, animate: { scale: 1.0, x: '2%', y: '-1%' } },
@@ -292,7 +292,7 @@ export default function TimelessScene({ era, character, imageUrl, locationName, 
         if (lineIdx < lines.length) {
           revealNext()
         } else if (!hasAudio) {
-          // No narrator audio — auto-transition to conversation after text ends
+          // No narrator audio, auto-transition to conversation after text ends
           setTimeout(() => setPhase('conversation'), 3000)
         }
       }, durations[lineIdx] * 1000)
@@ -311,7 +311,7 @@ export default function TimelessScene({ era, character, imageUrl, locationName, 
     setVisibleLines(0)
     setCurrentImageIdx(0)
 
-    // Start ambient soundscape (wrapped in try-catch — AudioContext can fail on mobile)
+    // Start ambient soundscape (wrapped in try-catch, AudioContext can fail on mobile)
     try {
       ambientRef.current = startAmbient(ambientProfile)
     } catch (e) {
@@ -325,7 +325,7 @@ export default function TimelessScene({ era, character, imageUrl, locationName, 
       audioRef.current.play().catch(e => console.warn('Audio play failed:', e))
     }
 
-    // TTS narration disabled — default voices don't match character demographics.
+    // TTS narration disabled, default voices don't match character demographics.
     // Will re-enable when custom Voice Design voices are available.
 
     // Start progressive text reveal
@@ -419,7 +419,7 @@ export default function TimelessScene({ era, character, imageUrl, locationName, 
     startTextReveal()
   }
 
-  // Era color accent — derived from visual style per era type
+  // Era color accent, derived from visual style per era type
   const accent = visualStyle.accent || '#C8860A'
 
   if (!era || !lines.length) return null
@@ -574,7 +574,7 @@ export default function TimelessScene({ era, character, imageUrl, locationName, 
         </div>
       </div>
 
-      {/* Narrator name + role — visible during playing phase */}
+      {/* Narrator name + role, visible during playing phase */}
       {phase === 'playing' && narrator && visibleLines === 0 && (
         <motion.div
           initial={{ opacity: 0, y: 8 }}
@@ -584,12 +584,12 @@ export default function TimelessScene({ era, character, imageUrl, locationName, 
           className="absolute bottom-16 left-0 right-0 z-20 px-6"
         >
           <p style={{ color: '#F5F5F5', fontSize: 20, fontFamily: 'Playfair Display, serif', fontWeight: 600 }}>
-            Meet {narrator.name} &mdash; {narrator.role}
+            Meet {narrator.name}: {narrator.role}
           </p>
         </motion.div>
       )}
 
-      {/* Progressive text — larger, more viewport coverage */}
+      {/* Progressive text, larger, more viewport coverage */}
       {phase === 'playing' && visibleLines > 0 && (
         <div
           className="absolute bottom-6 left-0 right-0 z-20 px-5"
@@ -600,7 +600,7 @@ export default function TimelessScene({ era, character, imageUrl, locationName, 
               const isLatest = i === visibleLines - 1
               const isFaded = i < visibleLines - 2
               // Strip em dashes and clean up double spaces
-              const cleanLine = line.replace(/\s*[—–]\s*/g, ', ').replace(/\s{2,}/g, ' ')
+              const cleanLine = line.replace(/\s*[\u2014\u2013]\s*/g, ', ').replace(/\s{2,}/g, ' ')
               return (
                 <motion.p
                   key={i}
@@ -628,7 +628,7 @@ export default function TimelessScene({ era, character, imageUrl, locationName, 
         </div>
       )}
 
-      {/* CONVERSATION PHASE — show CTA to talk to the character */}
+      {/* CONVERSATION PHASE, show CTA to talk to the character */}
       <AnimatePresence>
         {phase === 'conversation' && character && (
           <ConversationCTA
@@ -643,7 +643,7 @@ export default function TimelessScene({ era, character, imageUrl, locationName, 
         )}
       </AnimatePresence>
 
-      {/* No character — minimal end controls */}
+      {/* No character, minimal end controls */}
       <AnimatePresence>
         {phase === 'conversation' && !character && (
           <motion.div

@@ -2,7 +2,7 @@ import { useState, useRef, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 /**
- * ScenePlayer — plays a two-character dialogue scene
+ * ScenePlayer, plays a two-character dialogue scene
  *
  * Supports three modes:
  * 1. VIDEO mode: Two <video> elements layered, toggling based on active speaker
@@ -90,7 +90,7 @@ export default function ScenePlayer({ scene, onClose, onTalkTo }) {
     return null
   }
 
-  // Start playback — just set state, actual media play happens in useEffect
+  // Start playback, just set state, actual media play happens in useEffect
   const startPlayback = useCallback(() => {
     setPhase('playing')
     setCurrentLineIndex(0)
@@ -447,7 +447,7 @@ export default function ScenePlayer({ scene, onClose, onTalkTo }) {
             />
           )}
 
-          {/* Ken Burns background — slow pan across the era image */}
+          {/* Ken Burns background, slow pan across the era image */}
           <motion.div
             className="absolute"
             style={{ inset: '-15%' }}
@@ -474,7 +474,7 @@ export default function ScenePlayer({ scene, onClose, onTalkTo }) {
             />
           </motion.div>
 
-          {/* Firelight overlay — warm, flickering glow */}
+          {/* Firelight overlay, warm, flickering glow */}
           <motion.div
             className="absolute inset-0 pointer-events-none"
             animate={phase === 'playing' ? {
@@ -490,7 +490,7 @@ export default function ScenePlayer({ scene, onClose, onTalkTo }) {
             }}
           />
 
-          {/* Small character portraits in corners — indicate who's speaking */}
+          {/* Small character portraits in corners, indicate who's speaking */}
           <div className="absolute top-16 left-0 right-0 z-10 flex justify-center gap-8 px-6">
             {characterIds.map((id) => {
               const char = characters[id]

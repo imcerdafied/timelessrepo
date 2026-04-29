@@ -57,7 +57,7 @@ export default function EraDetail({ era, open, onClose, color, locationName }) {
               }
             }}
           >
-            {/* Drag handle — bound to pointer for touch support */}
+            {/* Drag handle, bound to pointer for touch support */}
             <div
               className="flex justify-center pt-3 pb-2 cursor-grab active:cursor-grabbing"
               onPointerDown={(e) => dragControls.start(e)}
@@ -152,7 +152,7 @@ export default function EraDetail({ era, open, onClose, color, locationName }) {
                 </div>
               )}
 
-              {/* Future Scenarios — only for 2075 eras */}
+              {/* Future Scenarios, only for 2075 eras */}
               {hasFutureScenarios && (
                 <div className="mt-6">
                   <h3 className="font-ui text-xs font-medium tracking-wider text-present/40 uppercase">

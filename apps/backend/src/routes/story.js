@@ -2,7 +2,7 @@ import { Router } from 'express'
 import Anthropic from '@anthropic-ai/sdk'
 import { supabase } from '../lib/supabase.js'
 
-// Lazy import — don't let a bad hedraService kill the entire story router
+// Lazy import, don't let a bad hedraService kill the entire story router
 let generateTalkVideo = null
 try {
   const hedra = await import('../services/hedraService.js')
@@ -21,7 +21,7 @@ const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
 
 // Supabase imported from shared lib
 
-// POST /api/story/chat — character conversation within a story episode
+// POST /api/story/chat, character conversation within a story episode
 router.post('/chat', async (req, res) => {
   const { system_prompt, messages } = req.body
 
@@ -64,7 +64,7 @@ CRITICAL INSTRUCTIONS:
   }
 })
 
-// POST /api/story/speak — TTS via ElevenLabs
+// POST /api/story/speak, TTS via ElevenLabs
 router.post('/speak', async (req, res) => {
   const { text, voiceId } = req.body
 
@@ -114,7 +114,7 @@ router.post('/speak', async (req, res) => {
   }
 })
 
-// GET /api/story/votes/:episodeId — get vote tallies
+// GET /api/story/votes/:episodeId, get vote tallies
 router.get('/votes/:episodeId', async (req, res) => {
   if (!supabase) {
     return res.json({ tallies: {}, total: 0 })
@@ -143,7 +143,7 @@ router.get('/votes/:episodeId', async (req, res) => {
   }
 })
 
-// POST /api/story/vote — cast a vote
+// POST /api/story/vote, cast a vote
 router.post('/vote', async (req, res) => {
   const { episodeId, optionId, sessionId } = req.body
 
@@ -190,7 +190,7 @@ router.post('/vote', async (req, res) => {
   }
 })
 
-// POST /api/story/video/generate — Hedra talking head video
+// POST /api/story/video/generate, Hedra talking head video
 router.post('/video/generate', async (req, res) => {
   const { episodeId, text, voiceId } = req.body
 

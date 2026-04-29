@@ -3,6 +3,7 @@ import { motion, AnimatePresence, useDragControls } from 'framer-motion'
 import useStore from '../store/useStore'
 import { useGPS } from './GPSTrigger'
 import { supabase } from '../lib/supabase'
+import { ACTIVE_PROPERTY } from '../config/properties'
 
 const EMOJI_OPTIONS = ['📍', '🔥', '⚓', '🌊', '🏛️', '🕊️', '⚡', '🌿']
 
@@ -37,7 +38,7 @@ export default function ArtifactLayer({ era, locationId, locationName, city }) {
   }, [])
 
   const fetchArtifacts = useCallback(async () => {
-    if (!locationId || !era?.id) return
+    if (!supabase || !locationId || !era?.id) return
     try {
       const { data, count: total, error } = await supabase
         .from('artifacts')
@@ -52,7 +53,7 @@ export default function ArtifactLayer({ era, locationId, locationName, city }) {
         setCount(total || 0)
       }
     } catch {
-      // Silent fail — artifacts are non-critical
+      // Silent fail, artifacts are non-critical
     }
   }, [locationId, era?.id])
 
@@ -65,10 +66,12 @@ export default function ArtifactLayer({ era, locationId, locationName, city }) {
     setSubmitting(true)
 
     try {
+      if (!supabase) return
+
       const { error } = await supabase.from('artifacts').insert({
         location_id: locationId,
         location_name: locationName,
-        city: city || 'San Francisco',
+        city: city || ACTIVE_PROPERTY.destination,
         era_id: era.id,
         era_year: era.year_display,
         era_label: era.label,
@@ -99,7 +102,7 @@ export default function ArtifactLayer({ era, locationId, locationName, city }) {
 
   return (
     <>
-      {/* Count pill — bottom of era view */}
+      {/* Count pill, bottom of era view */}
       <motion.button
         onClick={() => setPanelOpen(true)}
         className={`cursor-pointer rounded-sm border px-3 py-1.5 backdrop-blur-sm transition-colors ${

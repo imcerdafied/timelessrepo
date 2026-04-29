@@ -24,7 +24,7 @@ router.get('/list', (req, res) => {
 
 /**
  * POST /api/scene/script
- * Generate just the dialogue script (no video) — useful for previewing
+ * Generate just the dialogue script (no video), useful for previewing
  */
 router.post('/script', async (req, res) => {
   const { sceneId } = req.body

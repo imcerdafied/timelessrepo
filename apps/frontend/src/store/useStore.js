@@ -1,7 +1,52 @@
 import { create } from 'zustand'
-import locationsData from '../data/locations.json'
+import { getPropertyLocations } from '../config/properties'
 
-const locations = locationsData.locations
+const locations = getPropertyLocations()
+const PASSPORT_STORAGE_KEY = 'timeless_passport_v1'
+
+function readPassport() {
+  if (typeof localStorage === 'undefined') return []
+  try {
+    const parsed = JSON.parse(localStorage.getItem(PASSPORT_STORAGE_KEY) || '[]')
+    return Array.isArray(parsed) ? parsed : []
+  } catch {
+    return []
+  }
+}
+
+function savePassport(stamps) {
+  if (typeof localStorage === 'undefined') return
+  try {
+    localStorage.setItem(PASSPORT_STORAGE_KEY, JSON.stringify(stamps))
+  } catch {}
+}
+
+function addStamp(stamps, stamp) {
+  if (!stamp?.id || stamps.some((item) => item.id === stamp.id)) return stamps
+  const next = [...stamps, { ...stamp, unlockedAt: new Date().toISOString() }]
+  savePassport(next)
+  return next
+}
+
+function zoneStamp(location) {
+  if (!location) return null
+  return {
+    id: `zone:${location.id}`,
+    type: 'zone',
+    label: location.name,
+  }
+}
+
+function layerStamp(location, layerId) {
+  const layer = location?.eras?.find((era) => era.id === layerId)
+  if (!layer) return null
+  return {
+    id: `layer:${layer.id}`,
+    type: 'layer',
+    label: layer.headline || layer.label,
+    detail: location.name,
+  }
+}
 
 const useStore = create((set, get) => ({
   // Location/zone state
@@ -12,11 +57,17 @@ const useStore = create((set, get) => ({
       const location = state.locations.find((l) => l.id === id)
       const visitedZones = new Set(state.visitedZones)
       if (id) visitedZones.add(id)
+      const defaultEraId = location?.eras?.[0]?.id ?? null
+      const stampsWithZone = addStamp(state.passportStamps, zoneStamp(location))
+      const passportStamps = defaultEraId
+        ? addStamp(stampsWithZone, layerStamp(location, defaultEraId))
+        : stampsWithZone
       return {
         selectedLocation: id,
         eras: location?.eras ?? [],
-        selectedEra: location?.eras?.[0]?.id ?? null,
+        selectedEra: defaultEraId,
         visitedZones,
+        passportStamps,
       }
     }),
 
@@ -27,7 +78,12 @@ const useStore = create((set, get) => ({
     set((state) => {
       const visitedLayers = new Set(state.visitedLayers)
       if (id) visitedLayers.add(id)
-      return { selectedEra: id, visitedLayers }
+      const location = state.locations.find((item) => item.eras?.some((era) => era.id === id))
+      return {
+        selectedEra: id,
+        visitedLayers,
+        passportStamps: addStamp(state.passportStamps, layerStamp(location, id)),
+      }
     }),
 
   // BLE simulation
@@ -42,6 +98,11 @@ const useStore = create((set, get) => ({
   // Visit tracking (behavioral signal)
   visitedZones: new Set(),
   visitedLayers: new Set(),
+  passportStamps: readPassport(),
+  awardStamp: (stamp) =>
+    set((state) => ({
+      passportStamps: addStamp(state.passportStamps, stamp),
+    })),
   getVisitSummary: () => {
     const state = get()
     return {

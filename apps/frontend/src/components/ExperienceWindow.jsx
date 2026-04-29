@@ -3,6 +3,7 @@ import { useState, useRef, useEffect, useCallback } from 'react'
 import { createPortal } from 'react-dom'
 import { AnimatePresence, motion, useDragControls } from 'framer-motion'
 import useStore from '../store/useStore'
+import { ACTIVE_PROPERTY } from '../config/properties'
 import { useEraImage } from '../hooks/useEraImage'
 import { useGyroscope } from '../hooks/useGyroscope'
 import { useEraAudio } from '../hooks/useEraAudio'
@@ -11,6 +12,8 @@ import { useDwellTime } from '../hooks/useDwellTime'
 import { ERA_CHARACTERS, getCharacterForEra } from '../data/era-characters'
 import { getAmbientProfile, startAmbient } from '../data/ambient-profiles'
 import { getVenuesForEra, getAutoplayVenue } from '../data/venues'
+import { buildConciergeIntro, getOfferForEra, getStoryTrailById, getStoryTrailForLayer } from '../data/engagement'
+import AffinityOffer from './AffinityOffer'
 import ArtifactLayer from './ArtifactLayer'
 import CameraTimeTravel from './CameraTimeTravel'
 import { CharacterChat } from './CharacterChat'
@@ -23,6 +26,8 @@ import ScenePlayer from './ScenePlayer'
 import SceneSelector from './SceneSelector'
 import TimelessScene from './TimelessScene'
 import ConciergeFAB from './ConciergeFAB'
+import PassportPanel from './PassportPanel'
+import TrailGuide from './TrailGuide'
 
 function oneSentence(text) {
   const match = text.match(/^(.*?[.!?])/)
@@ -45,7 +50,7 @@ const eraGradient = {
   operational: 'linear-gradient(135deg, #0a1318 0%, #0A0A0A 50%, #0d1518 100%)',
 }
 
-export default function ExperienceWindow() {
+export default function ExperienceWindow({ initialTool = null, initialTrail = null }) {
   const eras = useStore((s) => s.eras)
   const selectedEra = useStore((s) => s.selectedEra)
   const selectedLocation = useStore((s) => s.selectedLocation)
@@ -59,7 +64,9 @@ export default function ExperienceWindow() {
   const [cameraOpen, setCameraOpen] = useState(false)
   const [showCameraPulse, setShowCameraPulse] = useState(() => !sessionStorage.getItem('camera_pulse_shown'))
   const [shareOpen, setShareOpen] = useState(false)
+  const [passportOpen, setPassportOpen] = useState(false)
   const [characterOpen, setCharacterOpen] = useState(false)
+  const [characterIntro, setCharacterIntro] = useState(null)
   const [chatKey, setChatKey] = useState(0)
   const [charDismissed, setCharDismissed] = useState(false)
   const [activeVenue, setActiveVenue] = useState(null)
@@ -70,7 +77,9 @@ export default function ExperienceWindow() {
   const [activeScene, setActiveScene] = useState(null)
   const [timelessSceneOpen, setTimelessSceneOpen] = useState(false)
   const [conciergeOpen, setConciergeOpen] = useState(false)
+  const [conciergeIntro, setConciergeIntro] = useState(null)
   const [ambientStarted, setAmbientStarted] = useState(false)
+  const initialToolOpened = useRef(false)
   const ambientRef = useRef(null)
   const dragControls = useDragControls()
   const touchStartY = useRef(null)
@@ -81,6 +90,19 @@ export default function ExperienceWindow() {
   const { tilt, needsPermission, requestPermission } = useGyroscope()
   const { audioEnabled, hasAudio, toggle: toggleAudio } = useEraAudio(era)
   const character = getCharacterForEra(era?.id)
+  const offer = getOfferForEra(era)
+  const guidedTrail = initialTrail?.id ? getStoryTrailById(initialTrail.id) : null
+  const guidedStepIndex = initialTrail?.stepIndex || 0
+  const guidedStep = guidedTrail?.stops?.[guidedStepIndex]
+  const guidedNextStep = guidedTrail?.stops?.[guidedStepIndex + 1]
+  const trailChatContext = guidedTrail ? {
+    trailTitle: guidedTrail.title,
+    stopTitle: guidedStep?.title,
+    prompt: guidedStep?.prompt,
+    nextHref: guidedNextStep ? `/demo/${ACTIVE_PROPERTY.slug}/trail/${guidedTrail.id}/${guidedStepIndex + 1}` : null,
+    nextLabel: guidedNextStep?.title || 'the next stop',
+  } : null
+  const activeTrail = guidedTrail || getStoryTrailForLayer(era?.id)
   const conciergeEraId = `${selectedLocation}-present`
   const conciergeCharacter = getCharacterForEra(conciergeEraId)
   const hasCharacter = !!character
@@ -88,7 +110,7 @@ export default function ExperienceWindow() {
     era?.id,
     hasCharacter && !charDismissed
   )
-  // Character notification suppressed — users enter conversations via "Experience This Moment" instead
+  // Character notification suppressed, users enter conversations via "Experience This Moment" instead
   const showCharacterNotification = false
 
   // Reset state when era changes
@@ -100,6 +122,7 @@ export default function ExperienceWindow() {
     setDetailOpen(false)
     setCameraOpen(false)
     setCharacterOpen(false)
+    setCharacterIntro(null)
     setCharDismissed(false)
     setActiveVenue(null)
     setIsAutoplay(false)
@@ -153,7 +176,19 @@ export default function ExperienceWindow() {
     return () => window.removeEventListener('open-timelens', handler)
   }, [])
 
-  // Scene loading disabled — video feature paused for now
+  useEffect(() => {
+    if (!era || initialToolOpened.current) return
+    if (initialTool === 'timelens') {
+      initialToolOpened.current = true
+      setCameraOpen(true)
+    }
+    if (initialTool === 'moment') {
+      initialToolOpened.current = true
+      setTimelessSceneOpen(true)
+    }
+  }, [era, initialTool])
+
+  // Scene loading disabled, video feature paused for now
   // const API_BASE = import.meta.env.VITE_API_URL || ''
 
   // Auto-trigger scene when era has an autoplay venue
@@ -196,7 +231,7 @@ export default function ExperienceWindow() {
         )}
       </AnimatePresence>
 
-      {/* Background image — full bleed with Ken Burns + gyroscope parallax */}
+      {/* Background image, full bleed with Ken Burns + gyroscope parallax */}
       {!imageFailed && (
         <AnimatePresence mode="popLayout">
           <motion.div
@@ -233,7 +268,7 @@ export default function ExperienceWindow() {
         </AnimatePresence>
       )}
 
-      {/* Bottom gradient — heavier at the bottom for text legibility */}
+      {/* Bottom gradient, heavier at the bottom for text legibility */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
@@ -261,7 +296,7 @@ export default function ExperienceWindow() {
 
       {/* Top right controls */}
       <div className="absolute right-4 top-4 z-20 flex items-center gap-2">
-        {/* Audio button — only show if this era has audio */}
+        {/* Audio button, only show if this era has audio */}
         {hasAudio && (
           <button
             onClick={toggleAudio}
@@ -292,6 +327,29 @@ export default function ExperienceWindow() {
             )}
           </button>
         )}
+        {/* Share button */}
+        <a
+          href={`/demo/${ACTIVE_PROPERTY.slug}/trails`}
+          title="Open story trails"
+          className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-present/20 bg-surface/60 text-present/70 backdrop-blur-md transition-colors hover:bg-surface/80"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M5 6h10a4 4 0 0 1 0 8H8a3 3 0 0 0 0 6h11" />
+            <circle cx="5" cy="6" r="2" />
+            <circle cx="19" cy="20" r="2" />
+          </svg>
+        </a>
+        <button
+          onClick={() => setPassportOpen(true)}
+          title="Open passport"
+          className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-present/20 bg-surface/60 text-present/70 backdrop-blur-md transition-colors hover:bg-surface/80"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+            <rect x="5" y="3" width="14" height="18" rx="2" />
+            <path d="M9 7h6M9 17h6" />
+            <circle cx="12" cy="12" r="2.5" />
+          </svg>
+        </button>
         {/* Share button */}
         <button
           onClick={() => { setShareOpen(true); posthog.capture('share_card_generated', { zone_id: selectedLocation, layer_id: selectedEra }) }}
@@ -333,7 +391,7 @@ export default function ExperienceWindow() {
         </button>
       </div>
 
-      {/* Era label + year — top left */}
+      {/* Era label + year, top left */}
       <AnimatePresence mode="wait">
         <motion.div
           key={era.id + '-label'}
@@ -354,6 +412,8 @@ export default function ExperienceWindow() {
               display: 'flex',
               alignItems: 'center',
               gap: 6,
+              maxWidth: guidedTrail ? 168 : 220,
+              overflow: 'hidden',
             }}
           >
             <span
@@ -363,6 +423,9 @@ export default function ExperienceWindow() {
                 fontSize: 11,
                 fontWeight: 600,
                 letterSpacing: '0.08em',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
               }}
             >
               {era.label}
@@ -387,7 +450,30 @@ export default function ExperienceWindow() {
         </div>
       )}
 
-      {/* Bottom sheet — collapsed peek or expanded fixed overlay */}
+      <TrailGuide
+        trail={guidedTrail}
+        stepIndex={initialTrail?.stepIndex || 0}
+        characterName={character?.name}
+        onAskCharacter={character ? () => {
+          setCharacterIntro(character.opening_line)
+          setTimelessSceneOpen(false)
+          setChatKey(k => k + 1)
+          setCharacterOpen(true)
+          posthog.capture('trail_step_character_opened', { zone_id: selectedLocation, layer_id: selectedEra, trail_id: guidedTrail?.id })
+        } : null}
+        onExperienceStop={() => {
+          if (ambientRef.current) {
+            ambientRef.current.stop()
+            ambientRef.current = null
+          }
+          setExpanded(false)
+          setTimelessSceneOpen(true)
+          posthog.capture('trail_step_moment_opened', { zone_id: selectedLocation, layer_id: selectedEra, trail_id: guidedTrail?.id })
+        }}
+        onOpenPassport={() => setPassportOpen(true)}
+      />
+
+      {/* Bottom sheet, collapsed peek or expanded fixed overlay */}
       {expanded ? (
         <div
           className="mobile-frame"
@@ -403,7 +489,7 @@ export default function ExperienceWindow() {
             flexDirection: 'column',
           }}
         >
-          {/* Drag handle — swipe down to close */}
+          {/* Drag handle, swipe down to close */}
           <div
             style={{ display: 'flex', justifyContent: 'center', paddingTop: 10, paddingBottom: 6 }}
             onTouchStart={(e) => { touchStartY.current = e.touches[0].clientY }}
@@ -417,9 +503,9 @@ export default function ExperienceWindow() {
             <div style={{ width: 48, height: 5, borderRadius: 3, backgroundColor: 'rgba(245,245,245,0.5)' }} />
           </div>
 
-          {/* Scrollable content — full description + key events + landscape */}
+          {/* Scrollable content, full description + key events + landscape */}
           <div style={{ flex: 1, overflowY: 'auto', padding: '0 24px 20px 20px', maxWidth: 600, margin: '0 auto', width: '100%' }}>
-            {/* Experience CTA — prominent at top of expanded sheet */}
+            {/* Experience CTA, prominent at top of expanded sheet */}
             <button
               onClick={() => {
                 if (ambientRef.current) { ambientRef.current.stop(); ambientRef.current = null }
@@ -447,16 +533,34 @@ export default function ExperienceWindow() {
               </svg>
             </button>
 
-            <h2 className="font-heading text-xl font-semibold leading-tight text-present">
+            <h2 className="font-heading text-xl font-semibold leading-tight text-white">
               {era.headline}
             </h2>
-            <p className="mt-2 font-ui text-sm leading-relaxed text-present/70">
+            <p className="mt-2 font-ui text-sm leading-relaxed text-white/72">
               {era.description}
             </p>
 
             {era.era_type === 'future' && (
               <FutureVoting era={era} />
             )}
+
+            <AffinityOffer
+              offer={offer}
+              trail={activeTrail}
+              onAction={() => {
+                if (activeTrail || offer?.action === 'trails') {
+                  window.location.href = `/demo/${ACTIVE_PROPERTY.slug}/trails`
+                  return
+                }
+                setConciergeIntro(buildConciergeIntro({
+                  offer,
+                  era,
+                  locationName: locations.find((l) => l.id === selectedLocation)?.name,
+                }))
+                setConciergeOpen(true)
+                posthog.capture('concierge_opened', { zone_id: selectedLocation, context: 'affinity_offer' })
+              }}
+            />
 
             {era.era_type !== 'future' && era.key_events && era.key_events.length > 0 && (
               <div className="mt-4">
@@ -465,7 +569,7 @@ export default function ExperienceWindow() {
                     <span className="font-mono text-[10px] shrink-0" style={{ color: `${color}99` }}>
                       {evt.year}
                     </span>
-                    <span className="font-ui text-xs leading-relaxed text-present/50">
+                    <span className="font-ui text-xs leading-relaxed text-white/55">
                       {evt.event}
                     </span>
                   </div>
@@ -474,7 +578,7 @@ export default function ExperienceWindow() {
             )}
 
             {era.landscape && (
-              <p className="mt-4 font-ui text-sm italic leading-relaxed text-present/50">
+              <p className="mt-4 font-ui text-sm italic leading-relaxed text-white/55">
                 {era.landscape}
               </p>
             )}
@@ -523,14 +627,14 @@ export default function ExperienceWindow() {
             touchStartY.current = null
           }}
         >
-          {/* Drag handle — tappable to expand */}
+          {/* Drag handle, tappable to expand */}
           <div
             className="relative flex cursor-grab flex-col items-center pb-1 pt-2 active:cursor-grabbing"
             onPointerDown={(e) => dragControls.start(e)}
             onClick={() => setExpanded(true)}
           >
-            <div className="h-1 w-8 rounded-full bg-present/25" />
-            <span className="mt-1 font-ui text-[9px] tracking-wider text-present/20 uppercase">
+            <div className="h-1 w-8 rounded-full bg-white/25" />
+            <span className="mt-1 font-ui text-[9px] tracking-wider text-white/35 uppercase">
               Swipe up to read
             </span>
           </div>
@@ -544,18 +648,18 @@ export default function ExperienceWindow() {
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.25 }}
               >
-                <h2 className="font-heading text-xl font-semibold leading-tight text-present">
+                <h2 className="font-heading text-xl font-semibold leading-tight text-white">
                   {era.headline}
                 </h2>
-                <p className="mt-2 font-ui text-sm leading-relaxed text-present/70 line-clamp-2">
+                <p className="mt-2 font-ui text-sm leading-relaxed text-white/75 line-clamp-2">
                   {oneSentence(era.description)}
                 </p>
 
-                {/* Experience This Moment — available for ALL eras */}
+                {/* Experience This Moment, available for ALL eras */}
                 <button
                   onClick={(e) => {
                     e.stopPropagation()
-                    // Pause ExperienceWindow ambient — TimelessScene has its own
+                    // Pause ExperienceWindow ambient, TimelessScene has its own
                     if (ambientRef.current) {
                       ambientRef.current.stop()
                       ambientRef.current = null
@@ -591,7 +695,7 @@ export default function ExperienceWindow() {
                   </svg>
                 </button>
 
-                {/* Watch Scenes CTA — disabled while video feature is paused */}
+                {/* Watch Scenes CTA, disabled while video feature is paused */}
                 <div className="mt-3 h-4" />
               </motion.div>
             </AnimatePresence>
@@ -628,14 +732,22 @@ export default function ExperienceWindow() {
         />
       )}
 
-      {/* Character chat — portal to body to avoid overflow:hidden clipping */}
+      <PassportPanel
+        open={passportOpen}
+        onClose={() => setPassportOpen(false)}
+      />
+
+      {/* Character chat, portal to body to avoid overflow:hidden clipping */}
       {characterOpen && createPortal(
         <CharacterChat
           key={`chat-${era?.id}-${chatKey}`}
           era={era}
-          sceneIntro={`I am here. Ask me anything about ${era?.label || 'this time'}.`}
+          sceneIntro={characterIntro || `I am here. Ask me anything about ${era?.label || 'this time'}.`}
+          trailContext={trailChatContext}
+          backLabel={guidedTrail ? `${guidedTrail.title} trail` : undefined}
           onDismiss={() => {
             setCharacterOpen(false)
+            setCharacterIntro(null)
             setCharDismissed(true)
             dismissCharacter()
           }}
@@ -653,7 +765,7 @@ export default function ExperienceWindow() {
         />
       )}
 
-      {/* Scene selector overlay — shows available episodes */}
+      {/* Scene selector overlay, shows available episodes */}
       <SceneSelector
         scenes={scenes}
         visible={sceneSelectorOpen}
@@ -664,7 +776,7 @@ export default function ExperienceWindow() {
         }}
       />
 
-      {/* Scene player overlay — AI-generated dialogue video/audio */}
+      {/* Scene player overlay, AI-generated dialogue video/audio */}
       {activeScene && createPortal(
         <ScenePlayer
           scene={activeScene}
@@ -678,7 +790,7 @@ export default function ExperienceWindow() {
         document.body
       )}
 
-      {/* Timeless Scene — immersive narrated experience */}
+      {/* Timeless Scene, immersive narrated experience */}
       {timelessSceneOpen && createPortal(
         <TimelessScene
           era={era}
@@ -695,6 +807,7 @@ export default function ExperienceWindow() {
           }}
           onTalkTo={() => {
             setTimelessSceneOpen(false)
+            setCharacterIntro(null)
             setChatKey(k => k + 1)
             setCharacterOpen(true)
             posthog.capture('character_chat_opened', { zone_id: selectedLocation, layer_id: selectedEra, character_id: character?.name })
@@ -707,6 +820,7 @@ export default function ExperienceWindow() {
       {!conciergeOpen && !characterOpen && !timelessSceneOpen && !cameraOpen && (
         <ConciergeFAB onClick={() => {
           if (conciergeCharacter) {
+            setConciergeIntro(null)
             setConciergeOpen(true)
             posthog.capture('concierge_opened', { zone_id: selectedLocation, context: 'fab' })
           }
@@ -718,7 +832,11 @@ export default function ExperienceWindow() {
         <CharacterChat
           era={eras.find(e => e.id === conciergeEraId)}
           character={conciergeCharacter}
-          onDismiss={() => setConciergeOpen(false)}
+          sceneIntro={conciergeIntro}
+          onDismiss={() => {
+            setConciergeOpen(false)
+            setConciergeIntro(null)
+          }}
           backLabel="Back to Experience"
         />
       )}

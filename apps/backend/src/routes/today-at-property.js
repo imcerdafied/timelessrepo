@@ -1,8 +1,10 @@
 import { Router } from 'express'
 import Anthropic from '@anthropic-ai/sdk'
+import { getActiveProperty } from '../lib/propertyConfig.js'
 
 const router = Router()
-const PROPERTY_NAME = process.env.PROPERTY_NAME || 'Atlantis Experience'
+const PROPERTY = getActiveProperty()
+const PROPERTY_NAME = process.env.PROPERTY_NAME || PROPERTY?.name || 'Property Experience'
 
 // In-memory cache keyed by date string (YYYY-MM-DD), 24-hour TTL
 const cache = new Map()
@@ -34,8 +36,8 @@ function staticFallback() {
         headline: 'Bahamian Independence',
         snippet: 'The Bahamas gained independence from the United Kingdom, ending 256 years of British colonial rule and beginning a new chapter for the island nation.',
         zone_id: 'lobby-royal-towers',
-        layer_id: 'lobby-royal-towers-colonial',
-        category: 'political',
+        layer_id: 'lobby-royal-towers-culture',
+        category: 'cultural',
         image_query: 'bahamas,flag,independence,nassau,celebration',
       },
       {
@@ -61,7 +63,7 @@ function staticFallback() {
       category: 'maritime',
       image_query: 'pirate,nassau,harbor,republic,caribbean',
     },
-    did_you_know: 'The Atlantis marine habitat holds 11 million gallons of saltwater — enough to fill 17 Olympic swimming pools.',
+    did_you_know: 'The Atlantis marine habitat holds 11 million gallons of saltwater, enough to fill 17 Olympic swimming pools.',
   }
 }
 
@@ -74,7 +76,7 @@ router.get('/', async (_req, res) => {
     return res.json(cached.data)
   }
 
-  // No API key — return static fallback
+  // No API key, return static fallback
   if (!client) {
     const fallback = staticFallback()
     cache.set(key, { data: fallback, timestamp: Date.now() })
@@ -85,7 +87,7 @@ router.get('/', async (_req, res) => {
     const response = await client.messages.create({
       model: 'claude-sonnet-4-6',
       max_tokens: 1024,
-      system: `You are a historical researcher for ${PROPERTY_NAME}, a luxury resort in Nassau, Bahamas. Generate "On This Day" historical content related to the Bahamas, Caribbean, ocean history, or tropical ecology. The property has these zones: marina-beach, lobby-royal-towers, waterpark-pools, casino-nightlife, marine-habitat. Each zone has layers with IDs like zone-id-colonial, zone-id-deep-past, zone-id-modern, etc. Valid categories: maritime, cultural, natural, political, culinary, scientific, architectural. Respond ONLY with valid JSON, no markdown.`,
+      system: `You are a historical researcher for ${PROPERTY_NAME}. Generate "On This Day" historical content related to ${PROPERTY?.contentFocus || 'the destination and property experience'}. The property has these zones: ${(PROPERTY?.zones || []).join(', ')}. Each zone has layers with IDs like zone-id-colonial, zone-id-deep-past, zone-id-modern, etc. Valid categories: ${(PROPERTY?.validCategories || []).join(', ')}. Respond ONLY with valid JSON, no markdown.`,
       messages: [
         {
           role: 'user',
@@ -124,7 +126,7 @@ For ONE event (the most relevant to current resort activities), optionally add a
 }
 Only include commerce_bridge when the connection is genuinely interesting, not forced.
 
-Include 3-4 events. Use real historical dates and facts. Valid zone_ids: marina-beach, lobby-royal-towers, waterpark-pools, casino-nightlife, marine-habitat. Valid categories: maritime, cultural, natural, political, culinary, scientific, architectural.`,
+Include 3-4 events. Use real historical dates and facts. Valid zone_ids: ${(PROPERTY?.zones || []).join(', ')}. Valid categories: ${(PROPERTY?.validCategories || []).join(', ')}.`,
         },
       ],
     })

@@ -1,4 +1,4 @@
-# ALAMO, CA — AI Image Generation Prompts
+# ALAMO, CA, AI Image Generation Prompts
 ## All 9 eras · Midjourney and DALL-E 3
 
 ### HOW TO USE
@@ -10,11 +10,11 @@
 2. Upload to Supabase Storage → `era-images` bucket
 3. Add to CURATED map in `imageMap.js`
 
-**PRIORITY**: Generate `alamo-2025` first — that's what you'll test standing in your backyard.
+**PRIORITY**: Generate `alamo-2025` first, that's what you'll test standing in your backyard.
 
 ---
 
-## alamo-1500 — Bay Miwok Land, c. 1500
+## alamo-1500, Bay Miwok Land, c. 1500
 
 **Midjourney:**
 Wide valley between golden California hills, ancient valley oak trees with massive spreading canopies, native bunchgrass and wildflowers in foreground, clear stream lined with willows and sycamore, Mount Diablo visible on eastern horizon, Bay Miwok people in the middle distance gathering acorns beneath the oaks, warm late afternoon California light, no modern structures visible, photorealistic landscape painting, cinematic wide shot --ar 9:16 --v 6
@@ -24,7 +24,7 @@ Wide valley between golden California hills, ancient valley oak trees with massi
 
 ---
 
-## alamo-1834 — Rancho San Ramon
+## alamo-1834, Rancho San Ramon
 
 **Midjourney:**
 Alta California rancho landscape 1830s, vast golden hills with thousands of longhorn cattle grazing, adobe rancho buildings beside a creek in the valley below, eucalyptus and oak trees, a Mexican vaquero on horseback in the foreground, Mount Diablo in the background, dusty warm afternoon, California landscape before American settlement, photorealistic historical painting, cinematic --ar 9:16 --v 6
@@ -34,7 +34,7 @@ Alta California rancho landscape 1830s, vast golden hills with thousands of long
 
 ---
 
-## alamo-1856 — American Settlement
+## alamo-1856, American Settlement
 
 **Midjourney:**
 Rural California farming community 1856, small wooden farmhouses and barns on flat valley floor, dirt road running through the settlement, oak trees along a creek, golden hills in background, Mount Diablo visible, American pioneer family on a wagon, modest agricultural landscape, warm afternoon light, photorealistic historical painting --ar 9:16 --v 6
@@ -44,7 +44,7 @@ Rural California farming community 1856, small wooden farmhouses and barns on fl
 
 ---
 
-## alamo-1900 — The Orchard Valley
+## alamo-1900, The Orchard Valley
 
 **Midjourney:**
 California walnut orchard early 1900s, neat rows of mature walnut trees with grey bark extending across flat valley floor, workers harvesting walnuts in the foreground, golden California hills rising behind the orchard, Mount Diablo visible above the tree canopy, autumn harvest light, photorealistic photography style, warm colors --ar 9:16 --v 6
@@ -54,7 +54,7 @@ California walnut orchard early 1900s, neat rows of mature walnut trees with gre
 
 ---
 
-## alamo-1950 — The Suburb Arrives
+## alamo-1950, The Suburb Arrives
 
 **Midjourney:**
 California suburb 1955, new ranch-style tract houses on flat land where orchards recently stood, a few remaining walnut trees being cleared by a bulldozer, children playing in a freshly paved cul-de-sac, golden hills in background, Mount Diablo visible, optimistic postwar American suburban scene, warm afternoon, photorealistic period photography style --ar 9:16 --v 6
@@ -64,7 +64,7 @@ California suburb 1955, new ranch-style tract houses on flat land where orchards
 
 ---
 
-## alamo-1980 — Silicon Valley's Bedroom
+## alamo-1980, Silicon Valley's Bedroom
 
 **Midjourney:**
 Affluent California suburb 1985, custom homes on rolling hills above a valley, mature landscaping with swimming pools visible, a BMW in a driveway, golden California hills in background, Mount Diablo skyline, late afternoon suburban scene, photorealistic 1980s photography style, upper middle class California lifestyle --ar 9:16 --v 6
@@ -74,7 +74,7 @@ Affluent California suburb 1985, custom homes on rolling hills above a valley, m
 
 ---
 
-## alamo-2001 — The Dot-Com Crash
+## alamo-2001, The Dot-Com Crash
 
 **Midjourney:**
 Quiet California suburb 2001, a for-sale sign in front of a large custom home on a hill, empty streets, mature oak trees and landscaping, golden California hills in background, Mount Diablo, slightly overcast morning, photorealistic modern photography --ar 9:16 --v 6
@@ -84,7 +84,7 @@ Quiet California suburb 2001, a for-sale sign in front of a large custom home on
 
 ---
 
-## alamo-2025 — Present Day (GENERATE FIRST)
+## alamo-2025, Present Day (GENERATE FIRST)
 
 **Midjourney:**
 San Ramon Valley California present day, golden rolling hills with dry grass, valley oak trees on hillsides, upscale suburban homes with tile roofs visible below, Mount Diablo prominent on eastern horizon, Las Trampas ridge visible to the west, clear blue California sky, photorealistic drone photography style, warm afternoon --ar 9:16 --v 6
@@ -94,13 +94,13 @@ San Ramon Valley California present day, golden rolling hills with dry grass, va
 
 ---
 
-## alamo-2075 — Futures (two versions)
+## alamo-2075, Futures (two versions)
 
 ### Scenario 1: The Fire Reckoning
 **File:** `alamo-2075-fire.jpg`
 
 **Midjourney:**
-California wildfire threatening suburb 2075, orange smoke filling the sky above the Las Trampas hills, the golden hills glowing with distant fire, suburban homes in the foreground, Mount Diablo silhouette through smoke, apocalyptic but not actively burning — the fire is on the ridge above, photorealistic, cinematic, terrifying beauty --ar 9:16 --v 6
+California wildfire threatening suburb 2075, orange smoke filling the sky above the Las Trampas hills, the golden hills glowing with distant fire, suburban homes in the foreground, Mount Diablo silhouette through smoke, apocalyptic but not actively burning, the fire is on the ridge above, photorealistic, cinematic, terrifying beauty --ar 9:16 --v 6
 
 **DALL-E 3:**
 "A photorealistic portrait-orientation photograph. The San Ramon Valley California in 2075 during wildfire season. Orange smoke fills the sky above the Las Trampas hills to the west. The golden hills glow with the light of a distant fire on the ridge. Suburban homes are in the foreground. Mount Diablo is a silhouette through the smoke to the east. The fire has not yet reached the homes but is on the ridgeline above. Cinematic and terrifying. Climate future California."

@@ -16,7 +16,7 @@ export function useEraAudio(era) {
     }
 
     return () => {
-      // Don't stop on era change — fadeOut handles it
+      // Don't stop on era change, fadeOut handles it
     }
   }, [era?.id])
 

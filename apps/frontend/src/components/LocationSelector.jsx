@@ -1,15 +1,16 @@
 import { motion } from 'framer-motion'
 import posthog from 'posthog-js'
 import useStore from '../store/useStore'
+import { ACTIVE_PROPERTY } from '../config/properties'
 
-const PROPERTY_NAME = import.meta.env.VITE_PROPERTY_NAME || 'Atlantis Experience'
+const PROPERTY_NAME = import.meta.env.VITE_PROPERTY_NAME || ACTIVE_PROPERTY.name
 
 const ZONE_ICONS = {
-  'marina-beach': '\u{1F30A}',
-  'lobby-royal-towers': '\u{1F3E8}',
-  'waterpark-pools': '\u{1F3CA}',
-  'casino-nightlife': '\u{1F3B0}',
-  'marine-habitat': '\u{1F420}',
+  wave: '\u{1F30A}',
+  hotel: '\u{1F3E8}',
+  swim: '\u{1F3CA}',
+  spark: '\u{2728}',
+  reef: '\u{1F420}',
 }
 
 export default function LocationSelector() {
@@ -48,7 +49,8 @@ export default function LocationSelector() {
         <div className="flex flex-col gap-3">
           {locations.map((zone, i) => {
             const isNearby = bleSimEnabled && bleSimZone === zone.id
-            const icon = ZONE_ICONS[zone.id] || '\u{1F4CD}'
+            const iconKey = ACTIVE_PROPERTY.zoneIcons?.[zone.id]
+            const icon = ZONE_ICONS[iconKey] || '\u{1F4CD}'
 
             return (
               <motion.button

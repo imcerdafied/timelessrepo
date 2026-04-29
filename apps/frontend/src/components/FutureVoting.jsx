@@ -40,7 +40,7 @@ export default function FutureVoting({ era }) {
   const deviceId = getDeviceId()
 
   const fetchData = useCallback(async () => {
-    if (!era?.id) return
+    if (!supabase || !era?.id) return
 
     // Fetch vote tallies
     const { data: tallyData } = await supabase
@@ -113,6 +113,7 @@ export default function FutureVoting({ era }) {
     setVoting(true)
 
     try {
+      if (!supabase) return
       const { error } = await supabase
         .from('future_votes')
         .upsert({
@@ -139,6 +140,7 @@ export default function FutureVoting({ era }) {
     setPledging(true)
 
     try {
+      if (!supabase) return
       const { error } = await supabase
         .from('pledges')
         .insert({

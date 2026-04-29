@@ -5,14 +5,14 @@ const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
 
 /**
  * Scene definition for mission-1906: San Francisco Earthquake aftermath
- * Two survivors at Dolores Park, April 18, 1906 — hours after the quake
+ * Two survivors at Dolores Park, April 18, 1906, hours after the quake
  */
 export const SCENE_LIBRARY = {
   'mission-1906': {
     id: 'mission-1906',
     title: 'After the Shaking',
     location: 'Dolores Park, San Francisco',
-    date: 'April 18, 1906 — late morning',
+    date: 'April 18, 1906, late morning',
     setting: 'The earthquake struck at 5:12 AM. It is now midmorning. Fires are visible to the north and east. Dolores Park is filling with refugees carrying whatever they could grab. The Mission District survived the quake better than most neighborhoods, but the fires are spreading. Smoke hangs over everything.',
     characters: [
       {
@@ -21,7 +21,7 @@ export const SCENE_LIBRARY = {
         role: 'Laundress, Mission District resident',
         age: 34,
         portraitUrl: 'https://i.ibb.co/gZJHjvqS/Rosa-Castellano.jpg',
-        voiceId: 'EXAVITQu4vr4xnSDxMaL', // Sarah — Mature, Confident
+        voiceId: 'EXAVITQu4vr4xnSDxMaL', // Sarah, Mature, Confident
         voiceSettings: { stability: 0.45, similarity_boost: 0.8, style: 0.4 },
         textPrompt: 'A Mexican-American woman in her 30s speaking with emotion, dust on her face, worried but determined, natural head movements',
         description: 'Mexican-American laundress. Her tenement on 18th Street collapsed but she escaped with her two children. Her husband is away working the railroads. She is practical, traumatized, furious at the rich whose mansions burned while her neighborhood survived. She speaks English with a slight Mexican-American accent.',
@@ -32,7 +32,7 @@ export const SCENE_LIBRARY = {
         role: 'Photographer',
         age: 36,
         portraitUrl: 'https://i.ibb.co/C3s2qPV7/Genthe.jpg',
-        voiceId: 'nPczCjzI2devNBz1zQrb', // Brian — Deep, Resonant (German-accented)
+        voiceId: 'nPczCjzI2devNBz1zQrb', // Brian, Deep, Resonant (German-accented)
         voiceSettings: { stability: 0.6, similarity_boost: 0.75, style: 0.25 },
         textPrompt: 'A German man in his 30s with wire-rimmed spectacles speaking carefully, observant eyes, slight urgency in expression, natural head movements',
         description: 'German-born photographer, precise and observational. He lived in Chinatown and photographed its streets for years. His studio on Sutter Street was destroyed. He borrowed a camera from a friend and has been photographing the destruction all morning. He speaks English with a faint German accent, choosing words carefully. He is haunted by what he has seen but compelled to document it.',
@@ -57,7 +57,7 @@ Tone: exhausted, raw, real. Not sentimental. Two people processing shock in real
     id: 'mission-1906-fire',
     title: 'The Fire Comes',
     location: '20th & Mission, San Francisco',
-    date: 'April 18, 1906 — late afternoon',
+    date: 'April 18, 1906, late afternoon',
     setting: 'It is late afternoon. The fires that started downtown after the earthquake have been burning all day and are now approaching the Mission District. Soldiers are dynamiting buildings on Van Ness Avenue to create a firebreak, and the explosions can be heard every few minutes. Refugees are streaming south. Rosa and Genthe, who met that morning in Dolores Park, find each other again on Mission Street as people flee past them carrying belongings.',
     characters: [
       {
@@ -165,7 +165,7 @@ Return ONLY the JSON array, no markdown, no explanation.`
   const rawText = response.content[0]?.text || ''
   console.log('Raw script response:', rawText)
 
-  // Parse JSON — handle potential markdown wrapping
+  // Parse JSON, handle potential markdown wrapping
   const jsonStr = rawText.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim()
   const script = JSON.parse(jsonStr)
 

@@ -3,12 +3,17 @@ import { AnimatePresence, motion } from 'framer-motion'
 import ExperienceWindow from './components/ExperienceWindow'
 import LocationSelector from './components/LocationSelector'
 import Onboarding from './components/Onboarding'
-import TodayAtAtlantis from './components/TodayAtAtlantis'
+import TodayAtProperty from './components/TodayAtProperty'
 import TemporalRibbon from './components/TemporalRibbon'
 import AdminDashboard from './components/AdminDashboard'
+import DemoDirectory from './components/DemoDirectory'
+import PassportPanel from './components/PassportPanel'
+import StoryTrails from './components/StoryTrails'
+import { getDemoRoute } from './config/demoRoutes'
 import useStore from './store/useStore'
 
 const ADMIN_ENABLED = import.meta.env.VITE_ADMIN_ENABLED !== 'false'
+const INITIAL_ROUTE = getDemoRoute()
 
 function App() {
   const selectedLocation = useStore((s) => s.selectedLocation)
@@ -17,17 +22,30 @@ function App() {
   const setBleSimZone = useStore((s) => s.setBleSimZone)
   const locations = useStore((s) => s.locations)
 
-  const [showToday, setShowToday] = useState(true)
+  const [showToday, setShowToday] = useState(INITIAL_ROUTE.view === 'today')
   const [showOnboarding, setShowOnboarding] = useState(
     () => !localStorage.getItem('onboarding_complete')
   )
-  const [showAdmin, setShowAdmin] = useState(false)
+  const [showAdmin, setShowAdmin] = useState(INITIAL_ROUTE.view === 'signals')
   const [showBlePanel, setShowBlePanel] = useState(false)
+  const [initialTool] = useState(INITIAL_ROUTE.tool || null)
+  const [initialTrail] = useState(() => (
+    INITIAL_ROUTE.tool === 'trail'
+      ? { id: INITIAL_ROUTE.trailId, stepIndex: INITIAL_ROUTE.trailStep || 0 }
+      : null
+  ))
 
-  // Check for admin route
+  // Route clean demo URLs into the single-page demo shell.
   useEffect(() => {
-    if (window.location.pathname === '/admin' && ADMIN_ENABLED) {
+    if (INITIAL_ROUTE.view === 'signals' && ADMIN_ENABLED) {
       setShowAdmin(true)
+    }
+    if (INITIAL_ROUTE.view === 'experience' && INITIAL_ROUTE.zoneId) {
+      setSelectedLocation(INITIAL_ROUTE.zoneId)
+      if (INITIAL_ROUTE.layerId) {
+        setTimeout(() => setSelectedEra(INITIAL_ROUTE.layerId), 0)
+      }
+      setShowToday(false)
     }
   }, [])
 
@@ -54,6 +72,36 @@ function App() {
     return <AdminDashboard onClose={() => setShowAdmin(false)} />
   }
 
+  if (INITIAL_ROUTE.view === 'directory') {
+    return (
+      <div className="flex h-dvh items-center justify-center bg-white">
+        <div className="relative flex h-full w-full max-w-[390px] flex-col border-x border-border bg-background">
+          <DemoDirectory />
+        </div>
+      </div>
+    )
+  }
+
+  if (INITIAL_ROUTE.view === 'trails') {
+    return (
+      <div className="flex h-dvh items-center justify-center bg-white">
+        <div className="relative flex h-full w-full max-w-[390px] flex-col border-x border-border bg-background">
+          <StoryTrails />
+        </div>
+      </div>
+    )
+  }
+
+  if (INITIAL_ROUTE.view === 'passport') {
+    return (
+      <div className="flex h-dvh items-center justify-center bg-white">
+        <div className="relative flex h-full w-full max-w-[390px] flex-col border-x border-border bg-background">
+          <PassportPanel fullPage />
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="flex h-dvh items-center justify-center bg-white">
       <div className="relative flex h-full w-full max-w-[390px] flex-col border-x border-border bg-background">
@@ -65,7 +113,7 @@ function App() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.4 }}
             >
-              <TodayAtAtlantis
+              <TodayAtProperty
                 onEventTap={handleTodayTap}
                 onSkip={() => setShowToday(false)}
                 onLogoTap={handleLogoTap}
@@ -91,7 +139,7 @@ function App() {
               transition={{ duration: 0.4 }}
             >
               <div className="relative flex-1 overflow-hidden">
-                <ExperienceWindow />
+                <ExperienceWindow initialTool={initialTool} initialTrail={initialTrail} />
               </div>
               <TemporalRibbon />
             </motion.div>

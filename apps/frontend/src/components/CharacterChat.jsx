@@ -2,10 +2,22 @@ import posthog from 'posthog-js'
 import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ERA_CHARACTERS, getCharacterForEra } from '../data/era-characters'
+import { getQuestPrompts } from '../data/engagement'
 import { sendCharacterMessage } from '../services/characterService'
 import { voiceService } from '../services/voiceService'
+import useStore from '../store/useStore'
 
-export function CharacterChat({ era, onDismiss, character: characterProp, venueContext, backLabel, sceneIntro }) {
+function trailPromptToQuestion(prompt = '') {
+  const cleaned = prompt.trim()
+  const question = cleaned.replace(
+    /^Ask\s+.+?\s+(who|what|where|how|why|when)\b/i,
+    (_, word) => `${word.charAt(0).toUpperCase()}${word.slice(1)}`
+  )
+  if (question === cleaned) return cleaned
+  return question.replace(/[.]+$/, '?')
+}
+
+export function CharacterChat({ era, onDismiss, character: characterProp, venueContext, backLabel, sceneIntro, trailContext }) {
   const character = characterProp || getCharacterForEra(era?.id)
   // If sceneIntro provided, skip straight to chat with the intro as first message
   const [phase, setPhase] = useState(sceneIntro ? 'chat' : 'notification')
@@ -14,10 +26,16 @@ export function CharacterChat({ era, onDismiss, character: characterProp, venueC
     sceneIntro ? [{ role: 'assistant', content: sceneIntro }] : []
   )
   const [loading, setLoading] = useState(false)
-  // Voice disabled — default TTS voices don't match character demographics
+  // Voice disabled, default TTS voices don't match character demographics
   const [voiceEnabled, setVoiceEnabled] = useState(false)
   const messagesEndRef = useRef(null)
   const inputRef = useRef(null)
+  const awardStamp = useStore((s) => s.awardStamp)
+  const questPrompts = getQuestPrompts(character, era)
+  const trailQuestion = trailContext?.prompt ? trailPromptToQuestion(trailContext.prompt) : null
+  const visiblePrompts = trailQuestion
+    ? [trailQuestion, ...questPrompts.filter((prompt) => prompt !== trailQuestion)].slice(0, 3)
+    : questPrompts.slice(0, 3)
 
   // Auto-scroll to latest message
   useEffect(() => {
@@ -43,11 +61,11 @@ export function CharacterChat({ era, onDismiss, character: characterProp, venueC
 
   if (!character) return null
 
-  async function handleSend() {
-    const text = inputRef.current?.innerText?.trim()
+  async function handleSend(overrideText = null) {
+    const text = (overrideText || inputRef.current?.innerText || '').trim()
     if (!text || loading) return
 
-    inputRef.current.innerText = ''
+    if (inputRef.current) inputRef.current.innerText = ''
     const userMessage = text
     setLoading(true)
 
@@ -69,14 +87,20 @@ export function CharacterChat({ era, onDismiss, character: characterProp, venueC
         ...newMessages,
         { role: 'assistant', content: response }
       ])
-      // Voice disabled for now — voiceService.speak(response, era?.id)
+      awardStamp({
+        id: `quest:${character.id || character.name}:${era?.id || 'concierge'}`,
+        type: 'quest',
+        label: `Spoke with ${character.name}`,
+        detail: era?.label,
+      })
+      // Voice disabled for now, voiceService.speak(response, era?.id)
     } catch (err) {
-      const errorMsg = err.message || 'Unknown error'
+      console.error('Character chat failed:', err)
       setMessages([
         ...newMessages,
         {
           role: 'assistant',
-          content: `[Error: ${errorMsg}]`
+          content: 'I am having trouble hearing you through the noise of the room. Try that once more?'
         }
       ])
     } finally {
@@ -96,7 +120,7 @@ export function CharacterChat({ era, onDismiss, character: characterProp, venueC
       >
         <button
           onClick={() => setPhase('introduction')}
-          className="flex cursor-pointer items-center gap-2 rounded-full border border-past/30 bg-black/80 px-5 py-3 font-ui text-sm text-present backdrop-blur-sm transition-all duration-300 hover:border-past/60"
+          className="flex cursor-pointer items-center gap-2 rounded-full border border-past/30 bg-black/80 px-5 py-3 font-ui text-sm text-white backdrop-blur-sm transition-all duration-300 hover:border-past/60"
         >
           <span className="h-2 w-2 animate-pulse rounded-full bg-past" />
           Someone wants to speak with you
@@ -114,11 +138,11 @@ export function CharacterChat({ era, onDismiss, character: characterProp, venueC
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
       >
-        <div className="relative rounded-t-2xl border-t border-present/10 bg-black/90 p-6 backdrop-blur-md">
+        <div className="relative rounded-t-2xl border-t border-white/10 bg-black/90 p-6 backdrop-blur-md">
           {/* Dismiss */}
           <button
             onClick={onDismiss}
-            className="absolute right-4 top-4 cursor-pointer font-ui text-xl text-present/40 transition-colors hover:text-present/70"
+            className="absolute right-4 top-4 cursor-pointer font-ui text-xl text-white/45 transition-colors hover:text-white/75"
           >
             &times;
           </button>
@@ -128,16 +152,16 @@ export function CharacterChat({ era, onDismiss, character: characterProp, venueC
             <div className="mb-1 font-ui text-xs tracking-widest text-past uppercase">
               {era.year_display} &middot; {era.label}
             </div>
-            <div className="mb-1 font-heading text-xl text-present">
+            <div className="mb-1 font-heading text-xl text-white">
               {character.name}
             </div>
-            <div className="font-ui text-sm text-present/50">
+            <div className="font-ui text-sm text-white/55">
               {character.role}
             </div>
           </div>
 
           {/* Opening line */}
-          <div className="mb-5 rounded-xl border border-present/10 bg-present/5 p-4 font-ui text-sm italic leading-relaxed text-present/90">
+          <div className="mb-5 rounded-xl border border-white/10 bg-white/[0.06] p-4 font-ui text-sm italic leading-relaxed text-white/90">
             &ldquo;{character.opening_line}&rdquo;
           </div>
 
@@ -171,6 +195,8 @@ export function CharacterChat({ era, onDismiss, character: characterProp, venueC
         display: 'flex',
         flexDirection: 'column',
         backgroundColor: '#000',
+        width: '100%',
+        overflow: 'hidden',
       }}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -182,7 +208,7 @@ export function CharacterChat({ era, onDismiss, character: characterProp, venueC
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          paddingTop: 'max(16px, env(safe-area-inset-top))',
+          paddingTop: 'max(14px, env(safe-area-inset-top))',
           paddingLeft: 16,
           paddingRight: 16,
           paddingBottom: 12,
@@ -192,28 +218,61 @@ export function CharacterChat({ era, onDismiss, character: characterProp, venueC
       >
         <button
           onClick={() => { voiceService.stop(); onDismiss() }}
-          style={{ display: 'flex', alignItems: 'center', gap: 8, background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(255,255,255,0.6)', fontSize: 14 }}
+          style={{ display: 'flex', alignItems: 'center', gap: 8, background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(255,255,255,0.78)', fontSize: 13, maxWidth: 188, textAlign: 'left' }}
         >
           <span>&larr;</span>
-          <span>{backLabel ? `Leave ${backLabel}` : `Back to ${era.label}`}</span>
+          <span>{backLabel ? `Back to ${backLabel}` : `Back to ${era.label}`}</span>
         </button>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)' }}>{character.name}, {era.year_display}</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 0 }}>
+          <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.55)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{character.name}, {era.year_display}</span>
         </div>
       </div>
 
       {/* Messages */}
-      <div className="flex-1 space-y-4 overflow-y-auto p-4">
+      <div className="flex-1 space-y-4 overflow-y-auto overflow-x-hidden p-4">
+        {trailContext && (
+          <div className="rounded-2xl border border-past/35 bg-past/10 p-3">
+            <div className="font-ui text-[10px] tracking-[0.16em] text-past uppercase">
+              Trail checkpoint
+            </div>
+            <div className="mt-1 font-heading text-sm text-white">
+              {trailContext.stopTitle}
+            </div>
+            <p className="mt-1 font-ui text-xs leading-relaxed text-white/65">
+              Ask the question, then continue to the next stop when you are ready.
+            </p>
+          </div>
+        )}
+
+        {visiblePrompts.length > 0 && messages.length <= 1 && (
+          <div className="rounded-2xl border border-white/14 bg-white/[0.06] p-3">
+            <div className="font-ui text-[10px] tracking-[0.16em] text-past uppercase">
+              {trailContext ? 'Suggested question' : 'Character quest'}
+            </div>
+            <div className="mt-2 flex flex-col gap-2">
+              {visiblePrompts.map((prompt) => (
+                <button
+                  key={prompt}
+                  onClick={() => handleSend(prompt)}
+                  className="rounded-xl border border-past/35 bg-past/15 px-3 py-2 text-left font-ui text-xs leading-relaxed text-white"
+                >
+                  {prompt}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
         {messages.map((msg, i) => (
           <div
             key={i}
             className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
           >
             <div
-              className={`max-w-[85%] rounded-2xl px-4 py-3 font-ui text-sm leading-relaxed ${
+              className={`max-w-[85%] break-words rounded-2xl px-4 py-3 font-ui text-sm leading-relaxed ${
                 msg.role === 'user'
-                  ? 'border border-past/30 bg-past/20 text-present'
-                  : 'border border-present/10 bg-present/[0.08] italic text-present/90'
+                  ? 'border border-past/40 bg-past/20 text-white'
+                  : 'border border-white/12 bg-white/[0.08] text-white/88'
               }`}
             >
               {msg.content}
@@ -223,18 +282,27 @@ export function CharacterChat({ era, onDismiss, character: characterProp, venueC
 
         {loading && (
           <div className="flex justify-start">
-            <div className="rounded-2xl border border-present/10 bg-present/[0.08] px-4 py-3">
+            <div className="rounded-2xl border border-white/12 bg-white/[0.08] px-4 py-3">
               <div className="flex gap-1">
                 {[0, 1, 2].map(i => (
                   <div
                     key={i}
-                    className="h-1.5 w-1.5 animate-bounce rounded-full bg-present/40"
+                    className="h-1.5 w-1.5 animate-bounce rounded-full bg-white/60"
                     style={{ animationDelay: `${i * 0.15}s` }}
                   />
                 ))}
               </div>
             </div>
           </div>
+        )}
+
+        {trailContext?.nextHref && messages.length > 1 && !loading && (
+          <a
+            href={trailContext.nextHref}
+            className="block rounded-2xl border border-past/35 bg-past/15 px-4 py-3 font-ui text-sm font-medium text-past"
+          >
+            Continue to {trailContext.nextLabel}
+          </a>
         )}
 
         <div ref={messagesEndRef} />

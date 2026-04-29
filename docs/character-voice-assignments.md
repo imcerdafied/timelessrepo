@@ -1,7 +1,7 @@
-# TIMELESS MOMENT — Character Voice Assignments
+# TIMELESS MOMENT, Character Voice Assignments
 # ElevenLabs TTS voices for each era character
 #
-# Phase 2 feature — build after text chat is working
+# Phase 2 feature, build after text chat is working
 #
 # HOW TO USE
 # ──────────────────────────────────────────────────────
@@ -68,7 +68,7 @@ alamo-1500 | Kayu (Bay Miwok elder, male, ~60)
   Voice type: Calm older male, Native American cadence if available
   ElevenLabs search: "wise elder male" or "calm deep male"
   Stability: 0.7 (very measured and steady)
-  Notes: Slow delivery, pauses. Not a performer — a presence.
+  Notes: Slow delivery, pauses. Not a performer, a presence.
 
 alamo-1834 | José Maria Amador (Spanish California ranchero, male, ~45)
   Voice type: Spanish-accented English, authoritative
@@ -112,7 +112,7 @@ alamo-2075 | Diego Medina (CalFire incident commander, male, ~52)
   ElevenLabs search: "Latino male" or "Mexican American male"
   Stability: 0.75 (authority requires steadiness)
 
-# SAN FRANCISCO — Mission Dolores
+# SAN FRANCISCO, Mission Dolores
 # ──────────────────────────────────────────────────────────────────
 
 mission-1500 | Liwayway (Ohlone woman, female, ~35)
@@ -140,7 +140,7 @@ mission-1999 | Rodrigo Flores (Bay Area Latino, male, ~32)
   ElevenLabs search: "young American male" with Latino characteristics
   Stability: 0.5 (wry delivery needs expressiveness)
 
-# SAN FRANCISCO — The Castro
+# SAN FRANCISCO, The Castro
 # ──────────────────────────────────────────────────────────────────
 
 sf-castro-harvey | Harvey Milk (New York Jewish transplant, male, ~47)
@@ -155,27 +155,27 @@ sf-castro-aids | Dr. Marcus Conant (physician, male, ~44)
   ElevenLabs search: "Southern American male" or calm Southern voice
   Stability: 0.8 (the weight he carries needs steadiness)
 
-# SAN FRANCISCO — Haight-Ashbury
+# SAN FRANCISCO, Haight-Ashbury
 # ──────────────────────────────────────────────────────────────────
 
 sf-haight-summer | Emmett Grogan (Brooklyn, theatrical, male, ~24)
   Voice type: Brooklyn New York, young, loud, theatrical
   ElevenLabs search: "New York male" young, expressive
-  Stability: 0.2 (most unstable — he's a performer)
+  Stability: 0.2 (most unstable, he's a performer)
   Notes: Find the most theatrically expressive voice.
 
-# NEW YORK — Lower Manhattan
+# NEW YORK, Lower Manhattan
 # ──────────────────────────────────────────────────────────────────
 
 nyc-1500 | Sewatis (Lenape man, male, ~40)
   Voice type: Calm, deep, considered
-  Same approach as Kayu — presence over performance
+  Same approach as Kayu, presence over performance
   Stability: 0.75
 
 nyc-1880 | Rivka Goldberg (Yiddish-Russian immigrant, female, ~22)
   Voice type: Yiddish-accented English
   ElevenLabs search: "Eastern European accent female" or "Jewish accent"
-  Stability: 0.5 (she's still learning English — some hesitation is right)
+  Stability: 0.5 (she's still learning English, some hesitation is right)
 
 nyc-1977 | DJ Kool Herc (Jamaican-American Bronx, male, ~22)
   Voice type: Jamaican-American, rhythmic
@@ -188,7 +188,7 @@ nyc-2001 | Captain Maria Vasquez (FDNY, female, ~34)
   Stability: 0.85 (exhaustion reads as flatness)
   Notes: Lowest energy voice in the roster. She has nothing left.
 
-# NEW YORK — Brooklyn
+# NEW YORK, Brooklyn
 # ──────────────────────────────────────────────────────────────────
 
 bk-1776 | Private Nathaniel Fitch (Connecticut soldier, male, ~19)
@@ -201,7 +201,7 @@ bk-1883 | Emily Roebling (educated American woman, female, ~38)
   ElevenLabs: clear, articulate American female, mature
   Stability: 0.7 (she is precise and controlled)
 
-# LONDON — South Bank
+# LONDON, South Bank
 # ──────────────────────────────────────────────────────────────────
 
 london-50 | Lucius Flavius (Roman merchant, male, ~35)
@@ -210,8 +210,8 @@ london-50 | Lucius Flavius (Roman merchant, male, ~35)
   Stability: 0.7
 
 london-1666 | Samuel Pepys (English diarist, male, ~33)
-  Voice type: 17th century English educated — use British RP
-  ElevenLabs: "Daniel" or "George" — British male, precise
+  Voice type: 17th century English educated, use British RP
+  ElevenLabs: "Daniel" or "George", British male, precise
   Stability: 0.45 (Pepys was excitable and observational)
 
 london-1940 | Vera Lynn (East London, female, ~23)
@@ -253,12 +253,12 @@ chi-1871 | Joseph Medill (19th c. American editor, male, ~48)
 chi-1919 | Ida B. Wells (Southern Black American, female, ~57)
   Voice type: Southern American Black English, educated, controlled
   ElevenLabs search: "Southern American female" mature
-  Stability: 0.8 (her fury is controlled — that's the point)
+  Stability: 0.8 (her fury is controlled, that's the point)
 
 chi-2008 | Linda Randle (Chicago South Side, female, ~52)
   Voice type: Chicago Black English, warm, emotional
   ElevenLabs search: "African American female" mature, warm
-  Stability: 0.35 (she's weeping — maximum expressiveness)
+  Stability: 0.35 (she's weeping, maximum expressiveness)
 
 # LAGOS
 # ──────────────────────────────────────────────────────────────────
@@ -297,7 +297,7 @@ tokyo-asakusa-2025 | Haruto Fujiwara (Japanese craftsman, male, ~54)
 paris-marais-1789 | Georges Danton (French revolutionary, male, ~29)
   Voice type: French-accented English, loud, physical
   ElevenLabs search: "French accent English male"
-  Stability: 0.2 (most unstable — he fills every room)
+  Stability: 0.2 (most unstable, he fills every room)
 
 paris-marais-1942 | André Moreau (French policeman, haunted, male, ~35)
   Voice type: French-accented English, quiet, evasive
@@ -312,7 +312,7 @@ paris-montmartre-1907 | Pablo Picasso (Spanish artist, male, ~25)
   Stability: 0.3 (intensity and expressiveness)
 
 # ══════════════════════════════════════════════════════════════════
-# IMPLEMENTATION — ElevenLabs TTS call
+# IMPLEMENTATION, ElevenLabs TTS call
 # ══════════════════════════════════════════════════════════════════
 
 # Add to character.js backend after getting Claude response:
@@ -348,7 +348,7 @@ paris-montmartre-1907 | Pablo Picasso (Spanish artist, male, ~25)
 # Essentially free at current scale.
 
 # ══════════════════════════════════════════════════════════════════
-# PHASE 2 — Voice INPUT (Web Speech API)
+# PHASE 2, Voice INPUT (Web Speech API)
 # ══════════════════════════════════════════════════════════════════
 
 # User speaks → Web Speech API transcribes → sends to Claude

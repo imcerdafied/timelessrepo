@@ -24,7 +24,7 @@ export function useGyroscope() {
     window.addEventListener('deviceorientation', handleOrientation)
   }, [handleOrientation])
 
-  // Called directly from onClick — MUST be synchronous for iOS gesture handler
+  // Called directly from onClick, MUST be synchronous for iOS gesture handler
   const requestPermission = useCallback(() => {
     if (typeof DeviceOrientationEvent?.requestPermission === 'function') {
       DeviceOrientationEvent.requestPermission()
@@ -45,14 +45,14 @@ export function useGyroscope() {
     if (!window.DeviceOrientationEvent) return
 
     if (typeof DeviceOrientationEvent.requestPermission === 'function') {
-      // iOS 13+ — check if already granted
+      // iOS 13+, check if already granted
       if (localStorage.getItem(STORAGE_KEY) === 'granted') {
         attachListener()
       } else {
         setNeedsPermission(true)
       }
     } else {
-      // Android / non-iOS — no permission needed
+      // Android / non-iOS, no permission needed
       attachListener()
     }
 

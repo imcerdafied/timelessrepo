@@ -1,4 +1,4 @@
-# TIMELESS MOMENT — Era Audio Generation Prompts
+# TIMELESS MOMENT, Era Audio Generation Prompts
 # ElevenLabs Sound Effects API · All Cities · All Eras
 #
 # HOW TO USE
@@ -26,7 +26,7 @@
 # Then SF historical eras, then NYC/London/Riyadh.
 
 # ══════════════════════════════════════════════════════════════════
-# ALAMO, CA — Generate these first, test tonight
+# ALAMO, CA, Generate these first, test tonight
 # ══════════════════════════════════════════════════════════════════
 
 alamo-1500 | Bay Miwok Land
@@ -60,7 +60,7 @@ alamo-2075-adapted | Managed Interface Future
 "California suburb adapted to fire country, prescribed burn crackling in the managed distance, birds returning after a controlled burn, new native plants in the breeze, solar panels humming quietly, a community meeting in an outdoor space, children playing, optimistic morning sounds"
 
 # ══════════════════════════════════════════════════════════════════
-# SAN FRANCISCO — Mission Dolores
+# SAN FRANCISCO, Mission Dolores
 # ══════════════════════════════════════════════════════════════════
 
 mission-1500 | Ohlone Village
@@ -91,7 +91,7 @@ mission-2075 | Future
 "San Francisco Mission District 2075, sea level rise sounds, waves closer than before, adapted city, electric vehicles only, birdsong in rewilded corridor, a quieter city, the mission bells still ringing as they have for 250 years"
 
 # ══════════════════════════════════════════════════════════════════
-# SAN FRANCISCO — The Castro
+# SAN FRANCISCO, The Castro
 # ══════════════════════════════════════════════════════════════════
 
 sf-castro-harvey | Harvey Milk Era
@@ -104,7 +104,7 @@ sf-castro-present | Present Day
 "Castro District San Francisco today, cable car bell in the distance, weekend crowd on Castro Street, street musician playing, outdoor dining, the hum of a neighborhood at ease with itself, fog rolling in over Twin Peaks"
 
 # ══════════════════════════════════════════════════════════════════
-# SAN FRANCISCO — Haight-Ashbury
+# SAN FRANCISCO, Haight-Ashbury
 # ══════════════════════════════════════════════════════════════════
 
 sf-haight-summer | Summer of Love 1967
@@ -117,7 +117,7 @@ sf-haight-present | Present Day
 "Haight Street San Francisco today, tourists taking photos of the street sign, a vintage clothing store with music playing, a head shop, the 71 bus passing, the neighborhood performing its own mythology for visitors"
 
 # ══════════════════════════════════════════════════════════════════
-# SAN FRANCISCO — Hunters Point
+# SAN FRANCISCO, Hunters Point
 # ══════════════════════════════════════════════════════════════════
 
 sf-hunterspoint-1942 | Wartime Shipyard
@@ -127,7 +127,7 @@ sf-hunterspoint-present | Present Day
 "Hunters Point San Francisco today, bay wind, distant construction, a community garden, children at the rec center, the complicated sounds of a neighborhood still waiting for the cleanup that was promised, seagulls over the bay"
 
 # ══════════════════════════════════════════════════════════════════
-# NEW YORK — Lower Manhattan
+# NEW YORK, Lower Manhattan
 # ══════════════════════════════════════════════════════════════════
 
 nyc-1500 | Lenape Mannahatta
@@ -152,7 +152,7 @@ nyc-2025 | Present Day
 "Lower Manhattan New York today, Wall Street, financial district sounds, construction, the 4 and 5 trains underground, food cart, police radio, the constant ambient roar of the most dense urban environment in America, the Hudson River wind"
 
 # ══════════════════════════════════════════════════════════════════
-# NEW YORK — Brooklyn
+# NEW YORK, Brooklyn
 # ══════════════════════════════════════════════════════════════════
 
 bk-1776 | Battle of Brooklyn
@@ -168,7 +168,7 @@ bk-2025 | Present Day
 "DUMBO Brooklyn today, the Manhattan Bridge overhead with train sounds, cobblestone street, a tech company ping pong table through an open window, a food market, the East River, the bridge cables in the wind, gentrified Brooklyn"
 
 # ══════════════════════════════════════════════════════════════════
-# LONDON — South Bank
+# LONDON, South Bank
 # ══════════════════════════════════════════════════════════════════
 
 london-50 | Roman Londinium
@@ -187,7 +187,7 @@ london-2025 | Present Day
 "London South Bank today, the Thames, the Tate Modern's turbine hall ambient, skateboarders under Waterloo Bridge, a busker playing guitar, tourist crowds, the National Theatre, the city's great democratic public space on the riverfront"
 
 # ══════════════════════════════════════════════════════════════════
-# LONDON — City of London
+# LONDON, City of London
 # ══════════════════════════════════════════════════════════════════
 
 city-1850 | World's Banker
@@ -200,7 +200,7 @@ city-2025 | Present Day
 "City of London today, glass towers, the Gherkin and Walkie-Talkie buildings in the wind, financial district at lunchtime, suited professionals, construction of the next tower, the Bloomberg terminal sound, post-Brexit financial district recalibrating"
 
 # ══════════════════════════════════════════════════════════════════
-# RIYADH — Diriyah
+# RIYADH, Diriyah
 # ══════════════════════════════════════════════════════════════════
 
 riyadh-1500 | The Wadi
@@ -219,7 +219,7 @@ riyadh-2025 | Present Day
 "Riyadh today, the call to prayer from a modern mosque with excellent speakers, luxury car traffic, a massive air conditioned mall, construction of NEOM in the distance on the news, the contrast of traditional and ultra-modern, the city Vision 2030 is building"
 
 # ══════════════════════════════════════════════════════════════════
-# RIYADH — The Empty Quarter
+# RIYADH, The Empty Quarter
 # ══════════════════════════════════════════════════════════════════
 
 eq-10000 | Green Arabia
@@ -235,7 +235,7 @@ eq-2075 | Solar Future
 "Empty Quarter Arabia 2075, vast solar installation, the hum of millions of solar panels converting desert sunlight to electricity, robotic maintenance vehicles, the desert silence underneath the low electrical hum, the sun's energy being harvested at continental scale"
 
 # ══════════════════════════════════════════════════════════════════
-# LOS ANGELES — Downtown
+# LOS ANGELES, Downtown
 # ══════════════════════════════════════════════════════════════════
 
 la-1500 | Tongva Yangna
@@ -254,7 +254,7 @@ la-2025 | Present Day
 "Downtown Los Angeles today, the Metro Rail, Walt Disney Concert Hall, the Arts District, a mix of Spanish and English, construction, a homeless encampment beside a luxury hotel, LA in all its contradiction, helicopters, traffic on the 110"
 
 # ══════════════════════════════════════════════════════════════════
-# CHICAGO — The Loop
+# CHICAGO, The Loop
 # ══════════════════════════════════════════════════════════════════
 
 chi-1500 | Potawatomi Land
@@ -276,7 +276,7 @@ chi-2025 | Present Day
 "Chicago Loop today, the elevated L train rattling around the Loop track, the Chicago River below the bridges, lunch crowd on the Riverwalk, wind off Lake Michigan, a jazz musician in the subway, the city's extraordinary skyline in the wind"
 
 # ══════════════════════════════════════════════════════════════════
-# LAGOS — Lagos Island
+# LAGOS, Lagos Island
 # ══════════════════════════════════════════════════════════════════
 
 lagos-1500 | Eko
@@ -295,7 +295,7 @@ lagos-2075 | Future
 "Lagos 2075, sea level higher, some neighborhoods flooded, others elevated and adapted, the Atlantic closer, Afrobeats evolved into something new, a city that survived everything finding a way to survive the water too, tropical birds returning to rewilded lagoon areas"
 
 # ══════════════════════════════════════════════════════════════════
-# TOKYO — Shinjuku
+# TOKYO, Shinjuku
 # ══════════════════════════════════════════════════════════════════
 
 tokyo-shinjuku-1600 | Edo Begins
@@ -314,7 +314,7 @@ tokyo-shinjuku-2025 | Present Day
 "Shinjuku Station Tokyo today, 3.5 million people moving through, the most complex train station on earth, Japanese station announcements, the specific sound of the Yamanote Line doors closing, crowds flowing through 200 exits, department store music, the organized chaos of Tokyo at rush hour"
 
 # ══════════════════════════════════════════════════════════════════
-# TOKYO — Asakusa
+# TOKYO, Asakusa
 # ══════════════════════════════════════════════════════════════════
 
 tokyo-asakusa-628 | Temple Founded
@@ -330,7 +330,7 @@ tokyo-asakusa-2025 | Present Day
 "Asakusa Tokyo today, Senso-ji temple, the incense burner, tourists and worshippers mixed together, the Nakamise vendors, temple bells, the wooden clap of hands in prayer, the Tokyo Skytree visible, the oldest neighborhood in the newest megacity"
 
 # ══════════════════════════════════════════════════════════════════
-# PARIS — Le Marais
+# PARIS, Le Marais
 # ══════════════════════════════════════════════════════════════════
 
 paris-marais-1559 | Royal Paris
@@ -346,7 +346,7 @@ paris-marais-2025 | Present Day
 "Le Marais Paris today, the Place des Vosges on a Sunday afternoon, children playing in the fountain, the arcades, a string quartet busking, French conversation, the Rue des Rosiers falafel queue, a perfect Parisian afternoon in the oldest square in the city"
 
 # ══════════════════════════════════════════════════════════════════
-# PARIS — Montmartre
+# PARIS, Montmartre
 # ══════════════════════════════════════════════════════════════════
 
 paris-montmartre-1889 | Belle Époque
@@ -374,7 +374,7 @@ paris-montmartre-2025 | Present Day
 # - duration_seconds: 30-60 (45 is ideal for looping)
 # - prompt_influence: 0.3 gives the best naturalistic results
 # - Generate 2-3 variations per era, pick the best
-# - Some prompts may need adjustment — be specific about
+# - Some prompts may need adjustment, be specific about
 #   sounds rather than moods for best results
 #
 # LOOPING

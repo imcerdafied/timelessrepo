@@ -1,9 +1,9 @@
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL
 
-// Layer 1: Ambient soundscapes — add entries as audio files are uploaded
+// Layer 1: Ambient soundscapes, add entries as audio files are uploaded
 const ERA_AMBIENT = {}
 
-// Layer 2: Era music — add entries as music files are uploaded
+// Layer 2: Era music, add entries as music files are uploaded
 const ERA_MUSIC = {}
 
 class AudioService {
@@ -38,7 +38,7 @@ class AudioService {
     this.ambientAudio = null
     this.musicAudio = null
 
-    // Start Layer 1 — ambient
+    // Start Layer 1, ambient
     if (ERA_AMBIENT[eraId]) {
       this.ambientAudio = await this._createAudio(
         ERA_AMBIENT[eraId],
@@ -46,7 +46,7 @@ class AudioService {
       )
     }
 
-    // Start Layer 2 — music
+    // Start Layer 2, music
     const music = ERA_MUSIC[eraId]
     if (music && music.type === 'file') {
       this.musicAudio = await this._createAudio(

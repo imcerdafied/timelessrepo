@@ -1,11 +1,12 @@
 // Resort image map: AI-generated images for all 45 zone × layer combos.
 // Images served from /era-images/ (public directory).
+import { ACTIVE_PROPERTY } from '../config/properties'
 
 const CURATED = {}
 
-// Auto-populate from the 5 zones × 9 layers
-const ZONES = ['marina-beach', 'lobby-royal-towers', 'waterpark-pools', 'casino-nightlife', 'marine-habitat']
-const LAYERS = ['deep-past', 'colonial', 'early-tourism', 'resort-era', 'modern', 'present', 'culture', 'behind-scenes', 'future']
+// Auto-populate from the active property's zone × layer manifest.
+const ZONES = ACTIVE_PROPERTY.zones
+const LAYERS = ACTIVE_PROPERTY.layers
 
 for (const zone of ZONES) {
   for (const layer of LAYERS) {

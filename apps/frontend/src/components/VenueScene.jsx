@@ -149,7 +149,7 @@ export default function VenueScene({ venue, era, onClose, autoplay }) {
             </button>
           </div>
 
-          {/* Scene content — centered monologue */}
+          {/* Scene content, centered monologue */}
           <div style={{
             flex: 1,
             display: 'flex',
@@ -192,7 +192,7 @@ export default function VenueScene({ venue, era, onClose, autoplay }) {
               </div>
             </motion.div>
 
-            {/* Monologue text — word by word reveal */}
+            {/* Monologue text, word by word reveal */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}

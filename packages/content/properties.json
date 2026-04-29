@@ -1,0 +1,97 @@
+{
+  "defaultPropertySlug": "atlantis",
+  "properties": [
+    {
+      "id": "atlantis-demo",
+      "slug": "atlantis",
+      "name": "Atlantis Experience",
+      "brandName": "Atlantis Paradise Island",
+      "tagline": "Where every place tells a story.",
+      "destination": "Paradise Island, Bahamas",
+      "contentFocus": "the Bahamas, Caribbean history, Paradise Island, ocean history, marine ecology, resort design, and tropical conservation",
+      "defaultZoneId": "marina-beach",
+      "defaultLayerId": "marina-beach-present",
+      "zones": [
+        "marina-beach",
+        "lobby-royal-towers",
+        "waterpark-pools",
+        "casino-nightlife",
+        "marine-habitat"
+      ],
+      "layers": [
+        "deep-past",
+        "colonial",
+        "early-tourism",
+        "resort-era",
+        "modern",
+        "present",
+        "culture",
+        "behind-scenes",
+        "future"
+      ],
+      "zoneIcons": {
+        "marina-beach": "wave",
+        "lobby-royal-towers": "hotel",
+        "waterpark-pools": "swim",
+        "casino-nightlife": "spark",
+        "marine-habitat": "reef"
+      },
+      "branding": {
+        "primary": "#0B3D5C",
+        "accent": "#D4845A",
+        "logoUrl": null
+      },
+      "validCategories": [
+        "maritime",
+        "cultural",
+        "natural",
+        "political",
+        "culinary",
+        "scientific",
+        "architectural"
+      ],
+      "demoRoutes": [
+        {
+          "label": "Guest Demo",
+          "path": "/demo/atlantis",
+          "description": "On This Day entry point into the Atlantis experience intelligence layer."
+        },
+        {
+          "label": "Zone Explorer",
+          "path": "/demo/atlantis/zones",
+          "description": "Browse the reusable zone and layer model without the daily content entry screen."
+        },
+        {
+          "label": "Story Trails",
+          "path": "/demo/atlantis/trails",
+          "description": "Curated paths that connect layers into guided guest journeys."
+        },
+        {
+          "label": "Guided Trail",
+          "path": "/demo/atlantis/trail/pirate-nassau/0",
+          "description": "Open a step-by-step Story Trail with next-stop controls and Passport completion."
+        },
+        {
+          "label": "Passport",
+          "path": "/demo/atlantis/passport",
+          "description": "Local demo passport for zone, layer, quest, and share stamps."
+        },
+        {
+          "label": "TimeLens",
+          "path": "/demo/atlantis/timelens/marina-beach-colonial",
+          "description": "Open camera time-travel directly on an Atlantis layer."
+        },
+        {
+          "label": "Moment Layer",
+          "path": "/demo/atlantis/moment/lobby-royal-towers-modern",
+          "description": "Open an immersive generated moment for an Atlantis layer."
+        },
+        {
+          "label": "Behavioral Signals",
+          "path": "/demo/atlantis/signals",
+          "description": "Show the demo event and affinity dashboard."
+        }
+      ]
+    }
+  ]
+}

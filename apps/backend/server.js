@@ -5,16 +5,18 @@ import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import { supabase } from './src/lib/supabase.js'
+import { getActiveProperty, getProperties } from './src/lib/propertyConfig.js'
 import characterRoutes from './src/routes/character.js'
 import storyRoutes from './src/routes/story.js'
 import sceneRoutes from './src/routes/scene.js'
-import onThisDayRoutes from './src/routes/on-this-day.js'
 import todayAtPropertyRoutes from './src/routes/today-at-property.js'
 import cameraRoutes from './src/routes/camera.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const app = express()
 const PORT = process.env.PORT || 3001
+const LEGACY_DISPATCH_ENABLED = process.env.ENABLE_LEGACY_DISPATCH === 'true'
+const LEGACY_SCENES_ENABLED = process.env.ENABLE_LEGACY_SCENES === 'true'
 
 // CORS — restrict to known origins in production
 const ALLOWED_ORIGINS = process.env.CORS_ORIGINS
@@ -51,8 +53,13 @@ app.use('/api/story', apiLimiter, storyRoutes)
 // Scene generation — AI-generated dialogue videos
 app.use('/api/scene', apiLimiter, sceneRoutes)
 
-// On This Day — daily historical events
-app.use('/api/on-this-day', apiLimiter, onThisDayRoutes)
+// Legacy generic On This Day route retired with the San Francisco prototype.
+app.use('/api/on-this-day', (_req, res) => {
+  res.status(410).json({
+    error: 'Legacy generic On This Day route retired',
+    replacement: '/api/today-at-property',
+  })
+})
 
 // Today at Property — daily content feed
 app.use('/api/today-at-property', todayAtPropertyRoutes)
@@ -67,9 +74,9 @@ const cameraLimiter = rateLimit({
 })
 app.use('/api/camera', cameraLimiter, cameraRoutes)
 
-// Serve pre-baked scene assets (videos, audio) as static files
+// Serve pre-baked San Francisco scene assets only when explicitly enabled.
 const scenesDir = path.join(__dirname, '..', '..', 'scenes')
-if (fs.existsSync(scenesDir)) {
+if (LEGACY_SCENES_ENABLED && fs.existsSync(scenesDir)) {
   console.log('Scenes directory found, serving at /scenes')
   app.use('/scenes', express.static(scenesDir, {
     maxAge: '7d',
@@ -80,8 +87,16 @@ if (fs.existsSync(scenesDir)) {
   }))
 }
 
-// Scene manifest — returns pre-baked scene data for the demo
+// Legacy scene manifest — retained for local archaeology, disabled for Phunware demos.
 app.get('/api/scenes/manifest', (_req, res) => {
+  if (!LEGACY_SCENES_ENABLED) {
+    return res.json({
+      scenes: [],
+      retired: true,
+      replacement: '/demo/atlantis/moment/lobby-royal-towers-modern',
+    })
+  }
+
   try {
     const sceneDir = path.join(scenesDir, '1906-earthquake')
     const scenes = []
@@ -179,22 +194,27 @@ app.post('/api/artifacts', async (req, res) => {
 
 // Property configuration — makes the app white-label-ready
 app.get('/api/property', (_req, res) => {
+  const property = getActiveProperty()
   res.json({
-    name: process.env.PROPERTY_NAME || 'Atlantis Experience',
-    id: process.env.PROPERTY_ID || 'atlantis-demo',
-    zones: ['marina-beach', 'lobby-royal-towers', 'waterpark-pools', 'casino-nightlife', 'marine-habitat'],
-    branding: {
-      primary: '#0B3D5C',
-      accent: '#E8A87C',
-      logo_url: null,
-    },
+    ...property,
+    name: process.env.PROPERTY_NAME || property.name,
   })
+})
+
+app.get('/api/properties', (_req, res) => {
+  res.json({ properties: getProperties() })
+})
+
+app.get('/api/properties/:slug', (req, res) => {
+  const property = getProperties().find((item) => item.slug === req.params.slug || item.id === req.params.slug)
+  if (!property) return res.status(404).json({ error: 'Unknown property' })
+  res.json(property)
 })
 
 // BLE beacon simulation — returns simulated proximity data
 app.get('/api/ble/simulate/:zoneId', (req, res) => {
   const { zoneId } = req.params
-  const validZones = ['marina-beach', 'lobby-royal-towers', 'waterpark-pools', 'casino-nightlife', 'marine-habitat']
+  const validZones = getActiveProperty()?.zones || []
   if (!validZones.includes(zoneId)) {
     return res.status(404).json({ error: 'Unknown zone' })
   }
@@ -212,15 +232,24 @@ app.all('/api/{*splat}', (req, res) => {
   res.status(404).json({ error: 'API route not found', path: req.path })
 })
 
-// Serve story-feed at /dispatch path
+// Serve the legacy story-feed at /dispatch only when explicitly enabled.
 const storyDistPath = path.join(__dirname, '..', 'story-feed', 'dist')
 
-if (fs.existsSync(storyDistPath)) {
+if (LEGACY_DISPATCH_ENABLED && fs.existsSync(storyDistPath)) {
   console.log('Story-feed dist found, serving at /dispatch')
   app.use('/dispatch', express.static(storyDistPath))
   app.get('/dispatch/{*splat}', (req, res) => {
     res.sendFile(path.join(storyDistPath, 'index.html'))
   })
+} else {
+  const dispatchRetired = (_req, res) => {
+    res.status(410).json({
+      error: 'Legacy San Francisco dispatch demo retired',
+      replacement: '/demos',
+    })
+  }
+  app.get('/dispatch', dispatchRetired)
+  app.get('/dispatch/{*splat}', dispatchRetired)
 }
 
 // Serve frontend static build (must come AFTER all /api routes)

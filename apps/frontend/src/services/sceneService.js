@@ -1,5 +1,5 @@
 /**
- * Scene generation service — calls backend to generate dialogue + video
+ * Scene generation service, calls backend to generate dialogue + video
  */
 
 const API_BASE = import.meta.env.VITE_API_URL || ''
@@ -25,7 +25,7 @@ export async function getScene(sceneId) {
 }
 
 /**
- * Generate just the script (no video) — fast preview
+ * Generate just the script (no video), fast preview
  */
 export async function generateScript(sceneId) {
   const res = await fetch(`${API_BASE}/api/scene/script`, {

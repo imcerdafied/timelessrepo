@@ -1,4 +1,4 @@
-// Uses Node.js native FormData/Blob (Node 18+) — no npm form-data needed
+// Uses Node.js native FormData/Blob (Node 18+), no npm form-data needed
 
 const HEDRA_API_URL = 'https://api.hedra.com/web-app/public'
 const HEDRA_API_KEY = process.env.HEDRA_API_KEY
@@ -90,7 +90,7 @@ export async function uploadAudio(audioBuffer) {
   return assetId
 }
 
-// Hedra Character 3 — flagship talking-head model with lip sync
+// Hedra Character 3, flagship talking-head model with lip sync
 const CHARACTER_3_MODEL_ID = 'd1dd37a3-e39a-4854-a298-6510289f9cf2'
 
 /**

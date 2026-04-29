@@ -3,12 +3,12 @@ import { createPortal } from 'react-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 
 /**
- * SceneSelector — shows available scenes as cards when user enters an era
+ * SceneSelector, shows available scenes as cards when user enters an era
  * with pre-generated content. Renders as a bottom sheet overlay.
  *
  * Props:
  *   scenes: array of scene data objects
- *   onSelect: (scene) => void — called when user taps a scene to watch
+ *   onSelect: (scene) => void, called when user taps a scene to watch
  *   onClose: () => void
  *   visible: boolean
  */
@@ -113,7 +113,7 @@ export default function SceneSelector({ scenes, onSelect, onClose, visible }) {
               className="mt-auto pt-8 text-center text-[10px] tracking-[0.15em] uppercase"
               style={{ color: 'rgba(255,255,255,0.15)' }}
             >
-              Timeless Moment — AI-Generated Historical Drama
+              Timeless Moment, AI-Generated Historical Drama
             </motion.p>
           </div>
         </motion.div>

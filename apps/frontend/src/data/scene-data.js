@@ -66,7 +66,7 @@ function splitIntoLines(text) {
     if (words.length <= 28) {
       lines.push(trimmed)
     } else {
-      const parts = trimmed.split(/(?:—|;\s|,\s(?:and|but|or|then|while|because|although|when|where|which|who)\s)/i)
+      const parts = trimmed.split(/(?:,|;\s|,\s(?:and|but|or|then|while|because|although|when|where|which|who)\s)/i)
       if (parts.length > 1 && parts.every(p => p.trim().length > 10)) {
         parts.forEach(p => {
           const t = p.trim()
@@ -115,7 +115,7 @@ export function buildMonologue(eraId, character, era) {
 
   // Trim to 7-9 lines total
   const finalLines = lines.slice(0, 9).map(l =>
-    l.replace(/\s*[—–]\s*/g, ', ').replace(/\s{2,}/g, ' ').trim()
+    l.replace(/\s*[,–]\s*/g, ', ').replace(/\s{2,}/g, ' ').trim()
   )
 
   if (finalLines.length === 0) return null
