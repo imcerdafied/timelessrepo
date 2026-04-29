@@ -206,8 +206,8 @@ export function CharacterChat({ era, onDismiss, character: characterProp, venueC
       <div
         style={{
           display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
+          flexDirection: 'column',
+          gap: 8,
           paddingTop: 'max(14px, env(safe-area-inset-top))',
           paddingLeft: 16,
           paddingRight: 16,
@@ -218,13 +218,18 @@ export function CharacterChat({ era, onDismiss, character: characterProp, venueC
       >
         <button
           onClick={() => { voiceService.stop(); onDismiss() }}
-          style={{ display: 'flex', alignItems: 'center', gap: 8, background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(255,255,255,0.78)', fontSize: 13, maxWidth: 188, textAlign: 'left' }}
+          style={{ display: 'flex', alignItems: 'center', gap: 8, background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(255,255,255,0.78)', fontSize: 13, textAlign: 'left', padding: 0, width: '100%' }}
         >
           <span>&larr;</span>
           <span>{backLabel ? `Back to ${backLabel}` : `Back to ${era.label}`}</span>
         </button>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 0 }}>
-          <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.55)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{character.name}, {era.year_display}</span>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 2, minWidth: 0 }}>
+          <span style={{ fontFamily: 'Playfair Display, serif', fontSize: 18, color: '#fff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+            {character.name}
+          </span>
+          <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.45)', fontFamily: 'monospace' }}>
+            {era.year_display}
+          </span>
         </div>
       </div>
 

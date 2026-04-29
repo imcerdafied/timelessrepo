@@ -56,6 +56,15 @@ export default function TrailGuide({
         </a>
       </div>
 
+      <div className="mt-3 flex gap-1">
+        {trail.stops.map((stop, index) => (
+          <div
+            key={stop.layerId}
+            className={`h-1 flex-1 rounded-full ${index <= stepIndex ? 'bg-accent' : 'bg-white/14'}`}
+          />
+        ))}
+      </div>
+
       <div className="mt-3 rounded-xl border border-white/12 bg-white/[0.06] p-3">
         <div className="font-ui text-[10px] tracking-[0.16em] text-accent/80 uppercase">
           Your move
@@ -67,7 +76,7 @@ export default function TrailGuide({
           {location?.name}
         </div>
         <p className="mt-2 font-ui text-xs leading-relaxed text-white/72">
-          Start here, then use the prompt below. Move on when you are ready.
+          Meet the character, play the moment, or jump to the next stop.
         </p>
         <p className="mt-2 rounded-lg border border-accent/25 bg-accent/10 px-3 py-2 font-ui text-xs leading-relaxed text-accent">
           {step?.prompt}
