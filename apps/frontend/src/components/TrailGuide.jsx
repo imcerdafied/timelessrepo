@@ -37,8 +37,10 @@ export default function TrailGuide({
     onOpenPassport?.()
   }
 
+  const secondaryActionLabel = nextHref ? 'Next stop' : 'Finish trail'
+
   return (
-    <div className="absolute left-3 right-3 top-20 z-30 rounded-2xl border border-accent/35 bg-[#080705]/90 p-4 text-white shadow-2xl backdrop-blur-md">
+    <div className="absolute left-3 right-3 top-16 z-30 rounded-2xl border border-accent/30 bg-[#080705]/92 p-4 text-white shadow-2xl backdrop-blur-md">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
           <div className="font-ui text-[10px] tracking-[0.18em] text-accent uppercase">
@@ -52,7 +54,7 @@ export default function TrailGuide({
           href={`/demo/${ACTIVE_PROPERTY.slug}/trails`}
           className="rounded-full border border-white/15 px-3 py-1.5 font-ui text-[10px] text-white/60"
         >
-          Trails
+          All trails
         </a>
       </div>
 
@@ -67,7 +69,7 @@ export default function TrailGuide({
 
       <div className="mt-3 rounded-xl border border-white/12 bg-white/[0.06] p-3">
         <div className="font-ui text-[10px] tracking-[0.16em] text-accent/80 uppercase">
-          Your move
+          Start here
         </div>
         <div className="mt-1 font-heading text-base text-white">
           {step?.title}
@@ -76,51 +78,44 @@ export default function TrailGuide({
           {location?.name}
         </div>
         <p className="mt-2 font-ui text-xs leading-relaxed text-white/72">
-          Meet the character, play the moment, or jump to the next stop.
+          Start by asking the featured character one question. Continue when ready.
         </p>
-        <p className="mt-2 rounded-lg border border-accent/25 bg-accent/10 px-3 py-2 font-ui text-xs leading-relaxed text-accent">
-          {step?.prompt}
-        </p>
+        <div className="mt-2 rounded-lg border border-white/10 bg-black/20 px-3 py-2">
+          <div className="font-ui text-[9px] tracking-[0.14em] text-white/35 uppercase">
+            Suggested question
+          </div>
+          <p className="mt-1 font-ui text-xs leading-relaxed text-accent">
+            {step?.prompt}
+          </p>
+        </div>
       </div>
 
-      <div className="mt-3 grid grid-cols-2 gap-2">
-        <button
-          type="button"
-          data-testid="trail-ask-character"
-          onClick={primaryAction}
-          className="rounded-full bg-accent px-3 py-2.5 text-center font-ui text-xs font-semibold text-background"
-        >
-          {primaryLabel}
-        </button>
-        <button
-          type="button"
-          data-testid="trail-play-moment"
-          onClick={onExperienceStop}
-          className="rounded-full border border-white/15 px-3 py-2.5 text-center font-ui text-xs text-white/70"
-        >
-          Play Moment
-        </button>
-      </div>
+      <button
+        type="button"
+        data-testid="trail-ask-character"
+        onClick={primaryAction}
+        className="mt-3 w-full rounded-full bg-accent px-4 py-3 text-center font-ui text-sm font-semibold text-background"
+      >
+        {primaryLabel}
+      </button>
 
-      <div className="mt-2 flex items-center gap-2">
-        {previousHref ? (
-          <a href={previousHref} className="flex-1 rounded-full border border-white/15 px-3 py-2 text-center font-ui text-xs text-white/55">
-            Previous
+      <div className={`mt-3 flex items-center gap-3 font-ui text-[11px] ${previousHref ? 'justify-between' : 'justify-center'}`}>
+        {previousHref && (
+          <a href={previousHref} className="text-white/35 underline-offset-4 hover:text-white/60 hover:underline">
+            Previous stop
           </a>
-        ) : (
-          <span className="flex-1 rounded-full border border-white/10 px-3 py-2 text-center font-ui text-xs text-white/25">
-            Previous
-          </span>
         )}
-        {nextHref ? (
-          <a data-testid="trail-next-stop" href={nextHref} className="flex-1 rounded-full border border-accent/35 px-3 py-2 text-center font-ui text-xs font-medium text-accent">
-            Next Stop
-          </a>
-        ) : (
-          <button onClick={completeTrail} className="flex-1 rounded-full border border-accent/35 px-3 py-2 text-center font-ui text-xs font-medium text-accent">
-            Complete Trail
-          </button>
-        )}
+        <div className="flex items-center gap-3">
+          {nextHref ? (
+            <a data-testid="trail-next-stop" href={nextHref} className="font-medium text-accent underline-offset-4 hover:underline">
+              {secondaryActionLabel}
+            </a>
+          ) : (
+            <button onClick={completeTrail} className="font-medium text-accent underline-offset-4 hover:underline">
+              {secondaryActionLabel}
+            </button>
+          )}
+        </div>
       </div>
     </div>
   )

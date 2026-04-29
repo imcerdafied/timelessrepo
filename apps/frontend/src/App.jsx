@@ -40,6 +40,7 @@ function App() {
       ? { id: INITIAL_ROUTE.trailId, stepIndex: INITIAL_ROUTE.trailStep || 0 }
       : null
   ))
+  const isGuidedTrail = !!initialTrail
 
   // Route clean demo URLs into the single-page demo shell.
   useEffect(() => {
@@ -147,7 +148,7 @@ function App() {
               <div className="relative flex-1 overflow-hidden">
                 <ExperienceWindow initialTool={initialTool} initialTrail={initialTrail} />
               </div>
-              <TemporalRibbon />
+              {!isGuidedTrail && <TemporalRibbon />}
             </motion.div>
           )}
         </AnimatePresence>
@@ -160,13 +161,15 @@ function App() {
         </AnimatePresence>
 
         {/* Demo mode toggle */}
-        <button
-          onClick={() => setShowBlePanel(!showBlePanel)}
-          className="fixed top-3 right-3 z-50 rounded-full border border-border bg-surface/90 px-3 py-1.5 font-ui text-[10px] tracking-widest text-present/50 uppercase backdrop-blur-sm"
-          style={{ maxWidth: 'fit-content' }}
-        >
-          Demo
-        </button>
+        {!isGuidedTrail && (
+          <button
+            onClick={() => setShowBlePanel(!showBlePanel)}
+            className="fixed top-3 right-3 z-50 rounded-full border border-border bg-surface/90 px-3 py-1.5 font-ui text-[10px] tracking-widest text-present/50 uppercase backdrop-blur-sm"
+            style={{ maxWidth: 'fit-content' }}
+          >
+            Demo
+          </button>
+        )}
 
         {/* BLE simulation panel */}
         <AnimatePresence>

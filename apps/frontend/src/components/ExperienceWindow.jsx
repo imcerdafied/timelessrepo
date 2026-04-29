@@ -92,6 +92,7 @@ export default function ExperienceWindow({ initialTool = null, initialTrail = nu
   const character = getCharacterForEra(era?.id)
   const offer = getOfferForEra(era)
   const guidedTrail = initialTrail?.id ? getStoryTrailById(initialTrail.id) : null
+  const isGuidedTrail = !!guidedTrail
   const guidedStepIndex = initialTrail?.stepIndex || 0
   const guidedStep = guidedTrail?.stops?.[guidedStepIndex]
   const guidedNextStep = guidedTrail?.stops?.[guidedStepIndex + 1]
@@ -276,7 +277,7 @@ export default function ExperienceWindow({ initialTool = null, initialTrail = nu
 
       {/* iOS gyroscope permission pill */}
       <AnimatePresence>
-        {needsPermission && (
+        {needsPermission && !isGuidedTrail && (
           <motion.button
             onClick={requestPermission}
             className="absolute left-1/2 top-[40%] z-20 -translate-x-1/2 cursor-pointer rounded-full border border-past/30 bg-surface/80 px-4 py-2 backdrop-blur-md"
@@ -293,146 +294,146 @@ export default function ExperienceWindow({ initialTool = null, initialTrail = nu
       </AnimatePresence>
 
       {/* Top right controls */}
-      <div className="absolute right-4 top-4 z-20 flex items-center gap-2">
-        {/* Audio button, only show if this era has audio */}
-        {hasAudio && (
-          <button
-            onClick={toggleAudio}
-            className={`relative flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border backdrop-blur-md transition-colors ${
-              audioEnabled
-                ? 'border-past/30 bg-surface/60 audio-playing'
-                : 'border-present/20 bg-surface/60'
-            }`}
-            aria-label={audioEnabled ? 'Mute era audio' : 'Play era audio'}
+      {!isGuidedTrail && (
+        <div className="absolute right-4 top-4 z-20 flex items-center gap-2">
+          {/* Audio button, only show if this era has audio */}
+          {hasAudio && (
+            <button
+              onClick={toggleAudio}
+              className={`relative flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border backdrop-blur-md transition-colors ${
+                audioEnabled
+                  ? 'border-past/30 bg-surface/60 audio-playing'
+                  : 'border-present/20 bg-surface/60'
+              }`}
+              aria-label={audioEnabled ? 'Mute era audio' : 'Play era audio'}
+            >
+              {audioEnabled ? (
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-past">
+                  <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+                  <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+                  <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+                </svg>
+              ) : (
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-present/50">
+                  <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+                  <line x1="23" y1="9" x2="17" y2="15" />
+                  <line x1="17" y1="9" x2="23" y2="15" />
+                </svg>
+              )}
+              {audioService.hasMusic(era.id) && audioEnabled && (
+                <span className="absolute -right-1 -top-1 flex h-3 w-3 items-center justify-center rounded-full bg-past text-[6px] font-bold text-background">
+                  &#9835;
+                </span>
+              )}
+            </button>
+          )}
+          <a
+            href={`/demo/${ACTIVE_PROPERTY.slug}/trails`}
+            title="Open story trails"
+            className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-present/20 bg-surface/60 text-present/70 backdrop-blur-md transition-colors hover:bg-surface/80"
           >
-            {audioEnabled ? (
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-past">
-                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
-                <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
-                <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
-              </svg>
-            ) : (
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-present/50">
-                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
-                <line x1="23" y1="9" x2="17" y2="15" />
-                <line x1="17" y1="9" x2="23" y2="15" />
-              </svg>
-            )}
-            {audioService.hasMusic(era.id) && audioEnabled && (
-              <span className="absolute -right-1 -top-1 flex h-3 w-3 items-center justify-center rounded-full bg-past text-[6px] font-bold text-background">
-                &#9835;
-              </span>
-            )}
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M5 6h10a4 4 0 0 1 0 8H8a3 3 0 0 0 0 6h11" />
+              <circle cx="5" cy="6" r="2" />
+              <circle cx="19" cy="20" r="2" />
+            </svg>
+          </a>
+          <button
+            onClick={() => setPassportOpen(true)}
+            title="Open passport"
+            className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-present/20 bg-surface/60 text-present/70 backdrop-blur-md transition-colors hover:bg-surface/80"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="5" y="3" width="14" height="18" rx="2" />
+              <path d="M9 7h6M9 17h6" />
+              <circle cx="12" cy="12" r="2.5" />
+            </svg>
           </button>
-        )}
-        {/* Share button */}
-        <a
-          href={`/demo/${ACTIVE_PROPERTY.slug}/trails`}
-          title="Open story trails"
-          className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-present/20 bg-surface/60 text-present/70 backdrop-blur-md transition-colors hover:bg-surface/80"
-        >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M5 6h10a4 4 0 0 1 0 8H8a3 3 0 0 0 0 6h11" />
-            <circle cx="5" cy="6" r="2" />
-            <circle cx="19" cy="20" r="2" />
-          </svg>
-        </a>
-        <button
-          onClick={() => setPassportOpen(true)}
-          title="Open passport"
-          className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-present/20 bg-surface/60 text-present/70 backdrop-blur-md transition-colors hover:bg-surface/80"
-        >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-            <rect x="5" y="3" width="14" height="18" rx="2" />
-            <path d="M9 7h6M9 17h6" />
-            <circle cx="12" cy="12" r="2.5" />
-          </svg>
-        </button>
-        {/* Share button */}
-        <button
-          onClick={() => { setShareOpen(true); posthog.capture('share_card_generated', { zone_id: selectedLocation, layer_id: selectedEra }) }}
-          className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-present/20 bg-surface/60 text-present/70 backdrop-blur-md transition-colors hover:bg-surface/80"
-        >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
-            <polyline points="16 6 12 2 8 6" />
-            <line x1="12" y1="2" x2="12" y2="15" />
-          </svg>
-        </button>
-        {/* Camera button */}
-        <button
-          onClick={() => {
-            if (showCameraPulse) {
-              sessionStorage.setItem('camera_pulse_shown', 'true')
-              setShowCameraPulse(false)
-            }
-            setCameraOpen(true)
-          }}
-          className={`flex h-9 w-9 items-center justify-center rounded-full bg-black/40 backdrop-blur-sm ${showCameraPulse ? 'animate-pulse ring-2 ring-accent/50' : ''}`}
-        >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
-            <circle cx="12" cy="13" r="4" />
-          </svg>
-        </button>
-        {/* Close button */}
-        <button
-          onClick={() => {
-            audioService.stop()
-            setSelectedLocation(null)
-          }}
-          className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-present/20 bg-surface/60 text-present/70 backdrop-blur-md transition-colors hover:bg-surface/80"
-        >
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
-            <path d="M11 3L3 11M3 3l8 8" />
-          </svg>
-        </button>
-      </div>
+          <button
+            onClick={() => { setShareOpen(true); posthog.capture('share_card_generated', { zone_id: selectedLocation, layer_id: selectedEra }) }}
+            className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-present/20 bg-surface/60 text-present/70 backdrop-blur-md transition-colors hover:bg-surface/80"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
+              <polyline points="16 6 12 2 8 6" />
+              <line x1="12" y1="2" x2="12" y2="15" />
+            </svg>
+          </button>
+          <button
+            onClick={() => {
+              if (showCameraPulse) {
+                sessionStorage.setItem('camera_pulse_shown', 'true')
+                setShowCameraPulse(false)
+              }
+              setCameraOpen(true)
+            }}
+            className={`flex h-9 w-9 items-center justify-center rounded-full bg-black/40 backdrop-blur-sm ${showCameraPulse ? 'animate-pulse ring-2 ring-accent/50' : ''}`}
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+              <circle cx="12" cy="13" r="4" />
+            </svg>
+          </button>
+          <button
+            onClick={() => {
+              audioService.stop()
+              setSelectedLocation(null)
+            }}
+            className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-present/20 bg-surface/60 text-present/70 backdrop-blur-md transition-colors hover:bg-surface/80"
+          >
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+              <path d="M11 3L3 11M3 3l8 8" />
+            </svg>
+          </button>
+        </div>
+      )}
 
       {/* Era label + year, top left */}
       <AnimatePresence mode="wait">
-        <motion.div
-          key={era.id + '-label'}
-          className="absolute left-5 top-5 z-10 flex items-center gap-2"
-          initial={{ opacity: 0, y: -8 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -8 }}
-          transition={{ duration: 0.3, delay: 0.2 }}
-        >
-          <div
-            style={{
-              backgroundColor: 'rgba(0,0,0,0.55)',
-              backdropFilter: 'blur(8px)',
-              WebkitBackdropFilter: 'blur(8px)',
-              borderRadius: 999,
-              padding: '4px 10px',
-              border: '1px solid rgba(255,255,255,0.1)',
-              display: 'flex',
-              alignItems: 'center',
-              gap: 6,
-              maxWidth: guidedTrail ? 168 : 220,
-              overflow: 'hidden',
-            }}
+        {!isGuidedTrail && (
+          <motion.div
+            key={era.id + '-label'}
+            className="absolute left-5 top-5 z-10 flex items-center gap-2"
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.3, delay: 0.2 }}
           >
-            <span
-              className="font-ui uppercase"
+            <div
               style={{
-                color: '#f59e0b',
-                fontSize: 11,
-                fontWeight: 600,
-                letterSpacing: '0.08em',
+                backgroundColor: 'rgba(0,0,0,0.55)',
+                backdropFilter: 'blur(8px)',
+                WebkitBackdropFilter: 'blur(8px)',
+                borderRadius: 999,
+                padding: '4px 10px',
+                border: '1px solid rgba(255,255,255,0.1)',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 6,
+                maxWidth: 220,
                 overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                whiteSpace: 'nowrap',
               }}
             >
-              {era.label}
-            </span>
-            <span className="font-mono" style={{ color: 'rgba(245,158,11,0.6)', fontSize: 11 }}>
-              {era.year_display}
-            </span>
-          </div>
-        </motion.div>
+              <span
+                className="font-ui uppercase"
+                style={{
+                  color: '#f59e0b',
+                  fontSize: 11,
+                  fontWeight: 600,
+                  letterSpacing: '0.08em',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                {era.label}
+              </span>
+              <span className="font-mono" style={{ color: 'rgba(245,158,11,0.6)', fontSize: 11 }}>
+                {era.year_display}
+              </span>
+            </div>
+          </motion.div>
+        )}
       </AnimatePresence>
 
       {/* BLE Nearby pill */}
@@ -472,7 +473,7 @@ export default function ExperienceWindow({ initialTool = null, initialTrail = nu
       />
 
       {/* Bottom sheet, collapsed peek or expanded fixed overlay */}
-      {expanded ? (
+      {!isGuidedTrail && (expanded ? (
         <div
           className="mobile-frame"
           style={{
@@ -699,7 +700,7 @@ export default function ExperienceWindow({ initialTool = null, initialTrail = nu
             </AnimatePresence>
           </div>
         </motion.div>
-      )}
+      ))}
 
       {/* Era Detail sheet */}
       <EraDetail
@@ -815,7 +816,7 @@ export default function ExperienceWindow({ initialTool = null, initialTrail = nu
       )}
 
       {/* Concierge FAB */}
-      {!conciergeOpen && !characterOpen && !timelessSceneOpen && !cameraOpen && (
+      {!isGuidedTrail && !conciergeOpen && !characterOpen && !timelessSceneOpen && !cameraOpen && (
         <ConciergeFAB onClick={() => {
           if (conciergeCharacter) {
             setConciergeIntro(null)
